@@ -73,10 +73,22 @@ t.contrast <- function(dv, groups, contrast) {
     vars <- by(dv, groups, var)
     Ns <- by(dv, groups, length)
     ihat <- contrast %*% means
+    
+    #classic
     df.classic <- sum(Ns)-length(Ns)
-    mse <- sum(vars*(Ns+1))/df.classic
-    se.ihat <- sqrt(mse*(sum(contrast^2/Ns)))
-    df.welch <- 
+    mse <- sum(vars*(Ns-1))/df.classic
+    se.classic <- sqrt(mse*(sum(contrast^2/Ns)))
+    t.classic <- ihat/se.classic
+    p.classic <- 2*(1-pt(abs(t.classic), df.classic))
+    
+    #welch
+    df.welch <- (contrast^2 %*% (vars/Ns))^2/(contrast^2 %*% (vars^2/(Ns^2*(Ns-1))))
+    se.welch <- sqrt(contrast^2 %*% (vars/Ns))
+    t.welch <- ihat/se.welch
+    p.welch <- 2*(1-pt(abs(t.welch), df.welch))
+    
+    result <- list(ihat=ihat, se.classic=se.classic, t.classic=t.classic, df.classic=df.classic, p.classic=p.classic, se.welch=se.welch, t.welch=t.welch, df.welch=df.welch, p.welch=p.welch)
+    return(result)
 }
 
 
@@ -84,6 +96,47 @@ t.contrast <- function(dv, groups, contrast) {
 ##### DEBUG #####
 
 test <- t.compare(nsims=2, Ns=c(10,10), means=c(2,4), vars=c(1,1))
+
+#debug t.contrast with two groups, equal sample sizes, equal variances
+group1 <- rnorm(n=20, mean=3, sd=1)
+group2 <- rnorm(n=20, mean=5, sd=1)
+y <- c(group1, group2)
+x <- c(rep(1,20), rep(2,20))
+args(t.contrast)
+debug1 <- t.contrast(y,x,c(-1,1))
+debug1
+#classic t=4.73, df=38, p=3.08e-05, se=.36
+#welch t=4.73, df=36.98, p=3.25e-05, se=.34, ihat=1.60
+t.test(y~x, var.equal=TRUE) #t=4.73, df=38, p=3.08e-05
+t.test(y~x, var.equal=FALSE) #t=4.73, df=36.99, p=3.25e-05
+#OKAY!
+
+#debug t.contrast with two groups, unequal sample sizes, equal variances
+group1 <- rnorm(n=40, mean=3, sd=1)
+group2 <- rnorm(n=20, mean=5, sd=1)
+y <- c(group1, group2)
+x <- c(rep(1,40), rep(2,20))
+args(t.contrast)
+debug1 <- t.contrast(y,x,c(-1,1))
+debug1
+#classic t=6.20, df=58, p=6.37e-08, se=.29
+#welch t=6.04, df=35.55, p=6.49e-07, se=.30, ihat=1.78
+t.test(y~x, var.equal=TRUE) #t=6.20, df=58, p=6.37e-08
+t.test(y~x, var.equal=FALSE) #t=6.04, df=35.56, p=6.49e-07
+#OKAY!
+
+#debug t.contrast with two groups, unequal sample sizes, unequal variances
+group1 <- rnorm(n=40, mean=3, sd=1)
+group2 <- rnorm(n=20, mean=5, sd=5)
+y <- c(group1, group2)
+x <- c(rep(1,40), rep(2,20))
+args(t.contrast)
+debug1 <- t.contrast(y,x,c(-1,1))
+debug1
+#classic t=3.24, df=58, p=.002, se=.68
+#welch t=2.36, df=20.01, p=.028, se=.94, ihat=2.22
+t.test(y~x, var.equal=TRUE) #t=3.24, df=58, p=.002
+t.test(y~x, var.equal=FALSE) #t=2.36, df=20.01, p=.028
 
 
 ##### Simulations #####
@@ -191,3 +244,16 @@ exp.rejects[,1,] <- rep(.05,3)
 exp.rejects[,2,] <- c(.095, .168, .291)
 exp.rejects[,3,] <- c(.338, .697, .94)
 #exp.rejects[,4,] <- c(.693, .977, 1, 1)
+
+
+
+#### Tests to examine why t classic and Welch differ ####
+
+g1l <- c(1,3,5,7,9,11,13,15,17) #M = 9, var = 30
+g1s <- c(3.52,9,14.48)
+g2l <- g1l + 5
+g2s <- g1s + 5
+t.test(g1l, g2l, var.equal=TRUE)
+t.test(g1l, g2l, var.equal=FALSE)
+t.test(g1l, g2s, var.equal=TRUE)
+t.test(g1l, g2s, var.equal=FALSE)
