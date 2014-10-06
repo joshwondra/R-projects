@@ -1,0 +1,127 @@
+\documentclass[man]{apa6}
+
+\title{Always Use the Separate Variances t Test for Two Independent Groups}
+\shorttitle{Separate Variances t Test}
+\author{Joshua D. Wondra and Richard Gonzalez}
+\affiliation{University of Michigan}
+
+\abstract{This is an abstract}
+\keywords{t test, new statistics}
+
+
+\begin{document}
+\maketitle
+
+This is an introduction
+
+\section{Method}
+
+\section{Results}
+
+<<retrieveTables, echo=FALSE>>=
+load('/users/joshwondra/R-projects/Welch rule/veNeSeed2184Tables.Rdata')
+load('/users/joshwondra/R-projects/Welch rule/v2NeSeed2184Tables.Rdata')
+load('/users/joshwondra/R-projects/Welch rule/v5NeSeed2184Tables.Rdata')
+load('/users/joshwondra/R-projects/Welch rule/ve1andhalfnSeed2184Tables.Rdata')
+load('/users/joshwondra/R-projects/Welch rule/ve2nSeed2184Tables.Rdata')
+load('/users/joshwondra/R-projects/Welch rule/v21andhalfnSSVSeed2184Tables.Rdata')
+load('/users/joshwondra/R-projects/Welch rule/v51andhalfnSSVSeed2184Tables.Rdata')
+load('/users/joshwondra/R-projects/Welch rule/v22nSSVSeed2184Tables.Rdata')
+load('/users/joshwondra/R-projects/Welch rule/v52nSSVSeed2184Tables.Rdata')
+load('/users/joshwondra/R-projects/Welch rule/v21andhalfnBSVSeed2184Tables.Rdata')
+load('/users/joshwondra/R-projects/Welch rule/v51andhalfnBSVSeed2184Tables.Rdata')
+load('/users/joshwondra/R-projects/Welch rule/v22nBSVSeed2184Tables.Rdata')
+load('/users/joshwondra/R-projects/Welch rule/v52nBSVSeed2184Tables.Rdata')
+
+#Convert small sample, small variances type I errors into a data frame
+ssv.type1.data <- data.frame(type1rate=rep(NA,24), var.ratio=rep(NA,24), Ns=rep(NA,24), N.ratio=rep(NA,24), test=rep(NA,24))
+ssv.type1.data$type1rate <- c(reject.null.v2.1.5n.ssv[,1,], reject.null.v5.1.5n.ssv[,1,], reject.null.v2.2n.ssv[,1,], reject.null.v5.2n.ssv[,1,])
+ssv.type1.data$var.ratio <- rep(rep(c('2x variance','5x variance'), each=6),2)
+ssv.type1.data$Ns <- rep(c(20,50,100), 4)
+ssv.type1.data$N.ratio <- rep(c('1.5x Ns', '2x Ns'), each=12)
+ssv.type1.data$test <- rep(rep(c('classic', 'Welch'), each=3), 4)
+
+#Convert big sample, small variances type I errors into a data frame
+bsv.type1.data <- data.frame(type1rate=rep(NA,24), var.ratio=rep(NA,24), Ns=rep(NA,24), N.ratio=rep(NA,24), test=rep(NA,24))
+bsv.type1.data$type1rate <- c(reject.null.v2.1.5n.bsv[,1,], reject.null.v5.1.5n.bsv[,1,], reject.null.v2.2n.bsv[,1,], reject.null.v5.2n.bsv[,1,])
+bsv.type1.data$var.ratio <- rep(rep(c('2x variance','5x variance'), each=6),2)
+bsv.type1.data$Ns <- rep(c(20,50,100), 4)
+bsv.type1.data$N.ratio <- rep(c('1.5x Ns', '2x Ns'), each=12)
+bsv.type1.data$test <- rep(rep(c('classic', 'Welch'), each=3), 4)
+
+@
+
+We report the observed Type I error rates, observed power, and coverage probability for the classic and separate variance t tests.
+
+\subsection{Type I Error Rates}
+In this section we report type I error rates for the classic and separate variance t tests when the null hypothesis is true. Prior research has demonstrated that when either sample sizes or variances are equal, the type I error rates are preserved at .05 for both tests (CITATIONS). 
+
+\subsubsection{Equal Variances, Different Sample Sizes}
+Consistent with prior research, the type I error rate was .05 for both the classic and separate variance t tests across all sample sizes and sample size ratio.
+
+\subsubsection{Equal Sample Sizes, Different Variances}
+Consistent with prior research, the type I error rate was .05 for both the classic and separate variance t tests across all sample sizes and variance ratios.
+
+\subsubsection{Different Sample Sizes, Different Variances}
+Consistent with prior research, the classic t test was not robust when both variances and sample sizes were equal. When the group with the bigger sample also had the bigger variance, the classic t test was more conservative; the type I error rate dropped as low as .01 when the large group had twice the sample size and five times the variance of the small group (see Figure 1). When the group with the bigger sample had the smaller variance, however, the classic t test was more liberal; the type I error rate inflated to just over .12 when the large group had twice the sample size and five times the variance of the small group (see Figure 2). In all cases, however, the separate variances t test approximately  maintained the expected type I error rate of .05.
+
+<<ssv type1, echo=FALSE>>=
+
+## NOTE: Need to figure out how to include APA style figure captions later 
+
+## Set up plotting parameters
+par(mar=c(4,6,2,10), xpd=TRUE) #allows things to go outside the plot region
+par(ps=12, cex=1, cex.main=1) # sets the font size for the plots
+
+##### Plot big sample/big variance
+plot(c(.75, 3.25), c(0,.1), type='n', axes=FALSE, ylab='Type I Error Rate', xlab='Small Group N')
+title(main='Figure 1. Type I Error Rates When the Bigger Sample Has Bigger Variance')
+axis(1, at=c(1,2,3), labels=c(20,50,100))
+axis(2, at=c(.01, .02, .03, .04, .05, .06, .07, .08, .09, .10))
+box()
+legend(3.4, .1, cex=.75, c('Classic, 2x var, 1.5x Ns', 'Classic, 2x var, 2x Ns', 'Classic, 5x var, 1.5x Ns', 'Classic, 5x var, 2x Ns', 'Welch, 2x var, 1.5x Ns', 'Welch, 2x var, 2x Ns', 'Welch, 5x var, 1.5x Ns', 'Welch, 5x var, 2x Ns'), col=rep(c('black','blue'), each=4), pch=rep(rep(c(1,2), each=2), 2), lty=rep(c(1,2), 4), bty='n')
+#lines(c(.05, .05) ~ c(1, 3), col='black', lwd=2) #plots a reference line at alpha, unnecessary for now
+
+## Plot lines
+## Classic-col=black, Welch-col=blue (grey for manuscript?); double var-pch=1, 5x var=pch=2; 1.5Ns-lty=1, 2xNs-lty=2
+with(ssv.type1.data[1:3,], lines(type1rate ~ c(1,2,3), type='b',lty=1, pch=1, col='black')) #classic, double variance, 1.5Ns
+with(ssv.type1.data[4:6,], lines(type1rate ~ c(1,2,3), type='b',lty=1, pch=1, col='blue')) #welch, double variance, 1.5Ns
+with(ssv.type1.data[7:9,], lines(type1rate ~ c(1,2,3), type='b',lty=1, pch=2, col='black')) #classic, 5x variance, 1.5Ns
+with(ssv.type1.data[10:12,], lines(type1rate ~ c(1,2,3), type='b',lty=1, pch=2, col='blue')) #welch, 5x variance, 1.5Ns
+with(ssv.type1.data[13:15,], lines(type1rate ~ c(1,2,3), type='b',lty=2, pch=1, col='black')) #classic, double variance, 1.5Ns
+with(ssv.type1.data[16:18,], lines(type1rate ~ c(1,2,3), type='b',lty=2, pch=1, col='blue')) #welch, double variance, 1.5Ns
+with(ssv.type1.data[19:21,], lines(type1rate ~ c(1,2,3), type='b',lty=2, pch=2, col='black')) #classic, 5x variance, 1.5Ns
+with(ssv.type1.data[22:24,], lines(type1rate ~ c(1,2,3), type='b',lty=2, pch=2, col='blue')) #welch, 5x variance, 1.5Ns
+
+
+##### Plot big sample/small variance
+plot(c(.75, 3.25), c(0,.13), type='n', axes=FALSE, ylab='Type I Error Rate', xlab='Small Group N')
+title(main='Figure 2. Type I Error Rates When the Bigger Sample Has Smaller Variance')
+axis(1, at=c(1,2,3), labels=c(20,50,100))
+axis(2, at=c(.01, .02, .03, .04, .05, .06, .07, .08, .09, .10, .11, .12, .13))
+box()
+legend(3.4, .1, cex=.75, c('Classic, 2x var, 1.5x Ns', 'Classic, 2x var, 2x Ns', 'Classic, 5x var, 1.5x Ns', 'Classic, 5x var, 2x Ns', 'Welch, 2x var, 1.5x Ns', 'Welch, 2x var, 2x Ns', 'Welch, 5x var, 1.5x Ns', 'Welch, 5x var, 2x Ns'), col=rep(c('black','blue'), each=4), pch=rep(rep(c(1,2), each=2), 2), lty=rep(c(1,2), 4), bty='n')
+#lines(c(.05, .05) ~ c(1, 3), col='black', lwd=2) #plots a reference line at alpha, unnecessary for now
+
+## Plot lines
+## Classic-col=black, Welch-col=blue (grey for manuscript?); double var-pch=1, 5x var=pch=2; 1.5Ns-lty=1, 2xNs-lty=2
+with(bsv.type1.data[1:3,], lines(type1rate ~ c(1,2,3), type='b',lty=1, pch=1, col='black')) #classic, double variance, 1.5Ns
+with(bsv.type1.data[4:6,], lines(type1rate ~ c(1,2,3), type='b',lty=1, pch=1, col='blue')) #welch, double variance, 1.5Ns
+with(bsv.type1.data[7:9,], lines(type1rate ~ c(1,2,3), type='b',lty=1, pch=2, col='black')) #classic, 5x variance, 1.5Ns
+with(bsv.type1.data[10:12,], lines(type1rate ~ c(1,2,3), type='b',lty=1, pch=2, col='blue')) #welch, 5x variance, 1.5Ns
+with(bsv.type1.data[13:15,], lines(type1rate ~ c(1,2,3), type='b',lty=2, pch=1, col='black')) #classic, double variance, 1.5Ns
+with(bsv.type1.data[16:18,], lines(type1rate ~ c(1,2,3), type='b',lty=2, pch=1, col='blue')) #welch, double variance, 1.5Ns
+with(bsv.type1.data[19:21,], lines(type1rate ~ c(1,2,3), type='b',lty=2, pch=2, col='black')) #classic, 5x variance, 1.5Ns
+with(bsv.type1.data[22:24,], lines(type1rate ~ c(1,2,3), type='b',lty=2, pch=2, col='blue')) #welch, 5x variance, 1.5Ns
+
+@
+
+In summary, the type I error rates for the classic t test were quite variable when both sample sizes and variances were unequal between the two groups. In contrast, the type I error rates for the separate variances t test were mostly consistent with the expected .05 rate.
+
+\subsection{Power}
+In this section we report observed power rates for the classic and separate variance t tests when the null hypothesis is true. Prior research has demonstrated that when either sample sizes or variances are equal, the type I error rates are preserved at .05 for both tests (CITATIONS). 
+
+\subsection{Coverage Probability}
+
+
+\end{document}
