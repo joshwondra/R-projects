@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  6 OCT 2014 15:59
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  28 DEC 2014 09:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -457,52 +457,209 @@ Package caption Info: End \AtBeginDocument code.
 [1{/usr/local/texlive/2014/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 ]
-[2] [3]
-Package color Info: Redefining color shadecolor on input line 86.
- <figure/ssv_type11.pdf, id=15, 505.89pt x 505.89pt>
+[2]
+Package color Info: Redefining color shadecolor on input line 87.
+ <figure/ssv_type11.pdf, id=11, 505.89pt x 505.89pt>
 File: figure/ssv_type11.pdf Graphic file (type pdf)
 
 <use figure/ssv_type11.pdf>
-Package pdftex.def Info: figure/ssv_type11.pdf used on input line 87.
+Package pdftex.def Info: figure/ssv_type11.pdf used on input line 88.
 (pdftex.def)             Requested size: 469.75502pt x 469.76265pt.
 
-Overfull \hbox (28.90755pt too wide) in paragraph at lines 87--88
+Overfull \hbox (28.90755pt too wide) in paragraph at lines 88--89
 [][]  
  []
 
-<figure/ssv_type12.pdf, id=16, 505.89pt x 505.89pt>
+<figure/ssv_type12.pdf, id=12, 505.89pt x 505.89pt>
+Underfull \vbox (badness 1107) has occurred while \output is active []
+
+ [3]
 File: figure/ssv_type12.pdf Graphic file (type pdf)
 
 <use figure/ssv_type12.pdf>
-Package pdftex.def Info: figure/ssv_type12.pdf used on input line 89.
+Package pdftex.def Info: figure/ssv_type12.pdf used on input line 90.
 (pdftex.def)             Requested size: 469.75502pt x 469.76265pt.
 
-Overfull \hbox (28.90755pt too wide) in paragraph at lines 89--90
+Overfull \hbox (28.90755pt too wide) in paragraph at lines 90--91
 [][]  
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [4 <./figure/ssv_type11.pdf>] AED endfloat: Processing end Figures and Tables 
-[5 <./figure/ssv_type12.pdf>] (./WelchManuscript.aux) ) 
+ [4 <./figure/ssv_type11.pdf>]
+Package color Info: Redefining color shadecolor on input line 96.
+ <figure/bsv_type1.pdf, id=26, 505.89pt x 505.89pt>
+File: figure/bsv_type1.pdf Graphic file (type pdf)
+
+<use figure/bsv_type1.pdf>
+Package pdftex.def Info: figure/bsv_type1.pdf used on input line 97.
+(pdftex.def)             Requested size: 469.75502pt x 469.76265pt.
+
+Overfull \hbox (28.90755pt too wide) in paragraph at lines 97--98
+[][]  
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [5 <./figure/ssv_type12.pdf>]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [6 <./figure/bsv_type1.pdf>]
+Package color Info: Redefining color shadecolor on input line 109.
+
+<figure/equal_vars_unequal_Ns_small_d1.pdf, id=45, 505.89pt x 505.89pt>
+File: figure/equal_vars_unequal_Ns_small_d1.pdf Graphic file (type pdf)
+
+<use figure/equal_vars_unequal_Ns_small_d1.pdf>
+Package pdftex.def Info: figure/equal_vars_unequal_Ns_small_d1.pdf used on inpu
+t line 110.
+(pdftex.def)             Requested size: 469.75502pt x 469.76265pt.
+
+Overfull \hbox (28.90755pt too wide) in paragraph at lines 110--111
+[][]  
+ []
+
+<figure/equal_vars_unequal_Ns_small_d2.pdf, id=46, 505.89pt x 505.89pt>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [7]
+File: figure/equal_vars_unequal_Ns_small_d2.pdf Graphic file (type pdf)
+
+<use figure/equal_vars_unequal_Ns_small_d2.pdf>
+Package pdftex.def Info: figure/equal_vars_unequal_Ns_small_d2.pdf used on inpu
+t line 112.
+(pdftex.def)             Requested size: 469.75502pt x 469.76265pt.
+
+Overfull \hbox (28.90755pt too wide) in paragraph at lines 112--113
+[][]  
+ []
+
+<figure/equal_vars_unequal_Ns_small_d3.pdf, id=51, 505.89pt x 505.89pt>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [8 <./figure/equal_vars_unequal_Ns_small_d1.pdf>]
+File: figure/equal_vars_unequal_Ns_small_d3.pdf Graphic file (type pdf)
+
+<use figure/equal_vars_unequal_Ns_small_d3.pdf>
+Package pdftex.def Info: figure/equal_vars_unequal_Ns_small_d3.pdf used on inpu
+t line 114.
+(pdftex.def)             Requested size: 469.75502pt x 469.76265pt.
+
+Overfull \hbox (28.90755pt too wide) in paragraph at lines 114--115
+[][]  
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [9 <./figure/equal_vars_unequal_Ns_small_d2.pdf>]
+Package color Info: Redefining color shadecolor on input line 122.
+
+<figure/unequal_vars_equal_Ns_different_ds1.pdf, id=70, 505.89pt x 505.89pt>
+File: figure/unequal_vars_equal_Ns_different_ds1.pdf Graphic file (type pdf)
+
+<use figure/unequal_vars_equal_Ns_different_ds1.pdf>
+Package pdftex.def Info: figure/unequal_vars_equal_Ns_different_ds1.pdf used on
+ input line 123.
+(pdftex.def)             Requested size: 469.75502pt x 469.76265pt.
+
+Overfull \hbox (28.90755pt too wide) in paragraph at lines 123--124
+[][]  
+ []
+
+<figure/unequal_vars_equal_Ns_different_ds2.pdf, id=71, 505.89pt x 505.89pt>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [10 <./figure/equal_vars_unequal_Ns_small_d3.pdf>]
+File: figure/unequal_vars_equal_Ns_different_ds2.pdf Graphic file (type pdf)
+
+<use figure/unequal_vars_equal_Ns_different_ds2.pdf>
+Package pdftex.def Info: figure/unequal_vars_equal_Ns_different_ds2.pdf used on
+ input line 125.
+(pdftex.def)             Requested size: 469.75502pt x 469.76265pt.
+
+Overfull \hbox (28.90755pt too wide) in paragraph at lines 125--126
+[][]  
+ []
+
+<figure/unequal_vars_equal_Ns_different_ds3.pdf, id=81, 505.89pt x 505.89pt>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [11 <./figure/unequal_vars_equal_Ns_different_ds1.pdf>]
+File: figure/unequal_vars_equal_Ns_different_ds3.pdf Graphic file (type pdf)
+
+<use figure/unequal_vars_equal_Ns_different_ds3.pdf>
+Package pdftex.def Info: figure/unequal_vars_equal_Ns_different_ds3.pdf used on
+ input line 127.
+(pdftex.def)             Requested size: 469.75502pt x 469.76265pt.
+
+Overfull \hbox (28.90755pt too wide) in paragraph at lines 127--128
+[][]  
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [12 <./figure/unequal_vars_equal_Ns_different_ds2.pdf>]
+Package color Info: Redefining color shadecolor on input line 134.
+
+<figure/ssv_power1.pdf, id=100, 505.89pt x 505.89pt>
+File: figure/ssv_power1.pdf Graphic file (type pdf)
+
+<use figure/ssv_power1.pdf>
+Package pdftex.def Info: figure/ssv_power1.pdf used on input line 135.
+(pdftex.def)             Requested size: 469.75502pt x 469.76265pt.
+
+<figure/ssv_power2.pdf, id=101, 505.89pt x 505.89pt>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [13 <./figure/unequal_vars_equal_Ns_different_ds3.pdf>]
+File: figure/ssv_power2.pdf Graphic file (type pdf)
+ <use figure/ssv_power2.pdf>
+Package pdftex.def Info: figure/ssv_power2.pdf used on input line 137.
+(pdftex.def)             Requested size: 469.75502pt x 469.76265pt.
+
+Overfull \hbox (28.90755pt too wide) in paragraph at lines 137--138
+[][]  
+ []
+
+<figure/ssv_power3.pdf, id=112, 505.89pt x 505.89pt>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [14 <./figure/ssv_power1.pdf>]
+File: figure/ssv_power3.pdf Graphic file (type pdf)
+ <use figure/ssv_power3.pdf>
+Package pdftex.def Info: figure/ssv_power3.pdf used on input line 139.
+(pdftex.def)             Requested size: 469.75502pt x 469.76265pt.
+
+Overfull \hbox (28.90755pt too wide) in paragraph at lines 139--140
+[][]  
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [15 <./figure/ssv_power2.pdf>] AED endfloat: Processing end Figures and Tables
+ [16 <./figure/ssv_power3.pdf>] (./WelchManuscript.aux) ) 
 Here is how much of TeX's memory you used:
- 5018 strings out of 493117
- 73979 string characters out of 6135433
+ 5068 strings out of 493117
+ 75819 string characters out of 6135433
  138700 words of memory out of 5000000
- 8405 multiletter control sequences out of 15000+600000
+ 8445 multiletter control sequences out of 15000+600000
  14961 words of font info for 19 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 43i,11n,47p,850b,252s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2014
-/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}</usr/local/texlive/2014/texmf-dist/fo
-nts/type1/public/lm/lmbx12.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/
-public/lm/lmr12.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/lm/l
-mri12.pfb>
-Output written on WelchManuscript.pdf (5 pages, 84025 bytes).
+ 43i,12n,47p,931b,337s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/20
+14/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}</usr/local/texlive/2014/texmf-dist/
+fonts/type1/public/lm/lmbx12.pfb></usr/local/texlive/2014/texmf-dist/fonts/type
+1/public/lm/lmr12.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/lm
+/lmri12.pfb>
+Output written on WelchManuscript.pdf (16 pages, 144229 bytes).
 PDF statistics:
- 47 PDF objects out of 1000 (max. 8388607)
- 32 compressed objects within 1 object stream
+ 154 PDF objects out of 1000 (max. 8388607)
+ 107 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 61 words of extra memory for PDF output out of 10000 (max. 10000000)
 

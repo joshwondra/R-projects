@@ -114,23 +114,23 @@ ve.ns100.ne.nullT <- t.compare(nsims=10000, Ns=c(100,100), means=c(6,6), vars=c(
 # small effect
 cohen.diff(.2, 20, sqrt(2), 20, sqrt(2))
 set.seed(2184)
-ve.ns20.ne.smalld <- t.compare(nsims=10000, Ns=c(20,20), means=c(6,6.283), vars=c(2,2), contrast=c(-1,1))
-ve.ns50.ne.smalld <- t.compare(nsims=10000, Ns=c(50,50), means=c(6,6.283), vars=c(2,2), contrast=c(-1,1))
-ve.ns100.ne.smalld <- t.compare(nsims=10000, Ns=c(100,100), means=c(6,6.283), vars=c(2,2), contrast=c(-1,1))
+ve.ns20.ne.smalld <- t.compare(nsims=10000, Ns=c(20,20), means=c(6,6.28), vars=c(2,2), contrast=c(-1,1))
+ve.ns50.ne.smalld <- t.compare(nsims=10000, Ns=c(50,50), means=c(6,6.28), vars=c(2,2), contrast=c(-1,1))
+ve.ns100.ne.smalld <- t.compare(nsims=10000, Ns=c(100,100), means=c(6,6.28), vars=c(2,2), contrast=c(-1,1))
 
 # medium effect
 cohen.diff(.5, 20, sqrt(2), 20, sqrt(2))
 set.seed(2184)
-ve.ns20.ne.midd <- t.compare(nsims=10000, Ns=c(20,20), means=c(6,6.707), vars=c(2,2), contrast=c(-1,1))
-ve.ns50.ne.midd <- t.compare(nsims=10000, Ns=c(50,50), means=c(6,6.707), vars=c(2,2), contrast=c(-1,1))
-ve.ns100.ne.midd <- t.compare(nsims=10000, Ns=c(100,100), means=c(6,6.707), vars=c(2,2), contrast=c(-1,1))
+ve.ns20.ne.midd <- t.compare(nsims=10000, Ns=c(20,20), means=c(6,6.71), vars=c(2,2), contrast=c(-1,1))
+ve.ns50.ne.midd <- t.compare(nsims=10000, Ns=c(50,50), means=c(6,6.71), vars=c(2,2), contrast=c(-1,1))
+ve.ns100.ne.midd <- t.compare(nsims=10000, Ns=c(100,100), means=c(6,6.71), vars=c(2,2), contrast=c(-1,1))
 
 # large effect
 cohen.diff(.8, 20, sqrt(2), 20, sqrt(2))
 set.seed(2184)
-ve.ns20.ne.bigd <- t.compare(nsims=10000, Ns=c(20,20), means=c(6,7.131), vars=c(2,2), contrast=c(-1,1))
-ve.ns50.ne.bigd <- t.compare(nsims=10000, Ns=c(50,50), means=c(6,7.131), vars=c(2,2), contrast=c(-1,1))
-ve.ns100.ne.bigd <- t.compare(nsims=10000, Ns=c(100,100), means=c(6,7.131), vars=c(2,2), contrast=c(-1,1))
+ve.ns20.ne.bigd <- t.compare(nsims=10000, Ns=c(20,20), means=c(6,7.13), vars=c(2,2), contrast=c(-1,1))
+ve.ns50.ne.bigd <- t.compare(nsims=10000, Ns=c(50,50), means=c(6,7.13), vars=c(2,2), contrast=c(-1,1))
+ve.ns100.ne.bigd <- t.compare(nsims=10000, Ns=c(100,100), means=c(6,7.13), vars=c(2,2), contrast=c(-1,1))
 
 
 ## Save simulations
@@ -215,23 +215,23 @@ v2.ns100.ne.nullT <- t.compare(nsims=10000, Ns=c(100,100), means=c(6,6), vars=c(
 # small effect
 cohen.diff(.2, 20, sqrt(2), 20, sqrt(4))
 set.seed(2184)
-v2.ns20.ne.smalld <- t.compare(nsims=10000, Ns=c(20,20), means=c(6,6.346), vars=c(2,4), contrast=c(-1,1))
-v2.ns50.ne.smalld <- t.compare(nsims=10000, Ns=c(50,50), means=c(6,6.346), vars=c(2,4), contrast=c(-1,1))
-v2.ns100.ne.smalld <- t.compare(nsims=10000, Ns=c(100,100), means=c(6,6.346), vars=c(2,4), contrast=c(-1,1))
+v2.ns20.ne.smalld <- t.compare(nsims=10000, Ns=c(20,20), means=c(6,6.35), vars=c(2,4), contrast=c(-1,1))
+v2.ns50.ne.smalld <- t.compare(nsims=10000, Ns=c(50,50), means=c(6,6.35), vars=c(2,4), contrast=c(-1,1))
+v2.ns100.ne.smalld <- t.compare(nsims=10000, Ns=c(100,100), means=c(6,6.35), vars=c(2,4), contrast=c(-1,1))
 
 # medium effect
 cohen.diff(.5, 20, sqrt(2), 20, sqrt(4))
 set.seed(2184)
-v2.ns20.ne.midd <- t.compare(nsims=10000, Ns=c(20,20), means=c(6,6.866), vars=c(2,4), contrast=c(-1,1))
-v2.ns50.ne.midd <- t.compare(nsims=10000, Ns=c(50,50), means=c(6,6.866), vars=c(2,4), contrast=c(-1,1))
-v2.ns100.ne.midd <- t.compare(nsims=10000, Ns=c(100,100), means=c(6,6.866), vars=c(2,4), contrast=c(-1,1))
+v2.ns20.ne.midd <- t.compare(nsims=10000, Ns=c(20,20), means=c(6,6.87), vars=c(2,4), contrast=c(-1,1))
+v2.ns50.ne.midd <- t.compare(nsims=10000, Ns=c(50,50), means=c(6,6.87), vars=c(2,4), contrast=c(-1,1))
+v2.ns100.ne.midd <- t.compare(nsims=10000, Ns=c(100,100), means=c(6,6.87), vars=c(2,4), contrast=c(-1,1))
 
 # large effect
 cohen.diff(.8, 20, sqrt(2), 20, sqrt(4))
 set.seed(2184)
-v2.ns20.ne.bigd <- t.compare(nsims=10000, Ns=c(20,20), means=c(6,7.386), vars=c(2,4), contrast=c(-1,1))
-v2.ns50.ne.bigd <- t.compare(nsims=10000, Ns=c(50,50), means=c(6,7.386), vars=c(2,4), contrast=c(-1,1))
-v2.ns100.ne.bigd <- t.compare(nsims=10000, Ns=c(100,100), means=c(6,7.386), vars=c(2,4), contrast=c(-1,1))
+v2.ns20.ne.bigd <- t.compare(nsims=10000, Ns=c(20,20), means=c(6,7.39), vars=c(2,4), contrast=c(-1,1))
+v2.ns50.ne.bigd <- t.compare(nsims=10000, Ns=c(50,50), means=c(6,7.39), vars=c(2,4), contrast=c(-1,1))
+v2.ns100.ne.bigd <- t.compare(nsims=10000, Ns=c(100,100), means=c(6,7.39), vars=c(2,4), contrast=c(-1,1))
 
 
 ## Save simulations
@@ -312,23 +312,23 @@ v5.ns100.ne.nullT <- t.compare(nsims=10000, Ns=c(100,100), means=c(6,6), vars=c(
 # small effect
 cohen.diff(.2, 20, sqrt(2), 20, sqrt(10))
 set.seed(2184)
-v5.ns20.ne.smalld <- t.compare(nsims=10000, Ns=c(20,20), means=c(6,6.490), vars=c(2,10), contrast=c(-1,1))
-v5.ns50.ne.smalld <- t.compare(nsims=10000, Ns=c(50,50), means=c(6,6.490), vars=c(2,10), contrast=c(-1,1))
-v5.ns100.ne.smalld <- t.compare(nsims=10000, Ns=c(100,100), means=c(6,6.490), vars=c(2,10), contrast=c(-1,1))
+v5.ns20.ne.smalld <- t.compare(nsims=10000, Ns=c(20,20), means=c(6,6.49), vars=c(2,10), contrast=c(-1,1))
+v5.ns50.ne.smalld <- t.compare(nsims=10000, Ns=c(50,50), means=c(6,6.49), vars=c(2,10), contrast=c(-1,1))
+v5.ns100.ne.smalld <- t.compare(nsims=10000, Ns=c(100,100), means=c(6,6.49), vars=c(2,10), contrast=c(-1,1))
 
 # medium effect
 cohen.diff(.5, 20, sqrt(2), 20, sqrt(10))
 set.seed(2184)
-v5.ns20.ne.midd <- t.compare(nsims=10000, Ns=c(20,20), means=c(6,7.225), vars=c(2,10), contrast=c(-1,1))
-v5.ns50.ne.midd <- t.compare(nsims=10000, Ns=c(50,50), means=c(6,7.225), vars=c(2,10), contrast=c(-1,1))
-v5.ns100.ne.midd <- t.compare(nsims=10000, Ns=c(100,100), means=c(6,7.225), vars=c(2,10), contrast=c(-1,1))
+v5.ns20.ne.midd <- t.compare(nsims=10000, Ns=c(20,20), means=c(6,7.23), vars=c(2,10), contrast=c(-1,1))
+v5.ns50.ne.midd <- t.compare(nsims=10000, Ns=c(50,50), means=c(6,7.23), vars=c(2,10), contrast=c(-1,1))
+v5.ns100.ne.midd <- t.compare(nsims=10000, Ns=c(100,100), means=c(6,7.23), vars=c(2,10), contrast=c(-1,1))
 
 # large effect
 cohen.diff(.8, 20, sqrt(2), 20, sqrt(10))
 set.seed(2184)
-v5.ns20.ne.bigd <- t.compare(nsims=10000, Ns=c(20,20), means=c(6,7.960), vars=c(2,10), contrast=c(-1,1))
-v5.ns50.ne.bigd <- t.compare(nsims=10000, Ns=c(50,50), means=c(6,7.960), vars=c(2,10), contrast=c(-1,1))
-v5.ns100.ne.bigd <- t.compare(nsims=10000, Ns=c(100,100), means=c(6,7.960), vars=c(2,10), contrast=c(-1,1))
+v5.ns20.ne.bigd <- t.compare(nsims=10000, Ns=c(20,20), means=c(6,7.96), vars=c(2,10), contrast=c(-1,1))
+v5.ns50.ne.bigd <- t.compare(nsims=10000, Ns=c(50,50), means=c(6,7.96), vars=c(2,10), contrast=c(-1,1))
+v5.ns100.ne.bigd <- t.compare(nsims=10000, Ns=c(100,100), means=c(6,7.96), vars=c(2,10), contrast=c(-1,1))
 
 
 ## Save simulations
@@ -1162,31 +1162,31 @@ v5.ns50.1.5n.bsv.nullT <- t.compare(nsims=10000, Ns=c(50,75), means=c(6,6), vars
 v5.ns100.1.5n.bsv.nullT <- t.compare(nsims=10000, Ns=c(100,150), means=c(6,6), vars=c(10,2), contrast=c(-1,1))
 
 # small d
-cohen.diff(.2,20,sqrt(2),30,sqrt(10))
-cohen.diff(.2,50,sqrt(2),75,sqrt(10))
-cohen.diff(.2,100,sqrt(2),150,sqrt(10))
+cohen.diff(.2,20,sqrt(10),30,sqrt(2))
+cohen.diff(.2,50,sqrt(10),75,sqrt(2))
+cohen.diff(.2,100,sqrt(10),150,sqrt(2))
 set.seed(2184)
-v5.ns20.1.5n.bsv.smalld <- t.compare(nsims=10000, Ns=c(20,30), means=c(6,6.52), vars=c(10,2), contrast=c(-1,1))
-v5.ns50.1.5n.bsv.smalld <- t.compare(nsims=10000, Ns=c(50,75), means=c(6,6.52), vars=c(10,2), contrast=c(-1,1))
-v5.ns100.1.5n.bsv.smalld <- t.compare(nsims=10000, Ns=c(100,150), means=c(6,6.52), vars=c(10,2), contrast=c(-1,1))
+v5.ns20.1.5n.bsv.smalld <- t.compare(nsims=10000, Ns=c(20,30), means=c(6,6.45), vars=c(10,2), contrast=c(-1,1))
+v5.ns50.1.5n.bsv.smalld <- t.compare(nsims=10000, Ns=c(50,75), means=c(6,6.46), vars=c(10,2), contrast=c(-1,1))
+v5.ns100.1.5n.bsv.smalld <- t.compare(nsims=10000, Ns=c(100,150), means=c(6,6.46), vars=c(10,2), contrast=c(-1,1))
 
 # mid d
-cohen.diff(.5,20,sqrt(2),30,sqrt(10))
-cohen.diff(.5,50,sqrt(2),75,sqrt(10))
-cohen.diff(.5,100,sqrt(2),150,sqrt(10))
+cohen.diff(.5,20,sqrt(10),30,sqrt(2))
+cohen.diff(.5,50,sqrt(10),75,sqrt(2))
+cohen.diff(.5,100,sqrt(10),150,sqrt(2))
 set.seed(2184)
-v5.ns20.1.5n.bsv.midd <- t.compare(nsims=10000, Ns=c(20,30), means=c(6,7.31), vars=c(10,2), contrast=c(-1,1))
-v5.ns50.1.5n.bsv.midd <- t.compare(nsims=10000, Ns=c(50,75), means=c(6,7.31), vars=c(10,2), contrast=c(-1,1))
-v5.ns100.1.5n.bsv.midd <- t.compare(nsims=10000, Ns=c(100,150), means=c(6,7.30), vars=c(10,2), contrast=c(-1,1))
+v5.ns20.1.5n.bsv.midd <- t.compare(nsims=10000, Ns=c(20,30), means=c(6,7.14), vars=c(10,2), contrast=c(-1,1))
+v5.ns50.1.5n.bsv.midd <- t.compare(nsims=10000, Ns=c(50,75), means=c(6,7.14), vars=c(10,2), contrast=c(-1,1))
+v5.ns100.1.5n.bsv.midd <- t.compare(nsims=10000, Ns=c(100,150), means=c(6,7.14), vars=c(10,2), contrast=c(-1,1))
 
 # big d
-cohen.diff(.8,20,sqrt(2),30,sqrt(10))
-cohen.diff(.8,50,sqrt(2),75,sqrt(10))
-cohen.diff(.8,100,sqrt(2),150,sqrt(10))
+cohen.diff(.8,20,sqrt(10),30,sqrt(2))
+cohen.diff(.8,50,sqrt(10),75,sqrt(2))
+cohen.diff(.8,100,sqrt(10),150,sqrt(2))
 set.seed(2184)
-v5.ns20.1.5n.bsv.bigd <- t.compare(nsims=10000, Ns=c(20,30), means=c(6,8.09), vars=c(10,2), contrast=c(-1,1))
-v5.ns50.1.5n.bsv.bigd <- t.compare(nsims=10000, Ns=c(50,75), means=c(6,8.09), vars=c(10,2), contrast=c(-1,1))
-v5.ns100.1.5n.bsv.bigd <- t.compare(nsims=10000, Ns=c(100,150), means=c(6,8.09), vars=c(10,2), contrast=c(-1,1))
+v5.ns20.1.5n.bsv.bigd <- t.compare(nsims=10000, Ns=c(20,30), means=c(6,7.82), vars=c(10,2), contrast=c(-1,1))
+v5.ns50.1.5n.bsv.bigd <- t.compare(nsims=10000, Ns=c(50,75), means=c(6,7.82), vars=c(10,2), contrast=c(-1,1))
+v5.ns100.1.5n.bsv.bigd <- t.compare(nsims=10000, Ns=c(100,150), means=c(6,7.82), vars=c(10,2), contrast=c(-1,1))
 
 
 
@@ -1265,31 +1265,31 @@ v2.ns50.2n.bsv.nullT <- t.compare(nsims=10000, Ns=c(50,100), means=c(6,6), vars=
 v2.ns100.2n.bsv.nullT <- t.compare(nsims=10000, Ns=c(100,200), means=c(6,6), vars=c(4,2), contrast=c(-1,1))
 
 # small d
-cohen.diff(.2,20,sqrt(2),40,sqrt(4))
-cohen.diff(.2,50,sqrt(2),100,sqrt(4))
-cohen.diff(.2,100,sqrt(2),200,sqrt(4))
+cohen.diff(.2,20,sqrt(4),40,sqrt(2))
+cohen.diff(.2,50,sqrt(4),100,sqrt(2))
+cohen.diff(.2,100,sqrt(4),200,sqrt(2))
 set.seed(2184)
-v2.ns20.2n.bsv.smalld <- t.compare(nsims=10000, Ns=c(20,40), means=c(6,6.37), vars=c(4,2), contrast=c(-1,1))
-v2.ns50.2n.bsv.smalld <- t.compare(nsims=10000, Ns=c(50,100), means=c(6,6.37), vars=c(4,2), contrast=c(-1,1))
-v2.ns100.2n.bsv.smalld <- t.compare(nsims=10000, Ns=c(100,200), means=c(6,6.37), vars=c(4,2), contrast=c(-1,1))
+v2.ns20.2n.bsv.smalld <- t.compare(nsims=10000, Ns=c(20,40), means=c(6,6.33), vars=c(4,2), contrast=c(-1,1))
+v2.ns50.2n.bsv.smalld <- t.compare(nsims=10000, Ns=c(50,100), means=c(6,6.33), vars=c(4,2), contrast=c(-1,1))
+v2.ns100.2n.bsv.smalld <- t.compare(nsims=10000, Ns=c(100,200), means=c(6,6.33), vars=c(4,2), contrast=c(-1,1))
 
 # mid d
-cohen.diff(.5,20,sqrt(2),40,sqrt(4))
-cohen.diff(.5,50,sqrt(2),100,sqrt(4))
-cohen.diff(.5,100,sqrt(2),200,sqrt(4))
+cohen.diff(.5,20,sqrt(4),40,sqrt(2))
+cohen.diff(.5,50,sqrt(4),100,sqrt(2))
+cohen.diff(.5,100,sqrt(4),200,sqrt(2))
 set.seed(2184)
-v2.ns20.2n.bsv.midd <- t.compare(nsims=10000, Ns=c(20,40), means=c(6,6.91), vars=c(4,2), contrast=c(-1,1))
-v2.ns50.2n.bsv.midd <- t.compare(nsims=10000, Ns=c(50,100), means=c(6,6.91), vars=c(4,2), contrast=c(-1,1))
-v2.ns100.2n.bsv.midd <- t.compare(nsims=10000, Ns=c(100,200), means=c(6,6.91), vars=c(4,2), contrast=c(-1,1))
+v2.ns20.2n.bsv.midd <- t.compare(nsims=10000, Ns=c(20,40), means=c(6,6.81), vars=c(4,2), contrast=c(-1,1))
+v2.ns50.2n.bsv.midd <- t.compare(nsims=10000, Ns=c(50,100), means=c(6,6.82), vars=c(4,2), contrast=c(-1,1))
+v2.ns100.2n.bsv.midd <- t.compare(nsims=10000, Ns=c(100,200), means=c(6,6.82), vars=c(4,2), contrast=c(-1,1))
 
 # big d
-cohen.diff(.8,20,sqrt(2),40,sqrt(4))
-cohen.diff(.8,50,sqrt(2),100,sqrt(4))
-cohen.diff(.8,100,sqrt(2),200,sqrt(4))
+cohen.diff(.8,20,sqrt(4),40,sqrt(2))
+cohen.diff(.8,50,sqrt(4),100,sqrt(2))
+cohen.diff(.8,100,sqrt(4),200,sqrt(2))
 set.seed(2184)
-v2.ns20.2n.bsv.bigd <- t.compare(nsims=10000, Ns=c(20,40), means=c(6,7.46), vars=c(4,2), contrast=c(-1,1))
-v2.ns50.2n.bsv.bigd <- t.compare(nsims=10000, Ns=c(50,100), means=c(6,7.46), vars=c(4,2), contrast=c(-1,1))
-v2.ns100.2n.bsv.bigd <- t.compare(nsims=10000, Ns=c(100,200), means=c(6,7.46), vars=c(4,2), contrast=c(-1,1))
+v2.ns20.2n.bsv.bigd <- t.compare(nsims=10000, Ns=c(20,40), means=c(6,7.30), vars=c(4,2), contrast=c(-1,1))
+v2.ns50.2n.bsv.bigd <- t.compare(nsims=10000, Ns=c(50,100), means=c(6,7.31), vars=c(4,2), contrast=c(-1,1))
+v2.ns100.2n.bsv.bigd <- t.compare(nsims=10000, Ns=c(100,200), means=c(6,7.31), vars=c(4,2), contrast=c(-1,1))
 
 
 
@@ -1370,31 +1370,31 @@ v5.ns50.2n.bsv.nullT <- t.compare(nsims=10000, Ns=c(50,100), means=c(6,6), vars=
 v5.ns100.2n.bsv.nullT <- t.compare(nsims=10000, Ns=c(100,200), means=c(6,6), vars=c(10,2), contrast=c(-1,1))
 
 # small d
-cohen.diff(.2,20,sqrt(2),40,sqrt(10))
-cohen.diff(.2,50,sqrt(2),100,sqrt(10))
-cohen.diff(.2,100,sqrt(2),200,sqrt(10))
+cohen.diff(.2,20,sqrt(10),40,sqrt(2))
+cohen.diff(.2,50,sqrt(10),100,sqrt(2))
+cohen.diff(.2,100,sqrt(10),200,sqrt(2))
 set.seed(2184)
-v5.ns20.2n.bsv.smalld <- t.compare(nsims=10000, Ns=c(20,40), means=c(6,6.54), vars=c(10,2), contrast=c(-1,1))
-v5.ns50.2n.bsv.smalld <- t.compare(nsims=10000, Ns=c(50,100), means=c(6,6.54), vars=c(10,2), contrast=c(-1,1))
-v5.ns100.2n.bsv.smalld <- t.compare(nsims=10000, Ns=c(100,200), means=c(6,6.54), vars=c(10,2), contrast=c(-1,1))
+v5.ns20.2n.bsv.smalld <- t.compare(nsims=10000, Ns=c(20,40), means=c(6,6.43), vars=c(10,2), contrast=c(-1,1))
+v5.ns50.2n.bsv.smalld <- t.compare(nsims=10000, Ns=c(50,100), means=c(6,6.43), vars=c(10,2), contrast=c(-1,1))
+v5.ns100.2n.bsv.smalld <- t.compare(nsims=10000, Ns=c(100,200), means=c(6,6.43), vars=c(10,2), contrast=c(-1,1))
 
 # mid d
-cohen.diff(.5,20,sqrt(2),40,sqrt(10))
-cohen.diff(.5,50,sqrt(2),100,sqrt(10))
-cohen.diff(.5,100,sqrt(2),200,sqrt(10))
+cohen.diff(.5,20,sqrt(10),40,sqrt(2))
+cohen.diff(.5,50,sqrt(10),100,sqrt(2))
+cohen.diff(.5,100,sqrt(10),200,sqrt(2))
 set.seed(2184)
-v5.ns20.2n.bsv.midd <- t.compare(nsims=10000, Ns=c(20,40), means=c(6,7.36), vars=c(10,2), contrast=c(-1,1))
-v5.ns50.2n.bsv.midd <- t.compare(nsims=10000, Ns=c(50,100), means=c(6,7.36), vars=c(10,2), contrast=c(-1,1))
-v5.ns100.2n.bsv.midd <- t.compare(nsims=10000, Ns=c(100,200), means=c(6,7.35), vars=c(10,2), contrast=c(-1,1))
+v5.ns20.2n.bsv.midd <- t.compare(nsims=10000, Ns=c(20,40), means=c(6,7.07), vars=c(10,2), contrast=c(-1,1))
+v5.ns50.2n.bsv.midd <- t.compare(nsims=10000, Ns=c(50,100), means=c(6,7.08), vars=c(10,2), contrast=c(-1,1))
+v5.ns100.2n.bsv.midd <- t.compare(nsims=10000, Ns=c(100,200), means=c(6,7.08), vars=c(10,2), contrast=c(-1,1))
 
 # big d
-cohen.diff(.8,20,sqrt(2),40,sqrt(10))
-cohen.diff(.8,50,sqrt(2),100,sqrt(10))
-cohen.diff(.8,100,sqrt(2),200,sqrt(10))
+cohen.diff(.8,20,sqrt(10),40,sqrt(2))
+cohen.diff(.8,50,sqrt(10),100,sqrt(2))
+cohen.diff(.8,100,sqrt(10),200,sqrt(2))
 set.seed(2184)
-v5.ns20.2n.bsv.bigd <- t.compare(nsims=10000, Ns=c(20,40), means=c(6,8.17), vars=c(10,2), contrast=c(-1,1))
-v5.ns50.2n.bsv.bigd <- t.compare(nsims=10000, Ns=c(50,100), means=c(6,8.17), vars=c(10,2), contrast=c(-1,1))
-v5.ns100.2n.bsv.bigd <- t.compare(nsims=10000, Ns=c(100,200), means=c(6,8.17), vars=c(10,2), contrast=c(-1,1))
+v5.ns20.2n.bsv.bigd <- t.compare(nsims=10000, Ns=c(20,40), means=c(6,7.72), vars=c(10,2), contrast=c(-1,1))
+v5.ns50.2n.bsv.bigd <- t.compare(nsims=10000, Ns=c(50,100), means=c(6,7.72), vars=c(10,2), contrast=c(-1,1))
+v5.ns100.2n.bsv.bigd <- t.compare(nsims=10000, Ns=c(100,200), means=c(6,7.73), vars=c(10,2), contrast=c(-1,1))
 
 
 
@@ -1520,8 +1520,8 @@ exp.rejects.1.5n[,4,] <- c(.775, .992, 1)
 ## Double Ns
 exp.rejects.2n <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8")))
 exp.rejects.2n[,1,] <- rep(.05,3)
-exp.rejects.2n[,2,] <- c(.111,.209,.339)
-exp.rejects.2n[,3,] <- c(.435, .818, .971)
+exp.rejects.2n[,2,] <- c(.111,.209,.370)
+exp.rejects.2n[,3,] <- c(.435, .818, .983)
 exp.rejects.2n[,4,] <- c(.819,.996,1)
 
 
@@ -1560,41 +1560,55 @@ round(reject.null.ve.ne, digits=2)
 round(obs.coverage.ve.ne, digits=2)
 round(df.ratio.ve.ne, digits=2)
 round(exp.rejects.ne, digits=2)
+round(reject.null.ve.ne-array(c(exp.rejects.ne, exp.rejects.ne), dim=c(3,4,2)), digits=2)
 
 round(reject.null.v2.ne, digits=2)
 round(obs.coverage.v2.ne, digits=2)
 round(df.ratio.v2.ne, digits=2)
 round(exp.rejects.ne, digits=2)
+round(reject.null.v2.ne-array(c(exp.rejects.ne, exp.rejects.ne), dim=c(3,4,2)), digits=2)
+
 
 round(reject.null.v5.ne, digits=2)
 round(obs.coverage.v5.ne, digits=2)
 round(df.ratio.v5.ne, digits=2)
 round(exp.rejects.ne, digits=2)
+round(reject.null.v5.ne-array(c(exp.rejects.ne, exp.rejects.ne), dim=c(3,4,2)), digits=2)
 
 round(reject.null.ve.1.5n, digits=2)
 round(obs.coverage.ve.1.5n, digits=2)
 round(df.ratio.ve.1.5n, digits=2)
 round(exp.rejects.1.5n, digits=2)
+round(reject.null.ve.1.5n-array(c(exp.rejects.1.5n, exp.rejects.1.5n), dim=c(3,4,2)), digits=2)
+
 
 round(reject.null.ve.2n, digits=2)
 round(obs.coverage.ve.2n, digits=2)
 round(df.ratio.ve.2n, digits=2)
 round(exp.rejects.2n, digits=2)
+round(reject.null.ve.2n-array(c(exp.rejects.2n, exp.rejects.2n), dim=c(3,4,2)), digits=2)
+
 
 round(reject.null.v2.1.5n.ssv, digits=2)
 round(obs.coverage.v2.1.5n.ssv, digits=2)
 round(df.ratio.v2.1.5n.ssv, digits=2)
 round(exp.rejects.1.5n, digits=2)
+round(reject.null.v2.1.5n.ssv-array(c(exp.rejects.1.5n, exp.rejects.1.5n), dim=c(3,4,2)), digits=2)
+
 
 round(reject.null.v5.1.5n.ssv, digits=2)
 round(obs.coverage.v5.1.5n.ssv, digits=2)
 round(df.ratio.v5.1.5n.ssv, digits=2)
 round(exp.rejects.1.5n, digits=2)
+round(reject.null.v5.1.5n.ssv-array(c(exp.rejects.1.5n, exp.rejects.1.5n), dim=c(3,4,2)), digits=2)
+
 
 round(reject.null.v2.2n.ssv, digits=2)
 round(obs.coverage.v2.2n.ssv, digits=2)
 round(df.ratio.v2.2n.ssv, digits=2)
 round(exp.rejects.2n, digits=2)
+round(reject.null.v2.2n.ssv-array(c(exp.rejects.1.5n, exp.rejects.1.5n), dim=c(3,4,2)), digits=2)
+
 
 round(reject.null.v5.2n.ssv, digits=2)
 round(obs.coverage.v5.2n.ssv, digits=2)

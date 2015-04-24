@@ -16,6 +16,7 @@ This is an introduction
 
 \section{Method}
 
+
 \section{Results}
 
 <<retrieveTables, echo=FALSE>>=
@@ -57,13 +58,13 @@ We report the observed Type I error rates, observed power, and coverage probabil
 In this section we report type I error rates for the classic and separate variance t tests when the null hypothesis is true. Prior research has demonstrated that when either sample sizes or variances are equal, the type I error rates are preserved at .05 for both tests (CITATIONS). 
 
 \subsubsection{Equal Variances, Different Sample Sizes}
-Consistent with prior research, the type I error rate was .05 for both the classic and separate variance t tests across all sample sizes and sample size ratio.
+Consistent with prior research, the type I error rate was .05 for both the classic and separate variance t tests across all sample sizes and sample size ratios.
 
 \subsubsection{Equal Sample Sizes, Different Variances}
 Consistent with prior research, the type I error rate was .05 for both the classic and separate variance t tests across all sample sizes and variance ratios.
 
 \subsubsection{Different Sample Sizes, Different Variances}
-Consistent with prior research, the classic t test was not robust when both variances and sample sizes were equal. When the group with the bigger sample also had the bigger variance, the classic t test was more conservative; the type I error rate dropped as low as .01 when the large group had twice the sample size and five times the variance of the small group (see Figure 1). When the group with the bigger sample had the smaller variance, however, the classic t test was more liberal; the type I error rate inflated to just over .12 when the large group had twice the sample size and five times the variance of the small group (see Figure 2). In all cases, however, the separate variances t test approximately  maintained the expected type I error rate of .05.
+Consistent with prior research, the classic t test was not robust when both variances and sample sizes were equal. When the group with the bigger sample also had the bigger variance, the classic t test was more conservative; the type I error rate dropped as low as .01 when the large group had twice the sample size and five times the variance of the small group (see Figure 1). 
 
 <<ssv type1, echo=FALSE>>=
 
@@ -73,53 +74,441 @@ Consistent with prior research, the classic t test was not robust when both vari
 par(mar=c(4,6,2,10), xpd=TRUE) #allows things to go outside the plot region
 par(ps=12, cex=1, cex.main=1) # sets the font size for the plots
 
+
+##### Plot classic results only
+
+## Set up data
+nullT.ve.ne <- reject.null.ve.ne[,1,1]
+nullT.v2.ne <- reject.null.v2.ne[,1,1]
+nullT.v5.ne <- reject.null.v5.ne[,1,1]
+nullT.ve.1.5n <- reject.null.ve.1.5n[,1,1]
+nullT.ve.2n <- reject.null.ve.2n[,1,1]
+nullT.v2.1.5n.ssv <- reject.null.v2.1.5n.ssv[,1,1]
+nullT.v2.1.5n.bsv <- reject.null.v2.1.5n.bsv[,1,1]
+nullT.v2.2n.ssv <- reject.null.v2.2n.ssv[,1,1]
+nullT.v2.2n.bsv <- reject.null.v2.2n.bsv[,1,1]
+nullT.v5.1.5n.ssv <- reject.null.v5.1.5n.ssv[,1,1]
+nullT.v5.1.5n.bsv <- reject.null.v5.1.5n.bsv[,1,1]
+nullT.v5.2n.ssv <- reject.null.v5.2n.ssv[,1,1]
+nullT.v5.2n.bsv <- reject.null.v5.2n.bsv[,1,1]
+
+type1.classic <- data.frame(
+    type1.rate=c(nullT.ve.ne, nullT.v2.ne, nullT.v2.ne, nullT.v5.ne, nullT.v5.ne, nullT.ve.1.5n, nullT.ve.2n, nullT.v2.1.5n.ssv, nullT.v2.1.5n.bsv, nullT.v2.2n.ssv, nullT.v2.2n.bsv, nullT.v5.1.5n.ssv, nullT.v5.1.5n.bsv, nullT.v5.2n.ssv, nullT.v5.2n.bsv), #NOTE: doubled any with equal variance or equal ns because they don't have separate ssv and bsv versions
+    Ns=factor(c('20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75','100,150','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100','100,200'), levels=c('20,20','20,30','20,40','50,50','50,75','50,100','100,100','100,150','100,200')),                                                                                                                                                                                                                                                                                                                
+    var.ratio=rep(c(1,.5,2,.2,5,1,1,.5,2,.5,2,.2,5,.2,5), each=3))
+type1.classic <- type1.classic[order(type1.classic$Ns, type1.classic$var.ratio),]
+
+
+## Set up classic t test plot
+plot(c(.75, 3.25), c(0,.13), type='n', axes=FALSE, ylab='Type I Error Rate', xlab='Variance Ratio (var1/var2)')
+title(main="Figure 1. Type I Error Rates for Student's t Test")
+axis(1, at=c(1,1.5, 2, 2.5, 3), labels=c(1/5, 1/2, 1, 2, 5))
+axis(2, at=c(.01,.02,.03,.04,.05,.06,.07,.08,.09,.10,.11,.12,.13))
+box()
+legend(3.4, .1, cex=.75, c('n1=20, n2=20', 'n1=20, n2=30', 'n1=20, n2=40', 'n1=50, n2=50', 'n1=50, n2=75', 'n1=50, n2=100', 'n1=100, n2=100', 'n1=100, n2=150', 'n1=100, n2=200'), col=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3), pch=rep(rep(c(1,2,0), 3), 2), lty=rep(1, 12), bty='n')
+
+
+## Plot classic t test lines
+# Small n=20: col='deepskyblue4'; Small n=50: col='darkgoldenrod1'; Small n=100: col='darkgrey'
+# n ratio = 1: pch=1; n ratio = 1.5: pch=2; n ratio = 2: pch=0
+with(type1.classic[which(type1.classic$Ns=='20,20'),], lines(type1.rate ~ c(1, 1.5, 2, 2.5, 3), type='b',lty=1, pch=1, col='deepskyblue4')) 
+with(type1.classic[which(type1.classic$Ns=='20,30'),], lines(type1.rate ~ c(1, 1.5, 2, 2.5, 3), type='b',lty=1, pch=2, col='deepskyblue4')) 
+with(type1.classic[which(type1.classic$Ns=='20,40'),], lines(type1.rate ~ c(1, 1.5, 2, 2.5, 3), type='b',lty=1, pch=0, col='deepskyblue4')) 
+with(type1.classic[which(type1.classic$Ns=='50,50'),], lines(type1.rate ~ c(1, 1.5, 2, 2.5, 3), type='b',lty=1, pch=1, col='darkgoldenrod1'))
+with(type1.classic[which(type1.classic$Ns=='50,75'),], lines(type1.rate ~ c(1, 1.5, 2, 2.5, 3), type='b',lty=1, pch=2, col='darkgoldenrod1')) 
+with(type1.classic[which(type1.classic$Ns=='50,100'),], lines(type1.rate ~ c(1, 1.5, 2, 2.5, 3), type='b',lty=1, pch=0, col='darkgoldenrod1')) 
+with(type1.classic[which(type1.classic$Ns=='100,100'),], lines(type1.rate ~ c(1, 1.5, 2, 2.5, 3), type='b',lty=1, pch=1, col='darkgrey'))
+with(type1.classic[which(type1.classic$Ns=='100,150'),], lines(type1.rate ~ c(1, 1.5, 2, 2.5, 3), type='b',lty=1, pch=2, col='darkgrey')) 
+with(type1.classic[which(type1.classic$Ns=='100,200'),], lines(type1.rate ~ c(1, 1.5, 2, 2.5, 3), type='b',lty=1, pch=0, col='darkgrey')) 
+
+
+
+##### Plot Welch results only
+
+## Set up data
+welch.nullT.ve.ne <- reject.null.ve.ne[,1,2]
+welch.nullT.v2.ne <- reject.null.v2.ne[,1,2]
+welch.nullT.v5.ne <- reject.null.v5.ne[,1,2]
+welch.nullT.ve.1.5n <- reject.null.ve.1.5n[,1,2]
+welch.nullT.ve.2n <- reject.null.ve.2n[,1,2]
+welch.nullT.v2.1.5n.ssv <- reject.null.v2.1.5n.ssv[,1,2]
+welch.nullT.v2.1.5n.bsv <- reject.null.v2.1.5n.bsv[,1,2]
+welch.nullT.v2.2n.ssv <- reject.null.v2.2n.ssv[,1,2]
+welch.nullT.v2.2n.bsv <- reject.null.v2.2n.bsv[,1,2]
+welch.nullT.v5.1.5n.ssv <- reject.null.v5.1.5n.ssv[,1,2]
+welch.nullT.v5.1.5n.bsv <- reject.null.v5.1.5n.bsv[,1,2]
+welch.nullT.v5.2n.ssv <- reject.null.v5.2n.ssv[,1,2]
+welch.nullT.v5.2n.bsv <- reject.null.v5.2n.bsv[,1,2]
+
+type1.welch <- data.frame(
+    type1.rate=c(welch.nullT.ve.ne, welch.nullT.v2.ne, welch.nullT.v2.ne, welch.nullT.v5.ne, welch.nullT.v5.ne, welch.nullT.ve.1.5n, welch.nullT.ve.2n, welch.nullT.v2.1.5n.ssv, welch.nullT.v2.1.5n.bsv, welch.nullT.v2.2n.ssv, welch.nullT.v2.2n.bsv, welch.nullT.v5.1.5n.ssv, welch.nullT.v5.1.5n.bsv, welch.nullT.v5.2n.ssv, welch.nullT.v5.2n.bsv), #NOTE: doubled any with equal variance or equal ns because they don't have separate ssv and bsv versions
+    Ns=factor(c('20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75','100,150','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100','100,200'), levels=c('20,20','20,30','20,40','50,50','50,75','50,100','100,100','100,150','100,200')),                                                                                                                                                                                                                                                                                                                
+    var.ratio=rep(c(1,.5,2,.2,5,1,1,.5,2,.5,2,.2,5,.2,5), each=3))
+type1.welch <- type1.welch[order(type1.welch$Ns, type1.welch$var.ratio),]
+
+
+## Set up Welch t test plot
+plot(c(.75, 3.25), c(0,.13), type='n', axes=FALSE, ylab='Type I Error Rate', xlab='Variance Ratio (var1/var2)')
+title(main="Figure 1. Type I Error Rates for Welch's t Test")
+axis(1, at=c(1,1.5, 2, 2.5, 3), labels=c(1/5, 1/2, 1, 2, 5))
+axis(2, at=c(.01,.02,.03,.04,.05,.06,.07,.08,.09,.10, .11, .12, .13))
+box()
+legend(3.4, .1, cex=.75, c('n1=20, n2=20', 'n1=20, n2=30', 'n1=20, n2=40', 'n1=50, n2=50', 'n1=50, n2=75', 'n1=50, n2=100', 'n1=100, n2=100', 'n1=100, n2=150', 'n1=100, n2=200'), col=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3), pch=rep(rep(c(1,2,0), 3), 2), lty=rep(1, 12), bty='n')
+
+
+## Plot Welch t test lines
+# Small n=20: col='deepskyblue4'; Small n=50: col='darkgoldenrod1'; Small n=100: col='darkgrey'
+# n ratio = 1: pch=1; n ratio = 1.5: pch=2; n ratio = 2: pch=0
+with(type1.welch[which(type1.welch$Ns=='20,20'),], lines(type1.rate ~ c(1, 1.5, 2, 2.5, 3), type='b',lty=1, pch=1, col='deepskyblue4')) 
+with(type1.welch[which(type1.welch$Ns=='20,30'),], lines(type1.rate ~ c(1, 1.5, 2, 2.5, 3), type='b',lty=1, pch=2, col='deepskyblue4')) 
+with(type1.welch[which(type1.welch$Ns=='20,40'),], lines(type1.rate ~ c(1, 1.5, 2, 2.5, 3), type='b',lty=1, pch=0, col='deepskyblue4')) 
+with(type1.welch[which(type1.welch$Ns=='50,50'),], lines(type1.rate ~ c(1, 1.5, 2, 2.5, 3), type='b',lty=1, pch=1, col='darkgoldenrod1'))
+with(type1.welch[which(type1.welch$Ns=='50,75'),], lines(type1.rate ~ c(1, 1.5, 2, 2.5, 3), type='b',lty=1, pch=2, col='darkgoldenrod1')) 
+with(type1.welch[which(type1.welch$Ns=='50,100'),], lines(type1.rate ~ c(1, 1.5, 2, 2.5, 3), type='b',lty=1, pch=0, col='darkgoldenrod1')) 
+with(type1.welch[which(type1.welch$Ns=='100,100'),], lines(type1.rate ~ c(1, 1.5, 2, 2.5, 3), type='b',lty=1, pch=1, col='darkgrey'))
+with(type1.welch[which(type1.welch$Ns=='100,150'),], lines(type1.rate ~ c(1, 1.5, 2, 2.5, 3), type='b',lty=1, pch=2, col='darkgrey')) 
+with(type1.welch[which(type1.welch$Ns=='100,200'),], lines(type1.rate ~ c(1, 1.5, 2, 2.5, 3), type='b',lty=1, pch=0, col='darkgrey')) 
+
+
+
+
+###### OLD PLOTS ########
+
 ##### Plot big sample/big variance
-plot(c(.75, 3.25), c(0,.1), type='n', axes=FALSE, ylab='Type I Error Rate', xlab='Small Group N')
-title(main='Figure 1. Type I Error Rates When the Bigger Sample Has Bigger Variance')
-axis(1, at=c(1,2,3), labels=c(20,50,100))
-axis(2, at=c(.01, .02, .03, .04, .05, .06, .07, .08, .09, .10))
-box()
-legend(3.4, .1, cex=.75, c('Classic, 2x var, 1.5x Ns', 'Classic, 2x var, 2x Ns', 'Classic, 5x var, 1.5x Ns', 'Classic, 5x var, 2x Ns', 'Welch, 2x var, 1.5x Ns', 'Welch, 2x var, 2x Ns', 'Welch, 5x var, 1.5x Ns', 'Welch, 5x var, 2x Ns'), col=rep(c('black','blue'), each=4), pch=rep(rep(c(1,2), each=2), 2), lty=rep(c(1,2), 4), bty='n')
-#lines(c(.05, .05) ~ c(1, 3), col='black', lwd=2) #plots a reference line at alpha, unnecessary for now
+# plot(c(.75, 3.25), c(0,.1), type='n', axes=FALSE, ylab='Type I Error Rate', xlab='Small Group N')
+# title(main='Figure 1. Type I Error Rates When the Bigger Sample Has Bigger Variance')
+# axis(1, at=c(1,2,3), labels=c(20,50,100))
+# axis(2, at=c(.01, .02, .03, .04, .05, .06, .07, .08, .09, .10))
+# box()
+# legend(3.4, .1, cex=.75, c('Classic, 2x var, 1.5x Ns', 'Classic, 2x var, 2x Ns', 'Classic, 5x var, 1.5x Ns', 'Classic, 5x var, 2x Ns', 'Welch, 2x var, 1.5x Ns', 'Welch, 2x var, 2x Ns', 'Welch, 5x var, 1.5x Ns', 'Welch, 5x var, 2x Ns'), col=rep(c('deepskyblue4','darkgoldenrod1'), each=4), pch=rep(rep(c(1,2), each=2), 2), lty=rep(c(2,1), 4), bty='n')
+#lines(c(.05, .05) ~ c(1, 3), col='deepskyblue4', lwd=2) #plots a reference line at alpha, unnecessary for now
 
 ## Plot lines
-## Classic-col=black, Welch-col=blue (grey for manuscript?); double var-pch=1, 5x var=pch=2; 1.5Ns-lty=1, 2xNs-lty=2
-with(ssv.type1.data[1:3,], lines(type1rate ~ c(1,2,3), type='b',lty=1, pch=1, col='black')) #classic, double variance, 1.5Ns
-with(ssv.type1.data[4:6,], lines(type1rate ~ c(1,2,3), type='b',lty=1, pch=1, col='blue')) #welch, double variance, 1.5Ns
-with(ssv.type1.data[7:9,], lines(type1rate ~ c(1,2,3), type='b',lty=1, pch=2, col='black')) #classic, 5x variance, 1.5Ns
-with(ssv.type1.data[10:12,], lines(type1rate ~ c(1,2,3), type='b',lty=1, pch=2, col='blue')) #welch, 5x variance, 1.5Ns
-with(ssv.type1.data[13:15,], lines(type1rate ~ c(1,2,3), type='b',lty=2, pch=1, col='black')) #classic, double variance, 1.5Ns
-with(ssv.type1.data[16:18,], lines(type1rate ~ c(1,2,3), type='b',lty=2, pch=1, col='blue')) #welch, double variance, 1.5Ns
-with(ssv.type1.data[19:21,], lines(type1rate ~ c(1,2,3), type='b',lty=2, pch=2, col='black')) #classic, 5x variance, 1.5Ns
-with(ssv.type1.data[22:24,], lines(type1rate ~ c(1,2,3), type='b',lty=2, pch=2, col='blue')) #welch, 5x variance, 1.5Ns
+## Classic-col=deepskyblue4, Welch-col=darkgoldenrod1 (grey for manuscript?); double var-pch=1, 5x var=pch=2; 1.5Ns-lty=2, 2xNs-lty=1
+# with(ssv.type1.data[1:3,], lines(type1rate ~ c(1,2,3), type='b',lty=2, pch=1, col='deepskyblue4')) #classic, double variance, 1.5Ns
+# with(ssv.type1.data[4:6,], lines(type1rate ~ c(1,2,3), type='b',lty=2, pch=1, col='darkgoldenrod1')) #welch, double variance, 1.5Ns
+# with(ssv.type1.data[7:9,], lines(type1rate ~ c(1,2,3), type='b',lty=2, pch=2, col='deepskyblue4')) #classic, 5x variance, 1.5Ns
+# with(ssv.type1.data[10:12,], lines(type1rate ~ c(1,2,3), type='b',lty=2, pch=2, col='darkgoldenrod1')) #welch, 5x variance, 1.5Ns
+# with(ssv.type1.data[13:15,], lines(type1rate ~ c(1,2,3), type='b',lty=1, pch=1, col='deepskyblue4')) #classic, double variance, 1.5Ns
+# with(ssv.type1.data[16:18,], lines(type1rate ~ c(1,2,3), type='b',lty=1, pch=1, col='darkgoldenrod1')) #welch, double variance, 1.5Ns
+# with(ssv.type1.data[19:21,], lines(type1rate ~ c(1,2,3), type='b',lty=1, pch=2, col='deepskyblue4')) #classic, 5x variance, 1.5Ns
+# with(ssv.type1.data[22:24,], lines(type1rate ~ c(1,2,3), type='b',lty=1, pch=2, col='darkgoldenrod1')) #welch, 5x variance, 1.5Ns
 
 
-##### Plot big sample/small variance
-plot(c(.75, 3.25), c(0,.13), type='n', axes=FALSE, ylab='Type I Error Rate', xlab='Small Group N')
-title(main='Figure 2. Type I Error Rates When the Bigger Sample Has Smaller Variance')
-axis(1, at=c(1,2,3), labels=c(20,50,100))
-axis(2, at=c(.01, .02, .03, .04, .05, .06, .07, .08, .09, .10, .11, .12, .13))
-box()
-legend(3.4, .1, cex=.75, c('Classic, 2x var, 1.5x Ns', 'Classic, 2x var, 2x Ns', 'Classic, 5x var, 1.5x Ns', 'Classic, 5x var, 2x Ns', 'Welch, 2x var, 1.5x Ns', 'Welch, 2x var, 2x Ns', 'Welch, 5x var, 1.5x Ns', 'Welch, 5x var, 2x Ns'), col=rep(c('black','blue'), each=4), pch=rep(rep(c(1,2), each=2), 2), lty=rep(c(1,2), 4), bty='n')
-#lines(c(.05, .05) ~ c(1, 3), col='black', lwd=2) #plots a reference line at alpha, unnecessary for now
+
 
 ## Plot lines
-## Classic-col=black, Welch-col=blue (grey for manuscript?); double var-pch=1, 5x var=pch=2; 1.5Ns-lty=1, 2xNs-lty=2
-with(bsv.type1.data[1:3,], lines(type1rate ~ c(1,2,3), type='b',lty=1, pch=1, col='black')) #classic, double variance, 1.5Ns
-with(bsv.type1.data[4:6,], lines(type1rate ~ c(1,2,3), type='b',lty=1, pch=1, col='blue')) #welch, double variance, 1.5Ns
-with(bsv.type1.data[7:9,], lines(type1rate ~ c(1,2,3), type='b',lty=1, pch=2, col='black')) #classic, 5x variance, 1.5Ns
-with(bsv.type1.data[10:12,], lines(type1rate ~ c(1,2,3), type='b',lty=1, pch=2, col='blue')) #welch, 5x variance, 1.5Ns
-with(bsv.type1.data[13:15,], lines(type1rate ~ c(1,2,3), type='b',lty=2, pch=1, col='black')) #classic, double variance, 1.5Ns
-with(bsv.type1.data[16:18,], lines(type1rate ~ c(1,2,3), type='b',lty=2, pch=1, col='blue')) #welch, double variance, 1.5Ns
-with(bsv.type1.data[19:21,], lines(type1rate ~ c(1,2,3), type='b',lty=2, pch=2, col='black')) #classic, 5x variance, 1.5Ns
-with(bsv.type1.data[22:24,], lines(type1rate ~ c(1,2,3), type='b',lty=2, pch=2, col='blue')) #welch, 5x variance, 1.5Ns
+## Classic-col=deepskyblue4, Welch-col=darkgoldenrod1 (grey for manuscript?); double var-pch=1, 5x var=pch=2; 1.5Ns-lty=2, 2xNs-lty=1
+# with(ssv.type1.data[1:3,], lines(type1rate ~ c(1,2,3), type='b',lty=2, pch=1, col='deepskyblue4')) #classic, double variance, 1.5Ns
+# with(ssv.type1.data[4:6,], lines(type1rate ~ c(1,2,3), type='b',lty=2, pch=1, col='darkgoldenrod1')) #welch, double variance, 1.5Ns
+# with(ssv.type1.data[7:9,], lines(type1rate ~ c(1,2,3), type='b',lty=2, pch=2, col='deepskyblue4')) #classic, 5x variance, 1.5Ns
+# with(ssv.type1.data[10:12,], lines(type1rate ~ c(1,2,3), type='b',lty=2, pch=2, col='darkgoldenrod1')) #welch, 5x variance, 1.5Ns
+# with(ssv.type1.data[13:15,], lines(type1rate ~ c(1,2,3), type='b',lty=1, pch=1, col='deepskyblue4')) #classic, double variance, 1.5Ns
+# with(ssv.type1.data[16:18,], lines(type1rate ~ c(1,2,3), type='b',lty=1, pch=1, col='darkgoldenrod1')) #welch, double variance, 1.5Ns
+# with(ssv.type1.data[19:21,], lines(type1rate ~ c(1,2,3), type='b',lty=1, pch=2, col='deepskyblue4')) #classic, 5x variance, 1.5Ns
+# with(ssv.type1.data[22:24,], lines(type1rate ~ c(1,2,3), type='b',lty=1, pch=2, col='darkgoldenrod1')) #welch, 5x variance, 1.5Ns
 
 @
+When the group with the bigger sample had the smaller variance, however, the classic t test was more liberal; the type I error rate inflated to just over .12 when the large group had twice the sample size and five times the variance of the small group (see Figure 2). In all cases, however, the separate variances t test approximately  maintained the expected type I error rate of .05.
 
+<<bsv type1, echo=FALSE>>=
+
+## NOTE: Need to figure out how to include APA style figure captions later 
+
+## Set up plotting parameters
+# par(mar=c(4,6,2,10), xpd=TRUE) #allows things to go outside the plot region
+# par(ps=12, cex=1, cex.main=1) # sets the font size for the plots
+# 
+# ##### Plot big sample/small variance
+# plot(c(.75, 3.25), c(0,.13), type='n', axes=FALSE, ylab='Type I Error Rate', xlab='Small Group N')
+# title(main='Figure 2. Type I Error Rates When the Bigger Sample Has Smaller Variance')
+# axis(1, at=c(1,2,3), labels=c(20,50,100))
+# axis(2, at=c(.01, .02, .03, .04, .05, .06, .07, .08, .09, .10, .11, .12, .13))
+# box()
+# legend(3.4, .1, cex=.75, c('Classic, 2x var, 1.5x Ns', 'Classic, 2x var, 2x Ns', 'Classic, 5x var, 1.5x Ns', 'Classic, 5x var, 2x Ns', 'Welch, 2x var, 1.5x Ns', 'Welch, 2x var, 2x Ns', 'Welch, 5x var, 1.5x Ns', 'Welch, 5x var, 2x Ns'), col=rep(c('deepskyblue4','darkgoldenrod1'), each=4), pch=rep(rep(c(1,2), each=2), 2), lty=rep(c(2,1), 4), bty='n')
+# #lines(c(.05, .05) ~ c(1, 3), col='deepskyblue4', lwd=2) #plots a reference line at alpha, unnecessary for now
+# 
+# ## Plot lines
+# ## Classic-col=deepskyblue4, Welch-col=darkgoldenrod1 (grey for manuscript?); double var-pch=1, 5x var=pch=2; 1.5Ns-lty=2, 2xNs-lty=1
+# with(bsv.type1.data[1:3,], lines(type1rate ~ c(1,2,3), type='b',lty=2, pch=1, col='deepskyblue4')) #classic, double variance, 1.5Ns
+# with(bsv.type1.data[4:6,], lines(type1rate ~ c(1,2,3), type='b',lty=2, pch=1, col='darkgoldenrod1')) #welch, double variance, 1.5Ns
+# with(bsv.type1.data[7:9,], lines(type1rate ~ c(1,2,3), type='b',lty=2, pch=2, col='deepskyblue4')) #classic, 5x variance, 1.5Ns
+# with(bsv.type1.data[10:12,], lines(type1rate ~ c(1,2,3), type='b',lty=2, pch=2, col='darkgoldenrod1')) #welch, 5x variance, 1.5Ns
+# with(bsv.type1.data[13:15,], lines(type1rate ~ c(1,2,3), type='b',lty=1, pch=1, col='deepskyblue4')) #classic, double variance, 1.5Ns
+# with(bsv.type1.data[16:18,], lines(type1rate ~ c(1,2,3), type='b',lty=1, pch=1, col='darkgoldenrod1')) #welch, double variance, 1.5Ns
+# with(bsv.type1.data[19:21,], lines(type1rate ~ c(1,2,3), type='b',lty=1, pch=2, col='deepskyblue4')) #classic, 5x variance, 1.5Ns
+# with(bsv.type1.data[22:24,], lines(type1rate ~ c(1,2,3), type='b',lty=1, pch=2, col='darkgoldenrod1')) #welch, 5x variance, 1.5Ns
+@
 In summary, the type I error rates for the classic t test were quite variable when both sample sizes and variances were unequal between the two groups. In contrast, the type I error rates for the separate variances t test were mostly consistent with the expected .05 rate.
 
 \subsection{Power}
-In this section we report observed power rates for the classic and separate variance t tests when the null hypothesis is true. Prior research has demonstrated that when either sample sizes or variances are equal, the type I error rates are preserved at .05 for both tests (CITATIONS). 
+In this section we report observed power rates for the classic and separate variance t tests when the null hypothesis is true. Prior research has focused on Type I error rates, but it has not examined whether choosing the separate variance t test also results in a loss of power to detect true effects. We examined power differences in the two tests when the sample sizes and variances are unequal. We looked at the power of the tests to detect small, medium, and large effects based on Cohen's d and compared it to the expected power based on an assumption of equal variances. This means that for the baseline comparison when variances were unequal, we treated it as though the difference in variance is due to sampling error rather than a true population difference. As with Type I errors, there were no differences between the classic and separate variance tests when sample sizes and variances were equal.
+
+\subsubsection{Equal Variances, Different Sample Sizes}
+Figure 3 displays the observed power for the classic and separate variance tests when sample sizes and sample size ratios varied, but variances were equal. As with Type I errors, the differences in the proportion of rejected null hypotheses was negligible. 
+
+<<equal vars unequal Ns small d, echo=FALSE>>=
+
+## NOTE: Need to figure out how to include APA style figure captions later 
+
+## Create tables with expected power for equal variances
+exp.rejects.ne <- array(dim=c(3,4), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8")))
+exp.rejects.ne[,1] <- rep(.05,3)
+exp.rejects.ne[,2] <- c(.095, .168, .291)
+exp.rejects.ne[,3] <- c(.338, .697, .940)
+exp.rejects.ne[,4] <- c(.693, .977, 1)
+
+exp.rejects.1.5n <- array(dim=c(3,4), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8")))
+exp.rejects.1.5n[,1] <- rep(.05,3)
+exp.rejects.1.5n[,2] <- c(.104, .192, .339)
+exp.rejects.1.5n[,3] <- c(.397,.776,.971)
+exp.rejects.1.5n[,4] <- c(.775, .992, 1)
+
+exp.rejects.2n <- array(dim=c(3,4), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8")))
+exp.rejects.2n[,1] <- rep(.05,3)
+exp.rejects.2n[,2] <- c(.111,.209,.339)
+exp.rejects.2n[,3] <- c(.435, .818, .971)
+exp.rejects.2n[,4] <- c(.819,.996,1)
+
+## Set up plotting parameters
+par(mar=c(4,6,2,10), xpd=TRUE) #allows things to go outside the plot region
+par(ps=12, cex=1, cex.main=1) # sets the font size for the plots
+
+######## Small effect
+
+##### Plot power for equal variances, different Ns
+plot(c(.75, 3.25), c(0,1), type='n', axes=FALSE, ylab='Power', xlab='Small Group N')
+title(main='Figure 3. Power for Equal Variances and Different Sample Sizes with a Small Effect')
+axis(1, at=c(1,2,3), labels=c(20,50,100))
+axis(2, at=c(.1, .2, .3, .4, .5, .6, .7, .8, .9, 1))
+box()
+legend(3.4, 1, cex=.75, c('Classic, Equal Ns', 'Classic, 1.5x Ns', 'Classic, 2x Ns', 'Welch, Equal Ns', 'Welch, 1.5x Ns', 'Welch, 2xNs'), col=rep(c('deepskyblue4','darkgoldenrod1'), each=3), pch=rep(16, 6), lty=rep(c(3,2,1),2), bty='n')
+lines(c(exp.rejects.ne[,2]) ~ c(1, 2, 3), col='lightgrey', lty=3, lwd=2) #plots a reference line for equal Ns
+lines(c(exp.rejects.1.5n[,2]) ~ c(1, 2, 3), col='lightgrey', lty=2, lwd=2) #plots a reference line for equal Ns
+lines(c(exp.rejects.2n[,2]) ~ c(1, 2, 3), col='lightgrey', lty=1, lwd=2) #plots a reference line for 1.5x Ns
+
+## Plot lines
+## Classic-col=deepskyblue4, Welch-col=darkgoldenrod1 (grey for manuscript?); EqNs-lty=3, 1.5Ns-lty=2, 2xNs-lty=1
+lines(reject.null.ve.ne[,2,1] ~ c(1,2,3), type='b',lty=3, col='deepskyblue4') #classic, equal Ns
+lines(reject.null.ve.1.5n[,2,1] ~ c(1,2,3), type='b',lty=2, col='deepskyblue4') #classic, 1.5x Ns
+lines(reject.null.ve.2n[,2,1] ~ c(1,2,3), type='b',lty=1, col='deepskyblue4') #classic, 1.5x Ns
+lines(reject.null.ve.ne[,2,2] ~ c(1,2,3), type='b',lty=3, col='darkgoldenrod1') #classic, equal Ns
+lines(reject.null.ve.1.5n[,2,2] ~ c(1,2,3), type='b',lty=2, col='darkgoldenrod1') #classic, 1.5x Ns
+lines(reject.null.ve.2n[,2,2] ~ c(1,2,3), type='b',lty=1, col='darkgoldenrod1') #classic, 1.5x Ns
+
+
+######## Medium effect
+
+##### Plot power for equal variances, different Ns
+plot(c(.75, 3.25), c(0,1), type='n', axes=FALSE, ylab='Power', xlab='Small Group N')
+title(main='Figure 4. Power for Equal Variances and Different Sample Sizes with a Medium Effect')
+axis(1, at=c(1,2,3), labels=c(20,50,100))
+axis(2, at=c(.1, .2, .3, .4, .5, .6, .7, .8, .9, 1))
+box()
+legend(3.4, 1, cex=.75, c('Classic, Equal Ns', 'Classic, 1.5x Ns', 'Classic, 2x Ns', 'Welch, Equal Ns', 'Welch, 1.5x Ns', 'Welch, 2xNs'), col=rep(c('deepskyblue4','darkgoldenrod1'), each=3), pch=rep(16, 6), lty=rep(c(3,2,1),2), bty='n')
+lines(c(exp.rejects.ne[,3]) ~ c(1, 2, 3), col='lightgrey', lty=3, lwd=2) #plots a reference line for equal Ns
+lines(c(exp.rejects.1.5n[,3]) ~ c(1, 2, 3), col='lightgrey', lty=2, lwd=2) #plots a reference line for equal Ns
+lines(c(exp.rejects.2n[,3]) ~ c(1, 2, 3), col='lightgrey', lty=1, lwd=2) #plots a reference line for 1.5x Ns
+
+## Plot lines
+## Classic-col=deepskyblue4, Welch-col=darkgoldenrod1 (grey for manuscript?); EqNs-lty=3, 1.5Ns-lty=2, 2xNs-lty=1
+lines(reject.null.ve.ne[,3,1] ~ c(1,2,3), type='b',lty=3, col='deepskyblue4') #classic, equal Ns
+lines(reject.null.ve.1.5n[,3,1] ~ c(1,2,3), type='b',lty=2, col='deepskyblue4') #classic, 1.5x Ns
+lines(reject.null.ve.2n[,3,1] ~ c(1,2,3), type='b',lty=1, col='deepskyblue4') #classic, 1.5x Ns
+lines(reject.null.ve.ne[,3,2] ~ c(1,2,3), type='b',lty=3, col='darkgoldenrod1') #classic, equal Ns
+lines(reject.null.ve.1.5n[,3,2] ~ c(1,2,3), type='b',lty=2, col='darkgoldenrod1') #classic, 1.5x Ns
+lines(reject.null.ve.2n[,3,2] ~ c(1,2,3), type='b',lty=1, col='darkgoldenrod1') #classic, 1.5x Ns
+
+
+
+######## Large effect
+
+##### Plot power for equal variances, different Ns
+plot(c(.75, 3.25), c(0,1), type='n', axes=FALSE, ylab='Power', xlab='Small Group N')
+title(main='Figure 5. Power for Equal Variances and Different Sample Sizes with a Large Effect')
+axis(1, at=c(1,2,3), labels=c(20,50,100))
+axis(2, at=c(.1, .2, .3, .4, .5, .6, .7, .8, .9, 1))
+box()
+legend(3.4, 1, cex=.75, c('Classic, Equal Ns', 'Classic, 1.5x Ns', 'Classic, 2x Ns', 'Welch, Equal Ns', 'Welch, 1.5x Ns', 'Welch, 2xNs'), col=rep(c('deepskyblue4','darkgoldenrod1'), each=3), pch=rep(16, 6), lty=rep(c(3,2,1),2), bty='n')
+lines(c(exp.rejects.ne[,4]) ~ c(1, 2, 3), col='lightgrey', lty=3, lwd=2) #plots a reference line for equal Ns
+lines(c(exp.rejects.1.5n[,4]) ~ c(1, 2, 3), col='lightgrey', lty=2, lwd=2) #plots a reference line for equal Ns
+lines(c(exp.rejects.2n[,4]) ~ c(1, 2, 3), col='lightgrey', lty=1, lwd=2) #plots a reference line for 1.5x Ns
+
+## Plot lines
+## Classic-col=deepskyblue4, Welch-col=darkgoldenrod1 (grey for manuscript?); EqNs-lty=3, 1.5Ns-lty=2, 2xNs-lty=1
+lines(reject.null.ve.ne[,4,1] ~ c(1,2,3), type='b',lty=3, col='deepskyblue4') #classic, equal Ns
+lines(reject.null.ve.1.5n[,4,1] ~ c(1,2,3), type='b',lty=2, col='deepskyblue4') #classic, 1.5x Ns
+lines(reject.null.ve.2n[,4,1] ~ c(1,2,3), type='b',lty=1, col='deepskyblue4') #classic, 1.5x Ns
+lines(reject.null.ve.ne[,4,2] ~ c(1,2,3), type='b',lty=3, col='darkgoldenrod1') #classic, equal Ns
+lines(reject.null.ve.1.5n[,4,2] ~ c(1,2,3), type='b',lty=2, col='darkgoldenrod1') #classic, 1.5x Ns
+lines(reject.null.ve.2n[,4,2] ~ c(1,2,3), type='b',lty=1, col='darkgoldenrod1') #classic, 1.5x Ns
+
+@
+
+\subsubsection{Equal Sample Sizes, Different Variances}
+Figures 6-8 display the observed power for the classic and separate variance tests when sample sizes and sample size ratios are equal, but variance ratios vary. Here too there were essentially no differences in the proportion of rejected null hypotheses (NOTE: The mean differences between groups differ by the variance ratio and power is based on a standardized effect size, not an absolute mean difference).
+
+<<unequal vars equal Ns different ds, echo=FALSE>>=
+
+## NOTE: Need to figure out how to include APA style figure captions later 
+
+## Set up plotting parameters
+par(mar=c(4,6,2,10), xpd=TRUE) #allows things to go outside the plot region
+par(ps=12, cex=1, cex.main=1) # sets the font size for the plots
+
+######## Small effect
+
+##### Plot power for equal variances, different Ns
+plot(c(.75, 3.25), c(0,1), type='n', axes=FALSE, ylab='Power', xlab='Small Group N')
+title(main='Figure 6. Power for Unequal Variances and Different Sample Sizes with a Small Effect')
+axis(1, at=c(1,2,3), labels=c(20,50,100))
+axis(2, at=c(.1, .2, .3, .4, .5, .6, .7, .8, .9, 1))
+box()
+legend(3.4, 1, cex=.75, c('Classic, Equal Vars', 'Classic, 2x Vars', 'Classic, 5x Vars', 'Welch, Equal Vars', 'Welch, 2x Vars', 'Welch, 5x Vars'), col=rep(c('deepskyblue4','darkgoldenrod1'), each=3), pch=rep(c(16,1,2), 2), lty=rep(3,6), bty='n')
+lines(c(exp.rejects.ne[,2]) ~ c(1, 2, 3), col='lightgrey', lty=3, lwd=2) #plots a reference line for equal Ns
+
+## Plot lines
+## Classic-col=deepskyblue4, Welch-col=darkgoldenrod1 (grey for manuscript?); VarsEq-pch=16, Double Vars-pch=1, 5x Vars-pch=2
+lines(reject.null.ve.ne[,2,1] ~ c(1,2,3), type='b',lty=3, col='deepskyblue4') #classic, equal vars
+lines(reject.null.v2.ne[,2,1] ~ c(1,2,3), type='b',lty=2, col='deepskyblue4') #classic, 2x vars
+lines(reject.null.v5.ne[,2,1] ~ c(1,2,3), type='b',lty=1, col='deepskyblue4') #classic, 5x vars
+lines(reject.null.ve.ne[,2,2] ~ c(1,2,3), type='b',lty=3, col='darkgoldenrod1') #welch, equal vars
+lines(reject.null.v2.ne[,2,2] ~ c(1,2,3), type='b',lty=2, col='darkgoldenrod1') #welch, 2x vars
+lines(reject.null.v5.ne[,2,2] ~ c(1,2,3), type='b',lty=1, col='darkgoldenrod1') #welch, 5x vars
+
+
+######## Medium effect
+
+##### Plot power for equal variances, different Ns
+plot(c(.75, 3.25), c(0,1), type='n', axes=FALSE, ylab='Power', xlab='Small Group N')
+title(main='Figure 7. Power for Unequal Variances and Different Sample Sizes with a Medium Effect')
+axis(1, at=c(1,2,3), labels=c(20,50,100))
+axis(2, at=c(.1, .2, .3, .4, .5, .6, .7, .8, .9, 1))
+box()
+legend(3.4, 1, cex=.75, c('Classic, Equal Vars', 'Classic, 2x Vars', 'Classic, 5x Vars', 'Welch, Equal Vars', 'Welch, 2x Vars', 'Welch, 5x Vars'), col=rep(c('deepskyblue4','darkgoldenrod1'), each=3), pch=rep(c(16,1,2), 2), lty=rep(3,6), bty='n')
+lines(c(exp.rejects.ne[,3]) ~ c(1, 2, 3), col='lightgrey', lty=3, lwd=2) #plots a reference line for equal Ns
+
+## Plot lines
+## Classic-col=deepskyblue4, Welch-col=darkgoldenrod1 (grey for manuscript?); VarsEq-pch=16, Double Vars-pch=1, 5x Vars-pch=2
+lines(reject.null.ve.ne[,3,1] ~ c(1,2,3), type='b',lty=3, col='deepskyblue4') #classic, equal vars
+lines(reject.null.v2.ne[,3,1] ~ c(1,2,3), type='b',lty=2, col='deepskyblue4') #classic, 2x vars
+lines(reject.null.v5.ne[,3,1] ~ c(1,2,3), type='b',lty=1, col='deepskyblue4') #classic, 5x vars
+lines(reject.null.ve.ne[,3,2] ~ c(1,2,3), type='b',lty=3, col='darkgoldenrod1') #welch, equal vars
+lines(reject.null.v2.ne[,3,2] ~ c(1,2,3), type='b',lty=2, col='darkgoldenrod1') #welch, 2x vars
+lines(reject.null.v5.ne[,3,2] ~ c(1,2,3), type='b',lty=1, col='darkgoldenrod1') #welch, 5x vars
+
+
+
+######## Large effect
+
+##### Plot power for equal variances, different Ns
+plot(c(.75, 3.25), c(0,1), type='n', axes=FALSE, ylab='Power', xlab='Small Group N')
+title(main='Figure 8. Power for Unequal Variances and Different Sample Sizes with a Large Effect')
+axis(1, at=c(1,2,3), labels=c(20,50,100))
+axis(2, at=c(.1, .2, .3, .4, .5, .6, .7, .8, .9, 1))
+box()
+legend(3.4, 1, cex=.75, c('Classic, Equal Vars', 'Classic, 2x Vars', 'Classic, 5x Vars', 'Welch, Equal Vars', 'Welch, 2x Vars', 'Welch, 5x Vars'), col=rep(c('deepskyblue4','darkgoldenrod1'), each=3), pch=rep(c(16,1,2), 2), lty=rep(3,6), bty='n')
+lines(c(exp.rejects.ne[,4]) ~ c(1, 2, 3), col='lightgrey', lty=3, lwd=2) #plots a reference line for equal Ns
+
+## Plot lines
+## Classic-col=deepskyblue4, Welch-col=darkgoldenrod1 (grey for manuscript?); VarsEq-pch=16, Double Vars-pch=1, 5x Vars-pch=2
+lines(reject.null.ve.ne[,4,1] ~ c(1,2,3), type='b',lty=3, col='deepskyblue4') #classic, equal vars
+lines(reject.null.v2.ne[,4,1] ~ c(1,2,3), type='b',lty=2, col='deepskyblue4') #classic, 2x vars
+lines(reject.null.v5.ne[,4,1] ~ c(1,2,3), type='b',lty=1, col='deepskyblue4') #classic, 5x vars
+lines(reject.null.ve.ne[,4,2] ~ c(1,2,3), type='b',lty=3, col='darkgoldenrod1') #welch, equal vars
+lines(reject.null.v2.ne[,4,2] ~ c(1,2,3), type='b',lty=2, col='darkgoldenrod1') #welch, 2x vars
+lines(reject.null.v5.ne[,4,2] ~ c(1,2,3), type='b',lty=1, col='darkgoldenrod1') #welch, 5x vars
+
+@
+
+\subsubsection{Different Variances, Different Ns}
+The following tables display power when both variances and Ns differ.
+<<ssv power, echo=FALSE>>=
+
+## NOTE: Need to figure out how to include APA style figure captions later 
+
+## Set up plotting parameters
+par(mar=c(4,6,2,10), xpd=TRUE) #allows things to go outside the plot region
+par(ps=12, cex=1, cex.main=1) # sets the font size for the plots
+
+
+######## Small effect
+
+##### Plot big sample/big variance
+plot(c(.75, 3.25), c(0,1), type='n', axes=FALSE, ylab='Power', xlab='Small Group N')
+title(main='Figure 9. Power When the Bigger Sample Has Bigger Variance, Small Effect')
+axis(1, at=c(1,2,3), labels=c(20,50,100))
+axis(2, at=c(.1, .2, .3, .4, .5, .6, .7, .8, .9, 1))
+box()
+legend(3.4, 1, cex=.75, c('Classic, 2x var, 1.5x Ns', 'Classic, 2x var, 2x Ns', 'Classic, 5x var, 1.5x Ns', 'Classic, 5x var, 2x Ns', 'Welch, 2x var, 1.5x Ns', 'Welch, 2x var, 2x Ns', 'Welch, 5x var, 1.5x Ns', 'Welch, 5x var, 2x Ns'), col=rep(c('deepskyblue4','darkgoldenrod1'), each=4), pch=rep(rep(c(1,2), each=2), 2), lty=rep(c(2,1), 4), bty='n')
+lines(c(exp.rejects.1.5n[,2]) ~ c(1, 2, 3), col='lightgrey', lty=2, lwd=2) #plots a reference line for 1.5x Ns
+lines(c(exp.rejects.2n[,2]) ~ c(1, 2, 3), col='lightgrey', lty=1, lwd=2) #plots a reference line for 2x Ns
+
+## Plot lines
+## Classic-col=deepskyblue4, Welch-col=darkgoldenrod1 (grey for manuscript?); double var-pch=1, 5x var=pch=2; 1.5Ns-lty=2, 2xNs-lty=1
+lines(reject.null.v2.1.5n.ssv[,2,1] ~ c(1,2,3), type='b',lty=2, pch=1, col='deepskyblue4') #classic, double variance, 1.5Ns
+lines(reject.null.v2.1.5n.ssv[,2,2] ~ c(1,2,3), type='b',lty=2, pch=1, col='darkgoldenrod1') #welch, double variance, 1.5Ns
+lines(reject.null.v5.1.5n.ssv[,2,1] ~ c(1,2,3), type='b',lty=2, pch=2, col='deepskyblue4') #classic, 5x variance, 1.5Ns
+lines(reject.null.v5.1.5n.ssv[,2,2] ~ c(1,2,3), type='b',lty=2, pch=2, col='darkgoldenrod1') #welch, 5x variance, 1.5Ns
+lines(reject.null.v2.2n.ssv[,2,1] ~ c(1,2,3), type='b',lty=1, pch=1, col='deepskyblue4') #classic, double variance, 2x Ns
+lines(reject.null.v2.2n.ssv[,2,2] ~ c(1,2,3), type='b',lty=1, pch=1, col='darkgoldenrod1') #welch, double variance, 2x Ns
+lines(reject.null.v5.2n.ssv[,2,1] ~ c(1,2,3), type='b',lty=1, pch=2, col='deepskyblue4') #classic, 5x variance, 2x Ns
+lines(reject.null.v5.2n.ssv[,2,2] ~ c(1,2,3), type='b',lty=1, pch=2, col='darkgoldenrod1') #welch, 5x variance, 2x Ns
+
+
+
+######## Medium effect
+
+##### Plot big sample/big variance
+plot(c(.75, 3.25), c(0,1), type='n', axes=FALSE, ylab='Power', xlab='Small Group N')
+title(main='Figure 9. Power When the Bigger Sample Has Bigger Variance, Medium Effect')
+axis(1, at=c(1,2,3), labels=c(20,50,100))
+axis(2, at=c(.1, .2, .3, .4, .5, .6, .7, .8, .9, 1))
+box()
+legend(3.4, 1, cex=.75, c('Classic, 2x var, 1.5x Ns', 'Classic, 2x var, 2x Ns', 'Classic, 5x var, 1.5x Ns', 'Classic, 5x var, 2x Ns', 'Welch, 2x var, 1.5x Ns', 'Welch, 2x var, 2x Ns', 'Welch, 5x var, 1.5x Ns', 'Welch, 5x var, 2x Ns'), col=rep(c('deepskyblue4','darkgoldenrod1'), each=4), pch=rep(rep(c(1,2), each=2), 2), lty=rep(c(2,1), 4), bty='n')
+lines(c(exp.rejects.1.5n[,3]) ~ c(1, 2, 3), col='lightgrey', lty=2, lwd=2) #plots a reference line for 1.5x Ns
+lines(c(exp.rejects.2n[,3]) ~ c(1, 2, 3), col='lightgrey', lty=1, lwd=2) #plots a reference line for 2x Ns
+
+## Plot lines
+## Classic-col=deepskyblue4, Welch-col=darkgoldenrod1 (grey for manuscript?); double var-pch=1, 5x var=pch=2; 1.5Ns-lty=2, 2xNs-lty=1
+lines(reject.null.v2.1.5n.ssv[,3,1] ~ c(1,2,3), type='b',lty=2, pch=1, col='deepskyblue4') #classic, double variance, 1.5Ns
+lines(reject.null.v2.1.5n.ssv[,3,2] ~ c(1,2,3), type='b',lty=2, pch=1, col='darkgoldenrod1') #welch, double variance, 1.5Ns
+lines(reject.null.v5.1.5n.ssv[,3,1] ~ c(1,2,3), type='b',lty=2, pch=2, col='deepskyblue4') #classic, 5x variance, 1.5Ns
+lines(reject.null.v5.1.5n.ssv[,3,2] ~ c(1,2,3), type='b',lty=2, pch=2, col='darkgoldenrod1') #welch, 5x variance, 1.5Ns
+lines(reject.null.v2.2n.ssv[,3,1] ~ c(1,2,3), type='b',lty=1, pch=1, col='deepskyblue4') #classic, double variance, 2x Ns
+lines(reject.null.v2.2n.ssv[,3,2] ~ c(1,2,3), type='b',lty=1, pch=1, col='darkgoldenrod1') #welch, double variance, 2x Ns
+lines(reject.null.v5.2n.ssv[,3,1] ~ c(1,2,3), type='b',lty=1, pch=2, col='deepskyblue4') #classic, 5x variance, 2x Ns
+lines(reject.null.v5.2n.ssv[,3,2] ~ c(1,2,3), type='b',lty=1, pch=2, col='darkgoldenrod1') #welch, 5x variance, 2x Ns
+
+
+######## Large effect
+
+##### Plot big sample/big variance
+plot(c(.75, 3.25), c(0,1), type='n', axes=FALSE, ylab='Power', xlab='Small Group N')
+title(main='Figure 9. Power When the Bigger Sample Has Bigger Variance, Large Effect')
+axis(1, at=c(1,2,3), labels=c(20,50,100))
+axis(2, at=c(.1, .2, .3, .4, .5, .6, .7, .8, .9, 1))
+box()
+legend(3.4, 1, cex=.75, c('Classic, 2x var, 1.5x Ns', 'Classic, 2x var, 2x Ns', 'Classic, 5x var, 1.5x Ns', 'Classic, 5x var, 2x Ns', 'Welch, 2x var, 1.5x Ns', 'Welch, 2x var, 2x Ns', 'Welch, 5x var, 1.5x Ns', 'Welch, 5x var, 2x Ns'), col=rep(c('deepskyblue4','darkgoldenrod1'), each=4), pch=rep(rep(c(1,2), each=2), 2), lty=rep(c(2,1), 4), bty='n')
+lines(c(exp.rejects.1.5n[,4]) ~ c(1, 2, 3), col='lightgrey', lty=2, lwd=2) #plots a reference line for 1.5x Ns
+lines(c(exp.rejects.2n[,4]) ~ c(1, 2, 3), col='lightgrey', lty=1, lwd=2) #plots a reference line for 2x Ns
+
+## Plot lines
+## Classic-col=deepskyblue4, Welch-col=darkgoldenrod1 (grey for manuscript?); double var-pch=1, 5x var=pch=2; 1.5Ns-lty=2, 2xNs-lty=1
+lines(reject.null.v2.1.5n.ssv[,4,1] ~ c(1,2,3), type='b',lty=2, pch=1, col='deepskyblue4') #classic, double variance, 1.5Ns
+lines(reject.null.v2.1.5n.ssv[,4,2] ~ c(1,2,3), type='b',lty=2, pch=1, col='darkgoldenrod1') #welch, double variance, 1.5Ns
+lines(reject.null.v5.1.5n.ssv[,4,1] ~ c(1,2,3), type='b',lty=2, pch=2, col='deepskyblue4') #classic, 5x variance, 1.5Ns
+lines(reject.null.v5.1.5n.ssv[,4,2] ~ c(1,2,3), type='b',lty=2, pch=2, col='darkgoldenrod1') #welch, 5x variance, 1.5Ns
+lines(reject.null.v2.2n.ssv[,4,1] ~ c(1,2,3), type='b',lty=1, pch=1, col='deepskyblue4') #classic, double variance, 2x Ns
+lines(reject.null.v2.2n.ssv[,4,2] ~ c(1,2,3), type='b',lty=1, pch=1, col='darkgoldenrod1') #welch, double variance, 2x Ns
+lines(reject.null.v5.2n.ssv[,4,1] ~ c(1,2,3), type='b',lty=1, pch=2, col='deepskyblue4') #classic, 5x variance, 2x Ns
+lines(reject.null.v5.2n.ssv[,4,2] ~ c(1,2,3), type='b',lty=1, pch=2, col='darkgoldenrod1') #welch, 5x variance, 2x Ns
+
+
+
+
+
+@
 
 \subsection{Coverage Probability}
 
