@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  24 APR 2015 17:00
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  27 APR 2015 16:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -526,16 +526,16 @@ Overfull \hbox (28.90755pt too wide) in paragraph at lines 120--121
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [7 <./figure/equalNboxplots.pdf>]
-Package color Info: Redefining color shadecolor on input line 128.
+Package color Info: Redefining color shadecolor on input line 130.
 
-<figure/dfratiosNincrease.pdf, id=44, 505.89pt x 505.89pt>
-File: figure/dfratiosNincrease.pdf Graphic file (type pdf)
+<figure/dfratiosDiffvars.pdf, id=44, 505.89pt x 505.89pt>
+File: figure/dfratiosDiffvars.pdf Graphic file (type pdf)
 
-<use figure/dfratiosNincrease.pdf>
-Package pdftex.def Info: figure/dfratiosNincrease.pdf used on input line 129.
+<use figure/dfratiosDiffvars.pdf>
+Package pdftex.def Info: figure/dfratiosDiffvars.pdf used on input line 131.
 (pdftex.def)             Requested size: 452.9679pt x 452.97328pt.
 
-Overfull \hbox (28.90755pt too wide) in paragraph at lines 129--130
+Overfull \hbox (28.90755pt too wide) in paragraph at lines 131--132
 [][]  
  []
 
@@ -543,131 +543,114 @@ Overfull \hbox (28.90755pt too wide) in paragraph at lines 129--130
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [8 <./figure/differentNboxplots.pdf>]
-Package color Info: Redefining color shadecolor on input line 136.
+Package color Info: Redefining color shadecolor on input line 138.
 
-<figure/dfratiosDiffvars.pdf, id=54, 505.89pt x 505.89pt>
-File: figure/dfratiosDiffvars.pdf Graphic file (type pdf)
-
-<use figure/dfratiosDiffvars.pdf>
-Package pdftex.def Info: figure/dfratiosDiffvars.pdf used on input line 137.
-(pdftex.def)             Requested size: 452.9679pt x 452.97328pt.
-
-Overfull \hbox (28.90755pt too wide) in paragraph at lines 137--138
-[][]  
- []
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [9 <./figure/dfratiosNincrease.pdf>]
-Package color Info: Redefining color shadecolor on input line 144.
-
-<figure/dfratiosDiffNratios.pdf, id=64, 505.89pt x 505.89pt>
+<figure/dfratiosDiffNratios.pdf, id=54, 505.89pt x 505.89pt>
 File: figure/dfratiosDiffNratios.pdf Graphic file (type pdf)
 
 <use figure/dfratiosDiffNratios.pdf>
-Package pdftex.def Info: figure/dfratiosDiffNratios.pdf used on input line 145.
+Package pdftex.def Info: figure/dfratiosDiffNratios.pdf used on input line 139.
 
 (pdftex.def)             Requested size: 452.9679pt x 452.97328pt.
 
-Overfull \hbox (28.90755pt too wide) in paragraph at lines 145--146
+Overfull \hbox (28.90755pt too wide) in paragraph at lines 139--140
 [][]  
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [10 <./figure/dfratiosDiffvars.pdf>]
-Package color Info: Redefining color shadecolor on input line 152.
+ [9 <./figure/dfratiosDiffvars.pdf>]
+Package color Info: Redefining color shadecolor on input line 146.
 
-<figure/dfratiosDiffvarsDiffNratios.pdf, id=74, 505.89pt x 505.89pt>
+<figure/dfratiosDiffvarsDiffNratios.pdf, id=63, 505.89pt x 505.89pt>
 File: figure/dfratiosDiffvarsDiffNratios.pdf Graphic file (type pdf)
 
 <use figure/dfratiosDiffvarsDiffNratios.pdf>
 Package pdftex.def Info: figure/dfratiosDiffvarsDiffNratios.pdf used on input l
-ine 153.
+ine 147.
 (pdftex.def)             Requested size: 452.9679pt x 452.97328pt.
 
-Overfull \hbox (28.90755pt too wide) in paragraph at lines 153--154
+Overfull \hbox (28.90755pt too wide) in paragraph at lines 147--148
 [][]  
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [11 <./figure/dfratiosDiffNratios.pdf>]
+ [10 <./figure/dfratiosDiffNratios.pdf>]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [12 <./figure/dfratiosDiffvarsDiffNratios.pdf>]
-Package color Info: Redefining color shadecolor on input line 171.
+ [11 <./figure/dfratiosDiffvarsDiffNratios.pdf>]
+Package color Info: Redefining color shadecolor on input line 165.
 
-<figure/type1_classic_plot.pdf, id=93, 505.89pt x 505.89pt>
+<figure/type1_classic_plot.pdf, id=82, 505.89pt x 505.89pt>
 File: figure/type1_classic_plot.pdf Graphic file (type pdf)
 
 <use figure/type1_classic_plot.pdf>
-Package pdftex.def Info: figure/type1_classic_plot.pdf used on input line 172.
+Package pdftex.def Info: figure/type1_classic_plot.pdf used on input line 166.
 (pdftex.def)             Requested size: 452.9679pt x 452.97328pt.
 
-Overfull \hbox (28.90755pt too wide) in paragraph at lines 172--173
+Overfull \hbox (28.90755pt too wide) in paragraph at lines 166--167
 [][]  
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [13]
+ [12]
 Underfull \vbox (badness 5388) has occurred while \output is active []
 
- [14 <./figure/type1_classic_plot.pdf>]
-Package color Info: Redefining color shadecolor on input line 181.
+ [13 <./figure/type1_classic_plot.pdf>]
+Package color Info: Redefining color shadecolor on input line 175.
 
-<figure/type1_Welch_plot.pdf, id=107, 505.89pt x 505.89pt>
+<figure/type1_Welch_plot.pdf, id=96, 505.89pt x 505.89pt>
 File: figure/type1_Welch_plot.pdf Graphic file (type pdf)
 
 <use figure/type1_Welch_plot.pdf>
-Package pdftex.def Info: figure/type1_Welch_plot.pdf used on input line 182.
+Package pdftex.def Info: figure/type1_Welch_plot.pdf used on input line 176.
 (pdftex.def)             Requested size: 452.9679pt x 452.97328pt.
 
-Overfull \hbox (28.90755pt too wide) in paragraph at lines 182--183
+Overfull \hbox (28.90755pt too wide) in paragraph at lines 176--177
 [][]  
  []
 
-[15 <./figure/type1_Welch_plot.pdf>]
-Package color Info: Redefining color shadecolor on input line 198.
+[14 <./figure/type1_Welch_plot.pdf>]
+Package color Info: Redefining color shadecolor on input line 192.
 
-<figure/plot_power.pdf, id=117, 505.89pt x 505.89pt>
+<figure/plot_power.pdf, id=106, 505.89pt x 505.89pt>
 File: figure/plot_power.pdf Graphic file (type pdf)
 
 <use figure/plot_power.pdf>
-Package pdftex.def Info: figure/plot_power.pdf used on input line 199.
+Package pdftex.def Info: figure/plot_power.pdf used on input line 193.
 (pdftex.def)             Requested size: 452.9679pt x 452.97328pt.
 
-Overfull \hbox (28.90755pt too wide) in paragraph at lines 199--200
+Overfull \hbox (28.90755pt too wide) in paragraph at lines 193--194
 [][]  
  []
 
-[16 <./figure/plot_power.pdf>]
-Package color Info: Redefining color shadecolor on input line 212.
+[15 <./figure/plot_power.pdf>]
+Package color Info: Redefining color shadecolor on input line 206.
 
-<figure/coverage_plots.pdf, id=127, 505.89pt x 505.89pt>
+<figure/coverage_plots.pdf, id=116, 505.89pt x 505.89pt>
 File: figure/coverage_plots.pdf Graphic file (type pdf)
 
 <use figure/coverage_plots.pdf>
-Package pdftex.def Info: figure/coverage_plots.pdf used on input line 213.
+Package pdftex.def Info: figure/coverage_plots.pdf used on input line 207.
 (pdftex.def)             Requested size: 452.9679pt x 452.97328pt.
 
-Overfull \hbox (28.90755pt too wide) in paragraph at lines 213--214
+Overfull \hbox (28.90755pt too wide) in paragraph at lines 207--208
 [][]  
  []
 
-[17 <./figure/coverage_plots.pdf>]
-AED endfloat: Processing end Figures and Tables [18]
+[16 <./figure/coverage_plots.pdf>]
+AED endfloat: Processing end Figures and Tables [17]
 (./WelchManuscript-MASTER.aux) ) 
 Here is how much of TeX's memory you used:
- 5183 strings out of 493117
- 77821 string characters out of 6135433
+ 5178 strings out of 493117
+ 77669 string characters out of 6135433
  139737 words of memory out of 5000000
- 8529 multiletter control sequences out of 15000+600000
+ 8525 multiletter control sequences out of 15000+600000
  37106 words of font info for 39 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  43i,12n,47p,1118b,252s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -684,10 +667,10 @@ sr/local/texlive/2014/texmf-dist/fonts/type1/public/lm/lmri12.pfb></usr/local/t
 exlive/2014/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/texlive/201
 4/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr/local/texlive/2014/texmf-dis
 t/fonts/type1/public/lm/lmtt12.pfb>
-Output written on WelchManuscript-MASTER.pdf (18 pages, 416401 bytes).
+Output written on WelchManuscript-MASTER.pdf (17 pages, 232728 bytes).
 PDF statistics:
- 179 PDF objects out of 1000 (max. 8388607)
- 127 compressed objects within 2 object streams
+ 168 PDF objects out of 1000 (max. 8388607)
+ 119 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 51 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 46 words of extra memory for PDF output out of 10000 (max. 10000000)
 

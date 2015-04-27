@@ -326,63 +326,56 @@ grid.arrange(Bplot.ve.n2.ssv, Bplot.v2.n2.ssv, Bplot.v5.n2.ssv, Bplot.ve.n1.5.ss
 @
 
 \subsection{Does the df Ratio Help?}
-    We examined whether looking at ratio of the Welch degrees of freedom to the classic t test degrees of freedom would provide a heuristic for deciding that equal variances does not hold. Figure 3 displays boxplots of the ratio of Welch degrees of freedom to the classic t test degrees of freedom as sample sizes increase when  the variance and sample size ratios equal. As the sample sizes increase, the degrees of freedom ratio stays close to 1. 
+    We examined whether looking at ratio of the Welch degrees of freedom to the classic t test degrees of freedom would provide a heuristic for deciding that equal variances does not hold. When both the sample sizes and variances are equal,  As the sample sizes increase, the degrees of freedom ratio stays close to 1. 
 
-<< dfratiosNincrease, echo=FALSE >>=
-
-load('/users/joshwondra/R-projects/Welch rule/dfs.list.RData')
-
-## Equal ns
-
-# equal vars, equal ns
-Bplot.ve.ne.ns20 <- qplot(y=dfs.list$ve.ns20.ne.nullT, geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), xlab=bquote(frac('n'[1],'n'[2])~'='~frac(20,20)~', '~frac('var'[1],'var'[2])~'='~1), ylim=c(.5,1))
-Bplot.ve.ne.ns50 <- qplot(y=dfs.list$ve.ns50.ne.nullT, geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,50)~', '~frac('var'[1],'var'[2])~'='~1), ylim=c(.5,1))
-Bplot.ve.ne.ns100 <- qplot(y=dfs.list$ve.ns100.ne.nullT, geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), xlab=bquote(frac('n'[1],'n'[2])~'='~frac(100,100)~', '~frac('var'[1],'var'[2])~'='~1), ylim=c(.5,1))
-
-grid.arrange(Bplot.ve.ne.ns20, Bplot.ve.ne.ns50, Bplot.ve.ne.ns100, ncol=3, heights=unit(.5, 'npc'), main='Figure 3. Degrees of Freedom Ratios with Increasing Sample Sizes')
-
-@
-
-    Figure 4 displays the ratio as the group variances become increasingly different when both the sample size and the sample size ratio stay the same. Under this condition, the distribution moves away from 1 as the difference in group variances increases.
+    Figure 3 displays the ratio as the group variances become increasingly different when both the sample size and the sample size ratio stay the same. Under this condition, the distribution moves away from 1 as the difference in group variances increases.
 
 << dfratiosDiffvars, echo=FALSE>>=
 
-# different vars, equal ns
-Bplot.ve.ne.ns50 <- qplot(y=dfs.list$ve.ns50.ne.nullT, geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,50)~', '~frac('var'[1],'var'[2])~'='~1), ylim=c(.5,1))
-Bplot.v2.ne.ns50 <- qplot(y=dfs.list$v2.ns50.ne.nullT, geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,50)~', '~frac('var'[1],'var'[2])~'='~frac(1,2)), ylim=c(.5,1))
-Bplot.v5.ne.ns50 <- qplot(y=dfs.list$v5.ns50.ne.nullT, geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,50)~', '~frac('var'[1],'var'[2])~'='~frac(1,5)), ylim=c(.5,1))
+load('/users/joshwondra/R-projects/Welch rule/dfs.list.RData')
 
-grid.arrange(Bplot.ve.ne.ns50, Bplot.v2.ne.ns50, Bplot.v5.ne.ns50, ncol=3, heights=unit(.5,'npc'), main='Figure 4. Degrees of Freedom Ratios with Changing Variance Ratios')
+df.ratio.Ns <- function(n1, n2, var1, var2) {
+    welch.num <- (var1/n1 + var2/n2)^2
+    welch.denom <- var1^2/(n1^2*(n1-1)) + var2^2/(n2^2*(n2-1))
+    classic.df <- n1+n2-2
+    (welch.num/welch.denom)/classic.df
+}
+
+df.ratio.defaults <- list('n1'=50,'n2'=50,'var1'=2,'var2'=2)
+
+partial.df <- function(var = 'a', params=df.ratio.defaults){
+    params[[var]]=as.name('x')
+    function(x)do.call(df.ratio.Ns, params)
+}
+
+ggplot(data.frame(x=seq(2,10,.1)), aes(x)) +
+    stat_function(fun=partial.df(var='var2', params=list('n1'=50,'n2'=50,'var1'=2,'var2'=2))) + #NOTE: the sample sizes don't affect the df ratio
+    labs(title='Figure 3. Degrees of Freedom Ratio When Sample Sizes are Equal and Variances are Unequal', y=bquote(frac('df'['Welch'],'df'['Student'])), x=bquote(frac('s'^1,'s'^2))) +
+    scale_x_continuous(breaks=c(2,4,6,8,10), labels=c(2,4,6,8,10)/2)
 
 @
 
-    In the first two plots, the degrees of freedom ratios are generally above 95\% when variances are equal and below 95\% when they differ. A useful heuristic might be to assume unequal variances when the ratio falls below 95\%. But now look what happens when the variances are equal and the sample size ratio changes in Figure 5. Here too the ratio drops when the sample sizes become increasingly uneven, even though the variances stay the same. Our 95\% heuristic would lead us astray and we would incorrectly conclude that the variances are unequal.
+    In the first two plots, the degrees of freedom ratios are generally above 95\% when variances are equal and below 95\% when they differ. A useful heuristic might be to assume unequal variances when the ratio falls below 95\%. But now look what happens when the variances are equal and the sample size ratio changes in Figure 4. Here too the ratio drops when the sample sizes become increasingly uneven, even though the variances stay the same. Our 95\% heuristic would lead us astray and we would incorrectly conclude that the variances are unequal.
 
 <<dfratiosDiffNratios, echo=FALSE>>=
 
-# equal vars, changing N ratios
-Bplot.ve.ne.ns50 <- qplot(y=dfs.list$ve.ns50.ne.nullT, geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,50)~', '~frac('var'[1],'var'[2])~'='~1), ylim=c(.45,1))
-Bplot.ve.1.5n.ns50 <- qplot(y=dfs.list$ve.ns50.1.5n.nullT, geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,75)~', '~frac('var'[1],'var'[2])~'='~1), ylim=c(.45,1))
-Bplot.ve.2n.ns50 <- qplot(y=dfs.list$ve.ns50.2n.nullT, geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,100)~', '~frac('var'[1],'var'[2])~'='~1), ylim=c(.45,1))
-
-grid.arrange(Bplot.ve.ne.ns50, Bplot.ve.1.5n.ns50 , Bplot.ve.2n.ns50, ncol=3, heights=unit(.5,'npc'), main='Figure 5. Degrees of Freedom Ratios with Changing Sample Size Ratios')
+ggplot(data.frame(x=seq(50,100,.1)), aes(x)) + 
+    stat_function(fun=partial.df(var='n2', params=list('n1'=50,'n2'=50,'var1'=2,'var2'=2))) +
+    labs(title='Figure 4. Degrees of Freedom Ratio When Sample Sizes are Unequal and Variances are Equal', y=bquote(frac('df'['Welch'],'df'['Student'])), x=bquote(frac('n'^1,'n'^2))) +
+    scale_x_continuous(breaks=c(50,60,70,80,90,100), labels=c(50,60,70,80,90,100)/50)
 
 @
 
-    Finally, Figure 6 demonstrates one example of what happens to the degrees of freedom ratio when the variances become increasingly unequal and the sample sizes are unequal. In this case, the effect of different variances depends on whether the larger group has the larger variance or the smaller variance. In the first row, when the larger group has the larger variance, the move from equal to unequal variances actual counteracts the effect of the unequal sample sizes, and the degrees of freedom are generally higher at both unequal variance ratios that we sampled. However, in the second row, when the larger group has the smaller variance, the degrees of freedom ratio drops as the variances become increasingly unequal. 
+    Finally, Figure 5 demonstrates one example of what happens to the degrees of freedom ratio when the variances become increasingly unequal and the sample sizes are unequal. In this case, the effect of different variances depends on whether the larger group has the larger variance or the smaller variance. In the first row, when the larger group has the larger variance, the move from equal to unequal variances actual counteracts the effect of the unequal sample sizes, and the degrees of freedom are generally higher at both unequal variance ratios that we sampled. However, in the second row, when the larger group has the smaller variance, the degrees of freedom ratio drops as the variances become increasingly unequal. 
 
 <<dfratiosDiffvarsDiffNratios, echo=FALSE>>=
+ggplot(data.frame(x=seq(2,10,.1)), aes(x)) + 
+    stat_function(fun=partial.df(var='var2', params=list('n1'=75,'n2'=50,'var1'=2,'var2'=2)), aes(colour='n2')) +
+    stat_function(fun=partial.df(var='var2', params=list('n1'=50,'n2'=75,'var1'=2,'var2'=2)), aes(colour='n1/2')) +
+    scale_colour_manual(values=c('blue', 'red'), labels=c(bquote(frac('n'[1],'n'[2])~'= 2'), bquote(frac('n'[1],'n'[2])~'= '~frac(1,2)))) +
+    labs(title='Figure 5. Degrees of Freedom Ratio When Sample Sizes are Unequal and Variances are Unequal', y=bquote(frac('df'['Welch'],'df'['Student'])), x=bquote(frac('s'^1,'s'^2))) +
+    scale_x_continuous(breaks=c(2,4,6,8,10), labels=c(2,4,6,8,10)/2)
 
-# different vars, changing N ratios
-Bplot.ve.1.5n.ns50 <- qplot(y=dfs.list$ve.ns50.1.5n.nullT, geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,75)~', '~frac('var'[1],'var'[2])~'='~1), ylim=c(.4,1))
-Bplot.v2.1.5n.ssv.ns50 <- qplot(y=dfs.list$v2.ns50.1.5n.ssv.nullT, geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,75)~', '~frac('var'[1],'var'[2])~'='~frac(1,2)), ylim=c(.4,1))
-Bplot.v5.1.5n.ssv.ns50 <- qplot(y=dfs.list$v5.ns50.1.5n.ssv.nullT, geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,75)~', '~frac('var'[1],'var'[2])~'='~frac(1,5)), ylim=c(.4,1))
-
-Bplot.ve.1.5n.ns50 <- qplot(y=dfs.list$ve.ns50.1.5n.nullT, geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,75)~', '~frac('var'[1],'var'[2])~'='~1), ylim=c(.4,1))
-Bplot.v2.1.5n.bsv.ns50 <- qplot(y=dfs.list$v2.ns50.1.5n.bsv.nullT, geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,75)~', '~frac('var'[1],'var'[2])~'='~2), ylim=c(.4,1))
-Bplot.v5.1.5n.bsv.ns50 <- qplot(y=dfs.list$v5.ns50.1.5n.bsv.nullT, geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,75)~', '~frac('var'[1],'var'[2])~'='~5), ylim=c(.4,1))
-
-grid.arrange(Bplot.ve.1.5n.ns50, Bplot.v2.1.5n.ssv.ns50, Bplot.v5.1.5n.ssv.ns50, Bplot.ve.1.5n.ns50,  Bplot.v2.1.5n.bsv.ns50, Bplot.v5.1.5n.bsv.ns50, ncol=3, main='Figure 6. Degrees of Freedom Ratios with Changing Variance Ratios and Sample Size Ratios')
 
 @
 
@@ -1064,6 +1057,56 @@ grid.arrange(CovClassic.nullT, CovWelch.nullT, nrow=1, main='Figure 10. Coverage
     
     In much experimental work, the choice between the tests is probably fine if the experimenter ensures that sample sizes are equal. This is generally not an option with pre-existing groups. 
 
+
+
+\section{Possible Cuts}
+
+<< junk, echo=FALSE >>=
+
+####################### boxplots of the simulated df ratios 
+
+## Equal ns
+
+# equal vars, equal ns
+#Bplot.ve.ne.ns20 <- qplot(y=dfs.list$ve.ns20.ne.nullT, geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), xlab=bquote(frac('n'[1],'n'[2])~'='~frac(20,20)~', '~frac('var'[1],'var'[2])~'='~1), ylim=c(.5,1))
+#Bplot.ve.ne.ns50 <- qplot(y=dfs.list$ve.ns50.ne.nullT, geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,50)~', '~frac('var'[1],'var'[2])~'='~1), ylim=c(.5,1))
+#Bplot.ve.ne.ns100 <- qplot(y=dfs.list$ve.ns100.ne.nullT, geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), xlab=bquote(frac('n'[1],'n'[2])~'='~frac(100,100)~', '~frac('var'[1],'var'[2])~'='~1), ylim=c(.5,1))
+
+#grid.arrange(Bplot.ve.ne.ns20, Bplot.ve.ne.ns50, Bplot.ve.ne.ns100, ncol=3, heights=unit(.5, 'npc'), main='Figure 3. Degrees of Freedom Ratios with Increasing Sample Sizes')
+
+
+
+# different vars, equal ns
+#Bplot.ve.ne.ns50 <- qplot(y=dfs.list$ve.ns50.ne.nullT, geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,50)~', '~frac('var'[1],'var'[2])~'='~1), ylim=c(.5,1))
+#Bplot.v2.ne.ns50 <- qplot(y=dfs.list$v2.ns50.ne.nullT, geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,50)~', '~frac('var'[1],'var'[2])~'='~frac(1,2)), ylim=c(.5,1))
+#Bplot.v5.ne.ns50 <- qplot(y=dfs.list$v5.ns50.ne.nullT, geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,50)~', '~frac('var'[1],'var'[2])~'='~frac(1,5)), ylim=c(.5,1))
+
+#grid.arrange(Bplot.ve.ne.ns50, Bplot.v2.ne.ns50, Bplot.v5.ne.ns50, ncol=3, heights=unit(.5,'npc'), main='Figure 4. Degrees of Freedom Ratios with Changing Variance Ratios')
+
+
+
+
+# equal vars, changing N ratios
+#Bplot.ve.ne.ns50 <- qplot(y=dfs.list$ve.ns50.ne.nullT, geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,50)~', '~frac('var'[1],'var'[2])~'='~1), ylim=c(.45,1))
+#Bplot.ve.1.5n.ns50 <- qplot(y=dfs.list$ve.ns50.1.5n.nullT, geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,75)~', '~frac('var'[1],'var'[2])~'='~1), ylim=c(.45,1))
+#Bplot.ve.2n.ns50 <- qplot(y=dfs.list$ve.ns50.2n.nullT, geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,100)~', '~frac('var'[1],'var'[2])~'='~1), ylim=c(.45,1))
+
+#grid.arrange(Bplot.ve.ne.ns50, Bplot.ve.1.5n.ns50 , Bplot.ve.2n.ns50, ncol=3, heights=unit(.5,'npc'), main='Figure 5. Degrees of Freedom Ratios with Changing Sample Size Ratios')
+
+
+# different vars, changing N ratios
+#Bplot.ve.1.5n.ns50 <- qplot(y=dfs.list$ve.ns50.1.5n.nullT, geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,75)~', '~frac('var'[1],'var'[2])~'='~1), ylim=c(.4,1))
+#Bplot.v2.1.5n.ssv.ns50 <- qplot(y=dfs.list$v2.ns50.1.5n.ssv.nullT, geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,75)~', '~frac('var'[1],'var'[2])~'='~frac(1,2)), ylim=c(.4,1))
+#Bplot.v5.1.5n.ssv.ns50 <- qplot(y=dfs.list$v5.ns50.1.5n.ssv.nullT, geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,75)~', '~frac('var'[1],'var'[2])~'='~frac(1,5)), ylim=c(.4,1))
+
+#Bplot.ve.1.5n.ns50 <- qplot(y=dfs.list$ve.ns50.1.5n.nullT, geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,75)~', '~frac('var'[1],'var'[2])~'='~1), ylim=c(.4,1))
+#Bplot.v2.1.5n.bsv.ns50 <- qplot(y=dfs.list$v2.ns50.1.5n.bsv.nullT, geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,75)~', '~frac('var'[1],'var'[2])~'='~2), ylim=c(.4,1))
+#Bplot.v5.1.5n.bsv.ns50 <- qplot(y=dfs.list$v5.ns50.1.5n.bsv.nullT, geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,75)~', '~frac('var'[1],'var'[2])~'='~5), ylim=c(.4,1))
+
+#grid.arrange(Bplot.ve.1.5n.ns50, Bplot.v2.1.5n.ssv.ns50, Bplot.v5.1.5n.ssv.ns50, Bplot.ve.1.5n.ns50,  Bplot.v2.1.5n.bsv.ns50, Bplot.v5.1.5n.bsv.ns50, ncol=3, main='Figure 6. Degrees of Freedom Ratios with Changing Variance Ratios and Sample Size Ratios')
+
+
+@
 
 
 \end{document}

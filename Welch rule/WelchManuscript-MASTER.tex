@@ -122,15 +122,9 @@ Figure 2 displays a sample of boxplots for simulations when the sample size rati
 \end{knitrout}
 
 \subsection{Does the df Ratio Help?}
-    We examined whether looking at ratio of the Welch degrees of freedom to the classic t test degrees of freedom would provide a heuristic for deciding that equal variances does not hold. Figure 3 displays boxplots of the ratio of Welch degrees of freedom to the classic t test degrees of freedom as sample sizes increase when  the variance and sample size ratios equal. As the sample sizes increase, the degrees of freedom ratio stays close to 1. 
+    We examined whether looking at ratio of the Welch degrees of freedom to the classic t test degrees of freedom would provide a heuristic for deciding that equal variances does not hold. When both the sample sizes and variances are equal,  As the sample sizes increase, the degrees of freedom ratio stays close to 1. 
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/dfratiosNincrease} 
-
-\end{knitrout}
-
-    Figure 4 displays the ratio as the group variances become increasingly different when both the sample size and the sample size ratio stay the same. Under this condition, the distribution moves away from 1 as the difference in group variances increases.
+    Figure 3 displays the ratio as the group variances become increasingly different when both the sample size and the sample size ratio stay the same. Under this condition, the distribution moves away from 1 as the difference in group variances increases.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
@@ -138,7 +132,7 @@ Figure 2 displays a sample of boxplots for simulations when the sample size rati
 
 \end{knitrout}
 
-    In the first two plots, the degrees of freedom ratios are generally above 95\% when variances are equal and below 95\% when they differ. A useful heuristic might be to assume unequal variances when the ratio falls below 95\%. But now look what happens when the variances are equal and the sample size ratio changes in Figure 5. Here too the ratio drops when the sample sizes become increasingly uneven, even though the variances stay the same. Our 95\% heuristic would lead us astray and we would incorrectly conclude that the variances are unequal.
+    In the first two plots, the degrees of freedom ratios are generally above 95\% when variances are equal and below 95\% when they differ. A useful heuristic might be to assume unequal variances when the ratio falls below 95\%. But now look what happens when the variances are equal and the sample size ratio changes in Figure 4. Here too the ratio drops when the sample sizes become increasingly uneven, even though the variances stay the same. Our 95\% heuristic would lead us astray and we would incorrectly conclude that the variances are unequal.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
@@ -146,7 +140,7 @@ Figure 2 displays a sample of boxplots for simulations when the sample size rati
 
 \end{knitrout}
 
-    Finally, Figure 6 demonstrates one example of what happens to the degrees of freedom ratio when the variances become increasingly unequal and the sample sizes are unequal. In this case, the effect of different variances depends on whether the larger group has the larger variance or the smaller variance. In the first row, when the larger group has the larger variance, the move from equal to unequal variances actual counteracts the effect of the unequal sample sizes, and the degrees of freedom are generally higher at both unequal variance ratios that we sampled. However, in the second row, when the larger group has the smaller variance, the degrees of freedom ratio drops as the variances become increasingly unequal. 
+    Finally, Figure 5 demonstrates one example of what happens to the degrees of freedom ratio when the variances become increasingly unequal and the sample sizes are unequal. In this case, the effect of different variances depends on whether the larger group has the larger variance or the smaller variance. In the first row, when the larger group has the larger variance, the move from equal to unequal variances actual counteracts the effect of the unequal sample sizes, and the degrees of freedom are generally higher at both unequal variance ratios that we sampled. However, in the second row, when the larger group has the smaller variance, the degrees of freedom ratio drops as the variances become increasingly unequal. 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
@@ -219,6 +213,11 @@ Because the accuracy of a confidence interval is influenced by the variance and 
     Make a note that our df ratio rule works best when it doesn't matter - when sample sizes are equal.
     
     In much experimental work, the choice between the tests is probably fine if the experimenter ensures that sample sizes are equal. This is generally not an option with pre-existing groups. 
+
+
+
+\section{Possible Cuts}
+
 
 
 
