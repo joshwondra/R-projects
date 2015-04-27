@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  27 APR 2015 16:40
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  27 APR 2015 19:05
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -499,11 +499,11 @@ Underfull \vbox (badness 2103) has occurred while \output is active []
  [5]
 [6]
 Package color Info: Redefining color shadecolor on input line 111.
- <figure/equalNboxplots.pdf, id=32, 505.89pt x 505.89pt>
-File: figure/equalNboxplots.pdf Graphic file (type pdf)
+ <figure/varEqualBoxplots.pdf, id=32, 505.89pt x 505.89pt>
+File: figure/varEqualBoxplots.pdf Graphic file (type pdf)
 
-<use figure/equalNboxplots.pdf>
-Package pdftex.def Info: figure/equalNboxplots.pdf used on input line 112.
+<use figure/varEqualBoxplots.pdf>
+Package pdftex.def Info: figure/varEqualBoxplots.pdf used on input line 112.
 (pdftex.def)             Requested size: 452.9679pt x 452.97328pt.
 
 Overfull \hbox (28.90755pt too wide) in paragraph at lines 112--113
@@ -511,11 +511,12 @@ Overfull \hbox (28.90755pt too wide) in paragraph at lines 112--113
  []
 
 Package color Info: Redefining color shadecolor on input line 119.
-<figure/differentNboxplots.pdf, id=33, 505.89pt x 505.89pt>
-File: figure/differentNboxplots.pdf Graphic file (type pdf)
+<figure/varDifferentBoxplots.pdf, id=33, 505.89pt x 505.89pt>
+File: figure/varDifferentBoxplots.pdf Graphic file (type pdf)
 
-<use figure/differentNboxplots.pdf>
-Package pdftex.def Info: figure/differentNboxplots.pdf used on input line 120.
+<use figure/varDifferentBoxplots.pdf>
+Package pdftex.def Info: figure/varDifferentBoxplots.pdf used on input line 120
+.
 (pdftex.def)             Requested size: 452.9679pt x 452.97328pt.
 
 Overfull \hbox (28.90755pt too wide) in paragraph at lines 120--121
@@ -525,7 +526,7 @@ Overfull \hbox (28.90755pt too wide) in paragraph at lines 120--121
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [7 <./figure/equalNboxplots.pdf>]
+ [7 <./figure/varEqualBoxplots.pdf>]
 Package color Info: Redefining color shadecolor on input line 130.
 
 <figure/dfratiosDiffvars.pdf, id=44, 505.89pt x 505.89pt>
@@ -542,7 +543,7 @@ Overfull \hbox (28.90755pt too wide) in paragraph at lines 131--132
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [8 <./figure/differentNboxplots.pdf>]
+ [8 <./figure/varDifferentBoxplots.pdf>]
 Package color Info: Redefining color shadecolor on input line 138.
 
 <figure/dfratiosDiffNratios.pdf, id=54, 505.89pt x 505.89pt>
@@ -644,13 +645,25 @@ Overfull \hbox (28.90755pt too wide) in paragraph at lines 207--208
  []
 
 [16 <./figure/coverage_plots.pdf>]
-AED endfloat: Processing end Figures and Tables [17]
+Package color Info: Redefining color shadecolor on input line 218.
+
+<figure/tdist.pdf, id=126, 505.89pt x 505.89pt>
+File: figure/tdist.pdf Graphic file (type pdf)
+ <use figure/tdist.pdf>
+Package pdftex.def Info: figure/tdist.pdf used on input line 219.
+(pdftex.def)             Requested size: 452.9679pt x 452.97328pt.
+
+Overfull \hbox (28.90755pt too wide) in paragraph at lines 219--220
+[][]  
+ []
+
+AED endfloat: Processing end Figures and Tables [17 <./figure/tdist.pdf>]
 (./WelchManuscript-MASTER.aux) ) 
 Here is how much of TeX's memory you used:
- 5178 strings out of 493117
- 77669 string characters out of 6135433
+ 5183 strings out of 493117
+ 77781 string characters out of 6135433
  139737 words of memory out of 5000000
- 8525 multiletter control sequences out of 15000+600000
+ 8529 multiletter control sequences out of 15000+600000
  37106 words of font info for 39 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  43i,12n,47p,1118b,252s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -667,10 +680,10 @@ sr/local/texlive/2014/texmf-dist/fonts/type1/public/lm/lmri12.pfb></usr/local/t
 exlive/2014/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/texlive/201
 4/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr/local/texlive/2014/texmf-dis
 t/fonts/type1/public/lm/lmtt12.pfb>
-Output written on WelchManuscript-MASTER.pdf (17 pages, 232728 bytes).
+Output written on WelchManuscript-MASTER.pdf (17 pages, 237759 bytes).
 PDF statistics:
- 168 PDF objects out of 1000 (max. 8388607)
- 119 compressed objects within 2 object streams
+ 175 PDF objects out of 1000 (max. 8388607)
+ 124 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 46 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 51 words of extra memory for PDF output out of 10000 (max. 10000000)
 

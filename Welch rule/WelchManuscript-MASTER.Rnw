@@ -58,9 +58,6 @@ If these assumptions hold, then you can compuate the t-value by taking the diffe
 \section{Results}    
 <<setup, echo=FALSE>>=
 
-# set images to pdf instead of png
-opts_chunk$set(dev = 'pdf')
-
 ## Retrieve tables with general data
 load('/users/joshwondra/R-projects/Welch rule/veNeSeed2184Tables.Rdata')
 load('/users/joshwondra/R-projects/Welch rule/v2NeSeed2184Tables.Rdata')
@@ -107,7 +104,7 @@ library(gridExtra)
 # then plot 1 will go in the upper left, 2 will go in the upper right, and
 # 3 will go all the way across the bottom.
 
-multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
+multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL, title='') {
 
   # Make a list from the ... arguments and plotlist
   plots <- c(list(...), plotlist)
@@ -129,199 +126,65 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
   } else {
     # Set up the page
     grid.newpage()
-    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+    pushViewport(viewport(layout = grid.layout(1+nrow(layout), ncol(layout), heights=unit(c(.5,rep(1,nrow(layout))),'null'))))
 
     # Make each plot, in the correct location
     for (i in 1:numPlots) {
       # Get the i,j matrix positions of the regions that contain this subplot
       matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
 
-      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row+1, #adjusted this to make sure the first plot doesn't print on the title row
                                       layout.pos.col = matchidx$col))
     }
   }
+ grid.text(paste(title), vp=viewport(layout.pos.row=1,layout.pos.col=1:ncol(layout))) # I added this part for a title 
 }
 
 @
 \subsection{Boxplots} One option for deciding whether the group variances are equal is to examine boxplots. Figure 1 displays boxplots for the first simulation each condition when sample sizes are equal. When variances are unequal, the larger variance is for the group to the right. When the sample sizes are smaller, it can be more difficult to tell whether the variances are unequal or not. When the sample sizes are 20, the variance of one group looks a bit larger than the other when they are really equal and the variances look approximately equal when one group has twice the variance of the other. As the sample size and increases, it becomes clearer to see whether there is a violation - at 100 subjects per condition, when variances are equal the boxes and whiskers are approximately the same length, and when variances are unequal both the box and whiskers appear wider in the group with the bigger variance. By examining several additional simulations it would be possible to see how much variability in the boxplots is normal when variances are equal or unequal.
    
-<<equalNboxplots, echo=FALSE, collapse=TRUE>>=
+<<varEqualBoxplots, echo=FALSE, collapse=TRUE>>=
 
-### all null true
+x1 <- seq(0,12,.1)
+y1 <- dnorm(x1, mean=6, sd=sqrt(2))
+x2 <- seq(1.13,13.13,.1)
+y2 <- dnorm(x2, mean=7.13, sd=sqrt(2))
 
-## Equal ns
+x <- c(x1,x2)
+y <- c(y1,y2)
+group <- factor(c(rep(1,length(x1)), rep(2,length(x2))))
 
-# equal vars, equal ns
+ve.distributions <- qplot(x=x, y=y, fill=group, colour=group, geom='line') + geom_vline(xintercept=as.numeric(by(x,group,mean)))
 
-Bplot.ve.ne.ns20 <- ggplot(venesim1$ve.ns20.ne.nullT, aes(y=dv, x=factor(group, levels=c(1,2)))) +
-    geom_boxplot() +
-    scale_x_discrete(labels=c(bquote('n'[1]~'= 20'), bquote('n'[2]~'= 20'))) +
-    scale_y_continuous(limits=c(-2.5,15.5)) +
-    labs(title='Equal variances', x='', y='') +
-    theme(plot.margin=unit(c(0,0,0,0),'picas'))
+set.seed(2184)
+ve.bplots <- c(list(ve.distributions), lapply(1:4, function(x){qplot(x=factor(rep(c(1,2), each=10)), y=c(rnorm(10,6,2),rnorm(10,7.13,2)), geom='boxplot', colour=factor(rep(c(1,2), each=10)), xlab='', ylab='') + theme(legend.position='none')}), lapply(1:4, function(x){qplot(x=factor(rep(c(1,2), each=100)), y=c(rnorm(100,6,2),rnorm(100,7.13,2)), geom='boxplot', colour=factor(rep(c(1,2), each=100)), xlab='', ylab='') + theme(legend.position='none')}))
 
-Bplot.ve.ne.ns50 <- ggplot(venesim1$ve.ns50.ne.nullT, aes(y=dv, x=factor(group, levels=c(1,2)))) +
-    geom_boxplot() +
-    scale_x_discrete(labels=c(bquote('n'[1]~'= 50'), bquote('n'[2]~'= 50'))) +
-    scale_y_continuous(limits=c(-2.5,15.5)) +
-    labs(x='', y='') +
-    theme(plot.margin=unit(c(0,0,0,0),'picas'))
-
-Bplot.ve.ne.ns100 <- ggplot(venesim1$ve.ns100.ne.nullT, aes(y=dv, x=factor(group, levels=c(1,2)))) +
-    geom_boxplot() +
-    scale_x_discrete(labels=c(bquote('n'[1]~'= 100'), bquote('n'[2]~'= 100'))) +
-    scale_y_continuous(limits=c(-2.5,15.5)) +
-    labs(x='', y='') +
-    theme(plot.margin=unit(c(0,0,0,0),'picas'))
-
-# double vars, equal ns
-Bplot.v2.ne.ns20 <- ggplot(v2nesim1$v2.ns20.ne.nullT, aes(y=dv, x=factor(group, levels=c(1,2)))) +
-    geom_boxplot() +
-    scale_x_discrete(labels=c(bquote('n'[1]~'= 20'), bquote('n'[2]~'= 20'))) +
-    scale_y_continuous(limits=c(-2.5,15.5)) +
-    labs(title='Double variances', x='', y='') +
-    theme(plot.margin=unit(c(0,0,0,0),'picas'))
-
-Bplot.v2.ne.ns50 <- ggplot(v2nesim1$v2.ns50.ne.nullT, aes(y=dv, x=factor(group, levels=c(1,2)))) +
-    geom_boxplot() +
-    scale_x_discrete(labels=c(bquote('n'[1]~'= 50'), bquote('n'[2]~'= 50'))) +
-    scale_y_continuous(limits=c(-2.5,15.5)) +
-    labs(x='', y='') +
-    theme(plot.margin=unit(c(0,0,0,0),'picas'))
-
-Bplot.v2.ne.ns100 <- ggplot(v2nesim1$v2.ns100.ne.nullT, aes(y=dv, x=factor(group, levels=c(1,2)))) +
-    geom_boxplot() +
-    scale_x_discrete(labels=c(bquote('n'[1]~'= 100'), bquote('n'[2]~'= 100'))) +
-    scale_y_continuous(limits=c(-2.5,15.5)) +
-    labs(x='', y='') +
-    theme(plot.margin=unit(c(0,0,0,0),'picas'))
-
-# 5x vars, equal ns
-Bplot.v5.ne.ns20 <- ggplot(v5nesim1$v5.ns20.ne.nullT, aes(y=dv, x=factor(group, levels=c(1,2)))) +
-    geom_boxplot() +
-    scale_x_discrete(labels=c(bquote('n'[1]~'= 20'), bquote('n'[2]~'= 20'))) +
-    scale_y_continuous(limits=c(-2.5,15.5)) +
-    labs(title='5x variances', x='', y='') +
-    theme(plot.margin=unit(c(0,0,0,0),'picas'))
-
-Bplot.v5.ne.ns50 <- ggplot(v5nesim1$v5.ns50.ne.nullT, aes(y=dv, x=factor(group, levels=c(1,2)))) +
-    geom_boxplot() +
-    scale_x_discrete(labels=c(bquote('n'[1]~'= 50'), bquote('n'[2]~'= 50'))) +
-    scale_y_continuous(limits=c(-2.5,15.5)) +
-    labs(x='', y='') +
-    theme(plot.margin=unit(c(0,0,0,0),'picas'))
-    
-Bplot.v5.ne.ns100 <- ggplot(v5nesim1$v5.ns100.ne.nullT, aes(y=dv, x=factor(group, levels=c(1,2)))) +
-    geom_boxplot() +
-    scale_x_discrete(labels=c(bquote('n'[1]~'= 100'), bquote('n'[2]~'= 100'))) +
-    scale_y_continuous(limits=c(-2.5,15.5)) +
-    labs(x='', y='') +
-    theme(plot.margin=unit(c(0,0,0,0),'picas'))
-
-# Plot equal ns
-grid.arrange(Bplot.ve.ne.ns20, Bplot.v2.ne.ns20, Bplot.v5.ne.ns20, Bplot.ve.ne.ns50, Bplot.v2.ne.ns50, Bplot.v5.ne.ns50, Bplot.ve.ne.ns100, Bplot.v2.ne.ns100, Bplot.v5.ne.ns100, nrow=3, ncol=3, main='Figure 1. Boxplots of First Simulations When Sample Sizes are Equal')
+layout <- matrix(c(0,1,1,0,2,3,4,5,6,7,8,9), nrow=3, byrow=TRUE)
+multiplot(plotlist=ve.bplots, layout=layout, title='Figure 1. Boxplots for Equal Variances When Sample Sizes Equal 10 and 100')
 
 @
 
 Figure 2 displays a sample of boxplots for simulations when the sample size ratio and variance ratio are both changing (NOTE: I'm not sure that this adds much so we might just drop it).
 
-<<differentNboxplots, echo=FALSE>>=
+<<varDifferentBoxplots, echo=FALSE>>=
 
-## We'll only use it when the small N = 50 as an example
+x1 <- seq(0,12,.1)
+y1 <- dnorm(x1, mean=6, sd=sqrt(2))
+x2 <- seq(1.13,13.13,.1)
+y2 <- dnorm(x2, mean=7.13, sd=sqrt(10))
 
-# Variances equal
-# NOTE: it's not really ssv when variances are equal
-Bplot.ve.n2.ssv <- ggplot(ven2sim1$ve.ns50.2n.nullT, aes(y=dv, x=factor(group, levels=c(1,2)))) +
-    geom_boxplot() +
-    scale_x_discrete(labels=c(bquote('n'[1]~'= 50'), bquote('n'[2]~'= 100'))) +
-    scale_y_continuous(limits=c(-3.5,16)) +
-    labs(title='Equal variances', x='', y='') +
-    theme(plot.margin=unit(c(0,0,0,0),'picas'))
+x <- c(x1,x2)
+y <- c(y1,y2)
+group <- factor(c(rep(1,length(x1)), rep(2,length(x2))))
 
-Bplot.ve.n1.5.ssv <- ggplot(ven15sim1$ve.ns50.1.5n.nullT, aes(y=dv, x=factor(group, levels=c(1,2)))) +
-    geom_boxplot() +
-    scale_x_discrete(labels=c(bquote('n'[1]~'= 50'), bquote('n'[2]~'= 75'))) +
-    scale_y_continuous(limits=c(-3.5,16)) +
-    labs(x='', y='') +
-    theme(plot.margin=unit(c(0,0,0,0),'picas'))
+ve.distributions <- qplot(x=x, y=y, fill=group, colour=group, geom='line') + geom_vline(xintercept=as.numeric(by(x,group,mean)))
 
-Bplot.ve.n1.5.bsv <- ggplot(ven15sim1$ve.ns50.1.5n.nullT, aes(y=dv, x=factor(group, levels=c(2,1)))) +
-    geom_boxplot() +
-    scale_x_discrete(labels=c(bquote('n'[1]~'= 75'), bquote('n'[2]~'= 50'))) +
-    scale_y_continuous(limits=c(-3.5,16)) +
-    labs(x='', y='') +
-    theme(plot.margin=unit(c(0,0,0,0),'picas'))
+set.seed(2184)
+ve.bplots <- c(list(ve.distributions), lapply(1:4, function(x){qplot(x=factor(rep(c(1,2), each=10)), y=c(rnorm(10,6,2),rnorm(10,7.13,10)), geom='boxplot', colour=factor(rep(c(1,2), each=10)), xlab='', ylab='') + theme(legend.position='none')}), lapply(1:4, function(x){qplot(x=factor(rep(c(1,2), each=100)), y=c(rnorm(100,6,2),rnorm(100,7.13,10)), geom='boxplot', colour=factor(rep(c(1,2), each=100)), xlab='', ylab='') + theme(legend.position='none')}))
 
-Bplot.ve.n2.bsv <- ggplot(ven2sim1$ve.ns50.2n.nullT, aes(y=dv, x=factor(group, levels=c(2,1)))) +
-    geom_boxplot() +
-    scale_x_discrete(labels=c(bquote('n'[1]~'= 100'), bquote('n'[2]~'= 50'))) +
-    scale_y_continuous(limits=c(-3.5,16)) +
-    labs(x='', y='') +
-    theme(plot.margin=unit(c(0,0,0,0),'picas'))
+layout <- matrix(c(0,1,1,0,2,3,4,5,6,7,8,9), nrow=3, byrow=TRUE)
+multiplot(plotlist=ve.bplots, layout=layout, title='Figure 2. Boxplots for Unequal Variances When Sample Sizes Equal 10 and 100')
 
-
-# Variances double
-# NOTE: it's not really ssv when variances are equal
-Bplot.v2.n2.ssv <- ggplot(v2n2ssvsim1$v2.ns50.2n.ssv.nullT, aes(y=dv, x=factor(group, levels=c(1,2)))) +
-    geom_boxplot() +
-    scale_x_discrete(labels=c(bquote('n'[1]~'= 50'), bquote('n'[2]~'= 100'))) +
-    scale_y_continuous(limits=c(-3.5,16)) +
-    labs(title='Double variances', x='', y='') +
-    theme(plot.margin=unit(c(0,0,0,0),'picas'))
-
-Bplot.v2.n1.5.ssv <- ggplot(v2n15ssvsim1$v2.ns50.1.5n.ssv.nullT, aes(y=dv, x=factor(group, levels=c(1,2)))) +
-    geom_boxplot() +
-    scale_x_discrete(labels=c(bquote('n'[1]~'= 50'), bquote('n'[2]~'= 75'))) +
-    scale_y_continuous(limits=c(-3.5,16)) +
-    labs(x='', y='') +
-    theme(plot.margin=unit(c(0,0,0,0),'picas'))
-
-Bplot.v2.n1.5.bsv <- ggplot(v2n15bsvsim1$v2.ns50.1.5n.bsv.nullT, aes(y=dv, x=factor(group, levels=c(2,1)))) +
-    geom_boxplot() +
-    scale_x_discrete(labels=c(bquote('n'[1]~'= 75'), bquote('n'[2]~'= 50'))) +
-    scale_y_continuous(limits=c(-3.5,16)) +
-    labs(x='', y='') +
-    theme(plot.margin=unit(c(0,0,0,0),'picas'))
-
-Bplot.v2.n2.bsv <- ggplot(v2n2bsvsim1$v2.ns50.2n.bsv.nullT, aes(y=dv, x=factor(group, levels=c(2,1)))) +
-    geom_boxplot() +
-    scale_x_discrete(labels=c(bquote('n'[1]~'= 100'), bquote('n'[2]~'= 50'))) +
-    scale_y_continuous(limits=c(-3.5,16)) +
-    labs(x='', y='') +
-    theme(plot.margin=unit(c(0,0,0,0),'picas'))
-
-# Variances 5x
-# NOTE: it's not really ssv when variances are equal
-Bplot.v5.n2.ssv <- ggplot(v5n2ssvsim1$v5.ns50.2n.ssv.nullT, aes(y=dv, x=factor(group, levels=c(1,2)))) +
-    geom_boxplot() +
-    scale_x_discrete(labels=c(bquote('n'[1]~'= 50'), bquote('n'[2]~'= 100'))) +
-    scale_y_continuous(limits=c(-3.5,16)) +
-    labs(title='5x variances', x='', y='') +
-    theme(plot.margin=unit(c(0,0,0,0),'picas'))
-
-Bplot.v5.n1.5.ssv <- ggplot(v5n15ssvsim1$v5.ns50.1.5n.ssv.nullT, aes(y=dv, x=factor(group, levels=c(1,2)))) +
-    geom_boxplot() +
-    scale_x_discrete(labels=c(bquote('n'[1]~'= 50'), bquote('n'[2]~'= 75'))) +
-    scale_y_continuous(limits=c(-3.5,16)) +
-    labs(x='', y='') +
-    theme(plot.margin=unit(c(0,0,0,0),'picas'))
-
-Bplot.v5.n1.5.bsv <- ggplot(v5n15bsvsim1$v5.ns50.1.5n.bsv.nullT, aes(y=dv, x=factor(group, levels=c(2,1)))) +
-    geom_boxplot() +
-    scale_x_discrete(labels=c(bquote('n'[1]~'= 75'), bquote('n'[2]~'= 50'))) +
-    scale_y_continuous(limits=c(-3.5,16)) +
-    labs(x='', y='') +
-    theme(plot.margin=unit(c(0,0,0,0),'picas'))
-
-Bplot.v5.n2.bsv <- ggplot(v5n2bsvsim1$v5.ns50.2n.bsv.nullT, aes(y=dv, x=factor(group, levels=c(2,1)))) +
-    geom_boxplot() +
-    scale_x_discrete(labels=c(bquote('n'[1]~'= 100'), bquote('n'[2]~'= 50'))) +
-    scale_y_continuous(limits=c(-3.5,16)) +
-    labs(x='', y='') +
-    theme(plot.margin=unit(c(0,0,0,0),'picas'))
-
-# Plot n = 20, different vars, different ns
-grid.arrange(Bplot.ve.n2.ssv, Bplot.v2.n2.ssv, Bplot.v5.n2.ssv, Bplot.ve.n1.5.ssv, Bplot.v2.n1.5.ssv, Bplot.v5.n1.5.ssv, Bplot.ve.n1.5.bsv, Bplot.v2.n1.5.bsv, Bplot.v5.n1.5.bsv, Bplot.ve.n2.bsv, Bplot.v2.n2.bsv, Bplot.v5.n2.bsv, nrow=4, main='Figure 2. Boxplots of First Simulations When Sample Sizes are Unequal')
 
 @
 
@@ -1057,6 +920,17 @@ grid.arrange(CovClassic.nullT, CovWelch.nullT, nrow=1, main='Figure 10. Coverage
     
     In much experimental work, the choice between the tests is probably fine if the experimenter ensures that sample sizes are equal. This is generally not an option with pre-existing groups. 
 
+<< tdist, echo=FALSE>>=
+
+#plot t distributions with different degrees of freedom - this needs to go somewhere
+
+x <- rep(seq(-4,4,.1), 2)
+y <- c(dt(seq(-4,4,.1),df=38), dt(seq(-4,4,.1),df=38/2))
+group <- factor(rep(c('df = 38', 'df = 19'), each=81))
+
+ggplot(data.frame(x,y,group), aes(y=y, x=x, fill=group)) + geom_line(aes(colour=group))
+
+@
 
 
 \section{Possible Cuts}
@@ -1105,6 +979,185 @@ grid.arrange(CovClassic.nullT, CovWelch.nullT, nrow=1, main='Figure 10. Coverage
 
 #grid.arrange(Bplot.ve.1.5n.ns50, Bplot.v2.1.5n.ssv.ns50, Bplot.v5.1.5n.ssv.ns50, Bplot.ve.1.5n.ns50,  Bplot.v2.1.5n.bsv.ns50, Bplot.v5.1.5n.bsv.ns50, ncol=3, main='Figure 6. Degrees of Freedom Ratios with Changing Variance Ratios and Sample Size Ratios')
 
+
+
+
+################## Boxplots of first simulations
+
+
+
+
+### all null true
+
+## Equal ns
+
+# equal vars, equal ns
+# 
+# Bplot.ve.ne.ns20 <- ggplot(venesim1$ve.ns20.ne.nullT, aes(y=dv, x=factor(group, levels=c(1,2)))) +
+#     geom_boxplot() +
+#     scale_x_discrete(labels=c(bquote('n'[1]~'= 20'), bquote('n'[2]~'= 20'))) +
+#     scale_y_continuous(limits=c(-2.5,15.5)) +
+#     labs(title='Equal variances', x='', y='') +
+#     theme(plot.margin=unit(c(0,0,0,0),'picas'))
+# 
+# Bplot.ve.ne.ns50 <- ggplot(venesim1$ve.ns50.ne.nullT, aes(y=dv, x=factor(group, levels=c(1,2)))) +
+#     geom_boxplot() +
+#     scale_x_discrete(labels=c(bquote('n'[1]~'= 50'), bquote('n'[2]~'= 50'))) +
+#     scale_y_continuous(limits=c(-2.5,15.5)) +
+#     labs(x='', y='') +
+#     theme(plot.margin=unit(c(0,0,0,0),'picas'))
+# 
+# Bplot.ve.ne.ns100 <- ggplot(venesim1$ve.ns100.ne.nullT, aes(y=dv, x=factor(group, levels=c(1,2)))) +
+#     geom_boxplot() +
+#     scale_x_discrete(labels=c(bquote('n'[1]~'= 100'), bquote('n'[2]~'= 100'))) +
+#     scale_y_continuous(limits=c(-2.5,15.5)) +
+#     labs(x='', y='') +
+#     theme(plot.margin=unit(c(0,0,0,0),'picas'))
+# 
+# # double vars, equal ns
+# Bplot.v2.ne.ns20 <- ggplot(v2nesim1$v2.ns20.ne.nullT, aes(y=dv, x=factor(group, levels=c(1,2)))) +
+#     geom_boxplot() +
+#     scale_x_discrete(labels=c(bquote('n'[1]~'= 20'), bquote('n'[2]~'= 20'))) +
+#     scale_y_continuous(limits=c(-2.5,15.5)) +
+#     labs(title='Double variances', x='', y='') +
+#     theme(plot.margin=unit(c(0,0,0,0),'picas'))
+# 
+# Bplot.v2.ne.ns50 <- ggplot(v2nesim1$v2.ns50.ne.nullT, aes(y=dv, x=factor(group, levels=c(1,2)))) +
+#     geom_boxplot() +
+#     scale_x_discrete(labels=c(bquote('n'[1]~'= 50'), bquote('n'[2]~'= 50'))) +
+#     scale_y_continuous(limits=c(-2.5,15.5)) +
+#     labs(x='', y='') +
+#     theme(plot.margin=unit(c(0,0,0,0),'picas'))
+# 
+# Bplot.v2.ne.ns100 <- ggplot(v2nesim1$v2.ns100.ne.nullT, aes(y=dv, x=factor(group, levels=c(1,2)))) +
+#     geom_boxplot() +
+#     scale_x_discrete(labels=c(bquote('n'[1]~'= 100'), bquote('n'[2]~'= 100'))) +
+#     scale_y_continuous(limits=c(-2.5,15.5)) +
+#     labs(x='', y='') +
+#     theme(plot.margin=unit(c(0,0,0,0),'picas'))
+# 
+# # 5x vars, equal ns
+# Bplot.v5.ne.ns20 <- ggplot(v5nesim1$v5.ns20.ne.nullT, aes(y=dv, x=factor(group, levels=c(1,2)))) +
+#     geom_boxplot() +
+#     scale_x_discrete(labels=c(bquote('n'[1]~'= 20'), bquote('n'[2]~'= 20'))) +
+#     scale_y_continuous(limits=c(-2.5,15.5)) +
+#     labs(title='5x variances', x='', y='') +
+#     theme(plot.margin=unit(c(0,0,0,0),'picas'))
+# 
+# Bplot.v5.ne.ns50 <- ggplot(v5nesim1$v5.ns50.ne.nullT, aes(y=dv, x=factor(group, levels=c(1,2)))) +
+#     geom_boxplot() +
+#     scale_x_discrete(labels=c(bquote('n'[1]~'= 50'), bquote('n'[2]~'= 50'))) +
+#     scale_y_continuous(limits=c(-2.5,15.5)) +
+#     labs(x='', y='') +
+#     theme(plot.margin=unit(c(0,0,0,0),'picas'))
+#     
+# Bplot.v5.ne.ns100 <- ggplot(v5nesim1$v5.ns100.ne.nullT, aes(y=dv, x=factor(group, levels=c(1,2)))) +
+#     geom_boxplot() +
+#     scale_x_discrete(labels=c(bquote('n'[1]~'= 100'), bquote('n'[2]~'= 100'))) +
+#     scale_y_continuous(limits=c(-2.5,15.5)) +
+#     labs(x='', y='') +
+#     theme(plot.margin=unit(c(0,0,0,0),'picas'))
+# 
+# # Plot equal ns
+# grid.arrange(Bplot.ve.ne.ns20, Bplot.v2.ne.ns20, Bplot.v5.ne.ns20, Bplot.ve.ne.ns50, Bplot.v2.ne.ns50, Bplot.v5.ne.ns50, Bplot.ve.ne.ns100, Bplot.v2.ne.ns100, Bplot.v5.ne.ns100, nrow=3, ncol=3, main='Figure 1. Boxplots of First Simulations When Sample Sizes are Equal')
+# 
+# 
+# 
+# ## We'll only use it when the small N = 50 as an example
+# 
+# # Variances equal
+# # NOTE: it's not really ssv when variances are equal
+# Bplot.ve.n2.ssv <- ggplot(ven2sim1$ve.ns50.2n.nullT, aes(y=dv, x=factor(group, levels=c(1,2)))) +
+#     geom_boxplot() +
+#     scale_x_discrete(labels=c(bquote('n'[1]~'= 50'), bquote('n'[2]~'= 100'))) +
+#     scale_y_continuous(limits=c(-3.5,16)) +
+#     labs(title='Equal variances', x='', y='') +
+#     theme(plot.margin=unit(c(0,0,0,0),'picas'))
+# 
+# Bplot.ve.n1.5.ssv <- ggplot(ven15sim1$ve.ns50.1.5n.nullT, aes(y=dv, x=factor(group, levels=c(1,2)))) +
+#     geom_boxplot() +
+#     scale_x_discrete(labels=c(bquote('n'[1]~'= 50'), bquote('n'[2]~'= 75'))) +
+#     scale_y_continuous(limits=c(-3.5,16)) +
+#     labs(x='', y='') +
+#     theme(plot.margin=unit(c(0,0,0,0),'picas'))
+# 
+# Bplot.ve.n1.5.bsv <- ggplot(ven15sim1$ve.ns50.1.5n.nullT, aes(y=dv, x=factor(group, levels=c(2,1)))) +
+#     geom_boxplot() +
+#     scale_x_discrete(labels=c(bquote('n'[1]~'= 75'), bquote('n'[2]~'= 50'))) +
+#     scale_y_continuous(limits=c(-3.5,16)) +
+#     labs(x='', y='') +
+#     theme(plot.margin=unit(c(0,0,0,0),'picas'))
+# 
+# Bplot.ve.n2.bsv <- ggplot(ven2sim1$ve.ns50.2n.nullT, aes(y=dv, x=factor(group, levels=c(2,1)))) +
+#     geom_boxplot() +
+#     scale_x_discrete(labels=c(bquote('n'[1]~'= 100'), bquote('n'[2]~'= 50'))) +
+#     scale_y_continuous(limits=c(-3.5,16)) +
+#     labs(x='', y='') +
+#     theme(plot.margin=unit(c(0,0,0,0),'picas'))
+# 
+# 
+# # Variances double
+# # NOTE: it's not really ssv when variances are equal
+# Bplot.v2.n2.ssv <- ggplot(v2n2ssvsim1$v2.ns50.2n.ssv.nullT, aes(y=dv, x=factor(group, levels=c(1,2)))) +
+#     geom_boxplot() +
+#     scale_x_discrete(labels=c(bquote('n'[1]~'= 50'), bquote('n'[2]~'= 100'))) +
+#     scale_y_continuous(limits=c(-3.5,16)) +
+#     labs(title='Double variances', x='', y='') +
+#     theme(plot.margin=unit(c(0,0,0,0),'picas'))
+# 
+# Bplot.v2.n1.5.ssv <- ggplot(v2n15ssvsim1$v2.ns50.1.5n.ssv.nullT, aes(y=dv, x=factor(group, levels=c(1,2)))) +
+#     geom_boxplot() +
+#     scale_x_discrete(labels=c(bquote('n'[1]~'= 50'), bquote('n'[2]~'= 75'))) +
+#     scale_y_continuous(limits=c(-3.5,16)) +
+#     labs(x='', y='') +
+#     theme(plot.margin=unit(c(0,0,0,0),'picas'))
+# 
+# Bplot.v2.n1.5.bsv <- ggplot(v2n15bsvsim1$v2.ns50.1.5n.bsv.nullT, aes(y=dv, x=factor(group, levels=c(2,1)))) +
+#     geom_boxplot() +
+#     scale_x_discrete(labels=c(bquote('n'[1]~'= 75'), bquote('n'[2]~'= 50'))) +
+#     scale_y_continuous(limits=c(-3.5,16)) +
+#     labs(x='', y='') +
+#     theme(plot.margin=unit(c(0,0,0,0),'picas'))
+# 
+# Bplot.v2.n2.bsv <- ggplot(v2n2bsvsim1$v2.ns50.2n.bsv.nullT, aes(y=dv, x=factor(group, levels=c(2,1)))) +
+#     geom_boxplot() +
+#     scale_x_discrete(labels=c(bquote('n'[1]~'= 100'), bquote('n'[2]~'= 50'))) +
+#     scale_y_continuous(limits=c(-3.5,16)) +
+#     labs(x='', y='') +
+#     theme(plot.margin=unit(c(0,0,0,0),'picas'))
+# 
+# # Variances 5x
+# # NOTE: it's not really ssv when variances are equal
+# Bplot.v5.n2.ssv <- ggplot(v5n2ssvsim1$v5.ns50.2n.ssv.nullT, aes(y=dv, x=factor(group, levels=c(1,2)))) +
+#     geom_boxplot() +
+#     scale_x_discrete(labels=c(bquote('n'[1]~'= 50'), bquote('n'[2]~'= 100'))) +
+#     scale_y_continuous(limits=c(-3.5,16)) +
+#     labs(title='5x variances', x='', y='') +
+#     theme(plot.margin=unit(c(0,0,0,0),'picas'))
+# 
+# Bplot.v5.n1.5.ssv <- ggplot(v5n15ssvsim1$v5.ns50.1.5n.ssv.nullT, aes(y=dv, x=factor(group, levels=c(1,2)))) +
+#     geom_boxplot() +
+#     scale_x_discrete(labels=c(bquote('n'[1]~'= 50'), bquote('n'[2]~'= 75'))) +
+#     scale_y_continuous(limits=c(-3.5,16)) +
+#     labs(x='', y='') +
+#     theme(plot.margin=unit(c(0,0,0,0),'picas'))
+# 
+# Bplot.v5.n1.5.bsv <- ggplot(v5n15bsvsim1$v5.ns50.1.5n.bsv.nullT, aes(y=dv, x=factor(group, levels=c(2,1)))) +
+#     geom_boxplot() +
+#     scale_x_discrete(labels=c(bquote('n'[1]~'= 75'), bquote('n'[2]~'= 50'))) +
+#     scale_y_continuous(limits=c(-3.5,16)) +
+#     labs(x='', y='') +
+#     theme(plot.margin=unit(c(0,0,0,0),'picas'))
+# 
+# Bplot.v5.n2.bsv <- ggplot(v5n2bsvsim1$v5.ns50.2n.bsv.nullT, aes(y=dv, x=factor(group, levels=c(2,1)))) +
+#     geom_boxplot() +
+#     scale_x_discrete(labels=c(bquote('n'[1]~'= 100'), bquote('n'[2]~'= 50'))) +
+#     scale_y_continuous(limits=c(-3.5,16)) +
+#     labs(x='', y='') +
+#     theme(plot.margin=unit(c(0,0,0,0),'picas'))
+# 
+# # Plot n = 20, different vars, different ns
+# grid.arrange(Bplot.ve.n2.ssv, Bplot.v2.n2.ssv, Bplot.v5.n2.ssv, Bplot.ve.n1.5.ssv, Bplot.v2.n1.5.ssv, Bplot.v5.n1.5.ssv, Bplot.ve.n1.5.bsv, Bplot.v2.n1.5.bsv, Bplot.v5.n1.5.bsv, Bplot.ve.n2.bsv, Bplot.v2.n2.bsv, Bplot.v5.n2.bsv, nrow=4, main='Figure 2. Boxplots of First Simulations When Sample Sizes are Unequal')
 
 @
 
