@@ -1,4 +1,4 @@
-\documentclass[man,a4paper,noextraspace]{apa6}
+\documentclass[man,a4paper,noextraspace,apacite]{apa6}
 
 \title{Always Use the Separate Variances t Test for Two Independent Groups}
 \shorttitle{Separate Variances t Test}
@@ -6,7 +6,15 @@
 \affiliation{University of Michigan}
 
 \abstract{This is an abstract}
-\keywords{t test, new statistics}
+\keywords{t test, new statistics, Welch}
+
+\authornote{Joshua D. Wondra, Department of Psychology, University of Michigan.
+
+Richard Gonzalez, Department of Psychology, University of Michigan.
+
+Correspondence concerning this article should be addressed to Josh Wondra, Department of Psychology, University of Michigan, 530 Church St., Ann Arbor, MI 48109-1043.
+
+Contact: jdwondra@umich.edu}
 
 
 \begin{document}
@@ -17,16 +25,15 @@
     One of the first decisions that many researchers learn is how to compare the means of two independent groups--they run a t test. But even this basic comparison presents a choice between the classic Student's t test (CITATION) or the alternative Welch-Satterthwaite test (CITATION). Most researchers learn about Student's t test in the first statistics class that they ever take.  
     
 When you use Student's t test to compare the means of independent groups, you make three assumptions: 
+\begin{APAenumerate}
+    \item Normality: The population for each group has a normal distribution.
+    \item Independence: All observations are independent of each other, meaning that the probability of one observation having a particular value does not depend on the probability of another observation having a particular value.
+    \item Equal variances: The population variances for the two groups are equal.
+\end{APAenumerate}
     
-    1. Normality: The population for each group has a normal distribution.
-
-    2. Independence: All observations are independent of each other, meaning that the probability of one observation having a particular value does not depend on the probability of another observation having a particular value.
-
-    3. Equal variances: The population variances for the two groups are equal. 
-
 If these assumptions hold, then you can compuate the t-value by taking the difference in group means and dividing by the standard error of that difference:   
     \begin{equation}
-    t = \frac{\overline{x_1}-\overline{x_2}}{\sigma_{\overline{x_1}-\overline{x_2}}}
+    t = \frac{\overline{x}_1-\overline{x}_2}{s_{\overline{x}_1-\overline{x}_2}}
     \end{equation}
     The p-value for the value of the t statistic depends on the degrees of freedom, $df=n_1+n_2-2$. You are more likely to reject the null hypothesis and conclude that there is a difference in the group means as the degrees of freedom get larger, meaning that the sample sizes are larger, and as the value of the t test gets larger, meaning that the difference in group means gets larger or the standard error gets smaller. With the equal variances assumption, the standard error is based on a common variance that pools the estimates of the variances of the two groups. 
 
@@ -104,7 +111,7 @@ library(gridExtra)
 # then plot 1 will go in the upper left, 2 will go in the upper right, and
 # 3 will go all the way across the bottom.
 
-multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL, title='') {
+multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
 
   # Make a list from the ... arguments and plotlist
   plots <- c(list(...), plotlist)
@@ -126,23 +133,24 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL, title='') {
   } else {
     # Set up the page
     grid.newpage()
-    pushViewport(viewport(layout = grid.layout(1+nrow(layout), ncol(layout), heights=unit(c(.5,rep(1,nrow(layout))),'null'))))
+    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout), heights=unit(rep(1,nrow(layout)),'null'))))
 
     # Make each plot, in the correct location
     for (i in 1:numPlots) {
       # Get the i,j matrix positions of the regions that contain this subplot
       matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
 
-      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row+1, #adjusted this to make sure the first plot doesn't print on the title row
+      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row, 
                                       layout.pos.col = matchidx$col))
     }
   }
- grid.text(paste(title), vp=viewport(layout.pos.row=1,layout.pos.col=1:ncol(layout))) # I added this part for a title 
+
 }
 
 @
 \subsection{Boxplots} One option for deciding whether the group variances are equal is to examine boxplots. Figure 1 displays boxplots for the first simulation each condition when sample sizes are equal. When variances are unequal, the larger variance is for the group to the right. When the sample sizes are smaller, it can be more difficult to tell whether the variances are unequal or not. When the sample sizes are 20, the variance of one group looks a bit larger than the other when they are really equal and the variances look approximately equal when one group has twice the variance of the other. As the sample size and increases, it becomes clearer to see whether there is a violation - at 100 subjects per condition, when variances are equal the boxes and whiskers are approximately the same length, and when variances are unequal both the box and whiskers appear wider in the group with the bigger variance. By examining several additional simulations it would be possible to see how much variability in the boxplots is normal when variances are equal or unequal.
    
+\begin{figure}
 <<varEqualBoxplots, echo=FALSE, collapse=TRUE>>=
 
 x1 <- seq(0,12,.1)
@@ -154,18 +162,21 @@ x <- c(x1,x2)
 y <- c(y1,y2)
 group <- factor(c(rep(1,length(x1)), rep(2,length(x2))))
 
-ve.distributions <- qplot(x=x, y=y, fill=group, colour=group, geom='line') + geom_vline(xintercept=as.numeric(by(x,group,mean)))
+ve.distributions <- qplot(x=x, y=y, colour=group, geom='line', xlab=NULL, ylab=NULL) + geom_vline(xintercept=as.numeric(by(x,group,mean))) + theme(legend.position='none')
 
 set.seed(2184)
-ve.bplots <- c(list(ve.distributions), lapply(1:4, function(x){qplot(x=factor(rep(c(1,2), each=10)), y=c(rnorm(10,6,2),rnorm(10,7.13,2)), geom='boxplot', colour=factor(rep(c(1,2), each=10)), xlab='', ylab='') + theme(legend.position='none')}), lapply(1:4, function(x){qplot(x=factor(rep(c(1,2), each=100)), y=c(rnorm(100,6,2),rnorm(100,7.13,2)), geom='boxplot', colour=factor(rep(c(1,2), each=100)), xlab='', ylab='') + theme(legend.position='none')}))
+ve.bplots <- c(list(ve.distributions), lapply(1:4, function(x){qplot(x=factor(rep(c(1,2), each=10)), y=c(rnorm(10,6,sqrt(2)),rnorm(10,7.13,sqrt(2))), geom='boxplot', colour=factor(rep(c(1,2), each=10)), xlab=NULL, ylab=NULL, ylim=c(-2.5,17.5)) + theme(legend.position='none')}), lapply(1:4, function(x){qplot(x=factor(rep(c(1,2), each=100)), y=c(rnorm(100,6,sqrt(2)),rnorm(100,7.13,sqrt(2))), geom='boxplot', colour=factor(rep(c(1,2), each=100)), xlab=NULL, ylab=NULL, ylim=c(-2.5,17.5)) + theme(legend.position='none')}))
 
 layout <- matrix(c(0,1,1,0,2,3,4,5,6,7,8,9), nrow=3, byrow=TRUE)
-multiplot(plotlist=ve.bplots, layout=layout, title='Figure 1. Boxplots for Equal Variances When Sample Sizes Equal 10 and 100')
+multiplot(plotlist=ve.bplots, layout=layout)
 
 @
+\textit{Figure 1.} Boxplots for equal variances when sample sizes equal 10 and 100.
+\end{figure}
 
 Figure 2 displays a sample of boxplots for simulations when the sample size ratio and variance ratio are both changing (NOTE: I'm not sure that this adds much so we might just drop it).
 
+\begin{figure}
 <<varDifferentBoxplots, echo=FALSE>>=
 
 x1 <- seq(0,12,.1)
@@ -177,22 +188,25 @@ x <- c(x1,x2)
 y <- c(y1,y2)
 group <- factor(c(rep(1,length(x1)), rep(2,length(x2))))
 
-ve.distributions <- qplot(x=x, y=y, fill=group, colour=group, geom='line') + geom_vline(xintercept=as.numeric(by(x,group,mean)))
+ve.distributions <- qplot(x=x, y=y, fill=group, colour=group, geom='line', xlab=NULL, ylab=NULL) + geom_vline(xintercept=as.numeric(by(x,group,mean))) + theme(legend.position='none')
 
 set.seed(2184)
-ve.bplots <- c(list(ve.distributions), lapply(1:4, function(x){qplot(x=factor(rep(c(1,2), each=10)), y=c(rnorm(10,6,2),rnorm(10,7.13,10)), geom='boxplot', colour=factor(rep(c(1,2), each=10)), xlab='', ylab='') + theme(legend.position='none')}), lapply(1:4, function(x){qplot(x=factor(rep(c(1,2), each=100)), y=c(rnorm(100,6,2),rnorm(100,7.13,10)), geom='boxplot', colour=factor(rep(c(1,2), each=100)), xlab='', ylab='') + theme(legend.position='none')}))
+ve.bplots <- c(list(ve.distributions), lapply(1:4, function(x){qplot(x=factor(rep(c(1,2), each=10)), y=c(rnorm(10,6,sqrt(2)),rnorm(10,7.13,sqrt(10))), geom='boxplot', colour=factor(rep(c(1,2), each=10)), xlab=NULL, ylab=NULL, ylim=c(-2.5,17.5)) + theme(legend.position='none')}), lapply(1:4, function(x){qplot(x=factor(rep(c(1,2), each=100)), y=c(rnorm(100,6,sqrt(2)),rnorm(100,7.13,sqrt(10))), geom='boxplot', colour=factor(rep(c(1,2), each=100)), xlab=NULL, ylab=NULL, ylim=c(-2.5,17.5)) + theme(legend.position='none')}))
 
 layout <- matrix(c(0,1,1,0,2,3,4,5,6,7,8,9), nrow=3, byrow=TRUE)
-multiplot(plotlist=ve.bplots, layout=layout, title='Figure 2. Boxplots for Unequal Variances When Sample Sizes Equal 10 and 100')
-
+multiplot(plotlist=ve.bplots, layout=layout)
 
 @
+\textit{Figure 2.} Boxplots for unequal variances when sample sizes equal 10 and 100.
+\end{figure}
+
 
 \subsection{Does the df Ratio Help?}
     We examined whether looking at ratio of the Welch degrees of freedom to the classic t test degrees of freedom would provide a heuristic for deciding that equal variances does not hold. When both the sample sizes and variances are equal,  As the sample sizes increase, the degrees of freedom ratio stays close to 1. 
 
     Figure 3 displays the ratio as the group variances become increasingly different when both the sample size and the sample size ratio stay the same. Under this condition, the distribution moves away from 1 as the difference in group variances increases.
 
+\begin{figure}
 << dfratiosDiffvars, echo=FALSE>>=
 
 load('/users/joshwondra/R-projects/Welch rule/dfs.list.RData')
@@ -213,35 +227,40 @@ partial.df <- function(var = 'a', params=df.ratio.defaults){
 
 ggplot(data.frame(x=seq(2,10,.1)), aes(x)) +
     stat_function(fun=partial.df(var='var2', params=list('n1'=50,'n2'=50,'var1'=2,'var2'=2))) + #NOTE: the sample sizes don't affect the df ratio
-    labs(title='Figure 3. Degrees of Freedom Ratio When Sample Sizes are Equal and Variances are Unequal', y=bquote(frac('df'['Welch'],'df'['Student'])), x=bquote(frac('s'^1,'s'^2))) +
+    labs(y=bquote(frac('df'['Welch'],'df'['Student'])), x=bquote(frac('s'[1]^2,'s'[2]^2))) +
     scale_x_continuous(breaks=c(2,4,6,8,10), labels=c(2,4,6,8,10)/2)
 
 @
+\textit{Figure 3.} Degrees of freedom ratio when sample sizes are equal and variances are unequal.
+\end{figure}
 
     In the first two plots, the degrees of freedom ratios are generally above 95\% when variances are equal and below 95\% when they differ. A useful heuristic might be to assume unequal variances when the ratio falls below 95\%. But now look what happens when the variances are equal and the sample size ratio changes in Figure 4. Here too the ratio drops when the sample sizes become increasingly uneven, even though the variances stay the same. Our 95\% heuristic would lead us astray and we would incorrectly conclude that the variances are unequal.
 
+\begin{figure}
 <<dfratiosDiffNratios, echo=FALSE>>=
 
 ggplot(data.frame(x=seq(50,100,.1)), aes(x)) + 
     stat_function(fun=partial.df(var='n2', params=list('n1'=50,'n2'=50,'var1'=2,'var2'=2))) +
-    labs(title='Figure 4. Degrees of Freedom Ratio When Sample Sizes are Unequal and Variances are Equal', y=bquote(frac('df'['Welch'],'df'['Student'])), x=bquote(frac('n'^1,'n'^2))) +
+    labs(y=bquote(frac('df'['Welch'],'df'['Student'])), x=bquote(frac('n'[1],'n'[2]))) +
     scale_x_continuous(breaks=c(50,60,70,80,90,100), labels=c(50,60,70,80,90,100)/50)
 
 @
+\textit{Figure 4.} Degrees of freedom ratio when sample sizes are unequal and variances are equal.
+\end{figure}
 
     Finally, Figure 5 demonstrates one example of what happens to the degrees of freedom ratio when the variances become increasingly unequal and the sample sizes are unequal. In this case, the effect of different variances depends on whether the larger group has the larger variance or the smaller variance. In the first row, when the larger group has the larger variance, the move from equal to unequal variances actual counteracts the effect of the unequal sample sizes, and the degrees of freedom are generally higher at both unequal variance ratios that we sampled. However, in the second row, when the larger group has the smaller variance, the degrees of freedom ratio drops as the variances become increasingly unequal. 
 
+\begin{figure}
 <<dfratiosDiffvarsDiffNratios, echo=FALSE>>=
 ggplot(data.frame(x=seq(2,10,.1)), aes(x)) + 
     stat_function(fun=partial.df(var='var2', params=list('n1'=75,'n2'=50,'var1'=2,'var2'=2)), aes(colour='n2')) +
     stat_function(fun=partial.df(var='var2', params=list('n1'=50,'n2'=75,'var1'=2,'var2'=2)), aes(colour='n1/2')) +
     scale_colour_manual(values=c('blue', 'red'), labels=c(bquote(frac('n'[1],'n'[2])~'= 2'), bquote(frac('n'[1],'n'[2])~'= '~frac(1,2)))) +
-    labs(title='Figure 5. Degrees of Freedom Ratio When Sample Sizes are Unequal and Variances are Unequal', y=bquote(frac('df'['Welch'],'df'['Student'])), x=bquote(frac('s'^1,'s'^2))) +
+    labs(y=bquote(frac('df'['Welch'],'df'['Student'])), x=bquote(frac('s'[1]^2,'s'[2]^2))) +
     scale_x_continuous(breaks=c(2,4,6,8,10), labels=c(2,4,6,8,10)/2)
-
-
 @
-
+\textit{Figure 5.} Degrees of freedom ratio when sample sizes are unequal and variances are unequal.
+\end{figure}
     In short, the usefulness of a heuristic based on the ratio of degrees of freedom from the Welch test to degrees of freedom from Student's test is limited to cases when the sample sizes are equal. 
 
     One of the concerns about using the Welch test as an alternative to Student's t test is that the penalty on the degrees of freedom makes it difficult to find effects. The boxplots show that under ideal conditions, when the true population variances and the sample sizes are equal, the penalty is small. Even under non-ideal conditions, when both the population variances and the sample sizes are unequal, there is variability in the penalty depending on the specific configuration of sample sizes and variances.
@@ -281,7 +300,7 @@ T1classic <- ggplot(type1.classic, aes(x=as.numeric(var.ratio), y=type1.rate, sh
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=0, to=.13, by=.01)) +
-    xlab('Variance Ratio (var1/var2)') + ylab('Type I Error Rate') + ggtitle("Figure 7. Type I Error Rates for Student's t Test")
+    xlab('Variance Ratio (var1/var2)') + ylab('Type I Error Rate')
 
 
 ##### Welch's t test data
@@ -315,25 +334,31 @@ T1welch <- ggplot(type1.welch, aes(x=as.numeric(var.ratio), y=type1.rate, shape=
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=0, to=.13, by=.01)) +
-    xlab('Variance Ratio (var1/var2)') + ylab('Type I Error Rate') + ggtitle("Figure 8. Type I Error Rates for Welch's t Test")
+    xlab('Variance Ratio (var1/var2)') + ylab('Type I Error Rate')
 
 @
 
     In this section we report type I error rates for the classic and separate variance t tests when the null hypothesis is true. Prior research has demonstrated that when either sample sizes or variances are equal, the type I error rates are preserved at .05 for both tests (CITATIONS). This prior work has typically examined sample sizes that are far smaller than the typical psychology experiment.
     
     Figure 7 displays the type I error rate for the classic t test across the different conditions. Consistent with prior research, the type I error rate remained close to .05 when either the sample size or the population variances were equal, but it varied widely when both population variances and sample sizes were unequal. On the left side of Figure 1, when the group with the larger sample size had the larger variance, the type I error rate dropped as low as about .01, whereas on the right side, when the group with the larger sample size had the smaller variance, the type I error rate rose as high as .12, which is more than double the normally accepted false positive rate. 
-    
+
+\begin{figure}    
 <<type1 classic plot, echo=FALSE>>=
 T1classic
 @
+\textit{Figure 7.} Type I error rates for Student's t test.
+\end{figure}
 
     Figure 8 displays the type I error rate for the separate variance t test across the different conditions. In contrast to the classic t test, and consistent with prior research, the type I error rate remained close to .05 across all conditions. 
     
     Here we see the degrees of freedom penalty at work. Our boxplots showed that the penalty was greatest when the large group had the small variance, which reduced the false positive rate of the classic t test. In contrast, the penalty was less severe when the large group had the large variance, so that the Welch test did not reduce the type I error rate beyond the .05 level. Additionally, we can see the different effects of using pooled and separate variances to compute the standard errors. Because the pooled variance of the classic t test weighs the larger sample more heavily, it becomes more liberal when the associated variance is small and more conservative when the associated variance is large. 
 
+\begin{figure}
 <<type1 Welch plot, echo=FALSE>>=
 T1welch
 @
+\textit{Figure 8.} Type I error rates for Welch's t test.
+\end{figure}
 
 \subsection{Power}
 <<classic power setup, echo=FALSE>>=
@@ -424,7 +449,7 @@ smalld.classic.power <- ggplot(power.classic.smalld, aes(x=as.numeric(var.ratio)
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=0, to=1, by=.1)) +
-    xlab('Variance Ratio (var1/var2)') + ylab('Small Effect') + ggtitle("Student's t Test")
+    xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Small Effect') + ggtitle("Student's t Test")
 
 
 
@@ -436,7 +461,7 @@ smalld.classic.deviation <- ggplot(power.classic.smalld, aes(x=as.numeric(var.ra
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=-.3, to=.3, length.out=7)) +
-    xlab('Variance Ratio (var1/var2)') + ylab('Deviation') + ggtitle("Student's t Test")
+    xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Deviation') + ggtitle("Student's t Test")
 
 
 ## Classic t, d=.5, power
@@ -448,7 +473,7 @@ midd.classic.power <- ggplot(power.classic.midd, aes(x=as.numeric(var.ratio), y=
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=0, to=1, by=.1)) +
-    xlab('Variance Ratio (var1/var2)') + ylab('Medium Effect') #+ ggtitle("Student's t Test")
+    xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Medium Effect') #+ ggtitle("Student's t Test")
 
 ## Set up classic t test plot of deviation from expected power
 midd.classic.deviation <- ggplot(power.classic.midd, aes(x=as.numeric(var.ratio), y=power.diff, shape=Ns, color=Ns, ymin=-.3, ymax=.3)) + 
@@ -458,7 +483,7 @@ midd.classic.deviation <- ggplot(power.classic.midd, aes(x=as.numeric(var.ratio)
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=-.3, to=.3, length.out=7)) +
-    xlab('Variance Ratio (var1/var2)') + ylab('Deviation') + ggtitle("Student's t Test")
+    xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Deviation') + ggtitle("Student's t Test")
 
 
 
@@ -471,7 +496,7 @@ bigd.classic.power <- ggplot(power.classic.bigd, aes(x=as.numeric(var.ratio), y=
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=0, to=1, by=.1)) +
-    xlab('Variance Ratio (var1/var2)') + ylab('Large Effect') #+ ggtitle("Student's t Test")
+    xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Large Effect') #+ ggtitle("Student's t Test")
 
 ## Set up classic t test plot of deviation from expected power
 bigd.classic.deviation <- ggplot(power.classic.bigd, aes(x=as.numeric(var.ratio), y=power.diff, shape=Ns, color=Ns, ymin=-.3, ymax=.3)) + 
@@ -481,7 +506,7 @@ bigd.classic.deviation <- ggplot(power.classic.bigd, aes(x=as.numeric(var.ratio)
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=-.3, to=.3, length.out=7)) +
-    xlab('Variance Ratio (var1/var2)') + ylab('Deviation') + ggtitle("Student's t Test")
+    xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Deviation') + ggtitle("Student's t Test")
 
 
 
@@ -577,7 +602,7 @@ smalld.welch.power <- ggplot(power.welch.smalld, aes(x=as.numeric(var.ratio), y=
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=0, to=1, by=.1)) +
-    xlab('Variance Ratio (var1/var2)') + ylab('Small Effect') + ggtitle("Welch's t Test")
+    xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Small Effect') + ggtitle("Welch's t Test")
 
 
 
@@ -589,7 +614,7 @@ smalld.welch.deviation <- ggplot(power.welch.smalld, aes(x=as.numeric(var.ratio)
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=-.3, to=.3, length.out=7)) +
-    xlab('Variance Ratio (var1/var2)') + ylab('Deviation') + ggtitle("Welch's t Test")
+    xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Deviation') + ggtitle("Welch's t Test")
 
 
 ## Welch t, d=.5, power
@@ -600,7 +625,7 @@ midd.welch.power <- ggplot(power.welch.midd, aes(x=as.numeric(var.ratio), y=powe
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=0, to=1, by=.1)) +
-    xlab('Variance Ratio (var1/var2)') + ylab('Medium Effect') #+ ggtitle("Welch's t Test")
+    xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Medium Effect') #+ ggtitle("Welch's t Test")
 
 
 
@@ -612,7 +637,7 @@ midd.welch.deviation <- ggplot(power.welch.midd, aes(x=as.numeric(var.ratio), y=
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=-.3, to=.3, length.out=7)) +
-    xlab('Variance Ratio (var1/var2)') + ylab('Deviation') + ggtitle("Welch's t Test")
+    xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Deviation') + ggtitle("Welch's t Test")
 
 
 
@@ -624,7 +649,7 @@ bigd.welch.power <- ggplot(power.welch.bigd, aes(x=as.numeric(var.ratio), y=powe
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=0, to=1, by=.1)) +
-    xlab('Variance Ratio (var1/var2)') + ylab('Large Effect') #+ ggtitle("Welch's t Test")
+    xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Large Effect') #+ ggtitle("Welch's t Test")
 
 
 
@@ -636,7 +661,7 @@ bigd.welch.deviation <- ggplot(power.welch.bigd, aes(x=as.numeric(var.ratio), y=
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=-.3, to=.3, length.out=7)) +
-    xlab('Variance Ratio (var1/var2)') + ylab('Deviation') + ggtitle("Welch's t Test")
+    xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Deviation') + ggtitle("Welch's t Test")
 
 @
 
@@ -645,10 +670,11 @@ bigd.welch.deviation <- ggplot(power.welch.bigd, aes(x=as.numeric(var.ratio), y=
     The conditions in which the classic t test has the greatest power over the Welch test, when one sample is twice the size of the other and the large sample has the small variance, are the same conditions in which the classic t test had a risk of doubling the false positive rate. In contrast, the Welch test was more powerful than the classic test under other conditions and never inflated the type I error rate.
 
     Taken together, the type I error rates and power favor the Welch test over the classic t test as better balancing researcher concerns.
+\begin{figure}
+<<plotPower, echo=FALSE>>=
 
-<<plot power, echo=FALSE>>=
-
-grid.arrange(smalld.classic.power, smalld.welch.power, midd.classic.power, midd.welch.power, bigd.classic.power, bigd.welch.power, nrow=3, main='Figure 9. Power of the Classic and Welch Tests')
+layout <- matrix(c(1,2,3,4,5,6), nrow=3, byrow=TRUE)
+multiplot(smalld.classic.power, smalld.welch.power, midd.classic.power, midd.welch.power, bigd.classic.power, bigd.welch.power, layout=layout)
 
 #multiplot(smalld.classic.power, smalld.classic.deviation, smalld.welch.power, smalld.welch.deviation, cols=2)
 
@@ -657,6 +683,8 @@ grid.arrange(smalld.classic.power, smalld.welch.power, midd.classic.power, midd.
 #multiplot(bigd.classic.power, bigd.classic.deviation, bigd.welch.power, bigd.welch.deviation, cols=2)
 
 @
+\textit{Figure 9.} Power of Student's and Welch's t tests.
+\end{figure}
 
 \subsection{Coverage Probability}
 Because the accuracy of a confidence interval is influenced by the variance and sample size, but not by the true effect size, we only show the coverage probability when the null hypothesis is true (the coverage probabilities are identical across all effect sizes). Table 10 displays the coverage probability, which is how often the 95\% confidence interval contains the true mean difference in groups, for the two tests under the different conditions. The coverage probability for the classic t test varies dramatically. When it is the least powerful, it is the most accurate. When it is the most powerful, the effect size estimation is the least accurate, and what seems to be a 95\% confidence interval drops as low as an 88\% confidence interval. Once again, the Welch test retains the expected 95\% rate and turns out to best meet a researcher's concerns. 
@@ -753,7 +781,7 @@ CovClassic.nullT <- ggplot(coverage.classic.nullT, aes(x=as.numeric(var.ratio), 
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=.85, to=1, length.out=16)) +
-    xlab('Variance Ratio (var1/var2)') + ylab('Coverage Probability') + ggtitle("Student's t Test")
+    xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Coverage Probability') + ggtitle("Student's t Test")
 
 CovClassic.smalld <- ggplot(coverage.classic.smalld, aes(x=as.numeric(var.ratio), y=coverage.rate, shape=Ns, color=Ns, ymin=.85, ymax=1)) + 
     geom_point(size=3, solid=FALSE) + 
@@ -762,7 +790,7 @@ CovClassic.smalld <- ggplot(coverage.classic.smalld, aes(x=as.numeric(var.ratio)
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=.85, to=1, length.out=16)) +
-    xlab('Variance Ratio (var1/var2)') + ylab('Coverage Probability') + ggtitle("Student's t Test")
+    xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Coverage Probability') + ggtitle("Student's t Test")
 
 CovClassic.midd <- ggplot(coverage.classic.midd, aes(x=as.numeric(var.ratio), y=coverage.rate, shape=Ns, color=Ns, ymin=.85, ymax=1)) + 
     geom_point(size=3, solid=FALSE) + 
@@ -771,7 +799,7 @@ CovClassic.midd <- ggplot(coverage.classic.midd, aes(x=as.numeric(var.ratio), y=
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=.85, to=1, length.out=16)) +
-    xlab('Variance Ratio (var1/var2)') + ylab('Coverage Probability') + ggtitle("Student's t Test")
+    xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Coverage Probability') + ggtitle("Student's t Test")
 
 CovClassic.bigd <- ggplot(coverage.classic.bigd, aes(x=as.numeric(var.ratio), y=coverage.rate, shape=Ns, color=Ns, ymin=.85, ymax=1)) + 
     geom_point(size=3, solid=FALSE) + 
@@ -780,7 +808,7 @@ CovClassic.bigd <- ggplot(coverage.classic.bigd, aes(x=as.numeric(var.ratio), y=
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=.85, to=1, length.out=16)) +
-    xlab('Variance Ratio (var1/var2)') + ylab('Coverage Probability') + ggtitle("Student's t Test")
+    xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Coverage Probability') + ggtitle("Student's t Test")
 
 @
 
@@ -877,7 +905,7 @@ CovWelch.nullT <- ggplot(coverage.welch.nullT, aes(x=as.numeric(var.ratio), y=co
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=.85, to=1, length.out=16)) +
-    xlab('Variance Ratio (var1/var2)') + ylab('Coverage Probability') + ggtitle("Welch's t Test")
+    xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Coverage Probability') + ggtitle("Welch's t Test")
 
 CovWelch.smalld <- ggplot(coverage.welch.smalld, aes(x=as.numeric(var.ratio), y=coverage.rate, shape=Ns, color=Ns, ymin=.85, ymax=1)) + 
     geom_point(size=3, solid=FALSE) + 
@@ -886,7 +914,7 @@ CovWelch.smalld <- ggplot(coverage.welch.smalld, aes(x=as.numeric(var.ratio), y=
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=.85, to=1, length.out=16)) +
-    xlab('Variance Ratio (var1/var2)') + ylab('Coverage Probability') + ggtitle("Welch's t Test")
+    xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Coverage Probability') + ggtitle("Welch's t Test")
 
 CovWelch.midd <- ggplot(coverage.welch.midd, aes(x=as.numeric(var.ratio), y=coverage.rate, shape=Ns, color=Ns, ymin=.85, ymax=1)) + 
     geom_point(size=3, solid=FALSE) + 
@@ -895,7 +923,7 @@ CovWelch.midd <- ggplot(coverage.welch.midd, aes(x=as.numeric(var.ratio), y=cove
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=.85, to=1, length.out=16)) +
-    xlab('Variance Ratio (var1/var2)') + ylab('Coverage Probability') + ggtitle("Welch's t Test")
+    xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Coverage Probability') + ggtitle("Welch's t Test")
 
 CovWelch.bigd <- ggplot(coverage.welch.bigd, aes(x=as.numeric(var.ratio), y=coverage.rate, shape=Ns, color=Ns, ymin=.85, ymax=1)) + 
     geom_point(size=3, solid=FALSE) + 
@@ -904,16 +932,17 @@ CovWelch.bigd <- ggplot(coverage.welch.bigd, aes(x=as.numeric(var.ratio), y=cove
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=.85, to=1, length.out=16)) +
-    xlab('Variance Ratio (var1/var2)') + ylab('Coverage Probability') + ggtitle("Welch's t Test")
+    xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Coverage Probability') + ggtitle("Welch's t Test")
 
 @
 
+\begin{figure}
 <<coverage plots, echo=FALSE>>=
-
-grid.arrange(CovClassic.nullT, CovWelch.nullT, nrow=1, main='Figure 10. Coverage Probabilities for the Classic and Welch Tests')
-
+layout <- matrix(c(1,2), nrow=1, byrow=TRUE)
+multiplot(CovClassic.nullT, CovWelch.nullT, layout=layout)
 @
-
+\textit{Figure 10.} Coverage probabilities for Student's and Welch's t tests.
+\end{figure}
 
 \section{Discussion}
     Make a note that our df ratio rule works best when it doesn't matter - when sample sizes are equal.

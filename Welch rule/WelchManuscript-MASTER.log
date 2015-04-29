@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  27 APR 2015 19:05
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  28 APR 2015 17:15
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -25,17 +25,17 @@ File: size12.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
 )
-(/usr/local/texlive/2014/texmf-dist/tex/latex/etoolbox/etoolbox.sty
-Package: etoolbox 2011/01/03 v2.1 e-TeX tools for LaTeX
-
-(/usr/local/texlive/2014/texmf-dist/tex/latex/etex-pkg/etex.sty
-Package: etex 1998/03/26 v2.0 eTeX basic definition package (PEB)
-\et@xins=\count87
+(/usr/local/texlive/2014/texmf-dist/tex/latex/apacite/apacite.sty
+Package: apacite 2013/07/21 v6.03 APA citation
+\c@BibCnt=\count87
+\bibleftmargin=\skip43
+\bibindent=\skip44
+\bibparsep=\skip45
+\bibitemsep=\skip46
+\biblabelsep=\skip47
 )
-\etb@tempcnta=\count88
-)
-Class apa6 Info: No bibliography package was specified; defaulting to (but not 
-loading) Biblatex on input line 213.
+Class apa6 Info: The selected bibliography package, apacite, has been loaded on
+ input line 213.
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/lm/lmodern.sty
 Package: lmodern 2009/10/30 v1.6 Latin Modern Fonts
@@ -97,9 +97,9 @@ Package ifvtex Info: VTeX not detected.
 (/usr/local/texlive/2014/texmf-dist/tex/generic/ifxetex/ifxetex.sty
 Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 )
-\Gm@cnth=\count89
-\Gm@cntv=\count90
-\c@Gm@tempcnt=\count91
+\Gm@cnth=\count88
+\Gm@cntv=\count89
+\c@Gm@tempcnt=\count90
 \Gm@bindingoffset=\dimen103
 \Gm@wd@mp=\dimen104
 \Gm@odd@mp=\dimen105
@@ -133,7 +133,7 @@ Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
 (/usr/local/texlive/2014/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
 Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
 )
-\Gread@gobject=\count92
+\Gread@gobject=\count91
 ))
 \Gin@req@height=\dimen111
 \Gin@req@width=\dimen112
@@ -150,28 +150,28 @@ Package: booktabs 2005/04/14 v1.61803 publication quality tables
 \cmidrulesep=\dimen120
 \cmidrulekern=\dimen121
 \defaultaddspace=\dimen122
-\@cmidla=\count93
-\@cmidlb=\count94
+\@cmidla=\count92
+\@cmidlb=\count93
 \@aboverulesep=\dimen123
 \@belowrulesep=\dimen124
-\@thisruleclass=\count95
-\@lastruleclass=\count96
+\@thisruleclass=\count94
+\@lastruleclass=\count95
 \@thisrulewidth=\dimen125
 )
 (/usr/local/texlive/2014/texmf-dist/tex/latex/threeparttable/threeparttable.sty
 Package: threeparttable 2003/06/13  v 3.0
 \@tempboxb=\box26
 )
-\b@level@one@skip=\skip43
-\e@level@one@skip=\skip44
-\b@level@two@skip=\skip45
-\e@level@two@skip=\skip46
-\b@level@three@skip=\skip47
-\e@level@three@skip=\skip48
-\b@level@four@skip=\skip49
-\e@level@four@skip=\skip50
-\b@level@five@skip=\skip51
-\e@level@five@skip=\skip52
+\b@level@one@skip=\skip48
+\e@level@one@skip=\skip49
+\b@level@two@skip=\skip50
+\e@level@two@skip=\skip51
+\b@level@three@skip=\skip52
+\e@level@three@skip=\skip53
+\b@level@four@skip=\skip54
+\e@level@four@skip=\skip55
+\b@level@five@skip=\skip56
+\e@level@five@skip=\skip57
  (/usr/local/texlive/2014/texmf-dist/tex/latex/caption/caption.sty
 Package: caption 2013/05/02 v3.3-89 Customizing captions (AR)
 
@@ -186,14 +186,14 @@ Package caption3 Info: TeX engine: e-TeX on input line 57.
 \caption@parindent=\dimen131
 \caption@hangindent=\dimen132
 )
-\c@ContinuedFloat=\count97
+\c@ContinuedFloat=\count96
 Package caption Info: threeparttable package is loaded.
 )
-\c@APAenum=\count98
-\@text@par@indent=\skip53
+\c@APAenum=\count97
+\@text@par@indent=\skip58
 \gr@box=\box27
-\gr@boxwidth=\skip54
-\gr@boxheight=\skip55
+\gr@boxwidth=\skip59
+\gr@boxheight=\skip60
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/tools/bm.sty
 Package: bm 2004/02/26 v1.1c Bold Symbol Support (DPC/FMi)
@@ -203,28 +203,28 @@ Package: bm 2004/02/26 v1.1c Bold Symbol Support (DPC/FMi)
 LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 137.
 LaTeX Info: Redefining \bm on input line 203.
 )
-\c@appendix=\count99
+\c@appendix=\count98
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
-\fancy@headwidth=\skip56
-\f@ncyO@elh=\skip57
-\f@ncyO@erh=\skip58
-\f@ncyO@olh=\skip59
-\f@ncyO@orh=\skip60
-\f@ncyO@elf=\skip61
-\f@ncyO@erf=\skip62
-\f@ncyO@olf=\skip63
-\f@ncyO@orf=\skip64
+\fancy@headwidth=\skip61
+\f@ncyO@elh=\skip62
+\f@ncyO@erh=\skip63
+\f@ncyO@olh=\skip64
+\f@ncyO@orh=\skip65
+\f@ncyO@elf=\skip66
+\f@ncyO@erf=\skip67
+\f@ncyO@olf=\skip68
+\f@ncyO@orf=\skip69
 )
 (/usr/local/texlive/2014/texmf-dist/tex/latex/endfloat/endfloat.sty
 Package: endfloat 2011/12/25 v2.5d LaTeX2e package puts figures and tables at e
 nd (jdm)
-\c@posttable=\count100
+\c@posttable=\count99
 \efloat@postttt=\write3
-\@ef@tttopen=\count101
-\c@postfigure=\count102
+\@ef@tttopen=\count100
+\c@postfigure=\count101
 \efloat@postfff=\write4
-\@ef@fffopen=\count103
+\@ef@fffopen=\count102
 ))
 (/usr/local/texlive/2014/texmf-dist/tex/latex/graphics/color.sty
 Package: color 2014/04/23 v1.1a Standard LaTeX Color (DPC)
@@ -236,7 +236,7 @@ Package color Info: Driver file: pdftex.def on input line 137.
 )
 (/usr/local/texlive/2014/texmf-dist/tex/latex/framed/framed.sty
 Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
-\OuterFrameSep=\skip65
+\OuterFrameSep=\skip70
 \fb@frw=\dimen133
 \fb@frh=\dimen134
 \FrameRule=\dimen135
@@ -333,29 +333,36 @@ Package textcomp Info: Setting ptmj sub-encoding to TS1/4 on input line 340.
 (./WelchManuscript-MASTER.aux)
 \openout1 = `WelchManuscript-MASTER.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 60.
-LaTeX Font Info:    ... okay on input line 60.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 60.
-LaTeX Font Info:    ... okay on input line 60.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 60.
-LaTeX Font Info:    ... okay on input line 60.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 60.
-LaTeX Font Info:    ... okay on input line 60.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 60.
-LaTeX Font Info:    ... okay on input line 60.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 60.
-LaTeX Font Info:    ... okay on input line 60.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 60.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 60.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 68.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 68.
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 60.
-LaTeX Font Info:    Try loading font information for T1+lmr on input line 60.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Try loading font information for T1+lmr on input line 68.
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+\c@maskedRefs=\count103
+
+(/usr/local/texlive/2014/texmf-dist/tex/latex/apacite/english.apc
+File: english.apc 2013/07/21 v6.03 apacite language file
+LaTeX Info: Redefining \BPBI on input line 129.
+LaTeX Info: Redefining \BHBI on input line 130.
 )
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -458,35 +465,35 @@ Package caption Info: End \AtBeginDocument code.
 
 ]
 [2]
-LaTeX Font Info:    Try loading font information for OT1+lmr on input line 76.
+LaTeX Font Info:    Try loading font information for OT1+lmr on input line 83.
  (/usr/local/texlive/2014/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OML+lmm on input line 76.
+LaTeX Font Info:    Try loading font information for OML+lmm on input line 83.
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 76.
+LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 83.
 
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMX+lmex on input line 76.
+LaTeX Font Info:    Try loading font information for OMX+lmex on input line 83.
 
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 76.
+(Font)              <12> on input line 83.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 76.
+(Font)              <8> on input line 83.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 76.
+(Font)              <6> on input line 83.
  [3]
-LaTeX Font Info:    Try loading font information for T1+lmtt on input line 81.
+LaTeX Font Info:    Try loading font information for T1+lmtt on input line 88.
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
@@ -498,175 +505,137 @@ Underfull \vbox (badness 2103) has occurred while \output is active []
 
  [5]
 [6]
-Package color Info: Redefining color shadecolor on input line 111.
- <figure/varEqualBoxplots.pdf, id=32, 505.89pt x 505.89pt>
+\openout4 = `WelchManuscript-MASTER.fff'.
+
+ (WelchManuscript-MASTER.fff) [7] [8] [9]
+Package color Info: Redefining color shadecolor on input line 250.
+
+<figure/tdist.pdf, id=42, 505.89pt x 505.89pt>
+File: figure/tdist.pdf Graphic file (type pdf)
+ <use figure/tdist.pdf>
+Package pdftex.def Info: figure/tdist.pdf used on input line 251.
+(pdftex.def)             Requested size: 452.9679pt x 452.97328pt.
+
+Overfull \hbox (28.90755pt too wide) in paragraph at lines 251--252
+[][]  
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [10]
+AED endfloat: Processing end Figures and Tables [11 <./figure/tdist.pdf>]
+(./WelchManuscript-MASTER.fff
+Package color Info: Redefining color shadecolor on input line 5.
+
+<figure/varEqualBoxplots.pdf, id=55, 505.89pt x 505.89pt>
 File: figure/varEqualBoxplots.pdf Graphic file (type pdf)
 
 <use figure/varEqualBoxplots.pdf>
-Package pdftex.def Info: figure/varEqualBoxplots.pdf used on input line 112.
+Package pdftex.def Info: figure/varEqualBoxplots.pdf used on input line 6.
 (pdftex.def)             Requested size: 452.9679pt x 452.97328pt.
+ [12
 
-Overfull \hbox (28.90755pt too wide) in paragraph at lines 112--113
-[][]  
- []
 
-Package color Info: Redefining color shadecolor on input line 119.
-<figure/varDifferentBoxplots.pdf, id=33, 505.89pt x 505.89pt>
+ <./figure/varEqualBoxplots.pdf>]
+Package color Info: Redefining color shadecolor on input line 17.
+
+<figure/varDifferentBoxplots.pdf, id=64, 505.89pt x 505.89pt>
 File: figure/varDifferentBoxplots.pdf Graphic file (type pdf)
 
 <use figure/varDifferentBoxplots.pdf>
-Package pdftex.def Info: figure/varDifferentBoxplots.pdf used on input line 120
-.
+Package pdftex.def Info: figure/varDifferentBoxplots.pdf used on input line 18.
+
 (pdftex.def)             Requested size: 452.9679pt x 452.97328pt.
+ [13
 
-Overfull \hbox (28.90755pt too wide) in paragraph at lines 120--121
-[][]  
- []
+ <./figure/varDifferentBoxplots.pdf>]
+Package color Info: Redefining color shadecolor on input line 29.
 
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [7 <./figure/varEqualBoxplots.pdf>]
-Package color Info: Redefining color shadecolor on input line 130.
-
-<figure/dfratiosDiffvars.pdf, id=44, 505.89pt x 505.89pt>
+<figure/dfratiosDiffvars.pdf, id=74, 505.89pt x 505.89pt>
 File: figure/dfratiosDiffvars.pdf Graphic file (type pdf)
 
 <use figure/dfratiosDiffvars.pdf>
-Package pdftex.def Info: figure/dfratiosDiffvars.pdf used on input line 131.
+Package pdftex.def Info: figure/dfratiosDiffvars.pdf used on input line 30.
 (pdftex.def)             Requested size: 452.9679pt x 452.97328pt.
+ [14
 
-Overfull \hbox (28.90755pt too wide) in paragraph at lines 131--132
-[][]  
- []
+ <./figure/dfratiosDiffvars.pdf>]
+Package color Info: Redefining color shadecolor on input line 41.
 
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [8 <./figure/varDifferentBoxplots.pdf>]
-Package color Info: Redefining color shadecolor on input line 138.
-
-<figure/dfratiosDiffNratios.pdf, id=54, 505.89pt x 505.89pt>
+<figure/dfratiosDiffNratios.pdf, id=83, 505.89pt x 505.89pt>
 File: figure/dfratiosDiffNratios.pdf Graphic file (type pdf)
 
 <use figure/dfratiosDiffNratios.pdf>
-Package pdftex.def Info: figure/dfratiosDiffNratios.pdf used on input line 139.
-
+Package pdftex.def Info: figure/dfratiosDiffNratios.pdf used on input line 42.
 (pdftex.def)             Requested size: 452.9679pt x 452.97328pt.
+ [15
 
-Overfull \hbox (28.90755pt too wide) in paragraph at lines 139--140
-[][]  
- []
+ <./figure/dfratiosDiffNratios.pdf>]
+Package color Info: Redefining color shadecolor on input line 53.
 
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [9 <./figure/dfratiosDiffvars.pdf>]
-Package color Info: Redefining color shadecolor on input line 146.
-
-<figure/dfratiosDiffvarsDiffNratios.pdf, id=63, 505.89pt x 505.89pt>
+<figure/dfratiosDiffvarsDiffNratios.pdf, id=92, 505.89pt x 505.89pt>
 File: figure/dfratiosDiffvarsDiffNratios.pdf Graphic file (type pdf)
 
 <use figure/dfratiosDiffvarsDiffNratios.pdf>
 Package pdftex.def Info: figure/dfratiosDiffvarsDiffNratios.pdf used on input l
-ine 147.
+ine 54.
 (pdftex.def)             Requested size: 452.9679pt x 452.97328pt.
+ [16
 
-Overfull \hbox (28.90755pt too wide) in paragraph at lines 147--148
-[][]  
- []
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [10 <./figure/dfratiosDiffNratios.pdf>]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [11 <./figure/dfratiosDiffvarsDiffNratios.pdf>]
-Package color Info: Redefining color shadecolor on input line 165.
-
-<figure/type1_classic_plot.pdf, id=82, 505.89pt x 505.89pt>
+ <./figure/dfratiosDiffvarsDiffNratios.pdf>]
+Package color Info: Redefining color shadecolor on input line 65.
+ <figure/type1_classic_plot.pdf, id=103, 505.89pt x 505.89pt>
 File: figure/type1_classic_plot.pdf Graphic file (type pdf)
 
 <use figure/type1_classic_plot.pdf>
-Package pdftex.def Info: figure/type1_classic_plot.pdf used on input line 166.
+Package pdftex.def Info: figure/type1_classic_plot.pdf used on input line 66.
 (pdftex.def)             Requested size: 452.9679pt x 452.97328pt.
+ [17
 
-Overfull \hbox (28.90755pt too wide) in paragraph at lines 166--167
-[][]  
- []
+ <./figure/type1_classic_plot.pdf>]
+Package color Info: Redefining color shadecolor on input line 77.
 
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [12]
-Underfull \vbox (badness 5388) has occurred while \output is active []
-
- [13 <./figure/type1_classic_plot.pdf>]
-Package color Info: Redefining color shadecolor on input line 175.
-
-<figure/type1_Welch_plot.pdf, id=96, 505.89pt x 505.89pt>
+<figure/type1_Welch_plot.pdf, id=113, 505.89pt x 505.89pt>
 File: figure/type1_Welch_plot.pdf Graphic file (type pdf)
 
 <use figure/type1_Welch_plot.pdf>
-Package pdftex.def Info: figure/type1_Welch_plot.pdf used on input line 176.
+Package pdftex.def Info: figure/type1_Welch_plot.pdf used on input line 78.
+(pdftex.def)             Requested size: 452.9679pt x 452.97328pt.
+ [18
+
+ <./figure/type1_Welch_plot.pdf>]
+Package color Info: Redefining color shadecolor on input line 89.
+
+<figure/plotPower.pdf, id=123, 505.89pt x 505.89pt>
+File: figure/plotPower.pdf Graphic file (type pdf)
+ <use figure/plotPower.pdf>
+Package pdftex.def Info: figure/plotPower.pdf used on input line 90.
 (pdftex.def)             Requested size: 452.9679pt x 452.97328pt.
 
-Overfull \hbox (28.90755pt too wide) in paragraph at lines 176--177
-[][]  
- []
+[19
 
-[14 <./figure/type1_Welch_plot.pdf>]
-Package color Info: Redefining color shadecolor on input line 192.
+ <./figure/plotPower.pdf>]
+Package color Info: Redefining color shadecolor on input line 101.
 
-<figure/plot_power.pdf, id=106, 505.89pt x 505.89pt>
-File: figure/plot_power.pdf Graphic file (type pdf)
-
-<use figure/plot_power.pdf>
-Package pdftex.def Info: figure/plot_power.pdf used on input line 193.
-(pdftex.def)             Requested size: 452.9679pt x 452.97328pt.
-
-Overfull \hbox (28.90755pt too wide) in paragraph at lines 193--194
-[][]  
- []
-
-[15 <./figure/plot_power.pdf>]
-Package color Info: Redefining color shadecolor on input line 206.
-
-<figure/coverage_plots.pdf, id=116, 505.89pt x 505.89pt>
+<figure/coverage_plots.pdf, id=135, 505.89pt x 505.89pt>
 File: figure/coverage_plots.pdf Graphic file (type pdf)
 
 <use figure/coverage_plots.pdf>
-Package pdftex.def Info: figure/coverage_plots.pdf used on input line 207.
+Package pdftex.def Info: figure/coverage_plots.pdf used on input line 102.
 (pdftex.def)             Requested size: 452.9679pt x 452.97328pt.
+ [20
 
-Overfull \hbox (28.90755pt too wide) in paragraph at lines 207--208
-[][]  
- []
-
-[16 <./figure/coverage_plots.pdf>]
-Package color Info: Redefining color shadecolor on input line 218.
-
-<figure/tdist.pdf, id=126, 505.89pt x 505.89pt>
-File: figure/tdist.pdf Graphic file (type pdf)
- <use figure/tdist.pdf>
-Package pdftex.def Info: figure/tdist.pdf used on input line 219.
-(pdftex.def)             Requested size: 452.9679pt x 452.97328pt.
-
-Overfull \hbox (28.90755pt too wide) in paragraph at lines 219--220
-[][]  
- []
-
-AED endfloat: Processing end Figures and Tables [17 <./figure/tdist.pdf>]
+ <./figure/coverage_plots.pdf>])
 (./WelchManuscript-MASTER.aux) ) 
 Here is how much of TeX's memory you used:
- 5183 strings out of 493117
- 77781 string characters out of 6135433
- 139737 words of memory out of 5000000
- 8529 multiletter control sequences out of 15000+600000
+ 5263 strings out of 493117
+ 79186 string characters out of 6135433
+ 142146 words of memory out of 5000000
+ 8606 multiletter control sequences out of 15000+600000
  37106 words of font info for 39 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 43i,12n,47p,1118b,252s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 43i,11n,47p,1118b,374s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2014/texmf-dist/fonts/enc/d
 vips/lm/lm-ec.enc}{/usr/local/texlive/2014/texmf-dist/fonts/enc/dvips/lm/lm-mat
 hsy.enc}{/usr/local/texlive/2014/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/
@@ -680,10 +649,10 @@ sr/local/texlive/2014/texmf-dist/fonts/type1/public/lm/lmri12.pfb></usr/local/t
 exlive/2014/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/texlive/201
 4/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr/local/texlive/2014/texmf-dis
 t/fonts/type1/public/lm/lmtt12.pfb>
-Output written on WelchManuscript-MASTER.pdf (17 pages, 237759 bytes).
+Output written on WelchManuscript-MASTER.pdf (20 pages, 240030 bytes).
 PDF statistics:
- 175 PDF objects out of 1000 (max. 8388607)
- 124 compressed objects within 2 object streams
+ 185 PDF objects out of 1000 (max. 8388607)
+ 131 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  51 words of extra memory for PDF output out of 10000 (max. 10000000)
 
