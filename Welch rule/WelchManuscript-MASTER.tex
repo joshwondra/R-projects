@@ -48,6 +48,7 @@
 \newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
 
 \usepackage{alltt}
+\usepackage{apacite}
 
 \title{Always Use the Separate Variances t Test for Two Independent Groups}
 \shorttitle{Separate Variances t Test}
@@ -68,7 +69,7 @@ Contact: jdwondra@umich.edu}
 \begin{document}
 \maketitle
 
-    Data analysis involves a series of decisions on the part of the researcher about which statistical test answers the research question, whether the data fit the requirements of the test, and whether there are alternative options that will do a better job. Recent discussions of false positives in psychology research (CITATIONS) highlight the tension between two valued outcomes of the decision process. On the one hand, researchers want to avoid mistakenly claiming that there is a true effect where none exists, which involves concerns about false positives. On the other hand, researchers want to find true effects where they do exist, which involves concerns about power. In addition to these two, there is a growing concern with accurate effect size estimation (CITATIONS). Some have argued that because so many studies lack the power to find small effects, those that make it into published papers are spuriously large (CITATIONS).
+    Data analysis involves a series of decisions on the part of the researcher about which statistical test answers the research question, whether the data fit the requirements of the test, and whether there are alternative options that will do a better job. Recent discussions of false positives in psychology research \cite<e.g.,>{Nosek2012} highlight the tension between two valued outcomes of the decision process. On the one hand, researchers want to avoid mistakenly claiming that there is a true effect where none exists, which involves concerns about false positives. On the other hand, researchers want to find true effects where they do exist, which involves concerns about power. In addition to these two, there is a growing concern with accurate effect size estimation (CITATIONS). Some have argued that because so many studies lack the power to find small effects, those that make it into published papers are spuriously large (CITATIONS).
 
     One of the first decisions that many researchers learn is how to compare the means of two independent groups--they run a t test. But even this basic comparison presents a choice between the classic Student's t test (CITATION) or the alternative Welch-Satterthwaite test (CITATION). Most researchers learn about Student's t test in the first statistics class that they ever take.  
     
@@ -257,5 +258,7 @@ Because the accuracy of a confidence interval is influenced by the variance and 
 
 
 
+\bibliography{bibliography}
+\bibliographystyle{apacite}
 
 \end{document}

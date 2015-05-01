@@ -1,0 +1,35 @@
+\begin{thebibliography}{}
+
+\bibitem [\protect \citeauthoryear {%
+Nosek%
+, Spies%
+\BCBL {}\ \BBA {} Motyl%
+}{%
+Nosek%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2012}}%
+}]{%
+Nosek2012}
+\APACinsertmetastar {%
+Nosek2012}%
+\begin{APACrefauthors}%
+Nosek, B\BPBI A.%
+, Spies, J\BPBI R.%
+\BCBL {}\ \BBA {} Motyl, M.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2012}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Scientific utopia: {II. Restructuring} incentives and
+  practices to promote truth over publishability} {Scientific utopia: {II.
+  Restructuring} incentives and practices to promote truth over
+  publishability}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Perspectives on Psychological Science}{7}{}{615--631}.
+\newblock
+\begin{APACrefDOI} \doi{http://dx.doi.org/10.1177/1745691612459058}
+  \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\end{thebibliography}
