@@ -14,7 +14,10 @@
 \ifnextchar[{\eatarg}{}
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Removed 1 rows containing non-finite values (stat\_boxplot).\\\#\# Warning: Removed 1 rows containing non-finite values (stat\_boxplot).}}\end{kframe}
 \includegraphics[width=\maxwidth]{figure/varDifferentBoxplots}
 
 \end{knitrout}

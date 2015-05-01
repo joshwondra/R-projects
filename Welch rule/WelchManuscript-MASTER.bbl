@@ -1,6 +1,168 @@
 \begin{thebibliography}{}
 
 \bibitem [\protect \citeauthoryear {%
+Bakker%
+, van Dijk%
+\BCBL {}\ \BBA {} Wicherts%
+}{%
+Bakker%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2012}}%
+}]{%
+Bakker2012}
+\APACinsertmetastar {%
+Bakker2012}%
+\begin{APACrefauthors}%
+Bakker, M.%
+, van Dijk, A.%
+\BCBL {}\ \BBA {} Wicherts, J\BPBI M.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2012}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {The rules of the game called psychological science} {The
+  rules of the game called psychological science}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Perspectives on Psychological Science}{7}{}{543--554}.
+\newblock
+\begin{APACrefDOI} \doi{http://dx.doi.org/10.1177/1745691612459060}
+  \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Cumming%
+}{%
+Cumming%
+}{%
+{\protect \APACyear {2014}}%
+}]{%
+Cumming2014}
+\APACinsertmetastar {%
+Cumming2014}%
+\begin{APACrefauthors}%
+Cumming, G.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2014}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {The new statistics: Why and how} {The new statistics:
+  Why and how}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Psychological Science}{25}{}{7--29}.
+\newblock
+\begin{APACrefDOI} \doi{http://dx.doi.org/10.1177/0956797613504966}
+  \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Fiedler%
+, Kutzner%
+\BCBL {}\ \BBA {} Krueger%
+}{%
+Fiedler%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2012}}%
+}]{%
+Fiedler2012}
+\APACinsertmetastar {%
+Fiedler2012}%
+\begin{APACrefauthors}%
+Fiedler, K.%
+, Kutzner, F.%
+\BCBL {}\ \BBA {} Krueger, J\BPBI I.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2012}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {The long way from \alpha-error control to validity
+  proper: Problems with a short-sighted false-positive debate} {The long way
+  from \alpha-error control to validity proper: Problems with a short-sighted
+  false-positive debate}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Perspectives on Psychological Science}{7}{}{661--669}.
+\newblock
+\begin{APACrefDOI} \doi{http://dx.doi.org/10.1177/1745691612462587}
+  \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Gonzalez%
+}{%
+Gonzalez%
+}{%
+{\protect \APACyear {2008}}%
+}]{%
+Gonzalez2008}
+\APACinsertmetastar {%
+Gonzalez2008}%
+\begin{APACrefauthors}%
+Gonzalez, R.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2008}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Data analysis for experimental design} {Data analysis
+  for experimental design}.{\BBCQ}
+\newblock
+
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Ioannidis%
+}{%
+Ioannidis%
+}{%
+{\protect \APACyear {2008}}%
+}]{%
+Ioannidis2008}
+\APACinsertmetastar {%
+Ioannidis2008}%
+\begin{APACrefauthors}%
+Ioannidis, J\BPBI P\BPBI A.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2008}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Why most discovered true associations are inflated} {Why
+  most discovered true associations are inflated}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Epidemiology}{19}{}{640--648}.
+\newblock
+\begin{APACrefDOI} \doi{http://dx.doi.org/10.1097/EDE.ObO} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Ioannidis%
+}{%
+Ioannidis%
+}{%
+{\protect \APACyear {2012}}%
+}]{%
+Ioannidis2012}
+\APACinsertmetastar {%
+Ioannidis2012}%
+\begin{APACrefauthors}%
+Ioannidis, J\BPBI P\BPBI A.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2012}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Why science is not necessarily self-correcting} {Why
+  science is not necessarily self-correcting}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Perspectives on Psychological Science}{7}{}{645--654}.
+\newblock
+\begin{APACrefDOI} \doi{http://dx.doi.org/10.1177/1745691612464056}
+  \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
 Nosek%
 , Spies%
 \BCBL {}\ \BBA {} Motyl%
@@ -29,6 +191,236 @@ Nosek, B\BPBI A.%
 \APACjournalVolNumPages{Perspectives on Psychological Science}{7}{}{615--631}.
 \newblock
 \begin{APACrefDOI} \doi{http://dx.doi.org/10.1177/1745691612459058}
+  \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Pashler%
+\ \BBA {} Harris%
+}{%
+Pashler%
+\ \BBA {} Harris%
+}{%
+{\protect \APACyear {2012}}%
+}]{%
+Pashler2012}
+\APACinsertmetastar {%
+Pashler2012}%
+\begin{APACrefauthors}%
+Pashler, H.%
+\BCBT {}\ \BBA {} Harris, C\BPBI R.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2012}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Is the replicability crisis overblown? Three arguments
+  examined} {Is the replicability crisis overblown? three arguments
+  examined}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Perspectives on Psychological Science}{7}{}{531--536}.
+\newblock
+\begin{APACrefDOI} \doi{http://dx.doi.org/10.1177/1745691612463401}
+  \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Satterthwaite%
+}{%
+Satterthwaite%
+}{%
+{\protect \APACyear {1946}}%
+}]{%
+Satterthwaite1946}
+\APACinsertmetastar {%
+Satterthwaite1946}%
+\begin{APACrefauthors}%
+Satterthwaite, F\BPBI E.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1946}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {An approximate distribution of estimates of variance
+  components} {An approximate distribution of estimates of variance
+  components}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Biometrics Bulletin}{2}{}{110--114}.
+\newblock
+\begin{APACrefDOI} \doi{http://dx.doi.org/10.2307/3002019} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Simmons%
+, Nelson%
+\BCBL {}\ \BBA {} Simonsohn%
+}{%
+Simmons%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2011}}%
+}]{%
+Simmons2011}
+\APACinsertmetastar {%
+Simmons2011}%
+\begin{APACrefauthors}%
+Simmons, J\BPBI P.%
+, Nelson, L\BPBI D.%
+\BCBL {}\ \BBA {} Simonsohn, U.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2011}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {False-positive psychology: Undisclosed flexibility in
+  data collection and analysis allows presenting anything as significant}
+  {False-positive psychology: Undisclosed flexibility in data collection and
+  analysis allows presenting anything as significant}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Psychological Science}{22}{}{1359--1366}.
+\newblock
+\begin{APACrefDOI} \doi{http://dx.doi.org/10.1177/0956797611417632}
+  \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Student%
+}{%
+Student%
+}{%
+{\protect \APACyear {1908}}%
+}]{%
+Student1908}
+\APACinsertmetastar {%
+Student1908}%
+\begin{APACrefauthors}%
+Student.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1908}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {The probable error of a mean} {The probable error of a
+  mean}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Biometrika}{6}{}{1--25}.
+\newblock
+\begin{APACrefDOI} \doi{http://dx.doi.org/10.1093/biomet/6.1.1}
+  \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Wagenmakers%
+, Wetzels%
+, Borsboom%
+, van~der Maas%
+\BCBL {}\ \BBA {} Kievit%
+}{%
+Wagenmakers%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2012}}%
+}]{%
+Wagenmakers2012}
+\APACinsertmetastar {%
+Wagenmakers2012}%
+\begin{APACrefauthors}%
+Wagenmakers, E\BHBI J.%
+, Wetzels, R\BPBI W.%
+, Borsboom, D.%
+, van~der Maas, H\BPBI L\BPBI J.%
+\BCBL {}\ \BBA {} Kievit, R\BPBI A.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2012}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {An agenda for purely confirmatory research} {An agenda
+  for purely confirmatory research}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Perspectives on Psychological Science}{7}{}{632--638}.
+\newblock
+\begin{APACrefDOI} \doi{http://dx.doi.org/10.1177/1745691612463078}
+  \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Welch%
+}{%
+Welch%
+}{%
+{\protect \APACyear {1938}}%
+}]{%
+Welch1938}
+\APACinsertmetastar {%
+Welch1938}%
+\begin{APACrefauthors}%
+Welch, B\BPBI L.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1938}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {The significance of the difference between two means
+  when the population variances are unequal} {The significance of the
+  difference between two means when the population variances are
+  unequal}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Biometrika}{29}{}{350--362}.
+\newblock
+\begin{APACrefDOI} \doi{http://dx.doi.org/10.1093/biomet/29.3-4.350}
+  \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Zimmerman%
+}{%
+Zimmerman%
+}{%
+{\protect \APACyear {1996}}%
+}]{%
+Zimmerman1996}
+\APACinsertmetastar {%
+Zimmerman1996}%
+\begin{APACrefauthors}%
+Zimmerman, D\BPBI W.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1996}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Some properties of preliminary tests of equality of
+  variances in the two-sample location problem} {Some properties of preliminary
+  tests of equality of variances in the two-sample location problem}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{The Journal of General Psychology}{123}{}{217--231}.
+\newblock
+\begin{APACrefDOI} \doi{http://dx.doi.org/10.1080/00221309.1996.9921274}
+  \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Zimmerman%
+}{%
+Zimmerman%
+}{%
+{\protect \APACyear {2004}}%
+}]{%
+Zimmerman2004}
+\APACinsertmetastar {%
+Zimmerman2004}%
+\begin{APACrefauthors}%
+Zimmerman, D\BPBI W.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2004}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {A note on preliminary tests of equality of variances} {A
+  note on preliminary tests of equality of variances}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{British Journal of Mathematical and Statistical
+  Psychology}{57}{}{173--181}.
+\newblock
+\begin{APACrefDOI} \doi{http://dx.doi.org/10.1348/000711004849222}
   \end{APACrefDOI}
 \PrintBackRefs{\CurrentBib}
 
