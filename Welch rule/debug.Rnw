@@ -20,7 +20,6 @@ Contact: jdwondra@umich.edu}
 
 \begin{document}
 \maketitle
-
     Data analysis involves a series of decisions on the part of the researcher about which statistical test answers the research question, whether the data fit the requirements of the test, and whether there are alternative options that will do a better job. Recent discussions of false positives in psychology research \cite<e.g.,>{Fiedler2012, Ioannidis2012, Nosek2012, Simmons2011, Wagenmakers2012} highlight the tension between two valued outcomes of the decision process. On the one hand, researchers want to avoid mistakenly claiming that there is a true effect where none exists, which involves concerns about false positives. On the other hand, researchers want to find true effects where they do exist, which involves concerns about power. In addition to these two, there is a growing concern with estimating and reporting effect sizes \cite{Cumming2014}. Some have argued that due to some common research practices such as running underpowered studies, those effects that make it into published papers are spuriously large \cite<e.g.,>{Bakker2012, Ioannidis2008}.
 
     One of the first decisions that many researchers learn is how to compare the means of two independent groups--they run a t test. But even this basic comparison presents a choice between the classic Student's t test \cite{Student1908} or the alternative Welch-Satterthwaite test \cite{Welch1938, Satterthwaite1946}. Most researchers learn about Student's t test in the first statistics class that they ever take. When you use Student's t test to compare the means of independent groups, you make three assumptions: 
@@ -267,13 +266,11 @@ ggplot(data.frame(x=seq(2,10,.1)), aes(x)) +
     In short, the usefulness of a heuristic based on the df ratio is limited to cases when the sample sizes are equal. 
 
 \subsection{When Does Each Test Perform Best?}
-    There did not seem to be a simple rule based on the degrees of freedom penalty to detect whether variances are unequal, so we decided to examine when the Welch and Student t tests would perform best based on the sample size, variance ratio, and sample size ratio. We examined how well each test balances the concerns about false positives, power, and estimation. Some prior research has examined the Type I error rate for the two tests \cite{Boneau1960, Zimmerman1993, Zimmerman2004, Zimmerman1996, Zimmerman2009} and some has also examined the power of the two tests, though not always representing the complete configuration of conditions that we examined in our simulations \cite{Neuhauser2002, Zimmerman1993}. Nevertheless, we believe that it will be informative to display the false positives and power of the two tests here. We also discuss implications for effect size estimation, which follows from the false positive results but has not, to our knowledge, been discussed explicitly in past research.
-
-NOTE: Zimmerman1993 only reports power when Student's t test looks bad; Neuhauser only reports power when sample sizes are equal
-
-NOTE: I excluded here citations that looked at ANOVA vs. Welch for now (Overall et al., 1995a, 1995b), but I could add them if we want.
+    There did not seem to be a simple rule based on the degrees of freedom penalty to detect whether variances are unequal, so we decided to examine when the Welch and Student t tests would perform best based on the sample size, variance ratio, and sample size ratio. We examined how well each test balances the concerns about false positives, power, and estimation. We are not aware of any research that has examined the coverage probability of the two tests; however, some prior simulation research has examined the Type I error rate for the two tests \cite{Boneau1960, Zimmerman1993, Zimmerman2004, Zimmerman1996, Zimmerman2009} and some has also examined the power of the two tests, though not always representing the complete configuration of conditions that we examined in our simulations \cite{Neuhauser2002, Zimmerman1993}
+    NOTE: Zimmerman1993 only reports power when Student's t test looks bad; Neuhauser only reports power when sample sizes are equal
+    NOTE: I excluded here citations that looked at ANOVA vs. Welch for now (Overall et al., 1995a, 1995b), but I could add them if we want.
     
-\subsubsection{Type I Error Rates}
+\subsection{Type I Error Rates}
 <<type1 setup, echo=FALSE>>=
 
 ##### Student's t test data
@@ -306,7 +303,7 @@ T1classic <- ggplot(type1.classic, aes(x=as.numeric(var.ratio), y=type1.rate, sh
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=0, to=.13, by=.01)) +
-    xlab(bquote(frac(sigma[1]^2,sigma[2]^2))) + ylab('Type I Error Rate')
+    xlab('Variance Ratio (var1/var2)') + ylab('Type I Error Rate')
 
 
 ##### Welch's t test data
@@ -340,11 +337,13 @@ T1welch <- ggplot(type1.welch, aes(x=as.numeric(var.ratio), y=type1.rate, shape=
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=0, to=.13, by=.01)) +
-    xlab(bquote(frac(sigma[1]^2,sigma[2]^2))) + ylab('Type I Error Rate')
+    xlab('Variance Ratio (var1/var2)') + ylab('Type I Error Rate')
 
 @
 
-    The expected type I error rate is $\alpha = .05$. The observed type I error rate for Student's t test remained close to the expected .05 rate when either the sample size or the population variances were equal, but it varied widely when both population variances and sample sizes were unequal (see Figure 7). When the group with the larger sample size had the larger variance (the left side of Figure 7), the type I error rate dropped as low as about .01, but when the group with the larger sample size had the smaller variance (the right side of Figure 7), the type I error rate rose as high as .12, which is more than double the normally accepted false positive rate. In contrast, the observed type I error rate for Welch's t test remained close to the expected .05 rate across all conditions (see Figure 8). Overall, the Welch t test consistently behaved as expected when it comes to false positives. Student's t test did not.
+    In this section we report type I error rates for the classic and separate variance t tests when the null hypothesis is true. Prior research has demonstrated that when either sample sizes or variances are equal, the type I error rates are preserved at .05 for both tests (CITATIONS). This prior work has typically examined sample sizes that are far smaller than the typical psychology experiment.
+    
+    Figure 7 displays the type I error rate for the classic t test across the different conditions. Consistent with prior research, the type I error rate remained close to .05 when either the sample size or the population variances were equal, but it varied widely when both population variances and sample sizes were unequal. On the left side of Figure 1, when the group with the larger sample size had the larger variance, the type I error rate dropped as low as about .01, whereas on the right side, when the group with the larger sample size had the smaller variance, the type I error rate rose as high as .12, which is more than double the normally accepted false positive rate. 
 
 \begin{figure}    
 <<type1 classic plot, echo=FALSE>>=
@@ -353,6 +352,9 @@ T1classic
 \textit{Figure 7.} Type I error rates for Student's t test.
 \end{figure}
 
+    Figure 8 displays the type I error rate for the separate variance t test across the different conditions. In contrast to the classic t test, and consistent with prior research, the type I error rate remained close to .05 across all conditions. 
+    
+    Here we see the degrees of freedom penalty at work. Our boxplots showed that the penalty was greatest when the large group had the small variance, which reduced the false positive rate of the classic t test. In contrast, the penalty was less severe when the large group had the large variance, so that the Welch t test did not reduce the type I error rate beyond the .05 level. Additionally, we can see the different effects of using pooled and separate variances to compute the standard errors. Because the pooled variance of the classic t test weighs the larger sample more heavily, it becomes more liberal when the associated variance is small and more conservative when the associated variance is large. 
 
 \begin{figure}
 <<type1 Welch plot, echo=FALSE>>=
@@ -361,14 +363,8 @@ T1welch
 \textit{Figure 8.} Type I error rates for Welch's t test.
 \end{figure}
 
-\subsubsection{Power}
-<<PowerSetup, echo=FALSE>>=
-
-## Common variables
-
-power.Ns <- factor(c('20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75','100,150','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100','100,200'), levels=c('20,20','20,30','20,40','50,50','50,75','50,100','100,100','100,150','100,200'))
-
-power.var.ratio <- factor(rep(c(0,-1,1,-2,2,0,0,-1,1,-1,1,-2,2,-2,2), each=3), levels=c(-2,-1,0,1,2), labels=c(.2,.5,1,2,5))
+\subsection{Power}
+<<classic power setup, echo=FALSE>>=
 
 ## Set up data for observed power
 
@@ -386,10 +382,12 @@ smalld.v5.1.5n.ssv <- reject.null.v5.1.5n.ssv[,2,1]
 smalld.v5.1.5n.bsv <- reject.null.v5.1.5n.bsv[,2,1]
 smalld.v5.2n.ssv <- reject.null.v5.2n.ssv[,2,1]
 smalld.v5.2n.bsv <- reject.null.v5.2n.bsv[,2,1]
-power.smalld.student <- c(smalld.ve.ne, smalld.v2.ne, smalld.v2.ne, smalld.v5.ne, smalld.v5.ne, smalld.ve.1.5n, smalld.ve.2n, smalld.v2.1.5n.ssv, smalld.v2.1.5n.bsv, smalld.v2.2n.ssv, smalld.v2.2n.bsv, smalld.v5.1.5n.ssv, smalld.v5.1.5n.bsv, smalld.v5.2n.ssv, smalld.v5.2n.bsv) #NOTE: doubled any with equal variance or equal ns because they don't have separate ssv and bsv versions
 
-smalld.student <- data.frame(power.smalld.student, power.Ns, power.var.ratio)
-smalld.student <- smalld.student[order(smalld.student$power.Ns, smalld.student$power.var.ratio),]
+power.classic.smalld <- data.frame(
+    power=c(smalld.ve.ne, smalld.v2.ne, smalld.v2.ne, smalld.v5.ne, smalld.v5.ne, smalld.ve.1.5n, smalld.ve.2n, smalld.v2.1.5n.ssv, smalld.v2.1.5n.bsv, smalld.v2.2n.ssv, smalld.v2.2n.bsv, smalld.v5.1.5n.ssv, smalld.v5.1.5n.bsv, smalld.v5.2n.ssv, smalld.v5.2n.bsv), #NOTE: doubled any with equal variance or equal ns because they don't have separate ssv and bsv versions
+    Ns=factor(c('20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75','100,150','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100','100,200'), levels=c('20,20','20,30','20,40','50,50','50,75','50,100','100,100','100,150','100,200')),                                                                                                                                                                                                                                                                                                                
+    var.ratio=factor(rep(c(0,-1,1,-2,2,0,0,-1,1,-1,1,-2,2,-2,2), each=3), levels=c(-2,-1,0,1,2), labels=c(.2,.5,1,2,5)))
+power.classic.smalld <- power.classic.smalld[order(power.classic.smalld$Ns, power.classic.smalld$var.ratio),]
 
 
 # d=.5
@@ -406,10 +404,12 @@ midd.v5.1.5n.ssv <- reject.null.v5.1.5n.ssv[,3,1]
 midd.v5.1.5n.bsv <- reject.null.v5.1.5n.bsv[,3,1]
 midd.v5.2n.ssv <- reject.null.v5.2n.ssv[,3,1]
 midd.v5.2n.bsv <- reject.null.v5.2n.bsv[,3,1]
-power.midd.student <- c(midd.ve.ne, midd.v2.ne, midd.v2.ne, midd.v5.ne, midd.v5.ne, midd.ve.1.5n, midd.ve.2n, midd.v2.1.5n.ssv, midd.v2.1.5n.bsv, midd.v2.2n.ssv, midd.v2.2n.bsv, midd.v5.1.5n.ssv, midd.v5.1.5n.bsv, midd.v5.2n.ssv, midd.v5.2n.bsv) #NOTE: doubled any with equal variance or equal ns because they don't have separate ssv and bsv versions
 
-midd.student <- data.frame(power.midd.student, power.Ns, power.var.ratio)                                                                                                                                                                                                                                                                                                                
-midd.student <- midd.student[order(midd.student$power.Ns, midd.student$power.var.ratio),]
+power.classic.midd <- data.frame(
+    power=c(midd.ve.ne, midd.v2.ne, midd.v2.ne, midd.v5.ne, midd.v5.ne, midd.ve.1.5n, midd.ve.2n, midd.v2.1.5n.ssv, midd.v2.1.5n.bsv, midd.v2.2n.ssv, midd.v2.2n.bsv, midd.v5.1.5n.ssv, midd.v5.1.5n.bsv, midd.v5.2n.ssv, midd.v5.2n.bsv), #NOTE: doubled any with equal variance or equal ns because they don't have separate ssv and bsv versions
+    Ns=factor(c('20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75','100,150','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100','100,200'), levels=c('20,20','20,30','20,40','50,50','50,75','50,100','100,100','100,150','100,200')),                                                                                                                                                                                                                                                                                                                
+    var.ratio=factor(rep(c(0,-1,1,-2,2,0,0,-1,1,-1,1,-2,2,-2,2), each=3), levels=c(-2,-1,0,1,2), labels=c(.2,.5,1,2,5)))
+power.classic.midd <- power.classic.midd[order(power.classic.midd$Ns, power.classic.midd$var.ratio),]
 
 # d=.8
 bigd.ve.ne <- reject.null.ve.ne[,4,1]
@@ -425,42 +425,93 @@ bigd.v5.1.5n.ssv <- reject.null.v5.1.5n.ssv[,4,1]
 bigd.v5.1.5n.bsv <- reject.null.v5.1.5n.bsv[,4,1]
 bigd.v5.2n.ssv <- reject.null.v5.2n.ssv[,4,1]
 bigd.v5.2n.bsv <- reject.null.v5.2n.bsv[,4,1]
-power.bigd.student <- c(bigd.ve.ne, bigd.v2.ne, bigd.v2.ne, bigd.v5.ne, bigd.v5.ne, bigd.ve.1.5n, bigd.ve.2n, bigd.v2.1.5n.ssv, bigd.v2.1.5n.bsv, bigd.v2.2n.ssv, bigd.v2.2n.bsv, bigd.v5.1.5n.ssv, bigd.v5.1.5n.bsv, bigd.v5.2n.ssv, bigd.v5.2n.bsv) #NOTE: doubled any with equal variance or equal ns because they don't have separate ssv and bsv versions
 
-bigd.student <- data.frame(power.bigd.student, power.Ns, power.var.ratio)
-bigd.student <- bigd.student[order(bigd.student$power.Ns, bigd.student$power.var.ratio),]
+power.classic.bigd <- data.frame(
+    power=c(bigd.ve.ne, bigd.v2.ne, bigd.v2.ne, bigd.v5.ne, bigd.v5.ne, bigd.ve.1.5n, bigd.ve.2n, bigd.v2.1.5n.ssv, bigd.v2.1.5n.bsv, bigd.v2.2n.ssv, bigd.v2.2n.bsv, bigd.v5.1.5n.ssv, bigd.v5.1.5n.bsv, bigd.v5.2n.ssv, bigd.v5.2n.bsv), #NOTE: doubled any with equal variance or equal ns because they don't have separate ssv and bsv versions
+    Ns=factor(c('20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75','100,150','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100','100,200'), levels=c('20,20','20,30','20,40','50,50','50,75','50,100','100,100','100,150','100,200')),                                                                                                                                                                                                                                                                                                                
+    var.ratio=factor(rep(c(0,-1,1,-2,2,0,0,-1,1,-1,1,-2,2,-2,2), each=3), levels=c(-2,-1,0,1,2), labels=c(.2,.5,1,2,5)))
+power.classic.bigd <- power.classic.bigd[order(power.classic.bigd$Ns, power.classic.bigd$var.ratio),]
 
-## Student t, d=.2, power
+
+## Set up data for deviation from expected power
+power.classic.smalld$expected <- c(rep(.095, 5), rep(.104, 5), rep(.111, 5), rep(.168, 5), rep(.192, 5), rep(.209, 5), rep(.291, 5), rep(.339, 5), rep(.370, 5))
+power.classic.smalld$power.diff <- power.classic.smalld$power-power.classic.smalld$expected
+
+power.classic.midd$expected <- c(rep(.338, 5), rep(.397, 5), rep(.435, 5), rep(.697, 5), rep(.776, 5), rep(.818, 5), rep(.940, 5), rep(.971, 5), rep(.983, 5))
+power.classic.midd$power.diff <- power.classic.midd$power-power.classic.midd$expected
+
+power.classic.bigd$expected <- c(rep(.693, 5), rep(.775, 5), rep(.819, 5), rep(.977, 5), rep(.992, 5), rep(.996, 5), rep(1, 5), rep(1, 5), rep(1, 5))
+power.classic.bigd$power.diff <- power.classic.bigd$power-power.classic.bigd$expected
+
+## Classic t, d=.2, power
 ## Plot using ggplot2
-smalld.student.plot <- ggplot(smalld.student, aes(x=as.numeric(power.var.ratio), y=power.smalld.student, shape=power.Ns, color=power.Ns, ymin=0, ymax=1)) + 
+smalld.classic.power <- ggplot(power.classic.smalld, aes(x=as.numeric(var.ratio), y=power, shape=Ns, color=Ns, ymin=0, ymax=1)) + 
     geom_point(size=3, solid=FALSE) + 
     scale_shape_manual(values=rep(c(1,2,0), 3)) +
     geom_line(size=.5) + 
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=0, to=1, by=.1)) +
-    xlab(bquote(sigma[1]^2~'/'~sigma[2]^2)) + ylab('Small Effect') + ggtitle("Student's t Test")
+    xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Small Effect') + ggtitle("Student's t Test")
 
-## Student t, d=.5, power
-## Set up Student t test plot of deviation from expected power
-midd.student.plot <- ggplot(midd.student, aes(x=as.numeric(power.var.ratio), y=power.midd.student, shape=power.Ns, color=power.Ns, ymin=0, ymax=1)) + 
-    geom_point(size=3, solid=FALSE) + 
-    scale_shape_manual(values=rep(c(1,2,0), 3)) +
-    geom_line(size=.5) + 
-    scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
-    scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
-    scale_y_continuous(breaks=seq(from=0, to=1, by=.1)) +
-    xlab(bquote(sigma[1]^2~'/'~sigma[2]^2)) + ylab('Medium Effect') #+ ggtitle("Student's t Test")
 
-## Student t, d=.8, power
-bigd.student.plot <- ggplot(bigd.student, aes(x=as.numeric(power.var.ratio), y=power.bigd.student, shape=power.Ns, color=power.Ns, ymin=0, ymax=1)) + 
+
+## Set up classic t test plot of deviation from expected power
+smalld.classic.deviation <- ggplot(power.classic.smalld, aes(x=as.numeric(var.ratio), y=power.diff, shape=Ns, color=Ns, ymin=-.3, ymax=.3)) + 
+    geom_point(size=3, solid=FALSE) + 
+    scale_shape_manual(values=rep(c(1,2,0), 3)) +
+    geom_line(size=.5) + 
+    scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
+    scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
+    scale_y_continuous(breaks=seq(from=-.3, to=.3, length.out=7)) +
+    xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Deviation') + ggtitle("Student's t Test")
+
+
+## Classic t, d=.5, power
+## Set up classic t test plot of deviation from expected power
+midd.classic.power <- ggplot(power.classic.midd, aes(x=as.numeric(var.ratio), y=power, shape=Ns, color=Ns, ymin=0, ymax=1)) + 
     geom_point(size=3, solid=FALSE) + 
     scale_shape_manual(values=rep(c(1,2,0), 3)) +
     geom_line(size=.5) + 
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=0, to=1, by=.1)) +
-    xlab(bquote(sigma[1]^2~'/'~sigma[2]^2)) + ylab('Large Effect') #+ ggtitle("Student's t Test")
+    xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Medium Effect') #+ ggtitle("Student's t Test")
+
+## Set up classic t test plot of deviation from expected power
+midd.classic.deviation <- ggplot(power.classic.midd, aes(x=as.numeric(var.ratio), y=power.diff, shape=Ns, color=Ns, ymin=-.3, ymax=.3)) + 
+    geom_point(size=3, solid=FALSE) + 
+    scale_shape_manual(values=rep(c(1,2,0), 3)) +
+    geom_line(size=.5) + 
+    scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
+    scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
+    scale_y_continuous(breaks=seq(from=-.3, to=.3, length.out=7)) +
+    xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Deviation') + ggtitle("Student's t Test")
+
+
+
+
+## Classic t, d=.8, power
+bigd.classic.power <- ggplot(power.classic.bigd, aes(x=as.numeric(var.ratio), y=power, shape=Ns, color=Ns, ymin=0, ymax=1)) + 
+    geom_point(size=3, solid=FALSE) + 
+    scale_shape_manual(values=rep(c(1,2,0), 3)) +
+    geom_line(size=.5) + 
+    scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
+    scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
+    scale_y_continuous(breaks=seq(from=0, to=1, by=.1)) +
+    xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Large Effect') #+ ggtitle("Student's t Test")
+
+## Set up classic t test plot of deviation from expected power
+bigd.classic.deviation <- ggplot(power.classic.bigd, aes(x=as.numeric(var.ratio), y=power.diff, shape=Ns, color=Ns, ymin=-.3, ymax=.3)) + 
+    geom_point(size=3, solid=FALSE) + 
+    scale_shape_manual(values=rep(c(1,2,0), 3)) +
+    geom_line(size=.5) + 
+    scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
+    scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
+    scale_y_continuous(breaks=seq(from=-.3, to=.3, length.out=7)) +
+    xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Deviation') + ggtitle("Student's t Test")
+
+
 
 @
 
@@ -482,10 +533,12 @@ smalld.v5.1.5n.ssv <- reject.null.v5.1.5n.ssv[,2,2]
 smalld.v5.1.5n.bsv <- reject.null.v5.1.5n.bsv[,2,2]
 smalld.v5.2n.ssv <- reject.null.v5.2n.ssv[,2,2]
 smalld.v5.2n.bsv <- reject.null.v5.2n.bsv[,2,2]
-power.smalld.welch <- c(smalld.ve.ne, smalld.v2.ne, smalld.v2.ne, smalld.v5.ne, smalld.v5.ne, smalld.ve.1.5n, smalld.ve.2n, smalld.v2.1.5n.ssv, smalld.v2.1.5n.bsv, smalld.v2.2n.ssv, smalld.v2.2n.bsv, smalld.v5.1.5n.ssv, smalld.v5.1.5n.bsv, smalld.v5.2n.ssv, smalld.v5.2n.bsv) #NOTE: doubled any with equal variance or equal ns because they don't have separate ssv and bsv versions
 
-smalld.welch <- data.frame(power.smalld.welch, power.Ns, power.var.ratio)
-smalld.welch <- smalld.welch[order(smalld.welch$power.Ns, smalld.welch$power.var.ratio),]
+power.welch.smalld <- data.frame(
+    power=c(smalld.ve.ne, smalld.v2.ne, smalld.v2.ne, smalld.v5.ne, smalld.v5.ne, smalld.ve.1.5n, smalld.ve.2n, smalld.v2.1.5n.ssv, smalld.v2.1.5n.bsv, smalld.v2.2n.ssv, smalld.v2.2n.bsv, smalld.v5.1.5n.ssv, smalld.v5.1.5n.bsv, smalld.v5.2n.ssv, smalld.v5.2n.bsv), #NOTE: doubled any with equal variance or equal ns because they don't have separate ssv and bsv versions
+    Ns=factor(c('20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75','100,150','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100','100,200'), levels=c('20,20','20,30','20,40','50,50','50,75','50,100','100,100','100,150','100,200')),                                                                                                                                                                                                                                                                                                                
+    var.ratio=factor(rep(c(0,-1,1,-2,2,0,0,-1,1,-1,1,-2,2,-2,2), each=3), levels=c(-2,-1,0,1,2), labels=c(.2,.5,1,2,5)))
+power.welch.smalld <- power.welch.smalld[order(power.welch.smalld$Ns, power.welch.smalld$var.ratio),]
 
 # d=.5
 midd.ve.ne <- reject.null.ve.ne[,3,2]
@@ -501,10 +554,12 @@ midd.v5.1.5n.ssv <- reject.null.v5.1.5n.ssv[,3,2]
 midd.v5.1.5n.bsv <- reject.null.v5.1.5n.bsv[,3,2]
 midd.v5.2n.ssv <- reject.null.v5.2n.ssv[,3,2]
 midd.v5.2n.bsv <- reject.null.v5.2n.bsv[,3,2]
-power.midd.welch <- c(midd.ve.ne, midd.v2.ne, midd.v2.ne, midd.v5.ne, midd.v5.ne, midd.ve.1.5n, midd.ve.2n, midd.v2.1.5n.ssv, midd.v2.1.5n.bsv, midd.v2.2n.ssv, midd.v2.2n.bsv, midd.v5.1.5n.ssv, midd.v5.1.5n.bsv, midd.v5.2n.ssv, midd.v5.2n.bsv) #NOTE: doubled any with equal variance or equal ns because they don't have separate ssv and bsv versions
 
-midd.welch <- data.frame(power.midd.welch, power.Ns, power.var.ratio)
-midd.welch <- midd.welch[order(midd.welch$power.Ns, midd.welch$power.var.ratio),]
+power.welch.midd <- data.frame(
+    power=c(midd.ve.ne, midd.v2.ne, midd.v2.ne, midd.v5.ne, midd.v5.ne, midd.ve.1.5n, midd.ve.2n, midd.v2.1.5n.ssv, midd.v2.1.5n.bsv, midd.v2.2n.ssv, midd.v2.2n.bsv, midd.v5.1.5n.ssv, midd.v5.1.5n.bsv, midd.v5.2n.ssv, midd.v5.2n.bsv), #NOTE: doubled any with equal variance or equal ns because they don't have separate ssv and bsv versions
+    Ns=factor(c('20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75','100,150','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100','100,200'), levels=c('20,20','20,30','20,40','50,50','50,75','50,100','100,100','100,150','100,200')),                                                                                                                                                                                                                                                                                                                
+    var.ratio=factor(rep(c(0,-1,1,-2,2,0,0,-1,1,-1,1,-2,2,-2,2), each=3), levels=c(-2,-1,0,1,2), labels=c(.2,.5,1,2,5)))
+power.welch.midd <- power.welch.midd[order(power.welch.midd$Ns, power.welch.midd$var.ratio),]
 
 # d=.8
 bigd.ve.ne <- reject.null.ve.ne[,4,2]
@@ -520,100 +575,109 @@ bigd.v5.1.5n.ssv <- reject.null.v5.1.5n.ssv[,4,2]
 bigd.v5.1.5n.bsv <- reject.null.v5.1.5n.bsv[,4,2]
 bigd.v5.2n.ssv <- reject.null.v5.2n.ssv[,4,2]
 bigd.v5.2n.bsv <- reject.null.v5.2n.bsv[,4,2]
-power.bigd.welch <- c(bigd.ve.ne, bigd.v2.ne, bigd.v2.ne, bigd.v5.ne, bigd.v5.ne, bigd.ve.1.5n, bigd.ve.2n, bigd.v2.1.5n.ssv, bigd.v2.1.5n.bsv, bigd.v2.2n.ssv, bigd.v2.2n.bsv, bigd.v5.1.5n.ssv, bigd.v5.1.5n.bsv, bigd.v5.2n.ssv, bigd.v5.2n.bsv) #NOTE: doubled any with equal variance or equal ns because they don't have separate ssv and bsv versions
 
-bigd.welch <- data.frame(power.bigd.welch, power.Ns, power.var.ratio)
-bigd.welch <- bigd.welch[order(bigd.welch$power.Ns, bigd.welch$power.var.ratio),]
+power.welch.bigd <- data.frame(
+    power=c(bigd.ve.ne, bigd.v2.ne, bigd.v2.ne, bigd.v5.ne, bigd.v5.ne, bigd.ve.1.5n, bigd.ve.2n, bigd.v2.1.5n.ssv, bigd.v2.1.5n.bsv, bigd.v2.2n.ssv, bigd.v2.2n.bsv, bigd.v5.1.5n.ssv, bigd.v5.1.5n.bsv, bigd.v5.2n.ssv, bigd.v5.2n.bsv), #NOTE: doubled any with equal variance or equal ns because they don't have separate ssv and bsv versions
+    Ns=factor(c('20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75','100,150','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100','100,200'), levels=c('20,20','20,30','20,40','50,50','50,75','50,100','100,100','100,150','100,200')),                                                                                                                                                                                                                                                                                                                
+    var.ratio=factor(rep(c(0,-1,1,-2,2,0,0,-1,1,-1,1,-2,2,-2,2), each=3), levels=c(-2,-1,0,1,2), labels=c(.2,.5,1,2,5)))
+power.welch.bigd <- power.welch.bigd[order(power.welch.bigd$Ns, power.welch.bigd$var.ratio),]
+
+
+
+
+## Set up data for deviation from expected power
+## Equal Ns
+power.welch.smalld$expected <- c(rep(.095, 5), rep(.104, 5), rep(.111, 5), rep(.168, 5), rep(.192, 5), rep(.209, 5), rep(.291, 5), rep(.339, 5), rep(.370, 5))
+power.welch.smalld$power.diff <- power.welch.smalld$power-power.welch.smalld$expected
+
+power.welch.midd$expected <- c(rep(.338, 5), rep(.397, 5), rep(.435, 5), rep(.697, 5), rep(.776, 5), rep(.818, 5), rep(.940, 5), rep(.971, 5), rep(.983, 5))
+power.welch.midd$power.diff <- power.welch.midd$power-power.welch.midd$expected
+
+power.welch.bigd$expected <- c(rep(.693, 5), rep(.775, 5), rep(.819, 5), rep(.977, 5), rep(.992, 5), rep(.996, 5), rep(1, 5), rep(1, 5), rep(1, 5))
+power.welch.bigd$power.diff <- power.welch.bigd$power-power.welch.bigd$expected
 
 
 ## Welch t, d=.2, power
-smalld.welch.plot <- ggplot(smalld.welch, aes(x=as.numeric(power.var.ratio), y=power.smalld.welch, shape=power.Ns, color=power.Ns, ymin=0, ymax=1)) + 
+smalld.welch.power <- ggplot(power.welch.smalld, aes(x=as.numeric(var.ratio), y=power, shape=Ns, color=Ns, ymin=0, ymax=1)) + 
     geom_point(size=3, solid=FALSE) + 
     scale_shape_manual(values=rep(c(1,2,0), 3)) +
     geom_line(size=.5) + 
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=0, to=1, by=.1)) +
-    xlab(bquote(sigma[1]^2~'/'~sigma[2]^2)) + ylab('Small Effect') + ggtitle("Welch's t Test")
+    xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Small Effect') + ggtitle("Welch's t Test")
+
+
+
+## Set up classic t test plot of deviation from expected power
+smalld.welch.deviation <- ggplot(power.welch.smalld, aes(x=as.numeric(var.ratio), y=power.diff, shape=Ns, color=Ns, ymin=-.3, ymax=.3)) + 
+    geom_point(size=3, solid=FALSE) + 
+    scale_shape_manual(values=rep(c(1,2,0), 3)) +
+    geom_line(size=.5) + 
+    scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
+    scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
+    scale_y_continuous(breaks=seq(from=-.3, to=.3, length.out=7)) +
+    xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Deviation') + ggtitle("Welch's t Test")
 
 
 ## Welch t, d=.5, power
-midd.welch.plot <- ggplot(midd.welch, aes(x=as.numeric(power.var.ratio), y=power.midd.welch, shape=power.Ns, color=power.Ns, ymin=0, ymax=1)) + 
+midd.welch.power <- ggplot(power.welch.midd, aes(x=as.numeric(var.ratio), y=power, shape=Ns, color=Ns, ymin=0, ymax=1)) + 
     geom_point(size=3, solid=FALSE) + 
     scale_shape_manual(values=rep(c(1,2,0), 3)) +
     geom_line(size=.5) + 
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=0, to=1, by=.1)) +
-    xlab(bquote(sigma[1]^2~'/'~sigma[2]^2)) + ylab('Medium Effect') #+ ggtitle("Welch's t Test")
+    xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Medium Effect') #+ ggtitle("Welch's t Test")
+
+
+
+## Set up Welch t test plot of deviation from expected power
+midd.welch.deviation <- ggplot(power.welch.midd, aes(x=as.numeric(var.ratio), y=power.diff, shape=Ns, color=Ns, ymin=-.3, ymax=.3)) + 
+    geom_point(size=3, solid=FALSE) + 
+    scale_shape_manual(values=rep(c(1,2,0), 3)) +
+    geom_line(size=.5) + 
+    scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
+    scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
+    scale_y_continuous(breaks=seq(from=-.3, to=.3, length.out=7)) +
+    xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Deviation') + ggtitle("Welch's t Test")
+
 
 
 ## Welch t, d=.8, power
-bigd.welch.plot <- ggplot(bigd.welch, aes(x=as.numeric(power.var.ratio), y=power.bigd.welch, shape=power.Ns, color=power.Ns, ymin=0, ymax=1)) + 
+bigd.welch.power <- ggplot(power.welch.bigd, aes(x=as.numeric(var.ratio), y=power, shape=Ns, color=Ns, ymin=0, ymax=1)) + 
     geom_point(size=3, solid=FALSE) + 
     scale_shape_manual(values=rep(c(1,2,0), 3)) +
     geom_line(size=.5) + 
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=0, to=1, by=.1)) +
-    xlab(bquote(sigma[1]^2~'/'~sigma[2]^2)) + ylab('Large Effect') #+ ggtitle("Welch's t Test")
+    xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Large Effect') #+ ggtitle("Welch's t Test")
 
+
+
+## Set up Welch t test plot of deviation from expected power
+bigd.welch.deviation <- ggplot(power.welch.bigd, aes(x=as.numeric(var.ratio), y=power.diff, shape=Ns, color=Ns, ymin=-.3, ymax=.3)) + 
+    geom_point(size=3, solid=FALSE) + 
+    scale_shape_manual(values=rep(c(1,2,0), 3)) +
+    geom_line(size=.5) + 
+    scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
+    scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
+    scale_y_continuous(breaks=seq(from=-.3, to=.3, length.out=7)) +
+    xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Deviation') + ggtitle("Welch's t Test")
 
 @
 
-<<diffPowerSetup, echo=FALSE>>=
-
-power.smalld.diff <- power.smalld.student-power.smalld.welch
-smalld.diff <- data.frame(power.smalld.diff, power.Ns, power.var.ratio)
-smalld.diff <- smalld.diff[order(smalld.diff$power.Ns, smalld.diff$power.var.ratio),]
-
-power.midd.diff <- power.midd.student-power.midd.welch
-midd.diff <- data.frame(power.midd.diff, power.Ns, power.var.ratio)
-midd.diff <- midd.diff[order(midd.diff$power.Ns, midd.diff$power.var.ratio),]
-
-power.bigd.diff <- power.bigd.student-power.bigd.welch
-bigd.diff <- data.frame(power.bigd.diff, power.Ns, power.var.ratio)
-bigd.diff <- bigd.diff[order(bigd.diff$power.Ns, bigd.diff$power.var.ratio),]
-
-smalld.diff.plot <- ggplot(smalld.diff, aes(x=as.numeric(power.var.ratio), y=power.smalld.diff, shape=power.Ns, color=power.Ns, ymin=-.3, ymax=.3)) + 
-    geom_point(size=3, solid=FALSE) + 
-    scale_shape_manual(values=rep(c(1,2,0), 3)) +
-    geom_line(size=.5) + 
-    scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
-    scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
-    scale_y_continuous(breaks=round(seq(from=-.3, to=.3, by=.1), digits=2)) +
-    xlab(bquote(sigma[1]^2~'/'~sigma[2]^2)) + ylab('Small Effect') + ggtitle(NULL)
-
-midd.diff.plot <- ggplot(midd.diff, aes(x=as.numeric(power.var.ratio), y=power.midd.diff, shape=power.Ns, color=power.Ns, ymin=-.3, ymax=.3)) + 
-    geom_point(size=3, solid=FALSE) + 
-    scale_shape_manual(values=rep(c(1,2,0), 3)) +
-    geom_line(size=.5) + 
-    scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
-    scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
-    scale_y_continuous(breaks=round(seq(from=-.3, to=.3, by=.1), digits=2)) +
-    xlab(bquote(sigma[1]^2~'/'~sigma[2]^2)) + ylab('Medium Effect') + ggtitle(NULL)
-
-bigd.diff.plot <- ggplot(bigd.diff, aes(x=as.numeric(power.var.ratio), y=power.bigd.diff, shape=power.Ns, color=power.Ns, ymin=-.3, ymax=.3)) + 
-    geom_point(size=3, solid=FALSE) + 
-    scale_shape_manual(values=rep(c(1,2,0), 3)) +
-    geom_line(size=.5) + 
-    scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
-    scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
-    scale_y_continuous(breaks=round(seq(from=-.3, to=.3, by=.1), digits=2)) +
-    xlab(bquote(sigma[1]^2~'/'~sigma[2]^2)) + ylab('Big Effect') + ggtitle(NULL)
-
-@
-
-    Is Welch's t test underpowered compared to Student's t test? Figure 9 displays the power of Student's t test and of Welch t tests to detect small, medium, and large effects under the different conditions. For both tests, power decreases as variances become unequal because we increased one group's variance; however, the power of each test decreases at a different rate depending on the sample size ratio. Figure 10 displays the difference in power between Student's t test and Welch's t test, with higher numbers indicating that Student's t test is more powerful. When the sample sizes or variances are equal, the power of the two tests is approximately equal. However, when both the sample sizes and variances are unequal, there are differences in power. Overall, Student's t test is more powerful when the large sample has the smaller variance, whereas the Welch t test is more powerful when the small sample has the smaller variance. These differences are the most dramatic when one sample is twice the size of the other. 
+    Figure 9 displays the power of the classic and Welch t tests to detect small, medium, and large effects under the different conditions. Overall, the classic t test is more powerful when the large sample has the smaller variance, whereas the Welch t test is more powerful when the small sample has the smaller variance. These differences are the most dramatic when one sample is twice the size of the other. 
     
-    The conditions in which Student's t test has the greatest power over Welch's t test, when one sample is twice the size of the other and the large sample has the small variance, are the same conditions in which Student's t test has a risk of doubling the false positive rate. In contrast, Welch's t test was more powerful than Student's t test under other conditions and never inflated the type I error rate beyond the expected rate.
+    The conditions in which the classic t test has the greatest power over the Welch t test, when one sample is twice the size of the other and the large sample has the small variance, are the same conditions in which the classic t test had a risk of doubling the false positive rate. In contrast, the Welch t test was more powerful than the classic test under other conditions and never inflated the type I error rate.
 
-    Taken together, the type I error rates and power favor the Welch t test over Student's t test as better balancing researchers' concerns.
+    Taken together, the type I error rates and power favor the Welch t test over the classic t test as better balancing researcher concerns.
 \begin{figure}
 <<plotPower, echo=FALSE>>=
 
 layout <- matrix(c(1,2,3,4,5,6), nrow=3, byrow=TRUE)
-multiplot(smalld.student.plot, smalld.welch.plot, midd.student.plot, midd.welch.plot, bigd.student.plot, bigd.welch.plot, layout=layout)
+multiplot(smalld.classic.power, smalld.welch.power, midd.classic.power, midd.welch.power, bigd.classic.power, bigd.welch.power, layout=layout)
 
 #multiplot(smalld.classic.power, smalld.classic.deviation, smalld.welch.power, smalld.welch.deviation, cols=2)
 
@@ -625,17 +689,7 @@ multiplot(smalld.student.plot, smalld.welch.plot, midd.student.plot, midd.welch.
 \textit{Figure 9.} Power of Student's and Welch's t tests.
 \end{figure}
 
-\begin{figure}
-<<plotPowerDiff, echo=FALSE>>=
-
-layout <- matrix(c(0,1,1,0,0,2,2,0,0,3,3,0), nrow=3, byrow=TRUE)
-multiplot(smalld.diff.plot, midd.diff.plot, bigd.diff.plot, layout=layout)
-
-@
-\textit{Figure 10.} Difference in the Power of Student's and Welch's t tests (Student-Welch).
-\end{figure}
-
-\subsubsection{Coverage Probability}
+\subsection{Coverage Probability}
 Because the accuracy of a confidence interval is influenced by the variance and sample size, but not by the true effect size, we only show the coverage probability when the null hypothesis is true (the coverage probabilities are identical across all effect sizes). Table 10 displays the coverage probability, which is how often the 95\% confidence interval contains the true mean difference in groups, for the two tests under the different conditions. The coverage probability for the classic t test varies dramatically. When it is the least powerful, it is the most accurate. When it is the most powerful, the effect size estimation is the least accurate, and what seems to be a 95\% confidence interval drops as low as an 88\% confidence interval. Once again, the Welch t test retains the expected 95\% rate and turns out to best meet a researcher's concerns. 
 
 <<classic coverage, echo=FALSE>>=
@@ -918,6 +972,7 @@ y <- c(dt(seq(-4,4,.1),df=38), dt(seq(-4,4,.1),df=38/2))
 group <- factor(rep(c('df = 38', 'df = 19'), each=81))
 
 ggplot(data.frame(x,y,group), aes(y=y, x=x, fill=group)) + geom_line(aes(colour=group)) + labs(x=NULL,y=NULL,colour=NULL)
+
 @
 \textit{Figure 6. Two t distributions with different degrees of freedom.}
 \end{figure}

@@ -1,6 +1,36 @@
 \begin{thebibliography}{}
 
 \bibitem [\protect \citeauthoryear {%
+\APACciteatitle {Zimmerman1993}}{%
+\APACciteatitle {Zimmerman1993}}{%
+{\protect \APACyear {{\protect \bibnodate {}}}}%
+{\protect \APACexlab {{\protect \BCntND {1}}}}}]{%
+Zimmerman1993}
+\APACinsertmetastar {%
+Zimmerman1993}%
+
+\newblock
+\APACrefYearMonthDay{{\protect \bibnodate {}}{\protect \BCntND {1}}}{}{}.
+\newblock
+
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+\APACciteatitle {Zimmerman2009}}{%
+\APACciteatitle {Zimmerman2009}}{%
+{\protect \APACyear {{\protect \bibnodate {}}}}%
+{\protect \APACexlab {{\protect \BCntND {2}}}}}]{%
+Zimmerman2009}
+\APACinsertmetastar {%
+Zimmerman2009}%
+
+\newblock
+\APACrefYearMonthDay{{\protect \bibnodate {}}{\protect \BCntND {2}}}{}{}.
+\newblock
+
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
 Bakker%
 , van Dijk%
 \BCBL {}\ \BBA {} Wicherts%
@@ -444,64 +474,6 @@ Zimmerman, D\BPBI W.%
 \newblock
 \begin{APACrefDOI} \doi{http://dx.doi.org/10.1348/000711004849222}
   \end{APACrefDOI}
-\PrintBackRefs{\CurrentBib}
-
-\bibitem [\protect \citeauthoryear {%
-Zimmerman%
-\ \BBA {} Zumbo%
-}{%
-Zimmerman%
-\ \BBA {} Zumbo%
-}{%
-{\protect \APACyear {1993}}%
-}]{%
-Zimmerman1993}
-\APACinsertmetastar {%
-Zimmerman1993}%
-\begin{APACrefauthors}%
-Zimmerman, D\BPBI W.%
-\BCBT {}\ \BBA {} Zumbo, B\BPBI D.%
-\end{APACrefauthors}%
-\unskip\
-\newblock
-\APACrefYearMonthDay{1993}{}{}.
-\newblock
-{\BBOQ}\APACrefatitle {Rank transformations and the power of the Student t test
-  and Welch t' test for non-normal populations with unequal variances} {Rank
-  transformations and the power of the student t test and welch t' test for
-  non-normal populations with unequal variances}.{\BBCQ}
-\newblock
-\APACjournalVolNumPages{Canadian Journal of Experimental
-  Psychology}{47}{}{523-539}.
-\newblock
-\begin{APACrefDOI} \doi{http://dx.doi.org/10.1037/h0078850} \end{APACrefDOI}
-\PrintBackRefs{\CurrentBib}
-
-\bibitem [\protect \citeauthoryear {%
-Zimmerman%
-\ \BBA {} Zumbo%
-}{%
-Zimmerman%
-\ \BBA {} Zumbo%
-}{%
-{\protect \APACyear {2009}}%
-}]{%
-Zimmerman2009}
-\APACinsertmetastar {%
-Zimmerman2009}%
-\begin{APACrefauthors}%
-Zimmerman, D\BPBI W.%
-\BCBT {}\ \BBA {} Zumbo, B\BPBI D.%
-\end{APACrefauthors}%
-\unskip\
-\newblock
-\APACrefYearMonthDay{2009}{}{}.
-\newblock
-{\BBOQ}\APACrefatitle {Hazards in choosing between pooled and
-  separate-variances t tests} {Hazards in choosing between pooled and
-  separate-variances t tests}.{\BBCQ}
-\newblock
-\APACjournalVolNumPages{Psicológica}{30}{}{371-390}.
 \PrintBackRefs{\CurrentBib}
 
 \end{thebibliography}

@@ -99,18 +99,6 @@
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/plotPowerDiff}
-
-\end{knitrout}
-\textit{Figure 10.} Difference in the Power of Student's and Welch's t tests (Student-Welch).
-\end{figure*}
-\efloatseparator
- 
-\begin{figure*}[hbt]
-\ifnextchar[{\eatarg}{}
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
 \includegraphics[width=\maxwidth]{figure/coverage_plots}
 
 \end{knitrout}
