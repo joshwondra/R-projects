@@ -1,8 +1,8 @@
 \documentclass[man,a4paper,noextraspace,apacite]{apa6}
 \usepackage{apacite}
 
-\title{Always Use the Separate Variances t Test for Two Independent Groups}
-\shorttitle{Separate Variances t Test}
+\title{Always Use Welch's t Test to Compare the Means of Two Independent Groups}
+\shorttitle{Welch t Test}
 \author{Joshua D. Wondra and Richard Gonzalez}
 \affiliation{University of Michigan}
 
@@ -230,7 +230,7 @@ partial.df <- function(var = 'a', params=df.ratio.defaults){
 
 ggplot(data.frame(x=seq(2,10,.1)), aes(x)) +
     stat_function(fun=partial.df(var='var2', params=list('n1'=50,'n2'=50,'var1'=2,'var2'=2))) + #NOTE: the sample sizes don't affect the df ratio
-    labs(y=bquote(frac('df'['Welch'],'df'['Student'])), x=bquote(frac('s'[1]^2,'s'[2]^2))) +
+    labs(y=bquote(frac('df'['Welch'],'df'['Student'])), x=bquote(frac(sigma[1]^2,sigma[2]^2))) +
     scale_x_continuous(breaks=c(2,4,6,8,10), labels=c(2,4,6,8,10)/2)
 
 @
@@ -259,7 +259,7 @@ ggplot(data.frame(x=seq(2,10,.1)), aes(x)) +
     stat_function(fun=partial.df(var='var2', params=list('n1'=75,'n2'=50,'var1'=2,'var2'=2)), aes(colour='n2')) +
     stat_function(fun=partial.df(var='var2', params=list('n1'=50,'n2'=75,'var1'=2,'var2'=2)), aes(colour='n1/2')) +
     scale_colour_manual(values=c('blue', 'red'), labels=c(bquote(frac('n'[1],'n'[2])~'='~frac(3,2)), bquote(frac('n'[1],'n'[2])~'= '~frac(2,3)))) +
-    labs(y=bquote(frac('df'['Welch'],'df'['Student'])), x=bquote(frac('s'[1]^2,'s'[2]^2))) +
+    labs(y=bquote(frac('df'['Welch'],'df'['Student'])), x=bquote(frac(sigma[1]^2,sigma[2]^2))) +
     scale_x_continuous(breaks=c(2,4,6,8,10), labels=c(2,4,6,8,10)/2)
 @
 \textit{Figure 5.} Degrees of freedom ratio when sample sizes are unequal and variances are unequal.
@@ -636,7 +636,7 @@ multiplot(smalld.diff.plot, midd.diff.plot, bigd.diff.plot, layout=layout)
 \end{figure}
 
 \subsubsection{Coverage Probability}
-Because the accuracy of a confidence interval is influenced by the variance and sample size, but not by the true effect size, we only show the coverage probability when the null hypothesis is true (the coverage probabilities are identical across all effect sizes). Table 10 displays the coverage probability, which is how often the 95\% confidence interval contains the true mean difference in groups, for the two tests under the different conditions. The coverage probability for the classic t test varies dramatically. When it is the least powerful, it is the most accurate. When it is the most powerful, the effect size estimation is the least accurate, and what seems to be a 95\% confidence interval drops as low as an 88\% confidence interval. Once again, the Welch t test retains the expected 95\% rate and turns out to best meet a researcher's concerns. 
+We examined the coverage probability of 95\% confidence intervals, which is the proportion of confidence intervals that contain the true population value of the difference in group means, based on Student's t test and Welch's t test. Because the accuracy of a confidence interval is influenced by the variance and sample size, but not by the true effect size, we only show the coverage probability when the null hypothesis is true (the coverage probabilities are identical across all effect sizes). Additionally, when the null hypothesis is true and $\alpha = .05$, the coverage probability of 95\% confidence intervals has a simple relationship with the type I error rate--the coverage probability is the complement of the type I error rate. Table 10 displays the coverage probabilities of the two t tests. The coverage probability for Student's t test varies dramatically, just as the type I error rates did. When Student's test is the least powerful, it is the most accurate at estimating the difference in means. When it is the most powerful to find an effect, it is the least accurate, and what you would believe is a 95\% confidence interval drops as low as an 88\% confidence interval in reality. In contrast, the Welch t test performs as expected and the confidence interval contains the true effect 95\% of the time regardless of the variance and sample size ratios. 
 
 <<classic coverage, echo=FALSE>>=
 
@@ -894,20 +894,18 @@ multiplot(CovClassic.nullT, CovWelch.nullT, layout=layout)
 \end{figure}
 
 \section{Discussion}
-    Make a note that our df ratio rule works best when it doesn't matter - when sample sizes are equal.
+    We set out to find a simple rule to help researchers decide when to use Student's t test and when to use Welch's t test. We believe that the simplest rule is to always use Welch's t test to compare the means of independent groups.
     
-    In much experimental work, the choice between the tests is probably fine if the experimenter ensures that sample sizes are equal. This is generally not an option with pre-existing groups. 
+    The results of our simulations demonstrated that when the population variances or sample sizes were equal, using Welch's t test instead of Student's t test didn't hurt. Figures 3 and 4 show that the Welch degrees of freedom could drop below 70\% the Student's t test degrees of freedom when only the variance ratio or the sample size ratio changed. Nevertheless, the false positive rates, power, and coverage probabilities of the two tests were almost identical under these conditions. It seems as though the difference in the degrees of freedom of the two tests was not very important at all. We illustrate this point in Figure 11, which shows two overlapping t distributions, one with half the degrees of freedom of the other. The tails of the distributions with the smaller degrees of freedom are a little larger, but not much. Given the same t-value, in the majority of cases these distributions would agree about whether or not to reject the null hypothesis. 
     
-    Notably, the two standard errors are equal when either the sample sizes or the variances of the two groups are identical, so the Welch t test could only be more powerful when both the sample sizes and variances are unequal. 
+    More important than the degrees of freedom is the standard error, which affects the t-value itself. When either the variances or the sample sizes are equal, the pooled standard error of Student's t test and the separate variances standard error of Welch's t test are identical, and the two tests will generally agree with each other. However, when both the variances and the sample sizes are unequal, the pooled standard error of Student's t test gives more weight to the group with the larger sample size (CITATIONS); if that group has the larger variance, then Student's t test becomes more conservative, but if that group has the smaller variance, then Student's t test becomes more liberal. This can be seen in Figures 7 and 10, where the type I error rate and coverage probability of Student's t test vary widely. In contrast, Welch's t test was more stable, regardless of which sample had the larger variance. This can be seen in Figures 8 and 10, where the type I error rate and coverage probability of Welch's t test were exactly what you would expect.
     
-    Benefits of just using welch rule: simplifies the decision which makes it easier, puts researcher motivation in line with false positive preservation
+    The biggest benefit of Student's t test was that it had more power than Welch's t test to detect true effects when the larger sample had the smaller variance--yet under these same conditions, it had an inflated type I error rate and the lowest coverage probability. Far from being underpowered, Welch's t test was more powerful than Student's t test when the larger sample had the larger variance, but under these same conditions it retained the expected type I error rate and coverage probability. Overall, Welch's t test did a better job of balancing researcher concerns about false positives, power, and estimation.
+    
+    We believe that researchers are more likely to use simple decision rules, and so we echo the recommendations of previous researchers to always use the Welch t test (CITATIONS). For researchers who have a reason to prefer Student's t test, there is some good news for those who are doing experimental work. With experiments, subjects are usually assigned evenly to conditions. In this case, the two tests will perform equally well. However, for researchers who are interested in comparing pre-existing groups, it might not be possible to have equal sample sizes. In this latter case, the Welch t test is likely to outperform Student's t test because the observed variances are unlikely to be precisely equal. If a researcher still prefers a complex rule where using either test is still possible, then one option is to look at boxplots to determine whether you can reasonably assume that the group variances are equal. This judgment will be easier if the sample sizes are large. Nevertheless, researchers should rest assured that they won't suffer from using the simple rule to always go with Welch's t test.
+    
+    We examined whether the ratio of the degrees of freedom from Welch's t test to the degrees of freedom from Student's t test could provide a good heuristic for determining whether or not the variances of the two groups are unequal. The rule had the greatest potential when it mattered the least--when the sample sizes of the two groups were equal. When the sample sizes were unequal the degrees of freedom ratio was not a reliable indicator of unequal variances. It could become very high as variances became unequal and it could drop very low when the variances were equal.
 
-    One of the concerns about using the Welch t test as an alternative to Student's t test is that the penalty on the degrees of freedom makes it difficult to find effects. Figures 3 and 4 show that the penalty is small when the variances and sample sizes are approximately equal, which is within the range that one might expect from normal sampling error when the true population variances are equal. However, the penalty to the degrees of freedom might not be very important in general. Figure 6 displays two t-distributions where one has half the degrees of freeom of the other. Despite the drastic difference in the degrees of freedom, the two distributions largely overlap and so the differences in standard errors of the two tests, which will affect the value of the t-test, might be more important.
-    
-    Cite Zimmerman 1996 when talking about how the pooled variance is the major cause of problems with Student's t test
-    
-    Cohen's d is a population standardized mean difference based on the standard deviation of the population - but what if there is no standard deviation of the population? This is exactly the situation we're faced with when lifting the equal variances assumption.
-  
 \begin{figure}  
 << tdist, echo=FALSE>>=
 
@@ -919,8 +917,24 @@ group <- factor(rep(c('df = 38', 'df = 19'), each=81))
 
 ggplot(data.frame(x,y,group), aes(y=y, x=x, fill=group)) + geom_line(aes(colour=group)) + labs(x=NULL,y=NULL,colour=NULL)
 @
-\textit{Figure 6. Two t distributions with different degrees of freedom.}
+\textit{Figure 11. Two t distributions with different degrees of freedom.}
 \end{figure}
+
+Make a note that our df ratio rule works best when it doesn't matter - when sample sizes are equal.
+    
+    In much experimental work, the choice between the tests is probably fine if the experimenter ensures that sample sizes are equal. This is generally not an option with pre-existing groups. 
+    
+    Notably, the two standard errors are equal when either the sample sizes or the variances of the two groups are identical, so the Welch t test could only be more powerful when both the sample sizes and variances are unequal. 
+    
+    Benefits of just using welch rule: simplifies the decision which makes it easier, puts researcher motivation in line with false positive preservation
+
+    One of the concerns about using the Welch t test as an alternative to Student's t test is that the penalty on the degrees of freedom makes it difficult to find effects. Figures 3 and 4 show that the penalty is small when the variances and sample sizes are approximately equal, which is within the range that one might expect from normal sampling error when the true population variances are equal. However, the penalty to the degrees of freedom might not be very important in general. Figure 11 displays two t-distributions where one has half the degrees of freeom of the other. Despite the drastic difference in the degrees of freedom, the two distributions largely overlap and so the differences in standard errors of the two tests, which will affect the value of the t-test, might be more important.
+    
+    Cite Zimmerman 1996 when talking about how the pooled variance is the major cause of problems with Student's t test
+    
+    Cohen's d is a population standardized mean difference based on the standard deviation of the population - but what if there is no standard deviation of the population? This is exactly the situation we're faced with when lifting the equal variances assumption.
+  
+
 
 
 << junk, echo=FALSE >>=
