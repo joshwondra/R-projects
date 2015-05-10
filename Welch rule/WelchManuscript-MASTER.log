@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  10 MAY 2015 17:46
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  10 MAY 2015 19:22
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -518,140 +518,143 @@ Underfull \vbox (badness 2035) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [11]
-Underfull \vbox (badness 7099) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [12]
-(./WelchManuscript-MASTER.bbl [13]
+Underfull \vbox (badness 7099) has occurred while \output is active []
+
+ [13]
+(./WelchManuscript-MASTER.bbl [14]
 Underfull \vbox (badness 3895) has occurred while \output is active []
 
- [14
+ [15
 
 ])
 
-Class apa6 Warning: \bibliographystyle command ignored on input line 298.
+Class apa6 Warning: \bibliographystyle command ignored on input line 295.
 
-AED endfloat: Processing end Figures and Tables [15]
+AED endfloat: Processing end Figures and Tables [16]
 (./WelchManuscript-MASTER.fff
 Package color Info: Redefining color shadecolor on input line 5.
 
-<figure/varEqualBoxplots.pdf, id=61, 505.89pt x 505.89pt>
+<figure/varEqualBoxplots.pdf, id=64, 505.89pt x 505.89pt>
 File: figure/varEqualBoxplots.pdf Graphic file (type pdf)
 
 <use figure/varEqualBoxplots.pdf>
 Package pdftex.def Info: figure/varEqualBoxplots.pdf used on input line 6.
 (pdftex.def)             Requested size: 452.9679pt x 452.97328pt.
- [16
+ [17
 
 
  <./figure/varEqualBoxplots.pdf>]
 Package color Info: Redefining color shadecolor on input line 17.
 
-<figure/varDifferentBoxplots.pdf, id=70, 505.89pt x 505.89pt>
+<figure/varDifferentBoxplots.pdf, id=73, 505.89pt x 505.89pt>
 File: figure/varDifferentBoxplots.pdf Graphic file (type pdf)
 
 <use figure/varDifferentBoxplots.pdf>
 Package pdftex.def Info: figure/varDifferentBoxplots.pdf used on input line 18.
 
 (pdftex.def)             Requested size: 452.9679pt x 452.97328pt.
- [17
+ [18
 
  <./figure/varDifferentBoxplots.pdf>]
 Package color Info: Redefining color shadecolor on input line 29.
 
-<figure/dfratiosDiffvars.pdf, id=79, 505.89pt x 505.89pt>
+<figure/dfratiosDiffvars.pdf, id=82, 505.89pt x 505.89pt>
 File: figure/dfratiosDiffvars.pdf Graphic file (type pdf)
 
 <use figure/dfratiosDiffvars.pdf>
 Package pdftex.def Info: figure/dfratiosDiffvars.pdf used on input line 30.
 (pdftex.def)             Requested size: 452.9679pt x 452.97328pt.
- [18
+ [19
 
  <./figure/dfratiosDiffvars.pdf>]
 Package color Info: Redefining color shadecolor on input line 41.
 
-<figure/dfratiosDiffNratios.pdf, id=89, 505.89pt x 505.89pt>
+<figure/dfratiosDiffNratios.pdf, id=93, 505.89pt x 505.89pt>
 File: figure/dfratiosDiffNratios.pdf Graphic file (type pdf)
 
 <use figure/dfratiosDiffNratios.pdf>
 Package pdftex.def Info: figure/dfratiosDiffNratios.pdf used on input line 42.
 (pdftex.def)             Requested size: 452.9679pt x 452.97328pt.
- [19
+ [20
 
  <./figure/dfratiosDiffNratios.pdf>]
 Package color Info: Redefining color shadecolor on input line 53.
 
-<figure/dfratiosDiffvarsDiffNratios.pdf, id=99, 505.89pt x 505.89pt>
+<figure/dfratiosDiffvarsDiffNratios.pdf, id=102, 505.89pt x 505.89pt>
 File: figure/dfratiosDiffvarsDiffNratios.pdf Graphic file (type pdf)
 
 <use figure/dfratiosDiffvarsDiffNratios.pdf>
 Package pdftex.def Info: figure/dfratiosDiffvarsDiffNratios.pdf used on input l
 ine 54.
 (pdftex.def)             Requested size: 452.9679pt x 452.97328pt.
- [20
+ [21
 
  <./figure/dfratiosDiffvarsDiffNratios.pdf>]
 Package color Info: Redefining color shadecolor on input line 65.
- <figure/type1_classic_plot.pdf, id=110, 505.89pt x 505.89pt>
+ <figure/type1_classic_plot.pdf, id=113, 505.89pt x 505.89pt>
 File: figure/type1_classic_plot.pdf Graphic file (type pdf)
 
 <use figure/type1_classic_plot.pdf>
 Package pdftex.def Info: figure/type1_classic_plot.pdf used on input line 66.
 (pdftex.def)             Requested size: 452.9679pt x 452.97328pt.
- [21
+ [22
 
  <./figure/type1_classic_plot.pdf>]
 Package color Info: Redefining color shadecolor on input line 77.
 
-<figure/type1_Welch_plot.pdf, id=121, 505.89pt x 505.89pt>
+<figure/type1_Welch_plot.pdf, id=124, 505.89pt x 505.89pt>
 File: figure/type1_Welch_plot.pdf Graphic file (type pdf)
 
 <use figure/type1_Welch_plot.pdf>
 Package pdftex.def Info: figure/type1_Welch_plot.pdf used on input line 78.
 (pdftex.def)             Requested size: 452.9679pt x 452.97328pt.
- [22
+ [23
 
  <./figure/type1_Welch_plot.pdf>]
 Package color Info: Redefining color shadecolor on input line 89.
 
-<figure/plotPower.pdf, id=132, 505.89pt x 505.89pt>
+<figure/plotPower.pdf, id=135, 505.89pt x 505.89pt>
 File: figure/plotPower.pdf Graphic file (type pdf)
  <use figure/plotPower.pdf>
 Package pdftex.def Info: figure/plotPower.pdf used on input line 90.
 (pdftex.def)             Requested size: 452.9679pt x 452.97328pt.
 
-[23
+[24
 
  <./figure/plotPower.pdf>]
 Package color Info: Redefining color shadecolor on input line 101.
 
-<figure/plotPowerDiff.pdf, id=143, 505.89pt x 505.89pt>
+<figure/plotPowerDiff.pdf, id=146, 505.89pt x 505.89pt>
 File: figure/plotPowerDiff.pdf Graphic file (type pdf)
 
 <use figure/plotPowerDiff.pdf>
 Package pdftex.def Info: figure/plotPowerDiff.pdf used on input line 102.
 (pdftex.def)             Requested size: 452.9679pt x 452.97328pt.
- [24
+ [25
 
  <./figure/plotPowerDiff.pdf>]
 Package color Info: Redefining color shadecolor on input line 113.
 
-<figure/coverage_plots.pdf, id=154, 505.89pt x 505.89pt>
+<figure/coverage_plots.pdf, id=158, 505.89pt x 505.89pt>
 File: figure/coverage_plots.pdf Graphic file (type pdf)
 
 <use figure/coverage_plots.pdf>
 Package pdftex.def Info: figure/coverage_plots.pdf used on input line 114.
 (pdftex.def)             Requested size: 452.9679pt x 452.97328pt.
- [25
+ [26
 
  <./figure/coverage_plots.pdf>]
 Package color Info: Redefining color shadecolor on input line 125.
 
-<figure/tdist.pdf, id=167, 505.89pt x 505.89pt>
+<figure/tdist.pdf, id=170, 505.89pt x 505.89pt>
 File: figure/tdist.pdf Graphic file (type pdf)
  <use figure/tdist.pdf>
 Package pdftex.def Info: figure/tdist.pdf used on input line 126.
 (pdftex.def)             Requested size: 452.9679pt x 452.97328pt.
- [26
+ [27
 
  <./figure/tdist.pdf>]) (./WelchManuscript-MASTER.aux) ) 
 Here is how much of TeX's memory you used:
@@ -675,10 +678,10 @@ t/fonts/type1/public/lm/lmr6.pfb></usr/local/texlive/2014/texmf-dist/fonts/type
 lmri12.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/lm/lmsy10.pfb
 ></usr/local/texlive/2014/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr/loca
 l/texlive/2014/texmf-dist/fonts/type1/public/lm/lmtt12.pfb>
-Output written on WelchManuscript-MASTER.pdf (26 pages, 267507 bytes).
+Output written on WelchManuscript-MASTER.pdf (27 pages, 269538 bytes).
 PDF statistics:
- 214 PDF objects out of 1000 (max. 8388607)
- 152 compressed objects within 2 object streams
+ 217 PDF objects out of 1000 (max. 8388607)
+ 154 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  56 words of extra memory for PDF output out of 10000 (max. 10000000)
 
