@@ -69,34 +69,34 @@ If these assumptions hold, then you can find the t-value by taking the differenc
 <<setup, echo=FALSE>>=
 
 ## Retrieve tables with general data
-load('/users/joshwondra/R-projects/Welch rule/veNeSeed2184Tables.Rdata')
-load('/users/joshwondra/R-projects/Welch rule/v2NeSeed2184Tables.Rdata')
-load('/users/joshwondra/R-projects/Welch rule/v5NeSeed2184Tables.Rdata')
-load('/users/joshwondra/R-projects/Welch rule/ve1andhalfnSeed2184Tables.Rdata')
-load('/users/joshwondra/R-projects/Welch rule/ve2nSeed2184Tables.Rdata')
-load('/users/joshwondra/R-projects/Welch rule/v21andhalfnSSVSeed2184Tables.Rdata')
-load('/users/joshwondra/R-projects/Welch rule/v51andhalfnSSVSeed2184Tables.Rdata')
-load('/users/joshwondra/R-projects/Welch rule/v22nSSVSeed2184Tables.Rdata')
-load('/users/joshwondra/R-projects/Welch rule/v52nSSVSeed2184Tables.Rdata')
-load('/users/joshwondra/R-projects/Welch rule/v21andhalfnBSVSeed2184Tables.Rdata')
-load('/users/joshwondra/R-projects/Welch rule/v51andhalfnBSVSeed2184Tables.Rdata')
-load('/users/joshwondra/R-projects/Welch rule/v22nBSVSeed2184Tables.Rdata')
-load('/users/joshwondra/R-projects/Welch rule/v52nBSVSeed2184Tables.Rdata')
+load('veNeSeed2184Tables.Rdata')
+load('v2NeSeed2184Tables.Rdata')
+load('v5NeSeed2184Tables.Rdata')
+load('ve1andhalfnSeed2184Tables.Rdata')
+load('ve2nSeed2184Tables.Rdata')
+load('v21andhalfnSSVSeed2184Tables.Rdata')
+load('v51andhalfnSSVSeed2184Tables.Rdata')
+load('v22nSSVSeed2184Tables.Rdata')
+load('v52nSSVSeed2184Tables.Rdata')
+load('v21andhalfnBSVSeed2184Tables.Rdata')
+load('v51andhalfnBSVSeed2184Tables.Rdata')
+load('v22nBSVSeed2184Tables.Rdata')
+load('v52nBSVSeed2184Tables.Rdata')
 
 ## Retrieve data for boxplots
-load('/users/joshwondra/R-projects/Welch rule/veNeSeed2184-sim1.Rdata')
-load('/users/joshwondra/R-projects/Welch rule/v2NeSeed2184-sim1.Rdata')
-load('/users/joshwondra/R-projects/Welch rule/v5NeSeed2184-sim1.Rdata')
-load('/users/joshwondra/R-projects/Welch rule/veN15Seed2184-sim1.Rdata')
-load('/users/joshwondra/R-projects/Welch rule/v2N15ssvSeed2184-sim1.Rdata')
-load('/users/joshwondra/R-projects/Welch rule/v2N15bsvSeed2184-sim1.Rdata')
-load('/users/joshwondra/R-projects/Welch rule/v5N15ssvSeed2184-sim1.Rdata')
-load('/users/joshwondra/R-projects/Welch rule/v5N15bsvSeed2184-sim1.Rdata')
-load('/users/joshwondra/R-projects/Welch rule/veN2Seed2184-sim1.Rdata')
-load('/users/joshwondra/R-projects/Welch rule/v2N2ssvSeed2184-sim1.Rdata')
-load('/users/joshwondra/R-projects/Welch rule/v2N2bsvSeed2184-sim1.Rdata')
-load('/users/joshwondra/R-projects/Welch rule/v5N2ssvSeed2184-sim1.Rdata')
-load('/users/joshwondra/R-projects/Welch rule/v5N2bsvSeed2184-sim1.Rdata')
+load('veNeSeed2184-sim1.Rdata')
+load('v2NeSeed2184-sim1.Rdata')
+load('v5NeSeed2184-sim1.Rdata')
+load('veN15Seed2184-sim1.Rdata')
+load('v2N15ssvSeed2184-sim1.Rdata')
+load('v2N15bsvSeed2184-sim1.Rdata')
+load('v5N15ssvSeed2184-sim1.Rdata')
+load('v5N15bsvSeed2184-sim1.Rdata')
+load('veN2Seed2184-sim1.Rdata')
+load('v2N2ssvSeed2184-sim1.Rdata')
+load('v2N2bsvSeed2184-sim1.Rdata')
+load('v5N2ssvSeed2184-sim1.Rdata')
+load('v5N2bsvSeed2184-sim1.Rdata')
 
 ## Load packages
 library(ggplot2)
@@ -212,7 +212,7 @@ multiplot(plotlist=ve.bplots, layout=layout)
 \begin{figure}
 << dfratiosDiffvars, echo=FALSE>>=
 
-load('/users/joshwondra/R-projects/Welch rule/dfs.list.RData')
+load('dfs.list.RData')
 
 df.ratio.Ns <- function(n1, n2, var1, var2) {
     welch.num <- (var1/n1 + var2/n2)^2
