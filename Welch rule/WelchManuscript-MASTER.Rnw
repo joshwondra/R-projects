@@ -103,6 +103,8 @@ library(ggplot2)
 library(grid)
 library(gridExtra)
 
+theme_set(theme_bw())
+
 # Multiple plot function
 # retrieved from http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/
 
