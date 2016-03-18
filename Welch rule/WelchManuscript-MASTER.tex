@@ -1,53 +1,4 @@
-\documentclass[man,a4paper,noextraspace,apacite]{apa6}\usepackage[]{graphicx}\usepackage[]{color}
-%% maxwidth is the original width if it is less than linewidth
-%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
-\makeatletter
-\def\maxwidth{ %
-  \ifdim\Gin@nat@width>\linewidth
-    \linewidth
-  \else
-    \Gin@nat@width
-  \fi
-}
-\makeatother
-
-\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
-\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
-\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
-\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
-\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
-\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
-\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
-\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
-\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
-\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
-
-\usepackage{framed}
-\makeatletter
-\newenvironment{kframe}{%
- \def\at@end@of@kframe{}%
- \ifinner\ifhmode%
-  \def\at@end@of@kframe{\end{minipage}}%
-  \begin{minipage}{\columnwidth}%
- \fi\fi%
- \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
- \colorbox{shadecolor}{##1}\hskip-\fboxsep
-     % There is no \\@totalrightmargin, so:
-     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
- \MakeFramed {\advance\hsize-\width
-   \@totalleftmargin\z@ \linewidth\hsize
-   \@setminipage}}%
- {\par\unskip\endMakeFramed%
- \at@end@of@kframe}
-\makeatother
-
-\definecolor{shadecolor}{rgb}{.97, .97, .97}
-\definecolor{messagecolor}{rgb}{0, 0, 0}
-\definecolor{warningcolor}{rgb}{1, 0, 1}
-\definecolor{errorcolor}{rgb}{1, 0, 0}
-\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
-
-\usepackage{alltt}
+\documentclass[man,a4paper,noextraspace,apacite]{apa6}
 \usepackage{apacite}
 
 \title{Always Use Welch's t Test to Compare the Means of Two Independent Groups}
@@ -65,8 +16,11 @@ Richard Gonzalez, Department of Psychology, University of Michigan.
 Correspondence concerning this article should be addressed to Josh Wondra, Department of Psychology, University of Michigan, 530 Church St., Ann Arbor, MI 48109-1043.
 
 Contact: jdwondra@umich.edu}
-\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+
+
+\usepackage{Sweave}
 \begin{document}
+\input{WelchManuscript-MASTER-concordance}
 \maketitle
 
     Data analysis involves a series of decisions on the part of the researcher about which statistical test answers the research question, whether the data fit the requirements of the test, and whether there are alternative options that will do a better job. Recent discussions of false positives in psychology research \cite<e.g.,>{Fiedler2012, Ioannidis2012, Nosek2012, Simmons2011, Wagenmakers2012} highlight the tension between two valued outcomes of the decision process. On the one hand, researchers want to avoid mistakenly claiming that there is a true effect where none exists, which involves concerns about false positives. On the other hand, researchers want to find true effects where they do exist, which involves concerns about power. In addition to these two, there is a growing concern with estimating and reporting effect sizes \cite{Cumming2014}. Some have argued that due to some common research practices such as running underpowered studies, those effects that make it into published papers are spuriously large \cite<e.g.,>{Bakker2012, Ioannidis2008}.
@@ -115,25 +69,16 @@ If these assumptions hold, then you can find the t-value by taking the differenc
 \section{Results}   
 
 
-
 \subsection{Visualizing Data with Boxplots} 
     One option for deciding whether the group variances are equal is to examine boxplots. Figure 1 displays boxplots from simulations of two groups with equal variances and Figure 2 displays boxplots from simulations of two groups when the variance of the group to the right is five times as large as the variance of the group to the left. The first row displays groups with $n$=20 in the second row displays groups with $n$=100. The population distributions are displayed at the top. When the sample sizes are smaller there is more variability in the boxplots. For example, in Figure 1 it appears as though the the third boxplot displays data from populations with unequal variances, whereas in Figure 2 it appears as though the third boxplot displays data from populations with equal variances. It would be difficult to decide that the boxplots provide evidence of unequal variances when $n$=20 unless the differences were quite extreme. In contrast, when sample sizes are larger there is more consistency in the boxplots. It would be easy to determine that differences in the visual variances of the boxplots point to different population variances differ when $n$=100. By examining several additional simulations it would be possible to see how much variability in the boxplots is normal when variances are equal or unequal.
    
 \begin{figure}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/varEqualBoxplots} 
-
-\end{knitrout}
+\includegraphics{WelchManuscript-MASTER-varEqualBoxplots}
 \textit{Figure 1.} Boxplots for groups with equal variances. The first row displays groups with $n$=20 and the second row displays groups with $n$=100.
 \end{figure}
 
 \begin{figure}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/varDifferentBoxplots} 
-
-\end{knitrout}
+\includegraphics{WelchManuscript-MASTER-varDifferentBoxplots}
 \textit{Figure 2.} Boxplots for groups with unequal variances. The first row displays groups with $n$=20 and the second row displays groups with $n$=100.
 \end{figure}
 
@@ -144,33 +89,18 @@ If these assumptions hold, then you can find the t-value by taking the differenc
     Figure 3 displays the change in the df ratio as the variance ratio increases when sample sizes are equal. As expected, the ratio decreases as the difference in variances grows larger. When the variances are equal, the df ratio is equal to 1, though in real data the observed variances will rarely be exactly equal even if the population variances are equal. When once variance is twice the size of the other, the ratio drops to .9. A useful heuristic might to assume that the variances are unequal when the ratio falls below 96\%.
   
 \begin{figure}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/dfratiosDiffvars} 
-
-\end{knitrout}
 \textit{Figure 3.} Degrees of freedom ratio when sample sizes are equal and variances are unequal.
 \end{figure}
 
     But now look at what happens when the variances are equal and the sample size ratio changes (Figure 4). Here, too, the df ratio decreases as the difference in sample sizes grows larger, even though the variances stay the same. The 96\% heuristic would lead us astray and we would incorrectly conclude that the variances are unequal in many cases when only the sample sizes are unqual.
 
 \begin{figure}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/dfratiosDiffNratios} 
-
-\end{knitrout}
 \textit{Figure 4.} Degrees of freedom ratio when sample sizes are unequal and variances are equal.
 \end{figure}
 
     The picture becomes even more complicated when both the sample sizes and variances are unequal (Figure 5). In this case, the effect of different variances depends on whether the larger group has the larger variance or the smaller variance. When the variance of the larger group is increasing, the move from equal to unequal variances actual counteracts the effect of the unequal sample sizes at first, and the df ratio initially begins to approach 1 before dropping again. Due to the difference in sample sizes, a 96\% heuristic would mislead us into concluding that variances are equal when they are actually three times different from each other. However, when the variance of the smaller group is increasing the immediate drop in the df ratio is quite dramatic before it begins to level off. 
 
 \begin{figure}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/dfratiosDiffvarsDiffNratios} 
-
-\end{knitrout}
 \textit{Figure 5.} Degrees of freedom ratio when sample sizes are unequal and variances are unequal.
 \end{figure}
     In short, the usefulness of a heuristic based on the df ratio is limited to cases when the sample sizes are equal. 
@@ -184,32 +114,20 @@ NOTE: I excluded here citations that looked at ANOVA vs. Welch for now (Overall 
     
 \subsubsection{Type I Error Rates}
 
-
     The expected type I error rate is $\alpha = .05$. The observed type I error rate for Student's t test remained close to the expected .05 rate when either the sample size or the population variances were equal, but it varied widely when both population variances and sample sizes were unequal (see Figure 7). When the group with the larger sample size had the larger variance (the left side of Figure 7), the type I error rate dropped as low as about .01, but when the group with the larger sample size had the smaller variance (the right side of Figure 7), the type I error rate rose as high as .12, which is more than double the normally accepted false positive rate. In contrast, the observed type I error rate for Welch's t test remained close to the expected .05 rate across all conditions (see Figure 8). Overall, the Welch t test consistently behaved as expected when it comes to false positives. Student's t test did not.
 
 \begin{figure}    
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/type1_classic_plot} 
-
-\end{knitrout}
+\includegraphics{WelchManuscript-MASTER-Type1ClassicPlot}
 \textit{Figure 7.} Type I error rates for Student's t test.
 \end{figure}
 
 
 \begin{figure}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/type1_Welch_plot} 
-
-\end{knitrout}
+\includegraphics{WelchManuscript-MASTER-Type1WelchPlot}
 \textit{Figure 8.} Type I error rates for Welch's t test.
 \end{figure}
 
 \subsubsection{Power}
-
-
-
 
 
 
@@ -219,20 +137,12 @@ NOTE: I excluded here citations that looked at ANOVA vs. Welch for now (Overall 
 
     Taken together, the type I error rates and power favor the Welch t test over Student's t test as better balancing researchers' concerns.
 \begin{figure}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/plotPower} 
-
-\end{knitrout}
+\includegraphics{WelchManuscript-MASTER-plotPower}
 \textit{Figure 9.} Power of Student's and Welch's t tests.
 \end{figure}
 
 \begin{figure}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/plotPowerDiff} 
-
-\end{knitrout}
+\includegraphics{WelchManuscript-MASTER-plotPowerDiff}
 \textit{Figure 10.} Difference in the Power of Student's and Welch's t tests (Student-Welch).
 \end{figure}
 
@@ -242,14 +152,8 @@ We examined the coverage probability of 95\% confidence intervals, which is the 
 
 
 
-
-
 \begin{figure}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/coverage_plots} 
-
-\end{knitrout}
+\includegraphics{WelchManuscript-MASTER-CoveragePlots}
 \textit{Figure 10.} Coverage probabilities for Student's and Welch's t tests.
 \end{figure}
 
@@ -259,11 +163,7 @@ We examined the coverage probability of 95\% confidence intervals, which is the 
     The results of our simulations demonstrated that when the population variances or sample sizes were equal, using Welch's t test instead of Student's t test didn't hurt. Figures 3 and 4 show that the Welch degrees of freedom could drop below 70\% the Student's t test degrees of freedom when only the variance ratio or the sample size ratio changed. Nevertheless, the false positive rates, power, and coverage probabilities of the two tests were almost identical under these conditions. It seems as though the difference in the degrees of freedom of the two tests was not very important at all. We illustrate this point in Figure 11, which shows two overlapping t distributions, one with half the degrees of freedom of the other. The tails of the distributions with the smaller degrees of freedom are a little larger, but not much. Given the same t-value, in the majority of cases these distributions would agree about whether or not to reject the null hypothesis. 
     
 \begin{figure}  
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/tdist} 
-
-\end{knitrout}
+\includegraphics{WelchManuscript-MASTER-tdist}
 \textit{Figure 11. Two t distributions with different degrees of freedom.}
 \end{figure}
     
@@ -286,7 +186,6 @@ We examined the coverage probability of 95\% confidence intervals, which is the 
     The good news is that effect sizes are not just standardized differences in means, but also include things like the raw difference in means (CITATIONS), and confidence intervals around the mean differences based on separate variances are easy to find. They are included in the default output of data analysis programs such as SPSS and R. Reporting descriptive statistics in their original scale might be a better practice than reporting only standardized effect sizes anyway. Reporting the raw descriptives has a few advantages. First, it does not require the researcher to commit to an equal variances assumption. Second, it provides all of the necessary information for others who want to assume equal variances to find Cohen's d, or a number of the alternatives that have been recommended (CITATIONS). Third, it allows other researchers to examine whether differences in group variances are a consistent part of an effect, which would be lost by just reporting the standardized difference.
 
     We suspect that most statistics courses in psychology teach Student's t test thoroughly and only briefly touch on Welch's t test if they teach it at all. Indeed, we have heard colleagues who have used the Welch t test in a manuscript complain about reviewers who were suspicious when the degrees of freedom were reported with decimals. These reviewers must not have learned that degrees of freedom with decimals are the norm for Welch's t test, if they learned about it at all. The emphasis on Student's t test in teaching is consistent with the common strategy to start out by assuming that variances are equal and to only use Welch's t test as a back-up plan when the assumption has been violated. But why should we spend so much time on the equal variances assumption in the first place? Why not teach Welch's test as a safe first step that will do just fine without imposing restrictive assumptions? Student's t test could still be taught briefly so that students can understand the existing literature, but we think it would be beneficial to emphasize the Welch t test as the default approach. 
-
 
 
 
