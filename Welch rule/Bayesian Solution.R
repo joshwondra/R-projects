@@ -1,4 +1,4 @@
-##### Bayesian solution to Welch ######
+##### Bayesian solution to Welch (from the book) ######
 
 bayes.sep.t <- function(n1, n2, var1, var2) {
   s1 <- sqrt(var1)
@@ -59,11 +59,13 @@ partial.df.bayes <- function(var = 'a', params=df.ratio.defaults){
   function(x)do.call(df.bayes, params)
 }
 
+library(ggplot2)
+
 # same Ns, different variances
 ggplot(data.frame(x=seq(2,10,.1)), aes(x)) +
-  #stat_function(fun=partial.df.student.vars(var='var2', params=list('n1'=50,'n2'=50,'var1'=2,'var2'=2))) + 
-  stat_function(fun=partial.df.welch.vars(var='var2', params=list('n1'=50,'n2'=50,'var1'=2,'var2'=2)), color='red') + 
-  stat_function(fun=partial.df.bayes.vars(var='var2', params=list('n1'=50,'n2'=50,'var1'=2,'var2'=2)), color='blue') + 
+  #stat_function(fun=partial.df.student(var='var2', params=list('n1'=50,'n2'=50,'var1'=2,'var2'=2))) + 
+  stat_function(fun=partial.df.welch(var='var2', params=list('n1'=50,'n2'=50,'var1'=2,'var2'=2)), color='red') + 
+  stat_function(fun=partial.df.bayes(var='var2', params=list('n1'=50,'n2'=50,'var1'=2,'var2'=2)), color='blue') + 
   labs(y='degrees of freedom', x=bquote(frac(sigma[1]^2,sigma[2]^2))) +
   scale_x_continuous(breaks=c(2,4,6,8,10), labels=c(2,4,6,8,10)/2)
 
@@ -115,14 +117,14 @@ partial.se.bayes <- function(var = 'a', params=df.ratio.defaults){
 ggplot(data.frame(x=seq(2,10,.1)), aes(x)) +
   stat_function(fun=partial.se.welch(var='var2', params=list('n1'=50,'n2'=50,'var1'=2,'var2'=2)), color='red') + 
   stat_function(fun=partial.se.bayes(var='var2', params=list('n1'=50,'n2'=50,'var1'=2,'var2'=2)), color='blue') + 
-  labs(y='degrees of freedom', x=bquote(frac(sigma[1]^2,sigma[2]^2))) +
+  labs(y='standard error', x=bquote(frac(sigma[1]^2,sigma[2]^2))) +
   scale_x_continuous(breaks=c(2,4,6,8,10), labels=c(2,4,6,8,10)/2)
 
 # different Ns, same variances
 ggplot(data.frame(x=seq(20,100,.1)), aes(x)) + 
   stat_function(fun=partial.se.welch(var='n2', params=list('n1'=50,'n2'=50,'var1'=2,'var2'=2)), color='red') +
   stat_function(fun=partial.se.bayes(var='n2', params=list('n1'=50,'n2'=50,'var1'=2,'var2'=2)), color='blue') +
-  labs(y='degrees of freedom', x=bquote(frac('n'[1],'n'[2]))) +
+  labs(y='standard error', x=bquote(frac('n'[1],'n'[2]))) +
   scale_x_continuous(breaks=c(20,30,40,50,60,70,80,90,100), labels=c(20,30,40,50,60,70,80,90,100)/50)
 
 # different NS, different vars
@@ -131,7 +133,7 @@ ggplot(data.frame(x=seq(2,10,.1)), aes(x)) +
   stat_function(fun=partial.se.welch(var='var2', params=list('n1'=50,'n2'=75,'var1'=2,'var2'=2)), aes(colour='welch', linetype='n1=50, n2=75')) +
   stat_function(fun=partial.se.bayes(var='var2', params=list('n1'=75,'n2'=50,'var1'=2,'var2'=2)), aes(colour='bayes', linetype='n1=75, n2=50')) +
   stat_function(fun=partial.se.bayes(var='var2', params=list('n1'=50,'n2'=75,'var1'=2,'var2'=2)), aes(colour='bayes', linetype='n1=50, n2=75')) +
-  labs(y='degrees of freedom', x=bquote(frac(sigma[1]^2,sigma[2]^2))) +
+  labs(y='standard error', x=bquote(frac(sigma[1]^2,sigma[2]^2))) +
   scale_x_continuous(breaks=c(2,4,6,8,10), labels=c(2,4,6,8,10)/2)
 
 
@@ -157,7 +159,47 @@ partial.a.sq <- function(var = 'a', params=a.sq.defaults){
 }
 
 ggplot(data.frame(x=seq(2,100,.1)), aes(x)) + 
-  stat_function(fun=partial.a.sq(var='n2', params=list('n1'=10,'n2'=10,'var1'=2,'var2'=2))) 
+  stat_function(fun=partial.a.sq(var='n2', params=list('n1'=10,'n2'=10,'var1'=2,'var2'=2))) +
+  labs(y=expression(paste('a'^'2')), x=bquote(frac('n'[1],'n'[2]))) +
+  scale_x_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), labels=c(0,10,20,30,40,50,60,70,80,90,100)/50)
+
+ggplot(data.frame(x=seq(2,100,.1)), aes(x)) + 
+  stat_function(fun=partial.a.sq(var='var2', params=list('n1'=10,'n2'=10,'var1'=2,'var2'=2))) +
+  labs(y=expression(paste('a'^'2')), x=bquote(frac('var'[1],'var'[2]))) +
+  
+ggplot(data.frame(x=seq(2,10,.1)), aes(x)) +
+  stat_function(fun=partial.a.sq(var='var2', params=list('n1'=50,'n2'=50,'var1'=2,'var2'=2)), color='red') + 
+  labs(y=expression(paste('a'^'2')), x=bquote(frac(sigma[1]^2,sigma[2]^2))) +
+  scale_x_continuous(breaks=c(2,4,6,8,10), labels=c(2,4,6,8,10)/2) +
+  coord_cartesian(ylim=c(1,1.03))
+
+# different NS, different vars
+ggplot(data.frame(x=seq(2,10,.1)), aes(x)) + 
+  stat_function(fun=partial.a.sq(var='var2', params=list('n1'=75,'n2'=50,'var1'=2,'var2'=2)), aes(linetype='n1=75, n2=50')) +
+  stat_function(fun=partial.a.sq(var='var2', params=list('n1'=50,'n2'=75,'var1'=2,'var2'=2)), aes(linetype='n1=50, n2=75')) +
+  labs(y=expression(paste('a'^'2')), x=bquote(frac(sigma[1]^2,sigma[2]^2))) +
+  scale_x_continuous(breaks=c(2,4,6,8,10), labels=c(2,4,6,8,10)/2)
+  
+
+
+
+
+##### Kruschke's Bayesian solution to the t test #####
+
+setwd('R-projects/Welch rule/BEST')
+source("BEST.R")
+
+## Example format to look at HDI for the mean difference
+mcmcChain = BESTmcmc( y1 , y2 , priorOnly=FALSE ,
+                      numSavedSteps=10000 , thinSteps=5 , showMCMC=FALSE ) 
+mcmcDiff <- mcmcChain[,'mu[1]']-mcmcChain[,'mu[2]']
+mcmcHDI <- hdi(mcmcDiff)
+mcmc.lb <- mcmcHDI[1]
+mcmc.ub <- mcmcHDI[2]
+
+
+
+
 
 
 ##### Rewrite function to compute Bayes value as well #####
@@ -194,26 +236,29 @@ t.contrast.bayes <- function(dv, groups, contrast) {
   f1 <- (v2/(v2-2))*cos.phi.sq + (v1/(v1-2))*sin.phi.sq
   f2 <- (v2^2/((v2-2)^2*(v2-4)))*cos.phi.sq^2 + (v1^2/((v1-2)^2*(v1-4)))*sin.phi.sq^2
   b <- 4 + f1^2/f2
+  a.sq <- ((b-2)/b)*f1
   df.bayes <- b
-  se.bayes <- sqrt(contrast^2 %*% (vars/Ns))
+  se.bayes <- sqrt(a.sq)*sqrt(contrast^2 %*% (vars/Ns))
   t.bayes <- ihat/se.bayes
-  p.bayes <- 2*(1-pt(abs(t.bayes), df.bayes))
+  p.bayes <- 2*(1-pt(abs(t.bayes), df.bayes)) # NOTE: Bayesians don't use p values, but we'll leave this here anyway because it gives the same information as the proportion of times that the 95% HPD interval does not contain 0 
   
   result <- list(ihat=ihat, est.vars=vars, se.classic=se.classic, t.classic=t.classic, df.classic=df.classic, p.classic=p.classic, se.welch=se.welch, t.welch=t.welch, df.welch=df.welch, p.welch=p.welch, se.bayes=se.bayes, t.bayes=t.bayes, df.bayes=df.bayes, p.bayes=p.bayes)
   return(result)
 }
 
-t.compare.bayes <- function(nsims, Ns, means, vars, contrast) {
-  sims <- vector('list',nsims)
-  group <- rep(1:length(Ns), Ns)   #vector of length N with group codes
-  #dv <- vector('numeric',sum(Ns))
+t.compare.bayes <- function(sims, contrast, means) {
+  
+  nsims <- length(sims)
+  i <- 0
   
   sim.results <- lapply(sims, function(x){
-    dv <- rnorm(n=sum(Ns), mean=rep(means,times=Ns), sd=sqrt(rep(vars,times=Ns)))
     
-    sim.data <- data.frame(group, dv)
+    i <- i+1
+    print(paste(sims, i))
     
-    fit <- t.contrast.bayes(dv,group,contrast)
+    sim.data <- x$sim.data
+    
+    fit <- with(sim.data, t.contrast.bayes(dv,group,contrast))
     ihat <- fit$ihat
     est.vars <- fit$est.vars
     
@@ -229,14 +274,22 @@ t.compare.bayes <- function(nsims, Ns, means, vars, contrast) {
     df.welch <- fit$df.welch
     p.welch <- fit$p.welch
     
-    #save bayes
+    #save bayes analytical solution
     se.bayes <- fit$se.bayes
     t.bayes <- fit$t.bayes
     df.bayes <- fit$df.bayes
     p.bayes <- fit$p.bayes
     
-    current.sim <- list(sim.data, contrast, ihat, est.vars, se.classic, t.classic, df.classic, p.classic, se.welch, t.welch, df.welch, p.welch, se.bayes, t.bayes, df.bayes, p.bayes) # add matrix(c(dv,group), ncol=2, dimnames=list(c(),c('dv','group'))) to save the data
-    names(current.sim) <- c('sim.data', 'contrast', 'ihat', 'est.vars','se.classic', 't.classic', 'df.classic', 'p.classic', 'se.welch', 't.welch', 'df.welch', 'p.welch', 'se.bayes', 't.bayes', 'df.bayes', 'p.bayes') # add data if saving the data
+    #save mcmc
+    y1 <- sim.data[sim.data$group==1,'dv']
+    y2 <- sim.data[sim.data$group==2,'dv']
+    mcmcChain = BESTmcmc( y1 , y2 , priorOnly=FALSE, numSavedSteps=10 , thinSteps=5 , showMCMC=FALSE ) 
+    mcmcDiff <- mcmcChain[,'mu[1]']-mcmcChain[,'mu[2]']
+    mcmcHDI <- hdi(mcmcDiff)
+    mcmcHDIproduct <- mcmcHDI[1]*mcmcHDI[2]
+    
+    current.sim <- list(sim.data, contrast, ihat, est.vars, se.classic, t.classic, df.classic, p.classic, se.welch, t.welch, df.welch, p.welch, se.bayes, t.bayes, df.bayes, p.bayes, mcmcHDI, mcmcHDIproduct) # add matrix(c(dv,group), ncol=2, dimnames=list(c(),c('dv','group'))) to save the data
+    names(current.sim) <- c('sim.data', 'contrast', 'ihat', 'est.vars','se.classic', 't.classic', 'df.classic', 'p.classic', 'se.welch', 't.welch', 'df.welch', 'p.welch', 'se.bayes', 't.bayes', 'df.bayes', 'p.bayes','mcmcHDI','mcmcHDIproduct') # add data if saving the data
     return(current.sim)
   })
   
@@ -246,6 +299,7 @@ t.compare.bayes <- function(nsims, Ns, means, vars, contrast) {
   classic.reject <- sum(lapply(sim.results, '[[', 'p.classic')<=.05)/nsims
   welch.reject <- sum(lapply(sim.results, '[[', 'p.welch')<=.05)/nsims
   bayes.reject <- sum(lapply(sim.results, '[[', 'p.bayes')<=.05)/nsims
+  mcmc.reject <- sum(lapply(sim.results,'[[', 'mcmcHDIproduct')>=0)/nsims
   
   #store df ratio
   df.classic.vector <- unlist(lapply(sim.results, '[[', 'df.classic'))
@@ -263,6 +317,7 @@ t.compare.bayes <- function(nsims, Ns, means, vars, contrast) {
   classic.ses <- data.frame(lapply(sim.results, '[[', 'se.classic'))
   welch.ses <- data.frame(lapply(sim.results, '[[', 'se.welch'))
   bayes.ses <- data.frame(lapply(sim.results, '[[', 'se.bayes'))
+  mcmcHDIs <- data.frame(lapply(sim.results, '[[', 'mcmcHDI')) 
   
   t.classic <- apply(classic.df, 1, function(x){qt(.025, df=x)})        
   classic.lb <- obs.ihat-t.classic*classic.ses
@@ -279,21 +334,52 @@ t.compare.bayes <- function(nsims, Ns, means, vars, contrast) {
   bayes.ub <- obs.ihat+t.bayes*bayes.ses
   bayes.coverage.logical <- (bayes.ub-true.ihat)*(true.ihat-bayes.lb)>0
   
+  # due to the program's output, lower and upper are rows, not columns
+  mcmc.lb <- mcmcHDIs[1,] 
+  mcmc.ub <- mcmcHDIs[2,]
+  mcmc.coverage.logical <- (mcmc.ub-true.ihat)*(true.ihat-mcmc.lb)>0
+
   classic.coverage <- sum(classic.coverage.logical)/nsims
   welch.coverage <- sum(welch.coverage.logical)/nsims
   bayes.coverage <- sum(bayes.coverage.logical)/nsims
+  mcmc.coverage <- sum(mcmc.coverage.logical)/nsims
+  
   
   # return data 
-  return(list(classic.reject=classic.reject, welch.reject=welch.reject, bayes.reject=bayes.reject, df.ratio.avg=df.ratio.avg, classic.coverage=classic.coverage, welch.coverage=welch.coverage, bayes.coverage=bayes.coverage, df.ratio=df.ratio, sim.results=sim.results))
+  return(list(classic.reject=classic.reject, welch.reject=welch.reject, bayes.reject=bayes.reject, mcmc.reject=mcmc.reject, df.ratio.avg=df.ratio.avg, classic.coverage=classic.coverage, welch.coverage=welch.coverage, bayes.coverage=bayes.coverage, mcmc.coverage=mcmc.coverage, df.ratio=df.ratio, sim.results=sim.results))
 }
+deparse(substitute(mim101))
 
-set.seed(2184)
-ve.ns20.ne.nullT <- t.compare.bayes(nsims=1000, Ns=c(20,20), means=c(6,6), vars=c(2,2), contrast=c(-1,1))
-set.seed(2184)
-biggroupsmallvar <- t.compare.bayes(nsims=1000, Ns=c(30,10), means=c(6,6), vars=c(2,10), contrast=c(-1,1))
-set.seed(2184)
-biggroupbigvar <- t.compare.bayes(nsims=1000, Ns=c(10,30), means=c(6,6), vars=c(10,2), contrast=c(-1,1))
-set.seed(2184)
-biggroupsmallvar <- t.compare.bayes(nsims=1000, Ns=c(30,10), means=c(6,8), vars=c(2,10), contrast=c(-1,1))
-set.seed(2184)
-biggroupbigvar <- t.compare.bayes(nsims=1000, Ns=c(10,30), means=c(6,8), vars=c(10,2), contrast=c(-1,1))
+##### Load R simulations
+load(file='/users/joshwondra/Dropbox/Research/Current Projects/Welch/Data/veN2Seed2184.Rdata')
+load(file='/users/joshwondra/Dropbox/Research/Current Projects/Welch/Data/v2N2ssvSeed2184.Rdata')
+load(file='/users/joshwondra/Dropbox/Research/Current Projects/Welch/Data/v2N2bsvSeed2184.Rdata')
+load(file='/users/joshwondra/Dropbox/Research/Current Projects/Welch/Data/v5N2ssvSeed2184.Rdata')
+load(file='/users/joshwondra/Dropbox/Research/Current Projects/Welch/Data/v5N2bsvSeed2184.Rdata')
+
+
+##### Test t.compare.bayes function #####
+
+# Null true
+v5.ns50.2n.ssv.nullT.bayes <- t.compare.bayes(v5.ns50.2n.ssv.nullT$sim.results[1:2], contrast=c(1,-1), means=c(6,6))
+v5.ns50.2n.ssv.nullT.bayes$mcmcHDIs[1]
+head(v5.ns50.2n.ssv.nullT.bayes,9)
+
+
+
+
+##### Check Bayesian comparisons #####
+
+# Null true
+v5.ns50.2n.ssv.nullT.bayes <- t.compare.bayes(v5.ns50.2n.ssv.nullT$sim.results, contrast=c(-1,1), means=c(6,6))
+v2.ns50.2n.ssv.nullT.bayes <- t.compare.bayes(v2.ns50.2n.ssv.nullT$sim.results, contrast=c(-1,1), means=c(6,6))
+ve.ns50.2n.nullT.bayes <- t.compare.bayes(ve.ns50.2n.nullT$sim.results, contrast=c(-1,1), means=c(6,6))
+v2.ns50.2n.bsv.nullT.bayes <- t.compare.bayes(v2.ns50.2n.bsv.nullT$sim.results, contrast=c(-1,1), means=c(6,6))
+v5.ns50.2n.bsv.nullT.bayes <- t.compare.bayes(v5.ns50.2n.bsv.nullT$sim.results, contrast=c(-1,1), means=c(6,6))
+
+# Medium effect
+v5.ns50.2n.ssv.midd.bayes <- t.compare.bayes(v5.ns50.2n.ssv.midd$sim.results, contrast=c(-1,1), means=c(6,6.71))
+v2.ns50.2n.ssv.midd.bayes <- t.compare.bayes(v2.ns50.2n.ssv.midd$sim.results, contrast=c(-1,1), means=c(6,6.71))
+ve.ns50.2n.midd.bayes <- t.compare.bayes(ve.ns50.2n.midd$sim.results, contrast=c(-1,1), means=c(6,6.71))
+v2.ns50.2n.bsv.midd.bayes <- t.compare.bayes(v2.ns50.2n.bsv.midd$sim.results, contrast=c(-1,1), means=c(6,6.71))
+v5.ns50.2n.bsv.midd.bayes <- t.compare.bayes(v5.ns50.2n.bsv.midd$sim.results, contrast=c(-1,1), means=c(6,6.71))

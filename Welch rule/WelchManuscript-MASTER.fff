@@ -2,36 +2,17 @@
 \ifnextchar[{\eatarg}{}
 
 \includegraphics{WelchManuscript-MASTER-varEqualBoxplots}
-\textit{Figure 1.} Boxplots for groups with equal variances. The first row displays groups with $n$=20 and the second row displays groups with $n$=100.
+
+\textit{Figure 1.} Boxplots for groups with equal variances (top) and unequal variances (bottom). For each set of boxplots, the first row displays groups with $n$=20 and the second row displays groups with $n$=100.
 \end{figure*}
 \efloatseparator
  
 \begin{figure*}[hbt]
 \ifnextchar[{\eatarg}{}
 
-\includegraphics{WelchManuscript-MASTER-varDifferentBoxplots}
-\textit{Figure 2.} Boxplots for groups with unequal variances. The first row displays groups with $n$=20 and the second row displays groups with $n$=100.
-\end{figure*}
-\efloatseparator
- 
-\begin{figure*}[hbt]
-\ifnextchar[{\eatarg}{}
+\includegraphics{WelchManuscript-MASTER-dfratiosDiffvars}
 
-\textit{Figure 3.} Degrees of freedom ratio when sample sizes are equal and variances are unequal.
-\end{figure*}
-\efloatseparator
- 
-\begin{figure*}[hbt]
-\ifnextchar[{\eatarg}{}
-
-\textit{Figure 4.} Degrees of freedom ratio when sample sizes are unequal and variances are equal.
-\end{figure*}
-\efloatseparator
- 
-\begin{figure*}[hbt]
-\ifnextchar[{\eatarg}{}
-
-\textit{Figure 5.} Degrees of freedom ratio when sample sizes are unequal and variances are unequal.
+\textit{Figure 2.} Degrees of freedom ratio when sample sizes are unequal and variances are equal (top), when variances are equal and sample sizes are unequal (middle), and when both variances and sample sizes are unequal (bottom).
 \end{figure*}
 \efloatseparator
  
@@ -39,15 +20,8 @@
 \ifnextchar[{\eatarg}{}
 
 \includegraphics{WelchManuscript-MASTER-Type1ClassicPlot}
-\textit{Figure 7.} Type I error rates for Student's t test.
-\end{figure*}
-\efloatseparator
- 
-\begin{figure*}[hbt]
-\ifnextchar[{\eatarg}{}
 
-\includegraphics{WelchManuscript-MASTER-Type1WelchPlot}
-\textit{Figure 8.} Type I error rates for Welch's t test.
+\textit{Figure 3.} Type I error rates for Student's t test and Welch's t test as the variance ratio, sample size ratio, and sample sizes vary.
 \end{figure*}
 \efloatseparator
  
@@ -55,7 +29,8 @@
 \ifnextchar[{\eatarg}{}
 
 \includegraphics{WelchManuscript-MASTER-plotPower}
-\textit{Figure 9.} Power of Student's and Welch's t tests.
+
+\textit{Figure 4.} Power of Student's and Welch's t tests.
 \end{figure*}
 \efloatseparator
  
@@ -63,7 +38,8 @@
 \ifnextchar[{\eatarg}{}
 
 \includegraphics{WelchManuscript-MASTER-plotPowerDiff}
-\textit{Figure 10.} Difference in the Power of Student's and Welch's t tests (Student-Welch).
+
+\textit{Figure 5.} Difference in the Power of Student's and Welch's t tests (Student-Welch).
 \end{figure*}
 \efloatseparator
  
@@ -71,7 +47,8 @@
 \ifnextchar[{\eatarg}{}
 
 \includegraphics{WelchManuscript-MASTER-CoveragePlots}
-\textit{Figure 10.} Coverage probabilities for Student's and Welch's t tests.
+
+\textit{Figure 6.} Coverage probabilities for Student's and Welch's t tests.
 \end{figure*}
 \efloatseparator
  
@@ -79,7 +56,8 @@
 \ifnextchar[{\eatarg}{}
 
 \includegraphics{WelchManuscript-MASTER-tdist}
-\textit{Figure 11. Two t distributions with different degrees of freedom.}
+
+\textit{Figure 7. Two t distributions with different degrees of freedom.}
 \end{figure*}
 \efloatseparator
  
