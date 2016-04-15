@@ -57,6 +57,90 @@ Boneau, C\BPBI A.%
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
+Box%
+\ \BBA {} Tiao%
+}{%
+Box%
+\ \BBA {} Tiao%
+}{%
+{\protect \APACyear {1973}}%
+}]{%
+Box1973}
+\APACinsertmetastar {%
+Box1973}%
+\begin{APACrefauthors}%
+Box, G\BPBI E\BPBI P.%
+\BCBT {}\ \BBA {} Tiao, G\BPBI C.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYear{1973}.
+\newblock
+\APACrefbtitle {Bayesian inference in statistical analysis} {Bayesian inference
+  in statistical analysis}.
+\newblock
+\APACaddressPublisher{}{Addison-Wesley Publishing Company}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Cohen%
+}{%
+Cohen%
+}{%
+{\protect \APACyear {1992}}%
+}]{%
+Cohen1992}
+\APACinsertmetastar {%
+Cohen1992}%
+\begin{APACrefauthors}%
+Cohen, J.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1992}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {A power primer} {A power primer}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Psychological Bulletin}{112}{}{155--159}.
+\newblock
+\begin{APACrefDOI} \doi{http://dx.doi.org/10.1037/0033-2909.112.1.155}
+  \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Coombs%
+, Algina%
+\BCBL {}\ \BBA {} Oltman%
+}{%
+Coombs%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {1996}}%
+}]{%
+Coombs1996}
+\APACinsertmetastar {%
+Coombs1996}%
+\begin{APACrefauthors}%
+Coombs, W\BPBI T.%
+, Algina, J.%
+\BCBL {}\ \BBA {} Oltman, D\BPBI O.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1996}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Univariate and multivariate omnibus hypothesis tests
+  selected to control type I error rates when population variances are not
+  necessarily equal} {Univariate and multivariate omnibus hypothesis tests
+  selected to control type i error rates when population variances are not
+  necessarily equal}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Review of Educational Research}{66}{}{137--179}.
+\newblock
+\begin{APACrefDOI} \doi{http://dx.doi.org/10.3102/00346543066002137}
+  \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
 Cumming%
 }{%
 Cumming%
@@ -138,6 +222,36 @@ Gonzalez, R.%
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
+Grissom%
+\ \BBA {} Kim%
+}{%
+Grissom%
+\ \BBA {} Kim%
+}{%
+{\protect \APACyear {2001}}%
+}]{%
+Grissom2001}
+\APACinsertmetastar {%
+Grissom2001}%
+\begin{APACrefauthors}%
+Grissom, R\BPBI J.%
+\BCBT {}\ \BBA {} Kim, J\BPBI J.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2001}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Review of assumptions and problems in the appropriate
+  conceptualization of effect size} {Review of assumptions and problems in the
+  appropriate conceptualization of effect size}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Psychological Methods}{6}{}{135--146}.
+\newblock
+\begin{APACrefDOI} \doi{http://dx.doi.org/10.1037//1082-989X.6.2.135}
+  \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
 Ioannidis%
 }{%
 Ioannidis%
@@ -189,9 +303,122 @@ Ioannidis, J\BPBI P\BPBI A.%
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
-Neuhäuser%
+Kelley%
+\ \BBA {} Preacher%
 }{%
-Neuhäuser%
+Kelley%
+\ \BBA {} Preacher%
+}{%
+{\protect \APACyear {2012}}%
+}]{%
+Kelley2012}
+\APACinsertmetastar {%
+Kelley2012}%
+\begin{APACrefauthors}%
+Kelley, K.%
+\BCBT {}\ \BBA {} Preacher, K\BPBI J.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2012}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {On effect size} {On effect size}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Psychological Methods}{17}{}{137--152}.
+\newblock
+\begin{APACrefDOI} \doi{http://dx.doi.org/10.1037/a0028086} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Kruschke%
+}{%
+Kruschke%
+}{%
+{\protect \APACyear {2013}}%
+}]{%
+Kruschke2013}
+\APACinsertmetastar {%
+Kruschke2013}%
+\begin{APACrefauthors}%
+Kruschke, J\BPBI K.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2013}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Bayesian estimation supersedes the t test} {Bayesian
+  estimation supersedes the t test}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Journal of Experimental Psychology:
+  General}{142}{}{573--603}.
+\newblock
+\begin{APACrefDOI} \doi{http://dx.doi.org/10.1037/a0029146} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Moser%
+\ \BBA {} Stevens%
+}{%
+Moser%
+\ \BBA {} Stevens%
+}{%
+{\protect \APACyear {1992}}%
+}]{%
+Moser1992}
+\APACinsertmetastar {%
+Moser1992}%
+\begin{APACrefauthors}%
+Moser, B\BPBI K.%
+\BCBT {}\ \BBA {} Stevens, G\BPBI R.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1992}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Homogeneity of variance in the two-sample means test}
+  {Homogeneity of variance in the two-sample means test}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{The American Statistician}{46}{}{19--21}.
+\newblock
+\begin{APACrefDOI} \doi{http://dx.doi.org/10.2307/2684403} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Moser%
+, Stevens%
+\BCBL {}\ \BBA {} Watts%
+}{%
+Moser%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {1989}}%
+}]{%
+Moser1989}
+\APACinsertmetastar {%
+Moser1989}%
+\begin{APACrefauthors}%
+Moser, B\BPBI K.%
+, Stevens, G\BPBI R.%
+\BCBL {}\ \BBA {} Watts, C\BPBI L.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1989}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {The two-sample t test versus Satterthwaite's approximate
+  F test} {The two-sample t test versus satterthwaite's approximate f
+  test}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Communication in Statistics - Theory and
+  Methods}{18}{}{3963--3975}.
+\newblock
+\begin{APACrefDOI} \doi{http://dx.doi.org/10.1080/03610928908830135}
+  \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Neuh{\"a}user%
+}{%
+Neuh{\"a}user%
 }{%
 {\protect \APACyear {2002}}%
 }]{%
@@ -199,7 +426,7 @@ Neuhauser2002}
 \APACinsertmetastar {%
 Neuhauser2002}%
 \begin{APACrefauthors}%
-Neuhäuser, M.%
+Neuh{\"a}user, M.%
 \end{APACrefauthors}%
 \unskip\
 \newblock
@@ -243,6 +470,36 @@ Nosek, B\BPBI A.%
 \APACjournalVolNumPages{Perspectives on Psychological Science}{7}{}{615--631}.
 \newblock
 \begin{APACrefDOI} \doi{http://dx.doi.org/10.1177/1745691612459058}
+  \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Peng%
+\ \BBA {} Chen%
+}{%
+Peng%
+\ \BBA {} Chen%
+}{%
+{\protect \APACyear {2013}}%
+}]{%
+Peng2013}
+\APACinsertmetastar {%
+Peng2013}%
+\begin{APACrefauthors}%
+Peng, C\BHBI Y\BPBI J.%
+\BCBT {}\ \BBA {} Chen, L\BHBI T.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2013}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Beyond Cohen's d: Alternative effect size measures for
+  between-subject designs} {Beyond cohen's d: Alternative effect size measures
+  for between-subject designs}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{The Journal of Experimental Education}{82}{}{22--50}.
+\newblock
+\begin{APACrefDOI} \doi{http://dx.doi.org/10.1080/00220973.2012.745471}
   \end{APACrefDOI}
 \PrintBackRefs{\CurrentBib}
 
@@ -501,7 +758,7 @@ Zimmerman, D\BPBI W.%
   separate-variances t tests} {Hazards in choosing between pooled and
   separate-variances t tests}.{\BBCQ}
 \newblock
-\APACjournalVolNumPages{Psicológica}{30}{}{371-390}.
+\APACjournalVolNumPages{Psicol{\'o}gica}{30}{}{371-390}.
 \PrintBackRefs{\CurrentBib}
 
 \end{thebibliography}
