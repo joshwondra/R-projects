@@ -72,7 +72,7 @@ If these assumptions hold, then you can find the t-value by taking the
 difference in group means and dividing by the standard error of that 
 difference:   
     \begin{equation}
-    t = \frac{\overline{x}_1-\overline{x}_2}{s_{\overline{x}_1-\overline{x}_2}}
+    t = \frac{\overline{x}_1-\overline{x}_2}{\sigma_{\overline{x}_1-\overline{x}_2}}
     \end{equation}
     The p-value for the value of the t statistic depends on the degrees of 
 freedom, $df=n_1+n_2-2$. You are more likely to reject the null hypothesis and 
@@ -84,20 +84,29 @@ difference in group means gets larger (which increases the numerator of t), or
 when the standard error gets smaller (which decreases the denominator of t). 
     
     In order to compute the standard error for the t test, you need to find the 
-variance of the difference in group means. When the population variances of the 
-two groups are equal, then the  variance of the difference in group means is 
+common variance of the groups. Because the population variances of the 
+two groups are assumed to be equal, the common variance is 
 equal to the population variance of each group. This means that if you knew the 
 population variance of either group, then you could substitute it for the 
-population variance of the difference in group means to compute the standard 
-error. In practice, however, you rarely know the population variances, and 
+common variance to compute the standard error: 
+    \begin{equation}
+    \sigma_{\overline{x}_1-\overline{x}_2} = \sqrt{\frac{\sigma^2}{n}} = \sqrt{\frac{\sigma_1^2}{n}} = \sqrt{\frac{\sigma_2^2}{n}}
+    \end{equation}
+In practice, however, you rarely know the population variances of the two groups, and 
 instead you estimate them from the sample variances in your data. 
 Unfortunately, even if the population variances are identical, the sample 
-variances are rarely identical due to sampling error, so you can't substitude 
-the sample variance of one of the groups for the variance of the difference in 
-means to find the standard error. The classic Student's t test deals with this 
+variances are rarely identical due to sampling error, so you can't substitute 
+the sample variance of one of the groups for the common variances 
+to find the standard error. The classic Student's t test deals with this 
 problem by pooling the sample variances of the two groups into a weighted 
-average that is used to estimate the population variance, which is assumed to 
-be equal for the two groups and for the difference in group means. The group 
+average that is used to estimate the common variance. 
+    \begin{equation}
+    s_p^2 = \frac{(n_1 - 1)s_1^2 + (n_2 - 1)s_2^2}{n_1 + n_2 - 2}
+    \end{equation}
+    \begin{equation}
+    s_{\overline{x}_1-\overline{x}_2} = \sqrt{\frac{s_p^2}{n}}
+    \end{equation}
+The group 
 with the larger sample size is given more weight than the group with the 
 smaller sample size. This means that when the bigger group has the begger 
 variance, the standard error is bigger, but when the bigger group has the 
@@ -119,8 +128,18 @@ the \texttt{var.equal} argument to \texttt{TRUE}.
         As with Student's t test, Welch's t test assumes normality and 
 independence; however, it does not assume that the population variances are 
 equal. The standard error is based on separate group variances instead of a 
-common variance. Additionally, Welch's t test decreases the degrees of freedom 
-to the extent that the group variances are unequal. Because of these 
+common variance:
+    \begin{equation}
+    s_{\overline{x}_1-\overline{x}_2} = \sqrt{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}
+    \end{equation}
+Additionally, Welch's t test uses the following formula to compute the degrees of freedom: 
+    \begin{equation}
+    df = \frac{(\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2})^2}{\frac{(s_1^2)^2}{n_1^2(n_1-1)} + \frac{(s_2^2)^2}{n_2^2(n_2-1)}}
+    \end{equation}
+This formula decreases the degrees of freedom to the extent that the group
+variances are different from each other.
+
+Because of these 
 differences, the two tests can disagree about whether there is a difference in 
 group means. Because Welch's t test decreases the degrees of freedom, it might 
 be more conservative and less likely to reject the null hypothesis. On the one 
