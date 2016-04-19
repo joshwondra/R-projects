@@ -240,10 +240,9 @@ theme_set(theme_bw())
 
 # Multiple plot function
 # retrieved from 
-http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/
+#http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/
 
-# ggplot objects can be passed in ..., or to plotlist (as a list of ggplot 
-objects)
+# ggplot objects can be passed in ..., or to plotlist (as a list of ggplot objects)
 # - cols:   Number of columns in layout
 # - layout: A matrix specifying the layout. If present, 'cols' is ignored.
 
@@ -417,7 +416,7 @@ to .9. A useful heuristic might be to assume that the variances are unequal
 when the ratio falls below 96\%.
   
 \begin{figure}
-<< dfratiosDiffvars, echo=FALSE, collapse=TRUE, fig=TRUE, height=10>>=
+<<dfratiosDiffvars, echo=FALSE, collapse=TRUE, fig=TRUE, height=10>>=
 
 load('dfs.list.RData')
 
@@ -438,7 +437,7 @@ partial.df <- function(var = 'a', params=df.ratio.defaults){
 dfchange.var <- ggplot(data.frame(x=seq(2,10,.1)), aes(x)) +
     stat_function(fun=partial.df(var='var2', 
 params=list('n1'=50,'n2'=50,'var1'=2,'var2'=2))) + #NOTE: the sample sizes 
-don't affect the df ratio
+#don't affect the df ratio
     labs(y=bquote(frac('df'['Welch'],'df'['Student'])), 
 x=bquote(frac(sigma[1]^2,sigma[2]^2))) +
     scale_x_continuous(breaks=c(2,4,6,8,10), labels=c(2,4,6,8,10)/2)
@@ -486,16 +485,16 @@ conclude that the variances are unequal when only the sample sizes are unequal.
 %' 
 %' ggplot(data.frame(x=seq(50,100,.1)), aes(x)) + 
 %'     stat_function(fun=partial.df(var='n2', 
-params=list('n1'=50,'n2'=50,'var1'=2,'var2'=2))) +
+%params=list('n1'=50,'n2'=50,'var1'=2,'var2'=2))) +
 %'     labs(y=bquote(frac('df'['Welch'],'df'['Student'])), 
-x=bquote(frac('n'[1],'n'[2]))) +
+%x=bquote(frac('n'[1],'n'[2]))) +
 %'     scale_x_continuous(breaks=c(50,60,70,80,90,100), 
-labels=c(50,60,70,80,90,100)/50)
+%labels=c(50,60,70,80,90,100)/50)
 %' 
 %' @
 %' 
 %' \textit{Figure 4.} Degrees of freedom ratio when sample sizes are unequal 
-and variances are equal.
+%and variances are equal.
 %' \end{figure}
 
     The picture becomes even more complicated when both the sample sizes and 
@@ -514,19 +513,19 @@ different from each other.
 %' <<dfratiosDiffvarsDiffNratios, echo=FALSE,  collapse=TRUE, fig=TRUE>>=
 %' ggplot(data.frame(x=seq(2,10,.1)), aes(x)) + 
 %'     stat_function(fun=partial.df(var='var2', 
-params=list('n1'=75,'n2'=50,'var1'=2,'var2'=2)), aes(colour='n2')) +
+%params=list('n1'=75,'n2'=50,'var1'=2,'var2'=2)), aes(colour='n2')) +
 %'     stat_function(fun=partial.df(var='var2', 
-params=list('n1'=50,'n2'=75,'var1'=2,'var2'=2)), aes(colour='n1/2')) +
+%params=list('n1'=50,'n2'=75,'var1'=2,'var2'=2)), aes(colour='n1/2')) +
 %'     scale_colour_manual(values=c('blue', 'red'), 
-labels=c(bquote(frac('n'[1],'n'[2])~'='~frac(3,2)), 
-bquote(frac('n'[1],'n'[2])~'= '~frac(2,3)))) +
+%labels=c(bquote(frac('n'[1],'n'[2])~'='~frac(3,2)), 
+%bquote(frac('n'[1],'n'[2])~'= '~frac(2,3)))) +
 %'     labs(y=bquote(frac('df'['Welch'],'df'['Student'])), 
-x=bquote(frac(sigma[1]^2,sigma[2]^2))) +
+%x=bquote(frac(sigma[1]^2,sigma[2]^2))) +
 %'     scale_x_continuous(breaks=c(2,4,6,8,10), labels=c(2,4,6,8,10)/2)
 %' @
 %' 
 %' \textit{Figure 5.} Degrees of freedom ratio when sample sizes are unequal 
-and variances are unequal.
+%and variances are unequal.
 %' \end{figure}
 
 In short, the usefulness of a heuristic based on the df ratio is limited to 
@@ -573,7 +572,7 @@ type1.classic <- data.frame(
 nullT.v5.ne, nullT.ve.1.5n, nullT.ve.2n, nullT.v2.1.5n.ssv, nullT.v2.1.5n.bsv, 
 nullT.v2.2n.ssv, nullT.v2.2n.bsv, nullT.v5.1.5n.ssv, nullT.v5.1.5n.bsv, 
 nullT.v5.2n.ssv, nullT.v5.2n.bsv), #NOTE: doubled any with equal variance or 
-equal ns because they don't have separate ssv and bsv versions
+#equal ns because they don't have separate ssv and bsv versions
     
 Ns=factor(c('20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50',
 '100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75','1
@@ -622,7 +621,7 @@ welch.nullT.v5.ne, welch.nullT.v5.ne, welch.nullT.ve.1.5n, welch.nullT.ve.2n,
 welch.nullT.v2.1.5n.ssv, welch.nullT.v2.1.5n.bsv, welch.nullT.v2.2n.ssv, 
 welch.nullT.v2.2n.bsv, welch.nullT.v5.1.5n.ssv, welch.nullT.v5.1.5n.bsv, 
 welch.nullT.v5.2n.ssv, welch.nullT.v5.2n.bsv), #NOTE: doubled any with equal 
-variance or equal ns because they don't have separate ssv and bsv versions
+#variance or equal ns because they don't have separate ssv and bsv versions
     
 Ns=factor(c('20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50',
 '100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75','1
@@ -724,7 +723,7 @@ power.smalld.student <- c(smalld.ve.ne, smalld.v2.ne, smalld.v2.ne,
 smalld.v5.ne, smalld.v5.ne, smalld.ve.1.5n, smalld.ve.2n, smalld.v2.1.5n.ssv, 
 smalld.v2.1.5n.bsv, smalld.v2.2n.ssv, smalld.v2.2n.bsv, smalld.v5.1.5n.ssv, 
 smalld.v5.1.5n.bsv, smalld.v5.2n.ssv, smalld.v5.2n.bsv) #NOTE: doubled any with 
-equal variance or equal ns because they don't have separate ssv and bsv versions
+#equal variance or equal ns because they don't have separate ssv and bsv versions
 
 smalld.student <- data.frame(power.smalld.student, power.Ns, power.var.ratio)
 smalld.student <- smalld.student[order(smalld.student$power.Ns, 
@@ -749,7 +748,7 @@ power.midd.student <- c(midd.ve.ne, midd.v2.ne, midd.v2.ne, midd.v5.ne,
 midd.v5.ne, midd.ve.1.5n, midd.ve.2n, midd.v2.1.5n.ssv, midd.v2.1.5n.bsv, 
 midd.v2.2n.ssv, midd.v2.2n.bsv, midd.v5.1.5n.ssv, midd.v5.1.5n.bsv, 
 midd.v5.2n.ssv, midd.v5.2n.bsv) #NOTE: doubled any with equal variance or equal 
-ns because they don't have separate ssv and bsv versions
+#ns because they don't have separate ssv and bsv versions
 
 midd.student <- data.frame(power.midd.student, power.Ns, power.var.ratio)       
                                                                                 
@@ -777,7 +776,7 @@ power.bigd.student <- c(bigd.ve.ne, bigd.v2.ne, bigd.v2.ne, bigd.v5.ne,
 bigd.v5.ne, bigd.ve.1.5n, bigd.ve.2n, bigd.v2.1.5n.ssv, bigd.v2.1.5n.bsv, 
 bigd.v2.2n.ssv, bigd.v2.2n.bsv, bigd.v5.1.5n.ssv, bigd.v5.1.5n.bsv, 
 bigd.v5.2n.ssv, bigd.v5.2n.bsv) #NOTE: doubled any with equal variance or equal 
-ns because they don't have separate ssv and bsv versions
+#ns because they don't have separate ssv and bsv versions
 
 bigd.student <- data.frame(power.bigd.student, power.Ns, power.var.ratio)
 bigd.student <- bigd.student[order(bigd.student$power.Ns, 
@@ -852,7 +851,7 @@ power.smalld.welch <- c(smalld.ve.ne, smalld.v2.ne, smalld.v2.ne, smalld.v5.ne,
 smalld.v5.ne, smalld.ve.1.5n, smalld.ve.2n, smalld.v2.1.5n.ssv, 
 smalld.v2.1.5n.bsv, smalld.v2.2n.ssv, smalld.v2.2n.bsv, smalld.v5.1.5n.ssv, 
 smalld.v5.1.5n.bsv, smalld.v5.2n.ssv, smalld.v5.2n.bsv) #NOTE: doubled any with 
-equal variance or equal ns because they don't have separate ssv and bsv versions
+#equal variance or equal ns because they don't have separate ssv and bsv versions
 
 smalld.welch <- data.frame(power.smalld.welch, power.Ns, power.var.ratio)
 smalld.welch <- smalld.welch[order(smalld.welch$power.Ns, 
@@ -876,7 +875,7 @@ power.midd.welch <- c(midd.ve.ne, midd.v2.ne, midd.v2.ne, midd.v5.ne,
 midd.v5.ne, midd.ve.1.5n, midd.ve.2n, midd.v2.1.5n.ssv, midd.v2.1.5n.bsv, 
 midd.v2.2n.ssv, midd.v2.2n.bsv, midd.v5.1.5n.ssv, midd.v5.1.5n.bsv, 
 midd.v5.2n.ssv, midd.v5.2n.bsv) #NOTE: doubled any with equal variance or equal 
-ns because they don't have separate ssv and bsv versions
+#ns because they don't have separate ssv and bsv versions
 
 midd.welch <- data.frame(power.midd.welch, power.Ns, power.var.ratio)
 midd.welch <- midd.welch[order(midd.welch$power.Ns, 
@@ -900,7 +899,7 @@ power.bigd.welch <- c(bigd.ve.ne, bigd.v2.ne, bigd.v2.ne, bigd.v5.ne,
 bigd.v5.ne, bigd.ve.1.5n, bigd.ve.2n, bigd.v2.1.5n.ssv, bigd.v2.1.5n.bsv, 
 bigd.v2.2n.ssv, bigd.v2.2n.bsv, bigd.v5.1.5n.ssv, bigd.v5.1.5n.bsv, 
 bigd.v5.2n.ssv, bigd.v5.2n.bsv) #NOTE: doubled any with equal variance or equal 
-ns because they don't have separate ssv and bsv versions
+#ns because they don't have separate ssv and bsv versions
 
 bigd.welch <- data.frame(power.bigd.welch, power.Ns, power.var.ratio)
 bigd.welch <- bigd.welch[order(bigd.welch$power.Ns, 
@@ -1044,13 +1043,13 @@ multiplot(smalld.student.plot, smalld.welch.plot, midd.student.plot,
 midd.welch.plot, bigd.student.plot, bigd.welch.plot, layout=layout)
 
 #multiplot(smalld.classic.power, smalld.classic.deviation, smalld.welch.power, 
-smalld.welch.deviation, cols=2)
+#smalld.welch.deviation, cols=2)
 
 #multiplot(midd.classic.power, midd.classic.deviation, midd.welch.power, 
-midd.welch.deviation, cols=2)
+#midd.welch.deviation, cols=2)
 
 #multiplot(bigd.classic.power, bigd.classic.deviation, bigd.welch.power, 
-bigd.welch.deviation, cols=2)
+#bigd.welch.deviation, cols=2)
 
 @
 
@@ -1155,7 +1154,7 @@ coverage.classic.nullT <- data.frame(
 nullT.v5.ne, nullT.ve.1.5n, nullT.ve.2n, nullT.v2.1.5n.ssv, nullT.v2.1.5n.bsv, 
 nullT.v2.2n.ssv, nullT.v2.2n.bsv, nullT.v5.1.5n.ssv, nullT.v5.1.5n.bsv, 
 nullT.v5.2n.ssv, nullT.v5.2n.bsv), #NOTE: doubled any with equal variance or 
-equal ns because they don't have separate ssv and bsv versions
+#equal ns because they don't have separate ssv and bsv versions
     
 Ns=factor(c('20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50',
 '100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75','1
@@ -1179,8 +1178,8 @@ coverage.classic.smalld <- data.frame(
 smalld.v5.ne, smalld.ve.1.5n, smalld.ve.2n, smalld.v2.1.5n.ssv, 
 smalld.v2.1.5n.bsv, smalld.v2.2n.ssv, smalld.v2.2n.bsv, smalld.v5.1.5n.ssv, 
 smalld.v5.1.5n.bsv, smalld.v5.2n.ssv, smalld.v5.2n.bsv), #NOTE: doubled any 
-with equal variance or equal ns because they don't have separate ssv and bsv 
-versions
+#with equal variance or equal ns because they don't have separate ssv and bsv 
+#versions
     
 Ns=factor(c('20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50',
 '100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75','1
@@ -1204,7 +1203,7 @@ coverage.classic.midd <- data.frame(
 midd.ve.1.5n, midd.ve.2n, midd.v2.1.5n.ssv, midd.v2.1.5n.bsv, midd.v2.2n.ssv, 
 midd.v2.2n.bsv, midd.v5.1.5n.ssv, midd.v5.1.5n.bsv, midd.v5.2n.ssv, 
 midd.v5.2n.bsv), #NOTE: doubled any with equal variance or equal ns because 
-they don't have separate ssv and bsv versions
+#they don't have separate ssv and bsv versions
     
 Ns=factor(c('20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50',
 '100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75','1
@@ -1227,7 +1226,7 @@ coverage.classic.bigd <- data.frame(
 bigd.ve.1.5n, bigd.ve.2n, bigd.v2.1.5n.ssv, bigd.v2.1.5n.bsv, bigd.v2.2n.ssv, 
 bigd.v2.2n.bsv, bigd.v5.1.5n.ssv, bigd.v5.1.5n.bsv, bigd.v5.2n.ssv, 
 bigd.v5.2n.bsv), #NOTE: doubled any with equal variance or equal ns because 
-they don't have separate ssv and bsv versions
+#they don't have separate ssv and bsv versions
     
 Ns=factor(c('20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50',
 '100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75','1
@@ -1363,7 +1362,7 @@ coverage.welch.nullT <- data.frame(
 nullT.v5.ne, nullT.ve.1.5n, nullT.ve.2n, nullT.v2.1.5n.ssv, nullT.v2.1.5n.bsv, 
 nullT.v2.2n.ssv, nullT.v2.2n.bsv, nullT.v5.1.5n.ssv, nullT.v5.1.5n.bsv, 
 nullT.v5.2n.ssv, nullT.v5.2n.bsv), #NOTE: doubled any with equal variance or 
-equal ns because they don't have separate ssv and bsv versions
+#equal ns because they don't have separate ssv and bsv versions
     
 Ns=factor(c('20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50',
 '100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75','1
@@ -1386,8 +1385,8 @@ coverage.welch.smalld <- data.frame(
 smalld.v5.ne, smalld.ve.1.5n, smalld.ve.2n, smalld.v2.1.5n.ssv, 
 smalld.v2.1.5n.bsv, smalld.v2.2n.ssv, smalld.v2.2n.bsv, smalld.v5.1.5n.ssv, 
 smalld.v5.1.5n.bsv, smalld.v5.2n.ssv, smalld.v5.2n.bsv), #NOTE: doubled any 
-with equal variance or equal ns because they don't have separate ssv and bsv 
-versions
+#with equal variance or equal ns because they don't have separate ssv and bsv 
+#versions
     
 Ns=factor(c('20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50',
 '100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75','1
@@ -1410,7 +1409,7 @@ coverage.welch.midd <- data.frame(
 midd.ve.1.5n, midd.ve.2n, midd.v2.1.5n.ssv, midd.v2.1.5n.bsv, midd.v2.2n.ssv, 
 midd.v2.2n.bsv, midd.v5.1.5n.ssv, midd.v5.1.5n.bsv, midd.v5.2n.ssv, 
 midd.v5.2n.bsv), #NOTE: doubled any with equal variance or equal ns because 
-they don't have separate ssv and bsv versions
+#they don't have separate ssv and bsv versions
     
 Ns=factor(c('20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50',
 '100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75','1
@@ -1433,7 +1432,7 @@ coverage.welch.bigd <- data.frame(
 bigd.ve.1.5n, bigd.ve.2n, bigd.v2.1.5n.ssv, bigd.v2.1.5n.bsv, bigd.v2.2n.ssv, 
 bigd.v2.2n.bsv, bigd.v5.1.5n.ssv, bigd.v5.1.5n.bsv, bigd.v5.2n.ssv, 
 bigd.v5.2n.bsv), #NOTE: doubled any with equal variance or equal ns because 
-they don't have separate ssv and bsv versions
+#they don't have separate ssv and bsv versions
     
 Ns=factor(c('20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50',
 '100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75','1
@@ -1535,7 +1534,7 @@ distributions would agree about whether or not to reject the null hypothesis.
 << tdist, echo=FALSE, fig=TRUE>>=
 
 #plot t distributions with different degrees of freedom - this needs to go 
-somewhere
+#somewhere
 
 x <- rep(seq(-4,4,.1), 2)
 y <- c(dt(seq(-4,4,.1),df=38), dt(seq(-4,4,.1),df=38/2))
@@ -1707,95 +1706,95 @@ standard practice; rich is working on wording
 
 # equal vars, equal ns
 #Bplot.ve.ne.ns20 <- qplot(y=dfs.list$ve.ns20.ne.nullT, geom='boxplot', x=' ', 
-ylab=bquote(frac('df'['Welch'],'df'['Student'])), 
-xlab=bquote(frac('n'[1],'n'[2])~'='~frac(20,20)~', 
-'~frac('var'[1],'var'[2])~'='~1), ylim=c(.5,1))
+#ylab=bquote(frac('df'['Welch'],'df'['Student'])), 
+#xlab=bquote(frac('n'[1],'n'[2])~'='~frac(20,20)~', 
+#'~frac('var'[1],'var'[2])~'='~1), ylim=c(.5,1))
 #Bplot.ve.ne.ns50 <- qplot(y=dfs.list$ve.ns50.ne.nullT, geom='boxplot', x=' ', 
-ylab=bquote(frac('df'['Welch'],'df'['Student'])), 
-xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,50)~', 
-'~frac('var'[1],'var'[2])~'='~1), ylim=c(.5,1))
+#ylab=bquote(frac('df'['Welch'],'df'['Student'])), 
+#xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,50)~', 
+#'~frac('var'[1],'var'[2])~'='~1), ylim=c(.5,1))
 #Bplot.ve.ne.ns100 <- qplot(y=dfs.list$ve.ns100.ne.nullT, geom='boxplot', x=' 
-', ylab=bquote(frac('df'['Welch'],'df'['Student'])), 
-xlab=bquote(frac('n'[1],'n'[2])~'='~frac(100,100)~', 
-'~frac('var'[1],'var'[2])~'='~1), ylim=c(.5,1))
+#', ylab=bquote(frac('df'['Welch'],'df'['Student'])), 
+#xlab=bquote(frac('n'[1],'n'[2])~'='~frac(100,100)~', 
+#'~frac('var'[1],'var'[2])~'='~1), ylim=c(.5,1))
 
 #grid.arrange(Bplot.ve.ne.ns20, Bplot.ve.ne.ns50, Bplot.ve.ne.ns100, ncol=3, 
-heights=unit(.5, 'npc'), main='Figure 3. Degrees of Freedom Ratios with 
-Increasing Sample Sizes')
+#heights=unit(.5, 'npc'), main='Figure 3. Degrees of Freedom Ratios with 
+#Increasing Sample Sizes')
 
 
 
 # different vars, equal ns
 #Bplot.ve.ne.ns50 <- qplot(y=dfs.list$ve.ns50.ne.nullT, geom='boxplot', x=' ', 
-ylab=bquote(frac('df'['Welch'],'df'['Student'])), 
-xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,50)~', 
-'~frac('var'[1],'var'[2])~'='~1), ylim=c(.5,1))
+#ylab=bquote(frac('df'['Welch'],'df'['Student'])), 
+#xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,50)~', 
+#'~frac('var'[1],'var'[2])~'='~1), ylim=c(.5,1))
 #Bplot.v2.ne.ns50 <- qplot(y=dfs.list$v2.ns50.ne.nullT, geom='boxplot', x=' ', 
-ylab=bquote(frac('df'['Welch'],'df'['Student'])), 
-xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,50)~', 
-'~frac('var'[1],'var'[2])~'='~frac(1,2)), ylim=c(.5,1))
+#ylab=bquote(frac('df'['Welch'],'df'['Student'])), 
+#xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,50)~', 
+#'~frac('var'[1],'var'[2])~'='~frac(1,2)), ylim=c(.5,1))
 #Bplot.v5.ne.ns50 <- qplot(y=dfs.list$v5.ns50.ne.nullT, geom='boxplot', x=' ', 
-ylab=bquote(frac('df'['Welch'],'df'['Student'])), 
-xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,50)~', 
-'~frac('var'[1],'var'[2])~'='~frac(1,5)), ylim=c(.5,1))
+#ylab=bquote(frac('df'['Welch'],'df'['Student'])), 
+#xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,50)~', 
+#'~frac('var'[1],'var'[2])~'='~frac(1,5)), ylim=c(.5,1))
 
 #grid.arrange(Bplot.ve.ne.ns50, Bplot.v2.ne.ns50, Bplot.v5.ne.ns50, ncol=3, 
-heights=unit(.5,'npc'), main='Figure 4. Degrees of Freedom Ratios with Changing 
-Variance Ratios')
+#heights=unit(.5,'npc'), main='Figure 4. Degrees of Freedom Ratios with Changing 
+#Variance Ratios')
 
 
 
 
 # equal vars, changing N ratios
 #Bplot.ve.ne.ns50 <- qplot(y=dfs.list$ve.ns50.ne.nullT, geom='boxplot', x=' ', 
-ylab=bquote(frac('df'['Welch'],'df'['Student'])), 
-xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,50)~', 
-'~frac('var'[1],'var'[2])~'='~1), ylim=c(.45,1))
+#ylab=bquote(frac('df'['Welch'],'df'['Student'])), 
+#xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,50)~', 
+#'~frac('var'[1],'var'[2])~'='~1), ylim=c(.45,1))
 #Bplot.ve.1.5n.ns50 <- qplot(y=dfs.list$ve.ns50.1.5n.nullT, geom='boxplot', x=' 
-', ylab=bquote(frac('df'['Welch'],'df'['Student'])), 
-xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,75)~', 
-'~frac('var'[1],'var'[2])~'='~1), ylim=c(.45,1))
+#', ylab=bquote(frac('df'['Welch'],'df'['Student'])), 
+#xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,75)~', 
+#'~frac('var'[1],'var'[2])~'='~1), ylim=c(.45,1))
 #Bplot.ve.2n.ns50 <- qplot(y=dfs.list$ve.ns50.2n.nullT, geom='boxplot', x=' ', 
-ylab=bquote(frac('df'['Welch'],'df'['Student'])), 
-xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,100)~', 
-'~frac('var'[1],'var'[2])~'='~1), ylim=c(.45,1))
+#ylab=bquote(frac('df'['Welch'],'df'['Student'])), 
+#xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,100)~', 
+#'~frac('var'[1],'var'[2])~'='~1), ylim=c(.45,1))
 
 #grid.arrange(Bplot.ve.ne.ns50, Bplot.ve.1.5n.ns50 , Bplot.ve.2n.ns50, ncol=3, 
-heights=unit(.5,'npc'), main='Figure 5. Degrees of Freedom Ratios with Changing 
-Sample Size Ratios')
+#heights=unit(.5,'npc'), main='Figure 5. Degrees of Freedom Ratios with Changing 
+#Sample Size Ratios')
 
 
 # different vars, changing N ratios
 #Bplot.ve.1.5n.ns50 <- qplot(y=dfs.list$ve.ns50.1.5n.nullT, geom='boxplot', x=' 
-', ylab=bquote(frac('df'['Welch'],'df'['Student'])), 
-xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,75)~', 
-'~frac('var'[1],'var'[2])~'='~1), ylim=c(.4,1))
+#', ylab=bquote(frac('df'['Welch'],'df'['Student'])), 
+#xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,75)~', 
+#'~frac('var'[1],'var'[2])~'='~1), ylim=c(.4,1))
 #Bplot.v2.1.5n.ssv.ns50 <- qplot(y=dfs.list$v2.ns50.1.5n.ssv.nullT, 
-geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), 
-xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,75)~', 
-'~frac('var'[1],'var'[2])~'='~frac(1,2)), ylim=c(.4,1))
+#geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), 
+#xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,75)~', 
+#'~frac('var'[1],'var'[2])~'='~frac(1,2)), ylim=c(.4,1))
 #Bplot.v5.1.5n.ssv.ns50 <- qplot(y=dfs.list$v5.ns50.1.5n.ssv.nullT, 
-geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), 
-xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,75)~', 
-'~frac('var'[1],'var'[2])~'='~frac(1,5)), ylim=c(.4,1))
+#geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), 
+#xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,75)~', 
+#'~frac('var'[1],'var'[2])~'='~frac(1,5)), ylim=c(.4,1))
 
 #Bplot.ve.1.5n.ns50 <- qplot(y=dfs.list$ve.ns50.1.5n.nullT, geom='boxplot', x=' 
-', ylab=bquote(frac('df'['Welch'],'df'['Student'])), 
-xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,75)~', 
-'~frac('var'[1],'var'[2])~'='~1), ylim=c(.4,1))
+#', ylab=bquote(frac('df'['Welch'],'df'['Student'])), 
+#xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,75)~', 
+#'~frac('var'[1],'var'[2])~'='~1), ylim=c(.4,1))
 #Bplot.v2.1.5n.bsv.ns50 <- qplot(y=dfs.list$v2.ns50.1.5n.bsv.nullT, 
-geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), 
-xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,75)~', 
-'~frac('var'[1],'var'[2])~'='~2), ylim=c(.4,1))
+#geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), 
+#xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,75)~', 
+#'~frac('var'[1],'var'[2])~'='~2), ylim=c(.4,1))
 #Bplot.v5.1.5n.bsv.ns50 <- qplot(y=dfs.list$v5.ns50.1.5n.bsv.nullT, 
-geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), 
-xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,75)~', 
-'~frac('var'[1],'var'[2])~'='~5), ylim=c(.4,1))
+#geom='boxplot', x=' ', ylab=bquote(frac('df'['Welch'],'df'['Student'])), 
+#xlab=bquote(frac('n'[1],'n'[2])~'='~frac(50,75)~', 
+#'~frac('var'[1],'var'[2])~'='~5), ylim=c(.4,1))
 
 #grid.arrange(Bplot.ve.1.5n.ns50, Bplot.v2.1.5n.ssv.ns50, 
-Bplot.v5.1.5n.ssv.ns50, Bplot.ve.1.5n.ns50,  Bplot.v2.1.5n.bsv.ns50, 
-Bplot.v5.1.5n.bsv.ns50, ncol=3, main='Figure 6. Degrees of Freedom Ratios with 
-Changing Variance Ratios and Sample Size Ratios')
+#Bplot.v5.1.5n.ssv.ns50, Bplot.ve.1.5n.ns50,  Bplot.v2.1.5n.bsv.ns50, 
+#Bplot.v5.1.5n.bsv.ns50, ncol=3, main='Figure 6. Degrees of Freedom Ratios with 
+#Changing Variance Ratios and Sample Size Ratios')
 
 
 
@@ -1812,7 +1811,7 @@ Changing Variance Ratios and Sample Size Ratios')
 # equal vars, equal ns
 # 
 # Bplot.ve.ne.ns20 <- ggplot(venesim1$ve.ns20.ne.nullT, aes(y=dv, 
-x=factor(group, levels=c(1,2)))) +
+#x=factor(group, levels=c(1,2)))) +
 #     geom_boxplot() +
 #     scale_x_discrete(labels=c(bquote('n'[1]~'= 20'), bquote('n'[2]~'= 20'))) +
 #     scale_y_continuous(limits=c(-2.5,15.5)) +
@@ -1820,7 +1819,7 @@ x=factor(group, levels=c(1,2)))) +
 #     theme(plot.margin=unit(c(0,0,0,0),'picas'))
 # 
 # Bplot.ve.ne.ns50 <- ggplot(venesim1$ve.ns50.ne.nullT, aes(y=dv, 
-x=factor(group, levels=c(1,2)))) +
+#x=factor(group, levels=c(1,2)))) +
 #     geom_boxplot() +
 #     scale_x_discrete(labels=c(bquote('n'[1]~'= 50'), bquote('n'[2]~'= 50'))) +
 #     scale_y_continuous(limits=c(-2.5,15.5)) +
@@ -1828,17 +1827,17 @@ x=factor(group, levels=c(1,2)))) +
 #     theme(plot.margin=unit(c(0,0,0,0),'picas'))
 # 
 # Bplot.ve.ne.ns100 <- ggplot(venesim1$ve.ns100.ne.nullT, aes(y=dv, 
-x=factor(group, levels=c(1,2)))) +
+#x=factor(group, levels=c(1,2)))) +
 #     geom_boxplot() +
 #     scale_x_discrete(labels=c(bquote('n'[1]~'= 100'), bquote('n'[2]~'= 
-100'))) +
+#100'))) +
 #     scale_y_continuous(limits=c(-2.5,15.5)) +
 #     labs(x='', y='') +
 #     theme(plot.margin=unit(c(0,0,0,0),'picas'))
 # 
 # # double vars, equal ns
 # Bplot.v2.ne.ns20 <- ggplot(v2nesim1$v2.ns20.ne.nullT, aes(y=dv, 
-x=factor(group, levels=c(1,2)))) +
+#x=factor(group, levels=c(1,2)))) +
 #     geom_boxplot() +
 #     scale_x_discrete(labels=c(bquote('n'[1]~'= 20'), bquote('n'[2]~'= 20'))) +
 #     scale_y_continuous(limits=c(-2.5,15.5)) +
@@ -1846,7 +1845,7 @@ x=factor(group, levels=c(1,2)))) +
 #     theme(plot.margin=unit(c(0,0,0,0),'picas'))
 # 
 # Bplot.v2.ne.ns50 <- ggplot(v2nesim1$v2.ns50.ne.nullT, aes(y=dv, 
-x=factor(group, levels=c(1,2)))) +
+#x=factor(group, levels=c(1,2)))) +
 #     geom_boxplot() +
 #     scale_x_discrete(labels=c(bquote('n'[1]~'= 50'), bquote('n'[2]~'= 50'))) +
 #     scale_y_continuous(limits=c(-2.5,15.5)) +
@@ -1854,17 +1853,17 @@ x=factor(group, levels=c(1,2)))) +
 #     theme(plot.margin=unit(c(0,0,0,0),'picas'))
 # 
 # Bplot.v2.ne.ns100 <- ggplot(v2nesim1$v2.ns100.ne.nullT, aes(y=dv, 
-x=factor(group, levels=c(1,2)))) +
+#x=factor(group, levels=c(1,2)))) +
 #     geom_boxplot() +
 #     scale_x_discrete(labels=c(bquote('n'[1]~'= 100'), bquote('n'[2]~'= 
-100'))) +
+#100'))) +
 #     scale_y_continuous(limits=c(-2.5,15.5)) +
 #     labs(x='', y='') +
 #     theme(plot.margin=unit(c(0,0,0,0),'picas'))
 # 
 # # 5x vars, equal ns
 # Bplot.v5.ne.ns20 <- ggplot(v5nesim1$v5.ns20.ne.nullT, aes(y=dv, 
-x=factor(group, levels=c(1,2)))) +
+#x=factor(group, levels=c(1,2)))) +
 #     geom_boxplot() +
 #     scale_x_discrete(labels=c(bquote('n'[1]~'= 20'), bquote('n'[2]~'= 20'))) +
 #     scale_y_continuous(limits=c(-2.5,15.5)) +
@@ -1872,7 +1871,7 @@ x=factor(group, levels=c(1,2)))) +
 #     theme(plot.margin=unit(c(0,0,0,0),'picas'))
 # 
 # Bplot.v5.ne.ns50 <- ggplot(v5nesim1$v5.ns50.ne.nullT, aes(y=dv, 
-x=factor(group, levels=c(1,2)))) +
+#x=factor(group, levels=c(1,2)))) +
 #     geom_boxplot() +
 #     scale_x_discrete(labels=c(bquote('n'[1]~'= 50'), bquote('n'[2]~'= 50'))) +
 #     scale_y_continuous(limits=c(-2.5,15.5)) +
@@ -1880,19 +1879,19 @@ x=factor(group, levels=c(1,2)))) +
 #     theme(plot.margin=unit(c(0,0,0,0),'picas'))
 #     
 # Bplot.v5.ne.ns100 <- ggplot(v5nesim1$v5.ns100.ne.nullT, aes(y=dv, 
-x=factor(group, levels=c(1,2)))) +
+#x=factor(group, levels=c(1,2)))) +
 #     geom_boxplot() +
 #     scale_x_discrete(labels=c(bquote('n'[1]~'= 100'), bquote('n'[2]~'= 
-100'))) +
+#100'))) +
 #     scale_y_continuous(limits=c(-2.5,15.5)) +
 #     labs(x='', y='') +
 #     theme(plot.margin=unit(c(0,0,0,0),'picas'))
 # 
 # # Plot equal ns
 # grid.arrange(Bplot.ve.ne.ns20, Bplot.v2.ne.ns20, Bplot.v5.ne.ns20, 
-Bplot.ve.ne.ns50, Bplot.v2.ne.ns50, Bplot.v5.ne.ns50, Bplot.ve.ne.ns100, 
-Bplot.v2.ne.ns100, Bplot.v5.ne.ns100, nrow=3, ncol=3, main='Figure 1. Boxplots 
-of First Simulations When Sample Sizes are Equal')
+#Bplot.ve.ne.ns50, Bplot.v2.ne.ns50, Bplot.v5.ne.ns50, Bplot.ve.ne.ns100, 
+#Bplot.v2.ne.ns100, Bplot.v5.ne.ns100, nrow=3, ncol=3, main='Figure 1. Boxplots 
+#of First Simulations When Sample Sizes are Equal')
 # 
 # 
 # 
@@ -1901,16 +1900,16 @@ of First Simulations When Sample Sizes are Equal')
 # # Variances equal
 # # NOTE: it's not really ssv when variances are equal
 # Bplot.ve.n2.ssv <- ggplot(ven2sim1$ve.ns50.2n.nullT, aes(y=dv, 
-x=factor(group, levels=c(1,2)))) +
+#x=factor(group, levels=c(1,2)))) +
 #     geom_boxplot() +
 #     scale_x_discrete(labels=c(bquote('n'[1]~'= 50'), bquote('n'[2]~'= 100'))) 
-+
+#+
 #     scale_y_continuous(limits=c(-3.5,16)) +
 #     labs(title='Equal variances', x='', y='') +
 #     theme(plot.margin=unit(c(0,0,0,0),'picas'))
 # 
 # Bplot.ve.n1.5.ssv <- ggplot(ven15sim1$ve.ns50.1.5n.nullT, aes(y=dv, 
-x=factor(group, levels=c(1,2)))) +
+#x=factor(group, levels=c(1,2)))) +
 #     geom_boxplot() +
 #     scale_x_discrete(labels=c(bquote('n'[1]~'= 50'), bquote('n'[2]~'= 75'))) +
 #     scale_y_continuous(limits=c(-3.5,16)) +
@@ -1918,7 +1917,7 @@ x=factor(group, levels=c(1,2)))) +
 #     theme(plot.margin=unit(c(0,0,0,0),'picas'))
 # 
 # Bplot.ve.n1.5.bsv <- ggplot(ven15sim1$ve.ns50.1.5n.nullT, aes(y=dv, 
-x=factor(group, levels=c(2,1)))) +
+#x=factor(group, levels=c(2,1)))) +
 #     geom_boxplot() +
 #     scale_x_discrete(labels=c(bquote('n'[1]~'= 75'), bquote('n'[2]~'= 50'))) +
 #     scale_y_continuous(limits=c(-3.5,16)) +
@@ -1926,10 +1925,10 @@ x=factor(group, levels=c(2,1)))) +
 #     theme(plot.margin=unit(c(0,0,0,0),'picas'))
 # 
 # Bplot.ve.n2.bsv <- ggplot(ven2sim1$ve.ns50.2n.nullT, aes(y=dv, 
-x=factor(group, levels=c(2,1)))) +
+#x=factor(group, levels=c(2,1)))) +
 #     geom_boxplot() +
 #     scale_x_discrete(labels=c(bquote('n'[1]~'= 100'), bquote('n'[2]~'= 50'))) 
-+
+#+
 #     scale_y_continuous(limits=c(-3.5,16)) +
 #     labs(x='', y='') +
 #     theme(plot.margin=unit(c(0,0,0,0),'picas'))
@@ -1938,16 +1937,16 @@ x=factor(group, levels=c(2,1)))) +
 # # Variances double
 # # NOTE: it's not really ssv when variances are equal
 # Bplot.v2.n2.ssv <- ggplot(v2n2ssvsim1$v2.ns50.2n.ssv.nullT, aes(y=dv, 
-x=factor(group, levels=c(1,2)))) +
+#x=factor(group, levels=c(1,2)))) +
 #     geom_boxplot() +
 #     scale_x_discrete(labels=c(bquote('n'[1]~'= 50'), bquote('n'[2]~'= 100'))) 
-+
+#+
 #     scale_y_continuous(limits=c(-3.5,16)) +
 #     labs(title='Double variances', x='', y='') +
 #     theme(plot.margin=unit(c(0,0,0,0),'picas'))
 # 
 # Bplot.v2.n1.5.ssv <- ggplot(v2n15ssvsim1$v2.ns50.1.5n.ssv.nullT, aes(y=dv, 
-x=factor(group, levels=c(1,2)))) +
+#x=factor(group, levels=c(1,2)))) +
 #     geom_boxplot() +
 #     scale_x_discrete(labels=c(bquote('n'[1]~'= 50'), bquote('n'[2]~'= 75'))) +
 #     scale_y_continuous(limits=c(-3.5,16)) +
@@ -1955,7 +1954,7 @@ x=factor(group, levels=c(1,2)))) +
 #     theme(plot.margin=unit(c(0,0,0,0),'picas'))
 # 
 # Bplot.v2.n1.5.bsv <- ggplot(v2n15bsvsim1$v2.ns50.1.5n.bsv.nullT, aes(y=dv, 
-x=factor(group, levels=c(2,1)))) +
+#x=factor(group, levels=c(2,1)))) +
 #     geom_boxplot() +
 #     scale_x_discrete(labels=c(bquote('n'[1]~'= 75'), bquote('n'[2]~'= 50'))) +
 #     scale_y_continuous(limits=c(-3.5,16)) +
@@ -1963,10 +1962,10 @@ x=factor(group, levels=c(2,1)))) +
 #     theme(plot.margin=unit(c(0,0,0,0),'picas'))
 # 
 # Bplot.v2.n2.bsv <- ggplot(v2n2bsvsim1$v2.ns50.2n.bsv.nullT, aes(y=dv, 
-x=factor(group, levels=c(2,1)))) +
+#x=factor(group, levels=c(2,1)))) +
 #     geom_boxplot() +
 #     scale_x_discrete(labels=c(bquote('n'[1]~'= 100'), bquote('n'[2]~'= 50'))) 
-+
+#+
 #     scale_y_continuous(limits=c(-3.5,16)) +
 #     labs(x='', y='') +
 #     theme(plot.margin=unit(c(0,0,0,0),'picas'))
@@ -1974,16 +1973,16 @@ x=factor(group, levels=c(2,1)))) +
 # # Variances 5x
 # # NOTE: it's not really ssv when variances are equal
 # Bplot.v5.n2.ssv <- ggplot(v5n2ssvsim1$v5.ns50.2n.ssv.nullT, aes(y=dv, 
-x=factor(group, levels=c(1,2)))) +
+#x=factor(group, levels=c(1,2)))) +
 #     geom_boxplot() +
 #     scale_x_discrete(labels=c(bquote('n'[1]~'= 50'), bquote('n'[2]~'= 100'))) 
-+
+#+
 #     scale_y_continuous(limits=c(-3.5,16)) +
 #     labs(title='5x variances', x='', y='') +
 #     theme(plot.margin=unit(c(0,0,0,0),'picas'))
 # 
 # Bplot.v5.n1.5.ssv <- ggplot(v5n15ssvsim1$v5.ns50.1.5n.ssv.nullT, aes(y=dv, 
-x=factor(group, levels=c(1,2)))) +
+#x=factor(group, levels=c(1,2)))) +
 #     geom_boxplot() +
 #     scale_x_discrete(labels=c(bquote('n'[1]~'= 50'), bquote('n'[2]~'= 75'))) +
 #     scale_y_continuous(limits=c(-3.5,16)) +
@@ -1991,7 +1990,7 @@ x=factor(group, levels=c(1,2)))) +
 #     theme(plot.margin=unit(c(0,0,0,0),'picas'))
 # 
 # Bplot.v5.n1.5.bsv <- ggplot(v5n15bsvsim1$v5.ns50.1.5n.bsv.nullT, aes(y=dv, 
-x=factor(group, levels=c(2,1)))) +
+#x=factor(group, levels=c(2,1)))) +
 #     geom_boxplot() +
 #     scale_x_discrete(labels=c(bquote('n'[1]~'= 75'), bquote('n'[2]~'= 50'))) +
 #     scale_y_continuous(limits=c(-3.5,16)) +
@@ -1999,20 +1998,20 @@ x=factor(group, levels=c(2,1)))) +
 #     theme(plot.margin=unit(c(0,0,0,0),'picas'))
 # 
 # Bplot.v5.n2.bsv <- ggplot(v5n2bsvsim1$v5.ns50.2n.bsv.nullT, aes(y=dv, 
-x=factor(group, levels=c(2,1)))) +
+#x=factor(group, levels=c(2,1)))) +
 #     geom_boxplot() +
 #     scale_x_discrete(labels=c(bquote('n'[1]~'= 100'), bquote('n'[2]~'= 50'))) 
-+
+#+
 #     scale_y_continuous(limits=c(-3.5,16)) +
 #     labs(x='', y='') +
 #     theme(plot.margin=unit(c(0,0,0,0),'picas'))
 # 
 # # Plot n = 20, different vars, different ns
 # grid.arrange(Bplot.ve.n2.ssv, Bplot.v2.n2.ssv, Bplot.v5.n2.ssv, 
-Bplot.ve.n1.5.ssv, Bplot.v2.n1.5.ssv, Bplot.v5.n1.5.ssv, Bplot.ve.n1.5.bsv, 
-Bplot.v2.n1.5.bsv, Bplot.v5.n1.5.bsv, Bplot.ve.n2.bsv, Bplot.v2.n2.bsv, 
-Bplot.v5.n2.bsv, nrow=4, main='Figure 2. Boxplots of First Simulations When 
-Sample Sizes are Unequal')
+#Bplot.ve.n1.5.ssv, Bplot.v2.n1.5.ssv, Bplot.v5.n1.5.ssv, Bplot.ve.n1.5.bsv, 
+#Bplot.v2.n1.5.bsv, Bplot.v5.n1.5.bsv, Bplot.ve.n2.bsv, Bplot.v2.n2.bsv, 
+#Bplot.v5.n2.bsv, nrow=4, main='Figure 2. Boxplots of First Simulations When 
+#Sample Sizes are Unequal')
 
 @
 
@@ -2029,8 +2028,8 @@ Sample Sizes are Unequal')
 %' group <- factor(c(rep(1,length(x1)), rep(2,length(x2))))
 %' 
 %' ve.distributions <- qplot(x=x, y=y, fill=group, colour=group, geom='line', 
-xlab=NULL, ylab=NULL) + geom_vline(xintercept=as.numeric(by(x,group,mean))) + 
-theme(legend.position='none')
+%xlab=NULL, ylab=NULL) + geom_vline(xintercept=as.numeric(by(x,group,mean))) + 
+%theme(legend.position='none')
 %' 
 %' set.seed(2184)
 %' ve.bplots <- c(list(ve.distributions), 
@@ -2043,7 +2042,7 @@ theme(legend.position='none')
 %'                        ylab=NULL, 
 %'                        ylim=c(-3,18)) + 
 %'                    theme(legend.position='none', 
-axis.text.x=element_blank())}), 
+%axis.text.x=element_blank())}), 
 %'                lapply(1:4, function(x){
 %'                  qplot(x=factor(rep(c(1,2), each=100)), 
 %'                        y=c(rnorm(100,6,sqrt(2)),rnorm(100,7.13,sqrt(10))), 
@@ -2053,7 +2052,7 @@ axis.text.x=element_blank())}),
 %'                        ylab=NULL, 
 %'                        ylim=c(-3,18)) + 
 %'                    theme(legend.position='none', 
-axis.text.x=element_blank())}))
+%axis.text.x=element_blank())}))
 %' 
 %' layout <- matrix(c(0,1,1,0,2,3,4,5,6,7,8,9), nrow=3, byrow=TRUE)
 %' multiplot(plotlist=ve.bplots, layout=layout)
@@ -2061,7 +2060,7 @@ axis.text.x=element_blank())}))
 %' @
 %' 
 %' \textit{Figure 2.} Boxplots for groups with unequal variances. The first row 
-displays groups with $n$=20 and the second row displays groups with $n$=100.
+%displays groups with $n$=20 and the second row displays groups with $n$=100.
 %' \end{figure}
 
 
