@@ -360,7 +360,7 @@ type1.classic <- data.frame(
 
 ## Plot it
 T1classic <- ggplot(type1.classic, aes(x=as.numeric(var.ratio), y=type1.rate, shape=Ns, color=Ns, ymin=0, ymax=.13)) + 
-    geom_point(size=4, solid=FALSE) + 
+    geom_point(size=4) + scale_shape(solid=FALSE) + 
     scale_shape_manual(values=rep(c(1,2,0), 3)) +
     geom_line(size=.5) + 
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
@@ -394,7 +394,7 @@ type1.welch <- type1.welch[order(type1.welch$Ns, type1.welch$var.ratio),]
 
 ## Plot it
 T1welch <- ggplot(type1.welch, aes(x=as.numeric(var.ratio), y=type1.rate, shape=Ns, color=Ns, ymin=0, ymax=.13)) + 
-    geom_point(size=4, solid=FALSE) + 
+    geom_point(size=4) + scale_shape(solid=FALSE) + 
     scale_shape_manual(values=rep(c(1,2,0), 3)) +
     geom_line(size=.5) + 
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
@@ -495,7 +495,7 @@ bigd.student <- bigd.student[order(bigd.student$power.Ns, bigd.student$power.var
 ## Student t, d=.2, power
 ## Plot using ggplot2
 smalld.student.plot <- ggplot(smalld.student, aes(x=as.numeric(power.var.ratio), y=power.smalld.student, shape=power.Ns, color=power.Ns, ymin=0, ymax=1)) + 
-    geom_point(size=3, solid=FALSE) + 
+    geom_point(size=3) + scale_shape(solid=FALSE) + 
     scale_shape_manual(values=rep(c(1,2,0), 3)) +
     geom_line(size=.5) + 
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
@@ -507,7 +507,7 @@ smalld.student.plot <- ggplot(smalld.student, aes(x=as.numeric(power.var.ratio),
 ## Student t, d=.5, power
 ## Set up Student t test plot of deviation from expected power
 midd.student.plot <- ggplot(midd.student, aes(x=as.numeric(power.var.ratio), y=power.midd.student, shape=power.Ns, color=power.Ns, ymin=0, ymax=1)) + 
-    geom_point(size=3, solid=FALSE) + 
+    geom_point(size=3) + scale_shape(solid=FALSE) + 
     scale_shape_manual(values=rep(c(1,2,0), 3)) +
     geom_line(size=.5) + 
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
@@ -519,7 +519,7 @@ midd.student.plot <- ggplot(midd.student, aes(x=as.numeric(power.var.ratio), y=p
 
 ## Student t, d=.8, power
 bigd.student.plot <- ggplot(bigd.student, aes(x=as.numeric(power.var.ratio), y=power.bigd.student, shape=power.Ns, color=power.Ns, ymin=0, ymax=1)) + 
-    geom_point(size=3, solid=FALSE) + 
+    geom_point(size=3) + scale_shape(solid=FALSE) + 
     scale_shape_manual(values=rep(c(1,2,0), 3)) +
     geom_line(size=.5) + 
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
@@ -595,7 +595,7 @@ bigd.welch <- bigd.welch[order(bigd.welch$power.Ns, bigd.welch$power.var.ratio),
 
 ## Welch t, d=.2, power
 smalld.welch.plot <- ggplot(smalld.welch, aes(x=as.numeric(power.var.ratio), y=power.smalld.welch, shape=power.Ns, color=power.Ns, ymin=0, ymax=1)) + 
-    geom_point(size=3, solid=FALSE) + 
+    geom_point(size=3) + scale_shape(solid=FALSE) + 
     scale_shape_manual(values=rep(c(1,2,0), 3)) +
     geom_line(size=.5) + 
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
@@ -607,7 +607,7 @@ smalld.welch.plot <- ggplot(smalld.welch, aes(x=as.numeric(power.var.ratio), y=p
 
 ## Welch t, d=.5, power
 midd.welch.plot <- ggplot(midd.welch, aes(x=as.numeric(power.var.ratio), y=power.midd.welch, shape=power.Ns, color=power.Ns, ymin=0, ymax=1)) + 
-    geom_point(size=3, solid=FALSE) + 
+    geom_point(size=3) + scale_shape(solid=FALSE) + 
     scale_shape_manual(values=rep(c(1,2,0), 3)) +
     geom_line(size=.5) + 
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
@@ -620,7 +620,7 @@ midd.welch.plot <- ggplot(midd.welch, aes(x=as.numeric(power.var.ratio), y=power
 
 ## Welch t, d=.8, power
 bigd.welch.plot <- ggplot(bigd.welch, aes(x=as.numeric(power.var.ratio), y=power.bigd.welch, shape=power.Ns, color=power.Ns, ymin=0, ymax=1)) + 
-    geom_point(size=3, solid=FALSE) + 
+    geom_point(size=3) + scale_shape(solid=FALSE) + 
     scale_shape_manual(values=rep(c(1,2,0), 3)) +
     geom_line(size=.5) + 
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
@@ -648,7 +648,7 @@ bigd.diff <- data.frame(power.bigd.diff, power.Ns, power.var.ratio)
 bigd.diff <- bigd.diff[order(bigd.diff$power.Ns, bigd.diff$power.var.ratio),]
 
 smalld.diff.plot <- ggplot(smalld.diff, aes(x=as.numeric(power.var.ratio), y=power.smalld.diff, shape=power.Ns, color=power.Ns, ymin=-.3, ymax=.3)) + 
-    geom_point(size=3, solid=FALSE) + 
+    geom_point(size=3) + scale_shape(solid=FALSE) + 
     scale_shape_manual(values=rep(c(1,2,0), 3)) +
     geom_line(size=.5) + 
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
@@ -658,7 +658,7 @@ smalld.diff.plot <- ggplot(smalld.diff, aes(x=as.numeric(power.var.ratio), y=pow
     guides(colour=guide_legend(title='Sample size ratio'))
 
 midd.diff.plot <- ggplot(midd.diff, aes(x=as.numeric(power.var.ratio), y=power.midd.diff, shape=power.Ns, color=power.Ns, ymin=-.3, ymax=.3)) + 
-    geom_point(size=3, solid=FALSE) + 
+    geom_point(size=3) + scale_shape(solid=FALSE) + 
     scale_shape_manual(values=rep(c(1,2,0), 3)) +
     geom_line(size=.5) + 
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
@@ -668,7 +668,7 @@ midd.diff.plot <- ggplot(midd.diff, aes(x=as.numeric(power.var.ratio), y=power.m
     guides(colour=guide_legend(title='Sample size ratio'))
 
 bigd.diff.plot <- ggplot(bigd.diff, aes(x=as.numeric(power.var.ratio), y=power.bigd.diff, shape=power.Ns, color=power.Ns, ymin=-.3, ymax=.3)) + 
-    geom_point(size=3, solid=FALSE) + 
+    geom_point(size=3) + scale_shape(solid=FALSE) + 
     scale_shape_manual(values=rep(c(1,2,0), 3)) +
     geom_line(size=.5) + 
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
@@ -800,7 +800,7 @@ coverage.classic.bigd <- coverage.classic.bigd[order(coverage.classic.bigd$Ns, c
 
 ## Set up classic t test plot
 CovClassic.nullT <- ggplot(coverage.classic.nullT, aes(x=as.numeric(var.ratio), y=coverage.rate, shape=Ns, color=Ns, ymin=.85, ymax=1)) + 
-    geom_point(size=3, solid=FALSE) + 
+    geom_point(size=3) + scale_shape(solid=FALSE) + 
     scale_shape_manual(values=rep(c(1,2,0), 3)) +
     geom_line(size=.5) + 
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
@@ -809,7 +809,7 @@ CovClassic.nullT <- ggplot(coverage.classic.nullT, aes(x=as.numeric(var.ratio), 
     xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Coverage Probability') + ggtitle("Student's t Test")
 
 CovClassic.smalld <- ggplot(coverage.classic.smalld, aes(x=as.numeric(var.ratio), y=coverage.rate, shape=Ns, color=Ns, ymin=.85, ymax=1)) + 
-    geom_point(size=3, solid=FALSE) + 
+    geom_point(size=3) + scale_shape(solid=FALSE) + 
     scale_shape_manual(values=rep(c(1,2,0), 3)) +
     geom_line(size=.5) + 
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
@@ -818,7 +818,7 @@ CovClassic.smalld <- ggplot(coverage.classic.smalld, aes(x=as.numeric(var.ratio)
     xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Coverage Probability') + ggtitle("Student's t Test")
 
 CovClassic.midd <- ggplot(coverage.classic.midd, aes(x=as.numeric(var.ratio), y=coverage.rate, shape=Ns, color=Ns, ymin=.85, ymax=1)) + 
-    geom_point(size=3, solid=FALSE) + 
+    geom_point(size=3) + scale_shape(solid=FALSE) + 
     scale_shape_manual(values=rep(c(1,2,0), 3)) +
     geom_line(size=.5) + 
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
@@ -827,7 +827,7 @@ CovClassic.midd <- ggplot(coverage.classic.midd, aes(x=as.numeric(var.ratio), y=
     xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Coverage Probability') + ggtitle("Student's t Test")
 
 CovClassic.bigd <- ggplot(coverage.classic.bigd, aes(x=as.numeric(var.ratio), y=coverage.rate, shape=Ns, color=Ns, ymin=.85, ymax=1)) + 
-    geom_point(size=3, solid=FALSE) + 
+    geom_point(size=3) + scale_shape(solid=FALSE) + 
     scale_shape_manual(values=rep(c(1,2,0), 3)) +
     geom_line(size=.5) + 
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
@@ -924,7 +924,7 @@ coverage.welch.bigd <- coverage.welch.bigd[order(coverage.welch.bigd$Ns, coverag
 
 ## Set up welch t test plot
 CovWelch.nullT <- ggplot(coverage.welch.nullT, aes(x=as.numeric(var.ratio), y=coverage.rate, shape=Ns, color=Ns, ymin=.85, ymax=1)) + 
-    geom_point(size=3, solid=FALSE) + 
+    geom_point(size=3) + scale_shape(solid=FALSE) + 
     scale_shape_manual(values=rep(c(1,2,0), 3)) +
     geom_line(size=.5) + 
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
@@ -933,7 +933,7 @@ CovWelch.nullT <- ggplot(coverage.welch.nullT, aes(x=as.numeric(var.ratio), y=co
     xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Coverage Probability') + ggtitle("Welch's t Test")
 
 CovWelch.smalld <- ggplot(coverage.welch.smalld, aes(x=as.numeric(var.ratio), y=coverage.rate, shape=Ns, color=Ns, ymin=.85, ymax=1)) + 
-    geom_point(size=3, solid=FALSE) + 
+    geom_point(size=3) + scale_shape(solid=FALSE) + 
     scale_shape_manual(values=rep(c(1,2,0), 3)) +
     geom_line(size=.5) + 
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
@@ -942,7 +942,7 @@ CovWelch.smalld <- ggplot(coverage.welch.smalld, aes(x=as.numeric(var.ratio), y=
     xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Coverage Probability') + ggtitle("Welch's t Test")
 
 CovWelch.midd <- ggplot(coverage.welch.midd, aes(x=as.numeric(var.ratio), y=coverage.rate, shape=Ns, color=Ns, ymin=.85, ymax=1)) + 
-    geom_point(size=3, solid=FALSE) + 
+    geom_point(size=3) + scale_shape(solid=FALSE) + 
     scale_shape_manual(values=rep(c(1,2,0), 3)) +
     geom_line(size=.5) + 
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
@@ -951,7 +951,7 @@ CovWelch.midd <- ggplot(coverage.welch.midd, aes(x=as.numeric(var.ratio), y=cove
     xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Coverage Probability') + ggtitle("Welch's t Test")
 
 CovWelch.bigd <- ggplot(coverage.welch.bigd, aes(x=as.numeric(var.ratio), y=coverage.rate, shape=Ns, color=Ns, ymin=.85, ymax=1)) + 
-    geom_point(size=3, solid=FALSE) + 
+    geom_point(size=3) + scale_shape(solid=FALSE) + 
     scale_shape_manual(values=rep(c(1,2,0), 3)) +
     geom_line(size=.5) + 
     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 'darkgrey'), each=3)) + 
@@ -973,7 +973,7 @@ multiplot(CovClassic.nullT, CovWelch.nullT, layout=layout)
 \section{Discussion}
     We set out to find a simple rule to help researchers decide when to use Student's t test and when to use Welch's t test. We believe that the simplest rule is to always use Welch's t test to compare the means of independent groups.
     
-    The results of our simulations demonstrated that when the population variances or sample sizes were equal, using Welch's t test instead of Student's t test didn't hurt. Figures 1 shows that the Welch degrees of freedom could drop below 70\% the Student's t test degrees of freedom when only the variance ratio or the sample size ratio changed. Nevertheless, the false positive rates, power, and coverage probabilities of the two tests were almost identical under these conditions. The difference in the degrees of freedom of the two tests was not very important at all. We illustrate this point in Figure 7, which shows two overlapping t distributions, one with half the degrees of freedom of the other. The tails of the distribution with the smaller degrees of freedom are a little larger than the tails of the distribution with greater degrees of freedom, but not by much. Given the same t-value, in the majority of cases these distributions would agree about whether or not to reject the null hypothesis. 
+    The results of our simulations demonstrated that when the population variances or sample sizes were equal, using Welch's t test instead of Student's t test didn't hurt. Figures 1 shows that the Welch degrees of freedom could drop below 70\% the Student's t test degrees of freedom when only the variance ratio or the sample size ratio changed. Nevertheless, the false positive rates, power, and coverage probabilities of the two tests were almost identical under these conditions. The difference in the degrees of freedom of the two tests was relatively small. We illustrate this point in Figure 7, which shows two overlapping t distributions, one with half the degrees of freedom of the other. The tails of the distribution with the smaller degrees of freedom are a little larger than the tails of the distribution with greater degrees of freedom, but not by much. Given the same t-value, in the majority of cases these distributions would agree about whether or not to reject the null hypothesis. 
     
 \begin{figure}  
 << tdist, echo=FALSE, fig=TRUE>>=
