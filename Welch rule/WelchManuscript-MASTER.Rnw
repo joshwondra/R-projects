@@ -178,7 +178,7 @@ equal to the population variance of each group. This means that if you knew the
 population variance of either group, then you could substitute it for the 
 common variance to compute the standard error: 
     \begin{equation}
-    \sigma_{\overline{x}_1-\overline{x}_2} = \sqrt{\frac{\sigma^2}{n}} = \sqrt{\frac{\sigma_1^2}{n}} = \sqrt{\frac{\sigma_2^2}{n}}
+    \sigma_{\overline{x}_1-\overline{x}_2} = \sqrt{\frac{\sigma^2}{n}} = \sqrt{\frac{\sigma_{x_1}^2}{n}} = \sqrt{\frac{\sigma_{x_2}^2}{n}}
     \end{equation}
 In practice, however, you rarely know the population variances of the two groups, and 
 instead you estimate them from the sample variances in your data. 
