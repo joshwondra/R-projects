@@ -161,13 +161,40 @@ pooled variances standard error.
 Student's t test unless there is evidence that the two groups have unequal 
 variances. The challenge is how to find that evidence. 
 
-    One option is to run another test of the null hypothesis that the variances 
-are equal, such as Levene's test for homogeneity, which shows up by default in 
-SPSS, and use Welch's t test if you reject the null. However, these tests of 
-assumptions make their own assumptions that go unchecked and they are sensitive 
-to sample size \cite{Gonzalez2008}. In addition, simulation studies find that 
-running tests of equal variances to decide whether to use Student's or Welch's 
-t test is not effective \cite{Zimmerman1996,Zimmerman2004}. 
+\subsection{Testing Assumptions with Another Test}
+    One option for how to decide whether to use Student's or Welch's t test 
+is to run another test of the null hypothesis that the group variances 
+are equal. If the results of the test of equal variances suggest that you should
+retain the null hypothesis, then use Student's t test. If the results suggest
+that you should reject the null hypothesis, then use Welch's t test.
+An example is Levene's test for homogeneity \cite{Levene1960}, which shows up by default in SPSS when you run an independent samples t test.
+In Levene's original formulation, the test starts by finding the absolute value of the deviations of each observation from its group mean. 
+Then it uses a oneway ANOVA to test whether the average deviations differ between groups.
+Later formulations used deviations from the group medians or trimmed means, which do a better job 
+testing differences in the group variances when the raw data are not normally distrubuted \cite{Brown1974}.
+
+Consider the logic of using Levene's test to decide whether to use Student's or Welch's t 
+test to find the difference in the means of two groups. You begin by finding the 
+deviations of the data from the mean, median, or trimmed mean of each group. Then you test 
+whether the means of the deviations of the two groups are different with an ANOVA.
+When there are only two groups, this is equivalent to testing whether the means of
+the deviations are different with a t test, which means that you have another choice
+between Student's and Welch's t test, depending on whether you assume that the
+group \textit{deviations} have equal variances. The test of the equal variances assumption
+makes its own equal variances assumption, which usually goes unchecked.
+This doesn't solve the original problem, it just hides it in a different test. 
+
+Another important point to consider is that statistical tests of assumptions,
+like other statistical tests, are sensitive 
+to sample size \cite{Gonzalez2008}. If your sample is too small, you won't have enough power to 
+detect true differences in the variances of the groups. If your sample is 
+large, even minute differences will show up as statistically significant. 
+
+Overall, running tests of equal variances to decide whether to use Student's or Welch's
+t test seems to be an ineffective strategy. This has been confirmed by simulation 
+studies \cite{Zimmerman1996,Zimmerman2004}. 
+
+\subsection{Ratio of Degrees of Freedom}
 
     A second option is to visualize the data using boxplots and make a judgment 
 about whether the variances appear to differ.  With smaller sample sizes, you 
