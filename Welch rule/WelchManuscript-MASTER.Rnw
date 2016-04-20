@@ -34,7 +34,95 @@ Contact: jdwondra@umich.edu}
 \begin{document}
 \SweaveOpts{concordance=TRUE}
 \maketitle
+<<setup, echo=FALSE>>=
 
+## Retrieve tables with general data
+load('veNeSeed2184Tables.Rdata')
+load('v2NeSeed2184Tables.Rdata')
+load('v5NeSeed2184Tables.Rdata')
+load('ve1andhalfnSeed2184Tables.Rdata')
+load('ve2nSeed2184Tables.Rdata')
+load('v21andhalfnSSVSeed2184Tables.Rdata')
+load('v51andhalfnSSVSeed2184Tables.Rdata')
+load('v22nSSVSeed2184Tables.Rdata')
+load('v52nSSVSeed2184Tables.Rdata')
+load('v21andhalfnBSVSeed2184Tables.Rdata')
+load('v51andhalfnBSVSeed2184Tables.Rdata')
+load('v22nBSVSeed2184Tables.Rdata')
+load('v52nBSVSeed2184Tables.Rdata')
+
+## Retrieve data for boxplots
+load('veNeSeed2184-sim1.Rdata')
+load('v2NeSeed2184-sim1.Rdata')
+load('v5NeSeed2184-sim1.Rdata')
+load('veN15Seed2184-sim1.Rdata')
+load('v2N15ssvSeed2184-sim1.Rdata')
+load('v2N15bsvSeed2184-sim1.Rdata')
+load('v5N15ssvSeed2184-sim1.Rdata')
+load('v5N15bsvSeed2184-sim1.Rdata')
+load('veN2Seed2184-sim1.Rdata')
+load('v2N2ssvSeed2184-sim1.Rdata')
+load('v2N2bsvSeed2184-sim1.Rdata')
+load('v5N2ssvSeed2184-sim1.Rdata')
+load('v5N2bsvSeed2184-sim1.Rdata')
+
+## Load packages
+library(ggplot2)
+library(grid)
+library(gridExtra)
+
+theme_set(theme_bw())
+
+# Multiple plot function
+# retrieved from 
+#http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/
+
+# ggplot objects can be passed in ..., or to plotlist (as a list of ggplot objects)
+# - cols:   Number of columns in layout
+# - layout: A matrix specifying the layout. If present, 'cols' is ignored.
+
+# If the layout is something like matrix(c(1,2,3,3), nrow=2, byrow=TRUE),
+# then plot 1 will go in the upper left, 2 will go in the upper right, and
+# 3 will go all the way across the bottom.
+
+multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
+
+  # Make a list from the ... arguments and plotlist
+  plots <- c(list(...), plotlist)
+
+  numPlots = length(plots)
+
+  # If layout is NULL, then use 'cols' to determine layout
+  if (is.null(layout)) {
+    # Make the panel
+    # ncol: Number of columns of plots
+    # nrow: Number of rows needed, calculated from # of cols
+    layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                    ncol = cols, nrow = ceiling(numPlots/cols))
+  }
+
+ if (numPlots==1) {
+    print(plots[[1]])
+
+  } else {
+    # Set up the page
+    grid.newpage()
+    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout), 
+heights=unit(rep(1,nrow(layout)),'null'))))
+
+    # Make each plot, in the correct location
+    for (i in 1:numPlots) {
+      # Get the i,j matrix positions of the regions that contain this subplot
+      matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+
+      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row, 
+                                      layout.pos.col = matchidx$col))
+    }
+  }
+
+}
+
+@
     Data analysis involves a series of decisions on the part of the researcher 
 about which statistical test answers the research question, whether the test is 
 suitable to the data, and whether there is an alternative test that works 
@@ -194,263 +282,27 @@ Overall, running tests of equal variances to decide whether to use Student's or 
 t test seems to be an ineffective strategy. This has been confirmed by simulation 
 studies \cite{Zimmerman1996,Zimmerman2004}. 
 
-\subsection{Ratio of Degrees of Freedom}
+\subsection{Comparing the Degrees of Freedom of the Two Tests}
 
-    A second option is to visualize the data using boxplots and make a judgment 
-about whether the variances appear to differ.  With smaller sample sizes, you 
-can tolerate larger apparent differences. This strategy can be enhanced by 
-simulating data for two groups of that have sample sizes equal to the sample 
-sizes in your actual data, changing whether the variances are equal or unequal, 
-and seeing if the boxplots of your data look like the boxplots of the 
-simulations with equal variances. 
+    A different way to decide which t test test might be to compare the
+degrees of freedom from Welch's t test to the degrees of freedom from
+Student's t test. When the group variances are equal, the degrees of freedom
+are also equal. As the variances become unequal, the degrees of freedom
+from Welch's t test decrease but the degrees of freedom from Student's t test
+stay the same. Although the degrees of freedom from the two tests might typically 
+differ slightly due to random error, even when the population variances of the groups
+are equal, there might be some cutoff that reliably signals that the group variances
+are unequal. For example, perhaps it is typical for the Welch's t degrees of freedom 
+to be 95-100\% of the Student's t degrees of freedom when variances are equal, but 
+when the Welch's t degrees of freedom are 90\% of the Student's t degrees of freedom 
+or less, then that reliably indicates that the population variances are unequal. 
 
-    A third option that has not been tested to our knowledge is to examine the 
-ratio of the degrees of freedom between Student's t test and Welch's t test. If 
-they differ to a large extent, then it might be a sign that the group variances 
-differ.
-
-    A fourth option is to change the typical approach. Under ideal conditions, 
-when variances and sample sizes are equal, Welch's t test is equivalent to 
-Student's t test. If using Welch's t test generally leads to equal or better 
-decisions than Student's t test under both ideal and non-ideal conditions, then 
-instead of using Student's t test by default it might be better to always use 
-Welch's t test.
-    
-    We examined these second, third, and fourth options in a Monte Carlo 
-simulation study. 
-    
-\section{Method}
-
-    We conducted Monte Carlo simulations of two independent groups with 
-normally distributed data. We examined the type I error rate, power, and 
-coverage probability for both Student's t test and Welch's t test under 
-different conditions. We varied the ratio of population variances 
-($\sigma_{1}^2/\sigma_{2}^2$ = 1/5, 1/2, 1, 2, or 5; for each, the smaller 
-$\sigma^2$ = 2), the sample sizes (smallest n = 20, 50, or 100), and the ratio 
-of sample sizes ($n_{1}/n_{2}$ = 1, 2/3, or 1/2). 
-    
-    Additionally, we varied the difference in group means based on Cohen's d 
-values of 0, .2, .5, and .8 when variances were equal. Importantly, Cohen's d 
-assumes that the population variances are equal and pools the group variances 
-just like Student's t test. This means that technically there is no true 
-Cohen's d when variances are unequal. Therefore, we used the same differences 
-in group means when variances were unequal. Because we changed the variance 
-ratio by increasing the variance of one group, the mean differences could be 
-considered to represent smaller effects when variances are unequal.
-    
-    For each condition, we set the seed to 2184 and ran 10,000 simulations. 
-When we report conditions with equal sample sizes and variance ratios of 2 and 
-5, they are identical to the conditions with equal sample sizes and variance 
-ratios of 1/2 and 1/5. 
-
-\section{Results}   
-
-<<setup, echo=FALSE>>=
-
-## Retrieve tables with general data
-load('veNeSeed2184Tables.Rdata')
-load('v2NeSeed2184Tables.Rdata')
-load('v5NeSeed2184Tables.Rdata')
-load('ve1andhalfnSeed2184Tables.Rdata')
-load('ve2nSeed2184Tables.Rdata')
-load('v21andhalfnSSVSeed2184Tables.Rdata')
-load('v51andhalfnSSVSeed2184Tables.Rdata')
-load('v22nSSVSeed2184Tables.Rdata')
-load('v52nSSVSeed2184Tables.Rdata')
-load('v21andhalfnBSVSeed2184Tables.Rdata')
-load('v51andhalfnBSVSeed2184Tables.Rdata')
-load('v22nBSVSeed2184Tables.Rdata')
-load('v52nBSVSeed2184Tables.Rdata')
-
-## Retrieve data for boxplots
-load('veNeSeed2184-sim1.Rdata')
-load('v2NeSeed2184-sim1.Rdata')
-load('v5NeSeed2184-sim1.Rdata')
-load('veN15Seed2184-sim1.Rdata')
-load('v2N15ssvSeed2184-sim1.Rdata')
-load('v2N15bsvSeed2184-sim1.Rdata')
-load('v5N15ssvSeed2184-sim1.Rdata')
-load('v5N15bsvSeed2184-sim1.Rdata')
-load('veN2Seed2184-sim1.Rdata')
-load('v2N2ssvSeed2184-sim1.Rdata')
-load('v2N2bsvSeed2184-sim1.Rdata')
-load('v5N2ssvSeed2184-sim1.Rdata')
-load('v5N2bsvSeed2184-sim1.Rdata')
-
-## Load packages
-library(ggplot2)
-library(grid)
-library(gridExtra)
-
-theme_set(theme_bw())
-
-# Multiple plot function
-# retrieved from 
-#http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/
-
-# ggplot objects can be passed in ..., or to plotlist (as a list of ggplot objects)
-# - cols:   Number of columns in layout
-# - layout: A matrix specifying the layout. If present, 'cols' is ignored.
-
-# If the layout is something like matrix(c(1,2,3,3), nrow=2, byrow=TRUE),
-# then plot 1 will go in the upper left, 2 will go in the upper right, and
-# 3 will go all the way across the bottom.
-
-multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
-
-  # Make a list from the ... arguments and plotlist
-  plots <- c(list(...), plotlist)
-
-  numPlots = length(plots)
-
-  # If layout is NULL, then use 'cols' to determine layout
-  if (is.null(layout)) {
-    # Make the panel
-    # ncol: Number of columns of plots
-    # nrow: Number of rows needed, calculated from # of cols
-    layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
-                    ncol = cols, nrow = ceiling(numPlots/cols))
-  }
-
- if (numPlots==1) {
-    print(plots[[1]])
-
-  } else {
-    # Set up the page
-    grid.newpage()
-    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout), 
-heights=unit(rep(1,nrow(layout)),'null'))))
-
-    # Make each plot, in the correct location
-    for (i in 1:numPlots) {
-      # Get the i,j matrix positions of the regions that contain this subplot
-      matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
-
-      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row, 
-                                      layout.pos.col = matchidx$col))
-    }
-  }
-
-}
-
-@
-
-\subsection{Visualizing Data with Boxplots} 
-    One option for deciding whether the group variances are equal is to examine 
-boxplots. Figure 1 displays boxplots from simulations of two groups with equal 
-variances (top) and from simulations of two groups with unequal variances where 
-the variance of the group to the right is five times as large as the variance 
-of the group to the left (bottom). The first row of each set of boxplots 
-displays groups with $n$ = 20 and the second row displays groups with $n$ = 
-100. The population distributions are displayed above the boxplots. When the 
-sample sizes are smaller there is more variability in the boxplots. Seeing some 
-variability in the spread of the groups is normal, even when the population 
-variances are equal. In contrast, when sample sizes are larger there is more 
-consistency in the boxplots. Smaller differences in the spread of the boxplots 
-might be a sign that the population variances differ when $n$ = 100. By 
-examining several additional simulations it would be possible to see how much 
-variability in the boxplots is typical for a given pair of sample sizes when 
-variances are equal or unequal.
-   
-\begin{figure}
-<<varEqualBoxplots, echo=FALSE, collapse=TRUE, fig=TRUE, height=10>>=
-
-x1 <- seq(0,12,.1)
-y1 <- dnorm(x1, mean=6, sd=sqrt(2))
-x2 <- seq(1.13,13.13,.1)
-y2 <- dnorm(x2, mean=7.13, sd=sqrt(2))
-
-x <- c(x1,x2)
-y <- c(y1,y2)
-group <- factor(c(rep(1,length(x1)), rep(2,length(x2))))
-
-ve.distributions <- qplot(x=x, y=y, colour=group, geom='line', xlab=NULL, 
-ylab=NULL) + 
-  geom_vline(xintercept=as.numeric(by(x,group,mean))) + 
-  theme(legend.position='none')
-
-set.seed(2184)
-ve.bplots <- c(list(ve.distributions), 
-               lapply(1:4, function(x){
-                qplot(x=factor(rep(c(1,2), each=20)), 
-                  y=c(rnorm(20,6,sqrt(2)),rnorm(20,7.13,sqrt(2))), 
-                  geom='boxplot', 
-                  colour=factor(rep(c(1,2), each=20)), 
-                  xlab=NULL, 
-                  ylab=NULL, 
-                  ylim=c(-3,18)) + 
-                theme(legend.position='none', axis.text.x=element_blank())}
-              ), 
-              lapply(1:4, function(x){
-                qplot(x=factor(rep(c(1,2), each=100)), 
-                      y=c(rnorm(100,6,sqrt(2)),rnorm(100,7.13,sqrt(2))), 
-                      geom='boxplot', 
-                      colour=factor(rep(c(1,2), each=100)), 
-                      xlab=NULL, 
-                      ylab=NULL, 
-                      ylim=c(-3,18)) + 
-                  theme(legend.position='none', axis.text.x=element_blank())}
-                ))
-
-#layout <- matrix(c(0,1,1,0,2,3,4,5,6,7,8,9), nrow=3, byrow=TRUE)
-#multiplot(plotlist=ve.bplots, layout=layout)
-
-a1 <- seq(0,12,.1)
-b1 <- dnorm(a1, mean=6, sd=sqrt(2))
-a2 <- seq(1.13,13.13,.1)
-b2 <- dnorm(a2, mean=7.13, sd=sqrt(10))
-
-a <- c(a1,a2)
-b <- c(b1,b2)
-group <- factor(c(rep(1,length(a1)), rep(2,length(a2))))
-
-vun.distributions <- qplot(x=a, y=b, colour=group, geom='line', xlab=NULL, 
-ylab=NULL) + 
-  geom_vline(xintercept=as.numeric(by(a,group,mean))) + 
-  theme(legend.position='none')
-
-set.seed(2184)
-vun.bplots <- c(list(vun.distributions), 
-                lapply(1:4, function(x){
-                  qplot(x=factor(rep(c(1,2), each=20)), 
-                        y=c(rnorm(20,6,sqrt(2)),rnorm(20,7.13,sqrt(10))), 
-                        geom='boxplot', 
-                        colour=factor(rep(c(1,2), each=20)), 
-                        xlab=NULL, 
-                        ylab=NULL, 
-                        ylim=c(-3,18)) +
-                    theme(legend.position='none', axis.text.x=element_blank())
-                  }), 
-                lapply(1:4, function(x){
-                  qplot(x=factor(rep(c(1,2), each=100)), 
-                        y=c(rnorm(100,6,sqrt(2)),rnorm(100,7.13,sqrt(10))), 
-                        geom='boxplot', 
-                        colour=factor(rep(c(1,2), each=100)), 
-                        xlab=NULL, 
-                        ylab=NULL, 
-                        ylim=c(-3,18)) + 
-                    theme(legend.position='none', axis.text.x=element_blank())
-                  }))
-
-
-full.bplots <- c(ve.bplots, vun.bplots)
-layout <- matrix(c(0,1,1,0,2,3,4,5,6,7,8,9,0,10,10,0,11,12,13,14,15,16,17,18), 
-nrow=6, byrow=TRUE)
-multiplot(plotlist=full.bplots, layout=layout)
-
-@
-
-\textit{Figure 1.} Boxplots for groups with equal variances (top) and unequal 
-variances (bottom). For each set of boxplots, the first row displays groups 
-with $n$=20 and the second row displays groups with $n$=100.
-\end{figure}
-
-\subsection{Does the df Ratio Help?}
-    We examined whether the ratio of the degrees of freedom (df) from Welch's t 
-test to the df of Student's t test could provide a heuristic for deciding that 
-the group variances are unequal. Rather than simulate the df ratio, we used the 
-analytical formulas for the two dfs to see how the df ratio should change as 
-the population variances and the sample size ratio change.
+    We examined whether the ratio of the degrees of freedom from Welch's t 
+test to the degrees of freedom from Student's t test could provide a heuristic for deciding that 
+the group variances are unequal. To our knowledge, this possibility has never
+been examined. We used the analytical formulas for the two 
+degrees of freedom to see how the degrees of freedom (df) ratio should change as 
+the population variances and the sample sizes of the two groups change.
 
     The top graph in Figure 2 displays the change in the df ratio as the 
 variance ratio increases when sample sizes are equal. As expected, the ratio 
@@ -576,6 +428,159 @@ different from each other.
 
 In short, the usefulness of a heuristic based on the df ratio is limited to 
 cases when the sample sizes are equal. 
+
+    A second option is to visualize the data using boxplots and make a judgment 
+about whether the variances appear to differ.  With smaller sample sizes, you 
+can tolerate larger apparent differences. This strategy can be enhanced by 
+simulating data for two groups of that have sample sizes equal to the sample 
+sizes in your actual data, changing whether the variances are equal or unequal, 
+and seeing if the boxplots of your data look like the boxplots of the 
+simulations with equal variances. 
+
+    A fourth option is to change the typical approach. Under ideal conditions, 
+when variances and sample sizes are equal, Welch's t test is equivalent to 
+Student's t test. If using Welch's t test generally leads to equal or better 
+decisions than Student's t test under both ideal and non-ideal conditions, then 
+instead of using Student's t test by default it might be better to always use 
+Welch's t test.
+    
+    We examined these second, third, and fourth options in a Monte Carlo 
+simulation study. 
+    
+\section{Method}
+
+    We conducted Monte Carlo simulations of two independent groups with 
+normally distributed data. We examined the type I error rate, power, and 
+coverage probability for both Student's t test and Welch's t test under 
+different conditions. We varied the ratio of population variances 
+($\sigma_{1}^2/\sigma_{2}^2$ = 1/5, 1/2, 1, 2, or 5; for each, the smaller 
+$\sigma^2$ = 2), the sample sizes (smallest n = 20, 50, or 100), and the ratio 
+of sample sizes ($n_{1}/n_{2}$ = 1, 2/3, or 1/2). 
+    
+    Additionally, we varied the difference in group means based on Cohen's d 
+values of 0, .2, .5, and .8 when variances were equal. Importantly, Cohen's d 
+assumes that the population variances are equal and pools the group variances 
+just like Student's t test. This means that technically there is no true 
+Cohen's d when variances are unequal. Therefore, we used the same differences 
+in group means when variances were unequal. Because we changed the variance 
+ratio by increasing the variance of one group, the mean differences could be 
+considered to represent smaller effects when variances are unequal.
+    
+    For each condition, we set the seed to 2184 and ran 10,000 simulations. 
+When we report conditions with equal sample sizes and variance ratios of 2 and 
+5, they are identical to the conditions with equal sample sizes and variance 
+ratios of 1/2 and 1/5. 
+
+\subsection{Visualizing Data with Boxplots} 
+    One option for deciding whether the group variances are equal is to examine 
+boxplots. Figure 1 displays boxplots from simulations of two groups with equal 
+variances (top) and from simulations of two groups with unequal variances where 
+the variance of the group to the right is five times as large as the variance 
+of the group to the left (bottom). The first row of each set of boxplots 
+displays groups with $n$ = 20 and the second row displays groups with $n$ = 
+100. The population distributions are displayed above the boxplots. When the 
+sample sizes are smaller there is more variability in the boxplots. Seeing some 
+variability in the spread of the groups is normal, even when the population 
+variances are equal. In contrast, when sample sizes are larger there is more 
+consistency in the boxplots. Smaller differences in the spread of the boxplots 
+might be a sign that the population variances differ when $n$ = 100. By 
+examining several additional simulations it would be possible to see how much 
+variability in the boxplots is typical for a given pair of sample sizes when 
+variances are equal or unequal.
+   
+\begin{figure}
+<<varEqualBoxplots, echo=FALSE, collapse=TRUE, fig=TRUE, height=10>>=
+
+x1 <- seq(0,12,.1)
+y1 <- dnorm(x1, mean=6, sd=sqrt(2))
+x2 <- seq(1.13,13.13,.1)
+y2 <- dnorm(x2, mean=7.13, sd=sqrt(2))
+
+x <- c(x1,x2)
+y <- c(y1,y2)
+group <- factor(c(rep(1,length(x1)), rep(2,length(x2))))
+
+ve.distributions <- qplot(x=x, y=y, colour=group, geom='line', xlab=NULL, 
+ylab=NULL) + 
+  geom_vline(xintercept=as.numeric(by(x,group,mean))) + 
+  theme(legend.position='none')
+
+set.seed(2184)
+ve.bplots <- c(list(ve.distributions), 
+               lapply(1:4, function(x){
+                qplot(x=factor(rep(c(1,2), each=20)), 
+                  y=c(rnorm(20,6,sqrt(2)),rnorm(20,7.13,sqrt(2))), 
+                  geom='boxplot', 
+                  colour=factor(rep(c(1,2), each=20)), 
+                  xlab=NULL, 
+                  ylab=NULL, 
+                  ylim=c(-3,18)) + 
+                theme(legend.position='none', axis.text.x=element_blank())}
+              ), 
+              lapply(1:4, function(x){
+                qplot(x=factor(rep(c(1,2), each=100)), 
+                      y=c(rnorm(100,6,sqrt(2)),rnorm(100,7.13,sqrt(2))), 
+                      geom='boxplot', 
+                      colour=factor(rep(c(1,2), each=100)), 
+                      xlab=NULL, 
+                      ylab=NULL, 
+                      ylim=c(-3,18)) + 
+                  theme(legend.position='none', axis.text.x=element_blank())}
+                ))
+
+#layout <- matrix(c(0,1,1,0,2,3,4,5,6,7,8,9), nrow=3, byrow=TRUE)
+#multiplot(plotlist=ve.bplots, layout=layout)
+
+a1 <- seq(0,12,.1)
+b1 <- dnorm(a1, mean=6, sd=sqrt(2))
+a2 <- seq(1.13,13.13,.1)
+b2 <- dnorm(a2, mean=7.13, sd=sqrt(10))
+
+a <- c(a1,a2)
+b <- c(b1,b2)
+group <- factor(c(rep(1,length(a1)), rep(2,length(a2))))
+
+vun.distributions <- qplot(x=a, y=b, colour=group, geom='line', xlab=NULL, 
+ylab=NULL) + 
+  geom_vline(xintercept=as.numeric(by(a,group,mean))) + 
+  theme(legend.position='none')
+
+set.seed(2184)
+vun.bplots <- c(list(vun.distributions), 
+                lapply(1:4, function(x){
+                  qplot(x=factor(rep(c(1,2), each=20)), 
+                        y=c(rnorm(20,6,sqrt(2)),rnorm(20,7.13,sqrt(10))), 
+                        geom='boxplot', 
+                        colour=factor(rep(c(1,2), each=20)), 
+                        xlab=NULL, 
+                        ylab=NULL, 
+                        ylim=c(-3,18)) +
+                    theme(legend.position='none', axis.text.x=element_blank())
+                  }), 
+                lapply(1:4, function(x){
+                  qplot(x=factor(rep(c(1,2), each=100)), 
+                        y=c(rnorm(100,6,sqrt(2)),rnorm(100,7.13,sqrt(10))), 
+                        geom='boxplot', 
+                        colour=factor(rep(c(1,2), each=100)), 
+                        xlab=NULL, 
+                        ylab=NULL, 
+                        ylim=c(-3,18)) + 
+                    theme(legend.position='none', axis.text.x=element_blank())
+                  }))
+
+
+full.bplots <- c(ve.bplots, vun.bplots)
+layout <- matrix(c(0,1,1,0,2,3,4,5,6,7,8,9,0,10,10,0,11,12,13,14,15,16,17,18), 
+nrow=6, byrow=TRUE)
+multiplot(plotlist=full.bplots, layout=layout)
+
+@
+
+\textit{Figure 1.} Boxplots for groups with equal variances (top) and unequal 
+variances (bottom). For each set of boxplots, the first row displays groups 
+with $n$=20 and the second row displays groups with $n$=100.
+\end{figure}
+
 
 \subsection{When Does Each Test Perform Best?}
     There does not seem to be a simple rule based on the df ratio to detect 
