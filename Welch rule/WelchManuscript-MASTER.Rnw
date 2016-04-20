@@ -284,7 +284,7 @@ studies \cite{Zimmerman1996,Zimmerman2004}.
 
 \subsection{Comparing the Degrees of Freedom of the Two Tests}
 
-    A different way to decide which t test test might be to compare the
+    A different way to decide which t test to use might be to compare the
 degrees of freedom from Welch's t test to the degrees of freedom from
 Student's t test. When the group variances are equal, the degrees of freedom
 are also equal. As the variances become unequal, the degrees of freedom
@@ -292,26 +292,28 @@ from Welch's t test decrease but the degrees of freedom from Student's t test
 stay the same. Although the degrees of freedom from the two tests might typically 
 differ slightly due to random error, even when the population variances of the groups
 are equal, there might be some cutoff that reliably signals that the group variances
-are unequal. For example, perhaps it is typical for the Welch's t degrees of freedom 
-to be 95-100\% of the Student's t degrees of freedom when variances are equal, but 
-when the Welch's t degrees of freedom are 90\% of the Student's t degrees of freedom 
-or less, then that reliably indicates that the population variances are unequal. 
+are unequal. For example, perhaps it is typical for the Welch's t test degrees of freedom 
+to be 95-100\% of the Student's t test degrees of freedom when variances are equal, but 
+when the Welch's t test degrees of freedom are 90\% of the Student's t test degrees of freedom 
+or less, then it reliably indicates that the population variances are unequal. 
 
-    We examined whether the ratio of the degrees of freedom from Welch's t 
-test to the degrees of freedom from Student's t test could provide a heuristic for deciding that 
-the group variances are unequal. To our knowledge, this possibility has never
-been examined. We used the analytical formulas for the two 
-degrees of freedom to see how the degrees of freedom (df) ratio should change as 
-the population variances and the sample sizes of the two groups change.
+    We examined whether the ratio of the Welch's t 
+test degrees of freedom from to the Student's t test degrees of freedom from 
+could provide a heuristic for deciding that 
+the group variances are unequal and you should use Welch's t test. 
+To our knowledge, this possibility has never
+been examined. We used the analytical formulas for the  
+degrees of freedom from the two tests to see how the degrees of freedom (df) ratio should change as 
+the population variances and the sample sizes of the two groups change (Figure 2).
 
-    The top graph in Figure 2 displays the change in the df ratio as the 
+    The top graph of Figure 2 displays the change in the df ratio as the 
 variance ratio increases when sample sizes are equal. As expected, the ratio 
 decreases as the difference in variances grows larger. When the variances are 
-equal, the df ratio is equal to one (though in real data, the sample variances 
-will rarely be exactly equal even if the population variances are equal). When 
+equal, the df ratio is equal to one. When 
 the variance of one group is double the variance of the other, the ratio drops 
 to .9. A useful heuristic might be to assume that the variances are unequal 
-when the ratio falls below 96\%.
+when the ratio falls below 96\% in sample data, which will have random error 
+even if the population variances are equal.
   
 \begin{figure}
 <<dfratiosDiffvars, echo=FALSE, collapse=TRUE, fig=TRUE, height=10>>=
@@ -375,7 +377,7 @@ unequal (middle), and when both variances and sample sizes are unequal (bottom).
     But now look at what happens when the variances are equal and the sample 
 size ratio changes (middle graph of Figure 2). Even though the variances stay 
 the same, the df ratio decreases as the difference in sample sizes grows 
-larger. The 96\% heuristic would lead us astray and we would incorrectly 
+larger. The 96\% heuristic would lead you astray and you would incorrectly 
 conclude that the variances are unequal when only the sample sizes are unequal.
 
 %' \begin{figure}
@@ -403,9 +405,9 @@ increases, the immediate drop in the df ratio is quite dramatic before it
 begins to level off. However, as the variance of the larger group increases, 
 the move from equal to unequal variances actual counteracts the effect of the 
 unequal sample sizes at first, and the df ratio approaches one before it drops 
-again. Due to the difference in sample sizes, a 96\% heuristic would mislead us 
+again. Due to the difference in sample sizes, a 96\% heuristic would mislead you 
 into concluding that variances are equal when they are actually 2-3 times 
-different from each other.  
+different from each other.
 
 %' \begin{figure}
 %' <<dfratiosDiffvarsDiffNratios, echo=FALSE,  collapse=TRUE, fig=TRUE>>=
