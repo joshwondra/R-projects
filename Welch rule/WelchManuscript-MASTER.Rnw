@@ -566,19 +566,17 @@ with $n$=20 and the second row displays groups with $n$=100.
 
 \subsection{When Does Each Test Perform Best?}
 
-    So far, the starting point for A fourth option is to change the typical approach. Under ideal conditions, 
+    So far, we have been following the standard procedure--use Student's t test 
+by default, and only switch to Welch's t test if the variances 
+of the two groups are unequal. However, this standard procedure might be
+unwarranted. Under ideal conditions, 
 when variances and sample sizes are equal, Welch's t test is equivalent to 
 Student's t test. If using Welch's t test generally leads to equal or better 
 decisions than Student's t test under both ideal and non-ideal conditions, then 
 instead of using Student's t test by default it might be better to always use 
 Welch's t test.
-    
-    We examined these second, third, and fourth options in a Monte Carlo 
-simulation study. 
-    
-\section{Method}
 
-    We conducted Monte Carlo simulations of two independent groups with 
+    To investigate this possibility, we conducted Monte Carlo simulations of two independent groups with 
 normally distributed data. We examined the type I error rate, power, and 
 coverage probability for both Student's t test and Welch's t test under 
 different conditions. We varied the ratio of population variances 
@@ -600,13 +598,7 @@ When we report conditions with equal sample sizes and variance ratios of 2 and
 5, they are identical to the conditions with equal sample sizes and variance 
 ratios of 1/2 and 1/5. 
 
-
-
-
-    There does not seem to be a simple rule based on the df ratio to detect 
-whether variances are unequal, so we decided to examine when the Welch and 
-Student t tests would perform best based on the sample size, variance ratio, 
-and sample size ratio. We examined how well each test balances concerns with 
+    We examined how well each test balances concerns with 
 false positives, power, and estimation. Some prior research has examined the 
 Type I error rate for the two tests \cite{Boneau1960, Zimmerman1993, 
 Zimmerman2004, Zimmerman1996, Zimmerman2009} and some has also examined the 
@@ -1151,7 +1143,9 @@ only show the coverage probabilities when the null hypothesis is true.
 Additionally, when the null hypothesis is true and $\alpha = .05$, the coverage 
 probability of 95\% confidence intervals has a simple relationship with the 
 type I error rate---the coverage probability is the complement of the type I 
-error rate. Figure 6 displays the coverage probabilities of the two t tests. 
+error rate. 
+
+Figure 6 displays the coverage probabilities of the two t tests. 
 The coverage probability for Student's t test varies dramatically, just as the 
 type I error rate did. When Student's t test is the least powerful, it is the 
 most accurate at estimating the difference in means. When it is the most 
