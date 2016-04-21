@@ -304,9 +304,9 @@ the group variances are unequal and you should use Welch's t test.
 To our knowledge, this possibility has never
 been examined. We used the analytical formulas for the  
 degrees of freedom from the two tests to see how the degrees of freedom (df) ratio should change as 
-the population variances and the sample sizes of the two groups change (Figure 2).
+the population variances and the sample sizes of the two groups change (Figure 1).
 
-    The top graph of Figure 2 displays the change in the df ratio as the 
+    The top graph of Figure 1 displays the change in the df ratio as the 
 variance ratio increases when sample sizes are equal. As expected, the ratio 
 decreases as the difference in variances grows larger. When the variances are 
 equal, the df ratio is equal to one. When 
@@ -369,13 +369,13 @@ layout=layout)
 
 @
 
-\textit{Figure 2.} Degrees of freedom ratio when sample sizes are unequal and 
+\textit{Figure 1.} Degrees of freedom ratio when sample sizes are unequal and 
 variances are equal (top), when variances are equal and sample sizes are 
 unequal (middle), and when both variances and sample sizes are unequal (bottom).
 \end{figure}
 
     But now look at what happens when the variances are equal and the sample 
-size ratio changes (middle graph of Figure 2). Even though the variances stay 
+size ratio changes (middle graph of Figure 1). Even though the variances stay 
 the same, the df ratio decreases as the difference in sample sizes grows 
 larger. The 96\% heuristic would lead you astray and you would incorrectly 
 conclude that the variances are unequal when only the sample sizes are unequal.
@@ -398,7 +398,7 @@ conclude that the variances are unequal when only the sample sizes are unequal.
 %' \end{figure}
 
     The picture becomes even more complicated when both the sample sizes and 
-the variances are unequal (bottom of Figure 2). In this case, the effect of 
+the variances are unequal (bottom of Figure 1). In this case, the effect of 
 different variances on the df ratio depends on whether the larger group has the 
 larger variance or the smaller variance. As the variance of the smaller group 
 increases, the immediate drop in the df ratio is quite dramatic before it 
@@ -431,7 +431,9 @@ different from each other.
 In short, the usefulness of a heuristic based on the df ratio is limited to 
 cases when the sample sizes are equal. 
 
-    A second option is to visualize the data using boxplots and make a judgment 
+\subsection{Visualizing Data with Boxplots} 
+
+    A third way to decide between Student's and Welch's t tests is to visualize the data using boxplots and make a judgment 
 about whether the variances appear to differ.  With smaller sample sizes, you 
 can tolerate larger apparent differences. This strategy can be enhanced by 
 simulating data for two groups of that have sample sizes equal to the sample 
@@ -439,56 +441,35 @@ sizes in your actual data, changing whether the variances are equal or unequal,
 and seeing if the boxplots of your data look like the boxplots of the 
 simulations with equal variances. 
 
-    A fourth option is to change the typical approach. Under ideal conditions, 
-when variances and sample sizes are equal, Welch's t test is equivalent to 
-Student's t test. If using Welch's t test generally leads to equal or better 
-decisions than Student's t test under both ideal and non-ideal conditions, then 
-instead of using Student's t test by default it might be better to always use 
-Welch's t test.
-    
-    We examined these second, third, and fourth options in a Monte Carlo 
-simulation study. 
-    
-\section{Method}
-
-    We conducted Monte Carlo simulations of two independent groups with 
-normally distributed data. We examined the type I error rate, power, and 
-coverage probability for both Student's t test and Welch's t test under 
-different conditions. We varied the ratio of population variances 
-($\sigma_{1}^2/\sigma_{2}^2$ = 1/5, 1/2, 1, 2, or 5; for each, the smaller 
-$\sigma^2$ = 2), the sample sizes (smallest n = 20, 50, or 100), and the ratio 
-of sample sizes ($n_{1}/n_{2}$ = 1, 2/3, or 1/2). 
-    
-    Additionally, we varied the difference in group means based on Cohen's d 
-values of 0, .2, .5, and .8 when variances were equal. Importantly, Cohen's d 
-assumes that the population variances are equal and pools the group variances 
-just like Student's t test. This means that technically there is no true 
-Cohen's d when variances are unequal. Therefore, we used the same differences 
-in group means when variances were unequal. Because we changed the variance 
-ratio by increasing the variance of one group, the mean differences could be 
-considered to represent smaller effects when variances are unequal.
-    
-    For each condition, we set the seed to 2184 and ran 10,000 simulations. 
-When we report conditions with equal sample sizes and variance ratios of 2 and 
-5, they are identical to the conditions with equal sample sizes and variance 
-ratios of 1/2 and 1/5. 
-
-\subsection{Visualizing Data with Boxplots} 
-    One option for deciding whether the group variances are equal is to examine 
-boxplots. Figure 1 displays boxplots from simulations of two groups with equal 
+    Figure 2 displays boxplots from simulations of two groups with equal 
 variances (top) and from simulations of two groups with unequal variances where 
 the variance of the group to the right is five times as large as the variance 
 of the group to the left (bottom). The first row of each set of boxplots 
 displays groups with $n$ = 20 and the second row displays groups with $n$ = 
-100. The population distributions are displayed above the boxplots. When the 
-sample sizes are smaller there is more variability in the boxplots. Seeing some 
-variability in the spread of the groups is normal, even when the population 
-variances are equal. In contrast, when sample sizes are larger there is more 
+100. The population distributions are displayed above the boxplots. 
+
+When the 
+sample sizes are smaller (first rows) there is more variability in the boxplots. Seeing some 
+variability in the spread of the groups is normal when $n$ = 20, even when the population 
+variances are equal. This can be seen in the first row of boxplots at the top of Figure 2.
+Sometimes the variances appear to be approximately equal, 
+but other times they appear to differ. There is also some variability in the spread of the 
+groups when the population variances are unequal, as can be seen in the first row of the 
+boxplots at the bottom of Figure 2. In general, the group to the right is more spread out than the 
+group to the left, though sometimes the spread doesn't look too different from the 
+boxplots from populations with equal variances. When the difference in variances is 
+less drastic, such as when the variance of one group is twice as large instead of 
+five times as large as the varance of the other group, then it may be more difficult
+to distinguish cases of equal variances from cases of unequal variances when sample
+sizes are small.
+
+In contrast, when sample sizes are larger there is more 
 consistency in the boxplots. Smaller differences in the spread of the boxplots 
-might be a sign that the population variances differ when $n$ = 100. By 
-examining several additional simulations it would be possible to see how much 
-variability in the boxplots is typical for a given pair of sample sizes when 
-variances are equal or unequal.
+might be a sign that the population variances differ when $n$ = 100. Using boxplots
+to decide when the equal variances assumption has been violated and Welch's t test
+should be used is a viable strategy, though it requires some subjective judgment,
+especially when sample sizes are small.
+
    
 \begin{figure}
 <<varEqualBoxplots, echo=FALSE, collapse=TRUE, fig=TRUE, height=10>>=
@@ -583,8 +564,45 @@ variances (bottom). For each set of boxplots, the first row displays groups
 with $n$=20 and the second row displays groups with $n$=100.
 \end{figure}
 
-
 \subsection{When Does Each Test Perform Best?}
+
+    So far, the starting point for A fourth option is to change the typical approach. Under ideal conditions, 
+when variances and sample sizes are equal, Welch's t test is equivalent to 
+Student's t test. If using Welch's t test generally leads to equal or better 
+decisions than Student's t test under both ideal and non-ideal conditions, then 
+instead of using Student's t test by default it might be better to always use 
+Welch's t test.
+    
+    We examined these second, third, and fourth options in a Monte Carlo 
+simulation study. 
+    
+\section{Method}
+
+    We conducted Monte Carlo simulations of two independent groups with 
+normally distributed data. We examined the type I error rate, power, and 
+coverage probability for both Student's t test and Welch's t test under 
+different conditions. We varied the ratio of population variances 
+($\sigma_{1}^2/\sigma_{2}^2$ = 1/5, 1/2, 1, 2, or 5; for each, the smaller 
+$\sigma^2$ = 2), the sample sizes (smallest n = 20, 50, or 100), and the ratio 
+of sample sizes ($n_{1}/n_{2}$ = 1, 2/3, or 1/2). 
+    
+    Additionally, we varied the difference in group means based on Cohen's d 
+values of 0, .2, .5, and .8 when variances were equal. Importantly, Cohen's d 
+assumes that the population variances are equal and pools the group variances 
+just like Student's t test. This means that technically there is no true 
+Cohen's d when variances are unequal. Therefore, we used the same differences 
+in group means when variances were unequal. Because we changed the variance 
+ratio by increasing the variance of one group, the mean differences could be 
+considered to represent smaller effects when variances are unequal.
+    
+    For each condition, we set the seed to 2184 and ran 10,000 simulations. 
+When we report conditions with equal sample sizes and variance ratios of 2 and 
+5, they are identical to the conditions with equal sample sizes and variance 
+ratios of 1/2 and 1/5. 
+
+
+
+
     There does not seem to be a simple rule based on the df ratio to detect 
 whether variances are unequal, so we decided to examine when the Welch and 
 Student t tests would perform best based on the sample size, variance ratio, 
