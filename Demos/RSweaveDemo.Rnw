@@ -1,0 +1,112 @@
+\documentclass[man,a4paper,noextraspace,apacite]{apa6}
+\usepackage{apacite}
+\title{Criminals are Punished Less When They Harm Statistical Victims}
+\shorttitle{Criminals and Statistical Victims}
+\author{Joshua D. Wondra and Phoebe C. Ellsworth}
+\affiliation{University of Michigan}
+
+\abstract{There is a wealth of literature \cite{Small2007} showing that people feel less compassion for statistical victims than for identified victims. But do people punish criminals less when they harm statistical victims than when they harm identified victims? We don't know if this study has been run already, but Josh thinks it's an interesting idea.}
+\keywords{statistical victims, law and emotion, sentencing}
+
+\authornote{Joshua D. Wondra, Department of Psychology, University of Michigan.
+
+Phoebe C. Ellsworth, Department of Psychology, University of Michigan.
+
+We are grateful to PRlab for their comments on an earlier version of this manuscript.
+
+Correspondence concerning this article should be addressed to Josh Wondra, Department of Psychology, University of Michigan, 530 Church St., Ann Arbor, MI 48109-1043.
+
+Contact: jdwondra@umich.edu}
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+\maketitle
+
+This is the first paragraph of my manuscript.
+
+Create separate paragraphs with double spaces.
+
+You can \textit{italicize} text with the textit function, if needed. For some special symbols that LaTeX uses, such as \% or \$, you need to use a backslash before the symbol.
+
+\section{Method}
+<<InitializeData, echo=FALSE>>=
+# I'm going to generate random data, but if you had a real data file you could read it in here
+
+# Generate data
+set.seed(1234) # I'm setting the seed to 1234 so that you can get the same results if you decide to follow along
+punishment <- rnorm(40, mean=4, sd=1)
+group <- factor(rep(c('identifiable victim','statistical victim'), each=20))
+gender <- sample(c('female','male'), replace=TRUE, size=40)
+myData <- data.frame(punishment, group, gender)
+
+# Load packages
+library(ggplot2)
+@
+
+\subsection{Overview}
+Subjects read about a legal case in which the criminal stole money from one identifiable victim, or from many statistical victims. Then they indicated how many years they thought the criminal should spend in prison.
+
+\subsection{Subjects}
+<<SubjectDemographics, echo=FALSE>>=
+# In this chunk, I'll generate subject information
+totalN <- length(myData$gender)
+femaleN <- sum(myData$gender=='female')
+@
+Subjects were \Sexpr{totalN} students (\Sexpr{femaleN} female) who participated for course credit.
+
+\subsection{Procedure}
+
+\subsubsection{First Phase of the Study}
+Subjects did tasks A, B, and C.
+
+\subsubsection{Second Phase of the Study}
+Subjects did tasks X, Y, and Z.
+
+\section{Results}
+<<Punishment, echo=FALSE>>=
+t.punishment <- t.test(punishment ~ group, data=myData)
+
+## NOTE: Everything is rounded to 2-3 digits
+# Save descriptive statistics as variables
+id.mean <- round(mean(myData$punishment[which(myData$group=='identifiable victim')]), digits=2)
+id.sd <- round(sd(myData$punishment[which(myData$group=='identifiable victim')]), digits=2)
+st.mean <- round(mean(myData$punishment[which(myData$group=='statistical victim')]), digits=2)
+st.sd <- round(sd(myData$punishment[which(myData$group=='statistical victim')]), digits=2)
+
+# Save stats from the t test as variables
+t.value <- round(t.punishment$statistic, digits=2)
+df <- round(t.punishment$parameter, digits=2)
+p <- round(t.punishment$p.value, digits=3)
+@
+
+Subjects' punishment was no different when they read about identifiable victims (\textit{M} = \Sexpr{id.mean}, \textit{SD} = \Sexpr{id.sd}) than when they read about statistical victims (\textit{M} = \Sexpr{st.mean}, \textit{SD} = \Sexpr{st.sd}), \textit{t}(\Sexpr{df}) = \Sexpr{t.value}, \textit{p} = \Sexpr{p}.
+
+\begin{figure}
+<<Fig1, echo=FALSE, fig=TRUE>>=
+# Make sure to add the fig=TRUE part to the beginning of the chunk!
+# We don't need to load ggplot2 because we did that in our initial chunk
+
+# Set up the plot data
+plot.means <- c(id.mean, st.mean)
+plot.sds <- c(id.sd, st.sd)
+plot.ses <- plot.sds/sqrt(20)
+plot.groups <- factor(c('identifiable victim','statistical victim'))
+plot.data <- data.frame(plot.means, plot.ses, plot.groups)
+
+# Create barplot with standard error bars
+ggplot(plot.data, aes(y=plot.means, x=plot.groups)) +
+geom_bar(stat='identity') +
+geom_errorbar(stat='identity', aes(ymin=plot.means-plot.ses, ymax=plot.means+plot.ses))
+@
+
+\textit{Figure 1.} Average punishment by group. Bars represent standard errors.
+\end{figure}
+
+\section{Discussion}
+
+Now, let's discuss the results...
+
+\bibliography{StatisticalVictimsReferences.bib}
+\bibliographystyle{apacite}
+
+\end{document}
