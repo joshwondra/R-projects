@@ -4,3 +4,11 @@
 *.pdf
 
 *.tex
+
+*.bbl
+
+*.fff
+
+*.log
+
+*.gz
