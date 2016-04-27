@@ -11,7 +11,7 @@ different from each other, researchers typically use Student's t test, which
 assumes that the population variances of the two groups are equal. If there is 
 reason to believe that the group variances are unequal, then researchers can 
 use Welch's t test, which does not assume equal variances, as an alternative. 
-We were interested in finding a simple decision rule that could be used to 
+We were interested in finding a simple rule that could be used to 
 decide when to use Student's vs. Welch's t test. We used Monte Carlo 
 simulations to compare the type I error rate, power, and coverage probability 
 of Student's and Welch's t tests when testing the difference in the means of 
@@ -160,7 +160,7 @@ If these assumptions hold, then you can find the t-value by taking the
 difference in group means and dividing by the standard error of that 
 difference:   
     \begin{equation}
-    t = \frac{\overline{x}_1-\overline{x}_2}{\sigma_{\overline{x}_1-\overline{x}_2}}
+    t = \frac{\mu_1-\mu_2}{\sigma_{\mu_1-\mu_2}}
     \end{equation}
     The p-value for the value of the t statistic depends on the degrees of 
 freedom, $df=n_1+n_2-2$. You are more likely to reject the null hypothesis and 
@@ -178,14 +178,14 @@ equal to the population variance of each group. This means that if you knew the
 population variance of either group, then you could substitute it for the 
 common variance to compute the standard error: 
     \begin{equation}
-    \sigma_{\overline{x}_1-\overline{x}_2} = \sqrt{\frac{\sigma^2}{n}} = \sqrt{\frac{\sigma_{x_1}^2}{n}} = \sqrt{\frac{\sigma_{x_2}^2}{n}}
+    \sigma_{\mu_1-\mu_2} = \sqrt{\frac{\sigma^2}{n}} = \sqrt{\frac{\sigma_1^2}{n}} = \sqrt{\frac{\sigma_2^2}{n}}
     \end{equation}
 In practice, however, you rarely know the population variances of the two groups, and 
-instead you estimate them from the sample variances in your data. 
+instead you estimate them from the sample variances of your data. 
 Unfortunately, even if the population variances are identical, the sample 
 variances are rarely identical due to sampling error, so you can't substitute 
-the sample variance of one of the groups for the common variances 
-to find the standard error. The classic Student's t test deals with this 
+the sample variance of one of the groups for the common variance 
+to find the standard error. Student's t test deals with this 
 problem by pooling the sample variances of the two groups into a weighted 
 average that is used to estimate the common variance. 
     \begin{equation}
@@ -196,7 +196,7 @@ average that is used to estimate the common variance.
     \end{equation}
 The group 
 with the larger sample size is given more weight than the group with the 
-smaller sample size. This means that when the bigger group has the begger 
+smaller sample size. This means that when the bigger group has the bigger 
 variance, the standard error is bigger, but when the bigger group has the 
 smaller variance, the standard error is smaller.
 
@@ -207,10 +207,10 @@ variances are unequal, then the Welch-Satterthwaite t test (hereafter called
 Welch's t test for the sake of brevity) is a good alternative choice. Many 
 researchers might not have learned about Welch's t test in their formal 
 statistical training, though most have encountered it in their analyses. For 
-those who use SPSS to analyze their data, Welch's t test is in the "Equal 
-variances not assumed" row that appears when they run an independent samples t 
+those who use SPSS to analyze their data, Welch's t test is in the ``Equal 
+variances not assumed'' row that appears when they run an independent samples t 
 test. For those who use R, Welch's t test is the default when they use the 
-\texttt{t.test()} function and they can only get Student's t test by setting 
+\texttt{t.test()} function, and they can only get Student's t test by setting 
 the \texttt{var.equal} argument to \texttt{TRUE}.
     
         As with Student's t test, Welch's t test assumes normality and 
@@ -225,10 +225,10 @@ Additionally, Welch's t test uses the following formula to compute the degrees o
     df = \frac{(\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2})^2}{\frac{(s_1^2)^2}{n_1^2(n_1-1)} + \frac{(s_2^2)^2}{n_2^2(n_2-1)}}
     \end{equation}
 This formula decreases the degrees of freedom to the extent that the group
-variances are different from each other.
+variances are different from each other. It can also produce degrees of freedom with decimals.
 
-Because of these 
-differences, the two tests can disagree about whether there is a difference in 
+Because of the 
+differences in the standard errors and degrees of freedom, the two tests can disagree about whether there is a difference in 
 group means. Because Welch's t test decreases the degrees of freedom, it might 
 be more conservative and less likely to reject the null hypothesis. On the one 
 hand, this might make Welch's t test a better choice if Student's t test finds 
@@ -248,26 +248,27 @@ pooled variances standard error.
     How do you decide which test to use? The typical approach is to use 
 Student's t test unless there is evidence that the two groups have unequal 
 variances. The challenge is how to find that evidence. 
+Our goal is to find a simple decision rule that can help researchers decide when to use Welch's t test instead of Student's t test.
 
 \subsection{Testing Assumptions with Another Test}
     One option for how to decide whether to use Student's or Welch's t test 
 is to run another test of the null hypothesis that the group variances 
-are equal. If the results of the test of equal variances suggest that you should
-retain the null hypothesis, then use Student's t test. If the results suggest
-that you should reject the null hypothesis, then use Welch's t test.
-An example is Levene's test for homogeneity \cite{Levene1960}, which shows up by default in SPSS when you run an independent samples t test.
+are equal. If the test rejects the null hypothesis, then the variances are unequal and you should use Welch's t test.
+If the test retains the null hypothesis, then the variances are equal and you can use Student's t test. 
+
+One example is Levene's test for homogeneity \cite{Levene1960}, which shows up in SPSS by default when you run an independent samples t test.
 In Levene's original formulation, the test starts by finding the absolute value of the deviations of each observation from its group mean. 
-Then it uses a oneway ANOVA to test whether the average deviations differ between groups.
-Later formulations used deviations from the group medians or trimmed means, which do a better job 
-testing differences in the group variances when the raw data are not normally distrubuted \cite{Brown1974}.
+Then it uses a oneway ANOVA to test whether the mean deviation differs between groups.
+Later formulations start by finding the absolute value of the deviations of each observation from the group median or the trimmed group mean, which perform better than deviations from the group mean
+when the raw data are not normally distrubuted \cite{Brown1974}.
 
 Consider the logic of using Levene's test to decide whether to use Student's or Welch's t 
 test to find the difference in the means of two groups. You begin by finding the 
-deviations of the data from the mean, median, or trimmed mean of each group. Then you test 
-whether the means of the deviations of the two groups are different with an ANOVA.
-When there are only two groups, this is equivalent to testing whether the means of
-the deviations are different with a t test, which means that you have another choice
-between Student's and Welch's t test, depending on whether you assume that the
+deviations of the data from the mean, median, or trimmed mean of each group. Then you use an ANOVA to test 
+whether the group deviation means are different.
+When there are only two groups, this is equivalent to using a t test to test whether the group deviation means
+are different, which means that you have to make another choice
+between Student's and Welch's t test, which means that you have to make a decision about whether the
 group \textit{deviations} have equal variances. The test of the equal variances assumption
 makes its own equal variances assumption, which usually goes unchecked.
 This doesn't solve the original problem, it just hides it in a different test. 
@@ -276,29 +277,30 @@ Another important point to consider is that statistical tests of assumptions,
 like other statistical tests, are sensitive 
 to sample size \cite{Gonzalez2008}. If your sample is too small, you won't have enough power to 
 detect true differences in the variances of the groups. If your sample is 
-large, even minute differences will show up as statistically significant. 
+large, even minute differences will be statistically significant. 
 
 Overall, running tests of equal variances to decide whether to use Student's or Welch's
-t test seems to be an ineffective strategy. This has been confirmed by simulation 
+t test is an ineffective strategy. This has been confirmed by simulation 
 studies \cite{Zimmerman1996,Zimmerman2004}. 
 
 \subsection{Comparing the Degrees of Freedom of the Two Tests}
 
     A different way to decide which t test to use might be to compare the
 degrees of freedom from Welch's t test to the degrees of freedom from
-Student's t test. When the group variances are equal, the degrees of freedom
+Student's t test. When the group variances are equal, the degrees of freedom of the two tests
 are also equal. As the variances become unequal, the degrees of freedom
-from Welch's t test decrease but the degrees of freedom from Student's t test
-stay the same. Although the degrees of freedom from the two tests might typically 
-differ slightly due to random error, even when the population variances of the groups
-are equal, there might be some cutoff that reliably signals that the group variances
-are unequal. For example, perhaps it is typical for the Welch's t test degrees of freedom 
-to be 95-100\% of the Student's t test degrees of freedom when variances are equal, but 
-when the Welch's t test degrees of freedom are 90\% of the Student's t test degrees of freedom 
-or less, then it reliably indicates that the population variances are unequal. 
+of Welch's t test decrease but the degrees of freedom of Student's t test
+stay the same. Although the degrees of freedom of the two tests typically
+differ slightly due to sampling error, 
+once the difference in the degrees of freedom reaches a certain point,
+it might reliably signal that the group variances
+are unequal. For example, perhaps when the Welch's t test degrees of freedom 
+are 95-100\% of the Student's t test degrees of freedom, that difference is what typically appears when variances are equal, but 
+when the Welch's t test degrees of freedom are 90\% or less of the Student's t test degrees of freedom,
+it reliably indicates that the population variances are unequal. 
 
     We examined whether the ratio of the Welch's t 
-test degrees of freedom from to the Student's t test degrees of freedom from 
+test degrees of freedom from to the Student's t test degrees of freedom 
 could provide a heuristic for deciding that 
 the group variances are unequal and you should use Welch's t test. 
 To our knowledge, this possibility has never
@@ -312,8 +314,7 @@ decreases as the difference in variances grows larger. When the variances are
 equal, the df ratio is equal to one. When 
 the variance of one group is double the variance of the other, the ratio drops 
 to .9. A useful heuristic might be to assume that the variances are unequal 
-when the ratio falls below 96\% in sample data, which will have random error 
-even if the population variances are equal.
+when the ratio falls below 96\% in sample data to allow for some variation from sampling error.
   
 \begin{figure}
 <<dfratiosDiffvars, echo=FALSE, collapse=TRUE, fig=TRUE, height=10>>=
@@ -403,9 +404,9 @@ different variances on the df ratio depends on whether the larger group has the
 larger variance or the smaller variance. As the variance of the smaller group 
 increases, the immediate drop in the df ratio is quite dramatic before it 
 begins to level off. However, as the variance of the larger group increases, 
-the move from equal to unequal variances actual counteracts the effect of the 
+the move from equal to unequal variances actually counteracts the effect of 
 unequal sample sizes at first, and the df ratio approaches one before it drops 
-again. Due to the difference in sample sizes, a 96\% heuristic would mislead you 
+again. Due to the difference in sample sizes, a 96\% heuristic could mislead you 
 into concluding that variances are equal when they are actually 2-3 times 
 different from each other.
 
@@ -428,21 +429,20 @@ different from each other.
 %and variances are unequal.
 %' \end{figure}
 
-In short, the usefulness of a heuristic based on the df ratio is limited to 
-cases when the sample sizes are equal. 
+In short, a heuristic based on the df ratio would only be useful when the sample sizes are equal. 
 
 \subsection{Visualizing Data with Boxplots} 
 
     A third way to decide between Student's and Welch's t tests is to visualize the data using boxplots and make a judgment 
 about whether the variances appear to differ.  With smaller sample sizes, you 
 can tolerate larger apparent differences. This strategy can be enhanced by 
-simulating data for two groups of that have sample sizes equal to the sample 
+simulating data for two groups that have sample sizes equal to the sample 
 sizes in your actual data, changing whether the variances are equal or unequal, 
 and seeing if the boxplots of your data look like the boxplots of the 
 simulations with equal variances. 
 
     Figure 2 displays boxplots from simulations of two groups with equal 
-variances (top) and from simulations of two groups with unequal variances where 
+variances (top) and from simulations of two groups with unequal variances, where 
 the variance of the group to the right is five times as large as the variance 
 of the group to the left (bottom). The first row of each set of boxplots 
 displays groups with $n$ = 20 and the second row displays groups with $n$ = 
@@ -454,12 +454,14 @@ variability in the spread of the groups is normal when $n$ = 20, even when the p
 variances are equal. This can be seen in the first row of boxplots at the top of Figure 2.
 Sometimes the variances appear to be approximately equal, 
 but other times they appear to differ. There is also some variability in the spread of the 
-groups when the population variances are unequal, as can be seen in the first row of the 
+groups when the population variances are unequal. This can be seen in the first row of the 
 boxplots at the bottom of Figure 2. In general, the group to the right is more spread out than the 
-group to the left, though sometimes the spread doesn't look too different from the 
-boxplots from populations with equal variances. When the difference in variances is 
-less drastic, such as when the variance of one group is twice as large instead of 
-five times as large as the varance of the other group, then it may be more difficult
+group to the left, though sometimes the spread doesn't look very different from the 
+boxplots from populations with equal variances. In these unequal variances simulations, 
+the variance of one group is five times as large as the variance of the other group. 
+When the difference in variances is 
+less drastic, such as when the variance of one group is only twice as large
+as the variance of the other group, then it may be more difficult
 to distinguish cases of equal variances from cases of unequal variances when sample
 sizes are small.
 
@@ -569,10 +571,9 @@ with $n$=20 and the second row displays groups with $n$=100.
     So far, we have been following the standard procedure--use Student's t test 
 by default, and only switch to Welch's t test if the variances 
 of the two groups are unequal. However, this standard procedure might be
-unwarranted. Under ideal conditions, 
-when variances and sample sizes are equal, Welch's t test is equivalent to 
-Student's t test. If using Welch's t test generally leads to equal or better 
-decisions than Student's t test under both ideal and non-ideal conditions, then 
+unwarranted. When variances and sample sizes are equal, Welch's t test is equivalent to 
+Student's t test. If using Welch's t test generally leads to the same decision or better 
+decisions than using Student's t test, both when variances and sample sizes are equal and when they are unequal, then 
 instead of using Student's t test by default it might be better to always use 
 Welch's t test.
 
@@ -581,7 +582,7 @@ normally distributed data. We examined the type I error rate, power, and
 coverage probability for both Student's t test and Welch's t test under 
 different conditions. We varied the ratio of population variances 
 ($\sigma_{1}^2/\sigma_{2}^2$ = 1/5, 1/2, 1, 2, or 5; for each, the smaller 
-$\sigma^2$ = 2), the sample sizes (smallest n = 20, 50, or 100), and the ratio 
+$\sigma^2$ = 2), the sample sizes (smallest \textit{n} = 20, 50, or 100), and the ratio 
 of sample sizes ($n_{1}/n_{2}$ = 1, 2/3, or 1/2). 
     
     Additionally, we varied the difference in group means based on Cohen's d 
@@ -638,13 +639,13 @@ nullT.v5.2n.ssv, nullT.v5.2n.bsv), #NOTE: doubled any with equal variance or
 #equal ns because they don't have separate ssv and bsv versions
     
 Ns=factor(c('20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50',
-'100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75','1
-00,150','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75','10
-0,150','20,40','50,100','100,200','20,40','50,100','100,200','20,30','50,75','10
-0,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100','10
-0,200'), 
-levels=c('20,20','20,30','20,40','50,50','50,75','50,100','100,100','100,150','1
-00,200')),
+'100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75',
+'100,150','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75',
+'100,150','20,40','50,100','100,200','20,40','50,100','100,200','20,30','50,75',
+'100,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100',
+'100,200'), 
+levels=c('20,20','20,30','20,40','50,50','50,75','50,100','100,100','100,150',
+         '100,200')),
     var.ratio=factor(rep(c(0,-1,1,-2,2,0,0,-1,1, -1,1,-2,2,-2,2), each=3), 
 levels=c(-2,-1,0,1,2), labels=c(.2,.5,1,2,5)))
 
@@ -687,13 +688,13 @@ welch.nullT.v5.2n.ssv, welch.nullT.v5.2n.bsv), #NOTE: doubled any with equal
 #variance or equal ns because they don't have separate ssv and bsv versions
     
 Ns=factor(c('20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50',
-'100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75','1
-00,150','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75','10
-0,150','20,40','50,100','100,200','20,40','50,100','100,200','20,30','50,75','10
-0,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100','10
-0,200'), 
-levels=c('20,20','20,30','20,40','50,50','50,75','50,100','100,100','100,150','1
-00,200')),                                                                      
+'100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75',
+'100,150','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75',
+'100,150','20,40','50,100','100,200','20,40','50,100','100,200','20,30','50,75',
+'100,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100',
+'100,200'), 
+levels=c('20,20','20,30','20,40','50,50','50,75','50,100','100,100','100,150',
+         '100,200')),                                                                      
                                                                                 
                                                                                 
                                                                           
@@ -754,14 +755,13 @@ as the variance ratio, sample size ratio, and sample sizes vary.
 ## Common variables
 
 power.Ns <- 
-factor(c('20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50','10
-0,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75','100,
-150','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75','100,1
-50','20,40','50,100','100,200','20,40','50,100','100,200','20,30','50,75','100,1
-50','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100','100,2
-00'), 
-levels=c('20,20','20,30','20,40','50,50','50,75','50,100','100,100','100,150','1
-00,200'))
+factor(c('20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50',
+'100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75',
+'100,150','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75',
+'100,150','20,40','50,100','100,200','20,40','50,100','100,200','20,30','50,75',
+'100,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100',
+'100,200'), 
+levels=c('20,20','20,30','20,40','50,50','50,75','50,100','100,100','100,150','100,200'))
 
 power.var.ratio <- factor(rep(c(0,-1,1,-2,2,0,0,-1,1,-1,1,-2,2,-2,2), each=3), 
 levels=c(-2,-1,0,1,2), labels=c(.2,.5,1,2,5))
@@ -1222,13 +1222,12 @@ nullT.v5.2n.ssv, nullT.v5.2n.bsv), #NOTE: doubled any with equal variance or
 #equal ns because they don't have separate ssv and bsv versions
     
 Ns=factor(c('20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50',
-'100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75','1
-00,150','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75','10
-0,150','20,40','50,100','100,200','20,40','50,100','100,200','20,30','50,75','10
-0,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100','10
-0,200'), 
-levels=c('20,20','20,30','20,40','50,50','50,75','50,100','100,100','100,150','1
-00,200')),                                                                      
+'100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75',
+'100,150','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75',
+'100,150','20,40','50,100','100,200','20,40','50,100','100,200','20,30','50,75',
+'100,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100',
+'100,200'), 
+levels=c('20,20','20,30','20,40','50,50','50,75','50,100','100,100','100,150','100,200')),                                                                      
                                                                                 
                                                                                 
                                                                           
@@ -1247,13 +1246,12 @@ smalld.v5.1.5n.bsv, smalld.v5.2n.ssv, smalld.v5.2n.bsv), #NOTE: doubled any
 #versions
     
 Ns=factor(c('20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50',
-'100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75','1
-00,150','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75','10
-0,150','20,40','50,100','100,200','20,40','50,100','100,200','20,30','50,75','10
-0,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100','10
-0,200'), 
-levels=c('20,20','20,30','20,40','50,50','50,75','50,100','100,100','100,150','1
-00,200')),                                                                      
+'100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75',
+'100,150','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75',
+'100,150','20,40','50,100','100,200','20,40','50,100','100,200','20,30','50,75',
+'100,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100',
+'100,200'), 
+levels=c('20,20','20,30','20,40','50,50','50,75','50,100','100,100','100,150','100,200')),                                                                      
                                                                                 
                                                                                 
                                                                           
@@ -1271,13 +1269,13 @@ midd.v5.2n.bsv), #NOTE: doubled any with equal variance or equal ns because
 #they don't have separate ssv and bsv versions
     
 Ns=factor(c('20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50',
-'100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75','1
-00,150','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75','10
-0,150','20,40','50,100','100,200','20,40','50,100','100,200','20,30','50,75','10
-0,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100','10
-0,200'), 
-levels=c('20,20','20,30','20,40','50,50','50,75','50,100','100,100','100,150','1
-00,200')),                                                                      
+'100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75',
+'100,150','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75',
+'100,150','20,40','50,100','100,200','20,40','50,100','100,200','20,30','50,75',
+'100,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100',
+'100,200'), 
+levels=c('20,20','20,30','20,40','50,50','50,75','50,100','100,100','100,150',
+'100,200')),                                                                      
                                                                                 
                                                                                 
                                                                           
@@ -1294,13 +1292,13 @@ bigd.v5.2n.bsv), #NOTE: doubled any with equal variance or equal ns because
 #they don't have separate ssv and bsv versions
     
 Ns=factor(c('20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50',
-'100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75','1
-00,150','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75','10
-0,150','20,40','50,100','100,200','20,40','50,100','100,200','20,30','50,75','10
-0,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100','10
-0,200'), 
-levels=c('20,20','20,30','20,40','50,50','50,75','50,100','100,100','100,150','1
-00,200')),                                                                      
+'100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75',
+'100,150','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75',
+'100,150','20,40','50,100','100,200','20,40','50,100','100,200','20,30','50,75',
+'100,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100',
+'100,200'), 
+levels=c('20,20','20,30','20,40','50,50','50,75','50,100','100,100','100,150',
+'100,200')),                                                                      
                                                                                 
                                                                                 
                                                                           
@@ -1430,13 +1428,13 @@ nullT.v5.2n.ssv, nullT.v5.2n.bsv), #NOTE: doubled any with equal variance or
 #equal ns because they don't have separate ssv and bsv versions
     
 Ns=factor(c('20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50',
-'100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75','1
-00,150','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75','10
-0,150','20,40','50,100','100,200','20,40','50,100','100,200','20,30','50,75','10
-0,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100','10
-0,200'), 
-levels=c('20,20','20,30','20,40','50,50','50,75','50,100','100,100','100,150','1
-00,200')),                                                                      
+'100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75',
+'100,150','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75',
+'100,150','20,40','50,100','100,200','20,40','50,100','100,200','20,30','50,75',
+'100,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100',
+'100,200'), 
+levels=c('20,20','20,30','20,40','50,50','50,75','50,100','100,100','100,150',
+'100,200')),                                                                      
                                                                                 
                                                                                 
                                                                           
@@ -1454,13 +1452,13 @@ smalld.v5.1.5n.bsv, smalld.v5.2n.ssv, smalld.v5.2n.bsv), #NOTE: doubled any
 #versions
     
 Ns=factor(c('20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50',
-'100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75','1
-00,150','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75','10
-0,150','20,40','50,100','100,200','20,40','50,100','100,200','20,30','50,75','10
-0,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100','10
-0,200'), 
-levels=c('20,20','20,30','20,40','50,50','50,75','50,100','100,100','100,150','1
-00,200')),                                                                      
+'100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75',
+'100,150','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75',
+'100,150','20,40','50,100','100,200','20,40','50,100','100,200','20,30','50,75',
+'100,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100',
+'100,200'), 
+levels=c('20,20','20,30','20,40','50,50','50,75','50,100','100,100','100,150',
+'100,200')),                                                                      
                                                                                 
                                                                                 
                                                                           
@@ -1477,13 +1475,13 @@ midd.v5.2n.bsv), #NOTE: doubled any with equal variance or equal ns because
 #they don't have separate ssv and bsv versions
     
 Ns=factor(c('20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50',
-'100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75','1
-00,150','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75','10
-0,150','20,40','50,100','100,200','20,40','50,100','100,200','20,30','50,75','10
-0,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100','10
-0,200'), 
-levels=c('20,20','20,30','20,40','50,50','50,75','50,100','100,100','100,150','1
-00,200')),                                                                      
+'100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75',
+'100,150','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75',
+'100,150','20,40','50,100','100,200','20,40','50,100','100,200','20,30','50,75',
+'100,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100',
+'100,200'), 
+levels=c('20,20','20,30','20,40','50,50','50,75','50,100','100,100','100,150',
+'100,200')),                                                                      
                                                                                 
                                                                                 
                                                                           
@@ -1500,13 +1498,13 @@ bigd.v5.2n.bsv), #NOTE: doubled any with equal variance or equal ns because
 #they don't have separate ssv and bsv versions
     
 Ns=factor(c('20,20','50,50','100,100','20,20','50,50','100,100','20,20','50,50',
-'100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75','1
-00,150','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75','10
-0,150','20,40','50,100','100,200','20,40','50,100','100,200','20,30','50,75','10
-0,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100','10
-0,200'), 
-levels=c('20,20','20,30','20,40','50,50','50,75','50,100','100,100','100,150','1
-00,200')),                                                                      
+'100,100','20,20','50,50','100,100','20,20','50,50','100,100','20,30','50,75',
+'100,150','20,40','50,100','100,200','20,30','50,75','100,150','20,30','50,75',
+'100,150','20,40','50,100','100,200','20,40','50,100','100,200','20,30','50,75',
+'100,150','20,30','50,75','100,150','20,40','50,100','100,200','20,40','50,100',
+'100,200'), 
+levels=c('20,20','20,30','20,40','50,50','50,75','50,100','100,100','100,150',
+'100,200')),                                                                      
                                                                                 
                                                                                 
                                                                           
