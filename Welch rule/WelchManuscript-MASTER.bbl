@@ -83,6 +83,36 @@ Box, G\BPBI E\BPBI P.%
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
+Brown%
+\ \BBA {} Forsythe%
+}{%
+Brown%
+\ \BBA {} Forsythe%
+}{%
+{\protect \APACyear {1974}}%
+}]{%
+Brown1974}
+\APACinsertmetastar {%
+Brown1974}%
+\begin{APACrefauthors}%
+Brown, M\BPBI B.%
+\BCBT {}\ \BBA {} Forsythe, A\BPBI B.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1974}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Robust tests for equality of variances} {Robust tests
+  for equality of variances}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Journal of the American Statistical
+  Association}{69}{}{364--367}.
+\newblock
+\begin{APACrefDOI} \doi{http://dx.doi.org/10.1080/01621459.1974.10482955}
+  \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
 Cohen%
 }{%
 Cohen%
@@ -353,6 +383,29 @@ Kruschke, J\BPBI K.%
   General}{142}{}{573--603}.
 \newblock
 \begin{APACrefDOI} \doi{http://dx.doi.org/10.1037/a0029146} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Levene%
+}{%
+Levene%
+}{%
+{\protect \APACyear {1960}}%
+}]{%
+Levene1960}
+\APACinsertmetastar {%
+Levene1960}%
+\begin{APACrefauthors}%
+Levene, H.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1960}{}{}.
+\newblock
+\APACrefbtitle {Robust tests for equality of variances.} {Robust tests for
+  equality of variances.}
+\newblock
+\APACaddressPublisher{}{Stanford University Press}.
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
