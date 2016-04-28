@@ -250,6 +250,28 @@ Student's t test unless there is evidence that the two groups have unequal
 variances. The challenge is how to find that evidence. 
 Our goal is to find a simple decision rule that can help researchers decide when to use Welch's t test instead of Student's t test.
 
+    Before we proceed, we note that aside from Welch's t test, there have been Bayesian approaches 
+to the problem of comparing groups with equal or unequal variances. 
+\citeA[p.~104-109]{Box1973} presented analytical Bayesian t tests when equal 
+variances is assumed and when equal variances is not assumed. When 
+noninformative locally uniform priors are used for the group means and the 
+logarithm of the group standard deviations, and equal variances is assumed, 
+their solution is identical to Student's t test. When the same priors are used, 
+but equal variances are not assumed, their solution is similar to Welch's t 
+test, but slightly more conservative because the degrees of freedom are 
+generally lower and the standard error is generally larger or equal. More 
+recently, \citeA{Kruschke2013} presented a Bayesian approach to comparing group 
+means that uses Markov Chain Monte Carlo simulations. This approach simulates 
+the posterior distribution of means for each group based on the prior 
+distributions and the data. For each simulation, the difference in the 
+simulated group means is taken, which produces a posterior distribution of the 
+difference in group means. Inferences about the difference in group means are 
+based on this posterior distribution. Because this method does not use a 
+t-statistic, there is no need to create a standard error for the difference in 
+group means. Our purpose in this paper is to inform decisions about the use of 
+frequentist approaches to comparing group means, and so we do not discuss
+Bayesian approaches further.
+
 \subsection{Testing Assumptions with Another Test}
     One option for how to decide whether to use Student's or Welch's t test 
 is to run another test of the null hypothesis that the group variances 
@@ -597,10 +619,10 @@ considered to represent smaller effects when variances are unequal.
     For each condition, we set the seed to 2184 and ran 10,000 simulations. 
 When we report conditions with equal sample sizes and variance ratios of 2 and 
 5, they are identical to the conditions with equal sample sizes and variance 
-ratios of 1/2 and 1/5. 
+ratios of 1/2 and 1/5.
 
     We examined how well each test balances concerns with 
-false positives, power, and estimation. Some prior research has examined the 
+false positives, power, and effect size estimation. Some prior research has examined the 
 Type I error rate for the two tests \cite{Boneau1960, Zimmerman1993, 
 Zimmerman2004, Zimmerman1996, Zimmerman2009} and some has also examined the 
 power of the two tests, though not with the complete configuration of 
@@ -716,7 +738,7 @@ shape=Ns, color=Ns, ymin=0, ymax=.13)) +
 
 @
 
-    The expected type I error rate is $\alpha = .05$. The observed type I error 
+    The expected type I error (false positive) rate is $\alpha = .05$. The observed type I error 
 rate for Student's t test remained close to the expected .05 rate when either 
 the sample size or the population variances were equal, but it varied widely 
 when both population variances and sample sizes were unequal (see Figure 3). 
@@ -1079,18 +1101,18 @@ became unequal because we increased one group's variance; however, the power of
 each test decreased at a different rate depending on the sample size and 
 variance ratios. Figure 5 displays the difference in power between Student's t 
 test and Welch's t test, with higher numbers indicating that Student's t test 
-is more powerful. When the sample sizes or variances are equal, the power of 
-the two tests is approximately equal. However, when both the sample sizes and 
-variances are unequal, there are differences in power. Overall, Student's t 
-test is more powerful when the large sample has the smaller variance, whereas 
-Welch's t test is more powerful when the small sample has the smaller variance. 
-These differences are the most dramatic when one sample is twice the size of 
+is more powerful. When the sample sizes or variances were equal, the power of 
+the two tests was approximately equal. However, when both the sample sizes and 
+variances are unequal, there were differences in power. Overall, Student's t 
+test was more powerful when the large sample had the smaller variance, whereas 
+Welch's t test was more powerful when the small sample had the smaller variance. 
+These differences are the most dramatic when one sample was twice the size of 
 the other. 
     
-    The conditions in which Student's t test has the greatest power over 
-Welch's t test, when one sample is twice the size of the other and the large 
-sample has the small variance, are the same conditions in which Student's t 
-test has a risk of doubling the false positive rate. Whatever advantage 
+    The conditions in which Student's t test had the greatest power over 
+Welch's t test, when one sample was twice the size of the other and the large 
+sample had the small variance, were the same conditions in which Student's t 
+test had a risk of doubling the false positive rate. Whatever advantage 
 Student's t test has in terms of power is undermined by the inflated false 
 positive rate. In contrast, in the conditions where Welch's t test was more 
 powerful, it never inflated the type I error rate beyond the expected rate. 
@@ -1581,15 +1603,15 @@ rule is to always use Welch's t test to compare the means of independent groups.
     
     The results of our simulations demonstrated that when the population 
 variances or sample sizes were equal, using Welch's t test instead of Student's 
-t test didn't hurt. Figures 1 shows that the Welch degrees of freedom could 
-drop below 70\% the Student's t test degrees of freedom when only the variance 
+t test didn't hurt. Figures 1 shows that the Welch's t test degrees of freedom could 
+drop below 70\% of the Student's t test degrees of freedom when only the variance 
 ratio or the sample size ratio changed. Nevertheless, the false positive rates, 
 power, and coverage probabilities of the two tests were almost identical under 
-these conditions. The difference in the degrees of freedom of the two tests was 
-relatively small. We illustrate this point in Figure 7, which shows two 
+these conditions. The difference in the degrees of freedom of the two tests had a 
+negligible effect on the outcomes. We illustrate this point in Figure 7, which shows two 
 overlapping t distributions, one with half the degrees of freedom of the other. 
 The tails of the distribution with the smaller degrees of freedom are a little 
-larger than the tails of the distribution with greater degrees of freedom, but 
+larger than the tails of the distribution with the greater degrees of freedom, but 
 not by much. Given the same t-value, in the majority of cases these 
 distributions would agree about whether or not to reject the null hypothesis. 
     
@@ -1661,26 +1683,6 @@ the variances were equal. There seems to be no simple rule for deciding between
 the two tests based on the ratio of the degrees of freedom. Fortunately, the 
 rule to always use Welch's t test is simpler and more effective.
     
-    We note that aside from Welch's t test, there have been Bayesian approaches 
-to the problem of comparing groups with unequal variances. 
-\citeA[p.~104-109]{Box1973} presented analytical Bayesian t tests when equal 
-variances is assumed and when equal variances is not assumed. When 
-noninformative locally uniform priors are used for the group means and the 
-logarithm of the group standard deviations, and equal variances is assumed, 
-their solution is identical to Student's t test. When the same priors are used, 
-but equal variances are not assumed, their solution is similar to Welch's t 
-test, but slightly more conservative because the degrees of freedom are 
-generally lower and the standard error is generally larger or equal. More 
-recently, \citeA{Kruschke2013} presented a Bayesian approach to comparing group 
-means that uses Markov Chain Monte Carlo simulations. This approach simulates 
-the posterior distribution of means for each group based on the prior 
-distributions and the data. For each simulation, the difference in the 
-simulated group means is taken, which produces a posterior distribution of the 
-difference in group means. Inferences about the difference in group means are 
-based on this posterior distribution. Because this method does not use a 
-t-statistic, there is no need to create a standard error for the difference in 
-group means. 
-    
     Prior simulation work comparing Student's t test to Welch's t test has 
 focused on null hypothesis significance testing by emphasizing type I errors 
 and power \cite{Boneau1960, Neuhauser2002, Zimmerman1993, Zimmerman2004, 
@@ -1690,59 +1692,67 @@ effect sizes and confidence intervals to address some of the limitations of
 just reporting null hypothesis significance tests. It is important to remember 
 that effect size estimation can also involves assumptions about group variances.
     
-    We found that using Student's t test to estimate the differences in group 
-means, which involves the assumption that the group variances are equal, had a 
-big impact on accuracy. Under some conditions, the confidence intervals were 
+    If the effect size of interest is a confidence interval for the difference in
+group means, you must make a decision about whether or not to assume that the
+group variances are equal. We found that using Student's t test to find the confidence
+interval for the difference in group means, which involves the assumption that the 
+group variances are equal, led to 
+highly unstable estimates. Under some conditions, the confidence intervals were 
 less accurate than expected because they were too narrow, and under other 
 conditions, they were more accurate than expected because they were too wide. 
 Using Welch's t test, which does not assume that group variances are equal, led 
-to more stable estimation across conditions.
+to more stable estimates across conditions.
     
     Cohen's d \cite{Cohen1992} is the most popular effect size for reporting 
-the difference in two group means. It standardizes the difference based on a 
-common standard deviation of the population--but what if there is no common 
-standard deviation of the population? This is exactly the situation we're faced 
-with when lifting the equal variances assumption. Because Cohen's d assumes 
-that the group variances are equal, letting go of equal variances also means 
-letting go of Cohen's d. 
+the difference in two group means, but it also requires an assumption that the 
+group variances are equal. Cohen's d standardizes the difference in means based on a 
+common standard deviation of the population. This common standard deviation
+is just the square root of the pooled variance from Student's t test.
+But when the group variances are unequal, there is no common standard deviation. 
+Cohen's d will suffer from the same problems as Student's t test. Given the same difference in group 
+means, if the sample sizes and variances both differ, then Cohen's d will give more 
+weight to the larger sample. If the larger sample has the larger variance, the 
+estimate of the standardized effect size will be smaller than if the larger sample 
+has the smaller variance. In reality, either estimate is misleading
+because there is no common standard deviation, so there can be no true Cohen's d.
     
     Standardized effect sizes such as Cohen's d are often desirable for their 
 use in meta-analysis or other attempts to summarize the size of an effect based 
-on a comprehensive body of research. But their convenience shouldn't be reason 
-enough to brush off Welch's t test for Cohen's d, because the equal variances 
-problem applies equally to meta-analysis. Using Cohen's d as the basis for a 
+on a comprehensive body of research. But the equal variances 
+problem applies to meta-analysis as well. Using Cohen's d as the basis for a 
 meta-analysis involves an implicit assumption that the group variances across 
 the body of research are equal, an assumption which might be untenable in many 
-cases. Potential differences in group variances might not just be a nuisance 
-that gets in the way of building a comprehensive area of study, but they might 
+cases. Differences in group variances might not just be a nuisance 
+that gets in the way of building a comprehensive knowledge in an area of study, but they might 
 actually be an interesting part of the effect for meta-analysts to examine. 
     
     The good news is that effect sizes are not just standardized differences in 
-means, but they also include things like the raw difference in means 
-\cite{Cumming2014, Kelley2012}, and confidence intervals around raw differences 
-in means based on separate variances are easy to find. They are included in the 
+means, but they also include raw difference in means 
+\cite{Cumming2014, Kelley2012}, and you can find confidence intervals around raw differences 
+in means without assuming that group variances are equal. In fact, 95\% confidence intervals
+based on Welch's t test are included in the 
 default output of data analysis programs such as SPSS and R. Reporting 
 descriptive statistics in their original scale might be a better practice than 
 reporting only standardized effect sizes anyway. Reporting the raw descriptives 
-has a few advantages. First, it does not require the researcher to commit to an 
+has a few advantages. First, unlike Cohen's d, reporting raw descriptive statistics does not require the researcher to commit to an 
 equal variances assumption. Second, it provides all of the necessary 
 information for others who want to assume equal variances to find Cohen's d, or 
-a number of the alternatives that have been recommended \cite{Peng2013, 
+one of the alternative standardized effect sizes that have been recommended \cite{Peng2013, 
 Grissom2001}. Third, it allows other researchers to examine whether differences 
 in group variances are a consistent part of an effect, which would be lost by 
 just reporting the standardized difference.
 
     We suspect that most statistics courses in psychology teach Student's t 
 test thoroughly and only briefly touch on Welch's t test, if they teach it at 
-all. Indeed, we have heard colleagues who have used Welch's t test in a 
-manuscript complain about reviewers who were suspicious when they reported 
+all. Indeed, we have heard colleagues complain that when they use Welch's t test in a 
+manuscript, reviewers are suspicious of the 
 degrees of freedom with decimals. These reviewers must not have learned that 
 degrees of freedom with decimals are the norm for Welch's t test. The emphasis 
 on Student's t test in teaching is consistent with the common strategy to start 
 out by assuming that variances are equal and to only use Welch's t test as a 
 back-up when the assumption has been violated. But why should we spend so much 
 time on the equal variances assumption in the first place? Why not teach 
-Welch's test as a safe first step that will do just fine without imposing 
+Welch's t test as a safe first step that will do just fine without imposing 
 restrictive assumptions? Student's t test could still be taught briefly so that 
 students understand the existing literature, but we believe it would be 
 beneficial to emphasize Welch's t test as the default approach. As demonstrated 
