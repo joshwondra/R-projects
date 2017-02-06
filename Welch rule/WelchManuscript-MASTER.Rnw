@@ -142,7 +142,7 @@ published papers are spuriously large \cite<e.g.,>{Bakker2012, Ioannidis2008}.
 Researchers must find a way to balance the concerns with false positives, 
 power, and effect size estimation as they make their decisions. 
 
-The recent push for pre-registration of studies forces researchers to be transparent about these kinds of decision strategies for how they plan to analyze data prior to its collection.  In pre-registration the researcher should detail how they plan to test their hypothesis (e.g., a two-sample t test). But in pre-registration they should also address the assumptions of those statistical tests (e.g., equality of variances), how they will check those assumptions (e.g., visual inspection of boxplots, a test of significance between two variances), what criteria they will use to determine if the assumption is violated and what remedial measures they will take if those criteria suggest the assumptions are violated (e.g., perform a version of the statistical test that does not make the violated assumption, such as the Welch t test; transform the data; perform a nonparametric test).  Such level of transparency and planning can be good for science on some dimensions but it could easily become overwhelming to write a long list of detailed conditional statements of the form ``if I see this, then I'll do that.''  Perhaps preregistration can be made simpler if the researcher  commits to performing a statistical test of their research hypothesis using a procedure that is robust to violations of assumptions? If a robust procedure could be used that does not introduce new costs, such as reduction of power or more complicated statistical procedures, then it may lead to easier pre-registration procedures thus lowering the hurdle to participate in this important practice.
+The recent push for pre-registration of studies forces researchers to be transparent about these kinds of decision strategies for how they plan to analyze data prior to its collection.  In pre-registration the researcher should detail how they plan to test their hypothesis (e.g., a two-sample t test). But in pre-registration they should also address the assumptions of those statistical tests (e.g., equality of variances), how they will check those assumptions (e.g., visual inspection of boxplots, a test of significance between two variances), what criteria they will use to determine if the assumption is violated, and what remedial measures they will take if those criteria suggest the assumptions are violated (e.g., perform a version of the statistical test that does not make the violated assumption, such as the Welch t test; transform the data; perform a nonparametric test).  Such level of transparency and planning can be good for science in some ways, but it could easily become overwhelming to write a long list of detailed conditional statements of the form ``if I see this, then I'll do that.''  Perhaps preregistration can be simplified if the researcher  commits to a statistical procedure that is robust to violations of assumptions. If a robust procedure could be used without introducing new costs, such as reduction of power or more complicated statistical procedures, then it may lead to easier pre-registration, thus lowering the hurdle to participate in this important practice.
 
 \subsection{The Comparison of Means from Two Independent Groups}
     One of the first decisions that many researchers learn is how to compare 
@@ -168,7 +168,7 @@ difference:
     \begin{equation}
     t = \frac{\hat{\mu}_1-\hat{\mu}_2}{\hat{\sigma}_{\mu_1-\mu_2}}
     \end{equation}
-    The p-value for the value of the t statistic depends on the degrees of 
+    The p-value for a given value of the t statistic depends on the degrees of 
 freedom, $df=n_1+n_2-2$. You are more likely to reject the null hypothesis and 
 conclude that there is a difference in the group means as the t-value and the 
 degrees of freedom get larger. This means that you are more likely to conclude 
@@ -243,7 +243,7 @@ pooled variances standard error.
     How do you decide which test to use? The typical approach is to use 
 Student's t test unless there is evidence that the two groups have unequal 
 variances. The challenge is how to find that evidence. 
-Our goal is to find a simple decision rule that can help researchers decide when to use Welch's t test instead of Student's t test.
+Our goal is to find a simple decision rule that can help researchers decide when to use Welch's t test instead of Student's t test. We begin by reviewing three decision strategies: testing the equal variances assumption with another statistical test, comparing the degrees of freedom of the two tests, and visually examining the data with boxplots. Then we use Monte Carlo simulations to examine when each test performs best in terms of type I errors, power, and coverage probability.
 
     Before we proceed, we note that aside from Welch's t test, there have been Bayesian approaches 
 to the problem of comparing groups with equal or unequal variances. 
@@ -608,7 +608,7 @@ in group means when variances were unequal. Because we changed the variance
 ratio by increasing the variance of one group, the mean differences could be 
 considered to represent smaller effects when variances are unequal.
     
-    For each condition (i.e., combination of variance ratio,smaller sample size and sample size ratio), we set the seed to of the random number generator and ran 10,000 simulations. 
+    For each condition (i.e., combination of variance ratio, smaller sample size, and sample size ratio), we set the seed of the random number generator to the same value and ran 10,000 simulations. 
 When we report conditions with equal sample sizes and variance ratios of 2 and 
 5, they are identical to their symmetric conditions with equal sample sizes and variance 
 ratios of 1/2 and 1/5.
@@ -740,7 +740,7 @@ variance, the type I error rate
 rose as high as .12, which is more than double the normally accepted false 
 positive rate. In contrast, the observed type I error rate for Welch's t test 
 remained close to the expected .05 rate across all conditions. Overall, Welch's 
-t test consistently behaved as expected when it comes to false positives. 
+t test consistently behaved as expected when it came to false positives. 
 Student's t test did not.
 
 \begin{figure*}    
@@ -1094,7 +1094,7 @@ variance ratios. Figure 5 displays the difference in power between Student's t
 test and Welch's t test, with higher numbers indicating that Student's t test 
 is more powerful. When the sample sizes or variances were equal, the power of 
 the two tests was approximately equal. However, when both the sample sizes and 
-variances are unequal, there were differences in power. Overall, Student's t 
+variances were unequal, there were differences in power. Overall, Student's t 
 test was more powerful when the large sample had the smaller variance, whereas 
 Welch's t test was more powerful when the small sample had the smaller variance. 
 These differences are the most dramatic when one sample was twice the size of 
@@ -1107,7 +1107,7 @@ test had a risk of doubling the false positive rate. Whatever advantage
 Student's t test has in terms of power is undermined by the inflated false 
 positive rate. In contrast, in the conditions where Welch's t test was more 
 powerful, it never inflated the type I error rate beyond the expected rate. 
-These joint results on the false positive rate and power support the decision to always use Welch's t test. By using 
+These joint results, on the false positive rate and power, support the decision to always use Welch's t test. By using 
 Welch's t test, you sometimes have greater power to detect true effects, but 
 you don't have to worry about sacrificing concerns with false positives.  
 
@@ -1145,7 +1145,7 @@ multiplot(smalld.diff.plot, midd.diff.plot, bigd.diff.plot, layout=layout)
 \end{figure*}
 
 \subsubsection{Coverage Probability}
-Another way of examining statistical power is through the coverage probability 
+In addition to the type I error rate and power, we examined the coverage probability 
 of 95\% confidence intervals constructed using Student's t test and Welch's t 
 test. Coverage probability refers to the proportion of confidence intervals 
 that contain the true population value of the estimated parameter, which is the 
@@ -1595,7 +1595,7 @@ rule is to always use Welch's t test to compare the means of independent groups.
     
     The results of our simulations demonstrated that when the population 
 variances or sample sizes were equal, using Welch's t test instead of Student's 
-t test didn't hurt. Figures 1 shows that the Welch's t test degrees of freedom could 
+t test didn't hurt. Figure 1 shows that the Welch's t test degrees of freedom could 
 drop below 70\% of the Student's t test degrees of freedom when only the variance 
 ratio or the sample size ratio changed. Nevertheless, the false positive rates, 
 power, and coverage probabilities of the two tests were almost identical under 
