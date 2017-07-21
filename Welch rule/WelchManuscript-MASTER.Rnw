@@ -1800,7 +1800,10 @@ multiplot(CovClassic.nullT, CovWelch.nullT, layout=layout)
 
 \subsection{Expanding to Interactions in 2 x 2 Factorial Designs}
 
-The use of t tests can be expanded to study designs with more than two groups, where they can be used to test main effects, interactions, or other specific contrasts between the groups. For these tests, the researcher again has the choice of Student's or Welch's t test. To illustrate, consider the 2 x 2 design displayed in Figure 7. There are no main effects, but there is a cross-over interaction. The difference in means between groups B and C vs. groups A and D is the same as the difference for a medium-sized effect from simulations with two groups. We tested the 2 x 2 interaction using Student's and Welch's t tests when all sample sizes and variances were equal and when the sample size and variance of just one group (group A) differed from the others.
+The use of t tests can be expanded to study designs with more than two groups, where they can be used to test main effects, interactions, or other specific contrasts between the groups. For these tests, the researcher again has the choice of Student's or Welch's t test. We tested the interaction of a 2 x 2 design using Student's and Welch's t tests when the means of the four groups were equal and when there was a cross-over interaction, but no main effects (Figure 7). The difference in means between groups B and C vs. groups A and D is the same as the difference for a medium-sized effect from simulations with two groups. We tested the interaction contrast when all sample sizes and variances were equal, as well as under selected conditions when the sample size and variance of just one group (group A) differed from the others.
+
+\subsubsection{Type I Error Rates}
+As with the case of two groups, the type I error rate for Student's t test was near the expected $\alpha = .05$ rate when either the sample sizes or variances were equal. But when both the sample sizes and variances were unequal, the type I error rate varied widely. If just one group had a larger sample than the others, the type I error rate was too high if it had the smaller variance and too low if it had the larger variance; and if just one group had a smaller sample than the others, the type I error rate was too low if it had the smaller variance and too high if it had the larger variance. In contrast, the type I error rate for Welch's t test was consistently near .05.
 
 \begin{figure*}
 <<plot2x2, echo = FALSE, fig = TRUE>>=
@@ -1844,15 +1847,6 @@ nullT.v5.n2.bignsmallvar <- int.reject.null.v5.n2.bignsmallvar[,1,1]
 nullT.v5.n2.smallnbigvar <- int.reject.null.v5.n2.smallnbigvar[,1,1]
 nullT.v5.n2.smallnsmallvar <- int.reject.null.v5.n2.smallnsmallvar[,1,1]
 
-midd.ve.ne <- int.reject.null.ve.ne[,2,1]
-midd.v5.ne.bigvar <- int.reject.null.v5.ne.bigvar[,2,1]
-midd.v5.ne.smallvar <- int.reject.null.v5.ne.smallvar[,2,1]
-midd.ve.n2.bign <- int.reject.null.ve.n2.bign[,2,1]
-midd.ve.n2.smalln <- int.reject.null.ve.n2.smalln[,2,1]
-midd.v5.n2.bignbigvar <- int.reject.null.v5.n2.bignbigvar[,2,1]
-midd.v5.n2.bignsmallvar <- int.reject.null.v5.n2.bignsmallvar[,2,1]
-midd.v5.n2.smallnbigvar <- int.reject.null.v5.n2.smallnbigvar[,2,1]
-midd.v5.n2.smallnsmallvar <- int.reject.null.v5.n2.smallnsmallvar[,2,1]
 
 ## Put it in a dataframe
 int.type1.classic <- data.frame(
@@ -1904,15 +1898,6 @@ nullT.v5.n2.bignsmallvar <- int.reject.null.v5.n2.bignsmallvar[,1,2]
 nullT.v5.n2.smallnbigvar <- int.reject.null.v5.n2.smallnbigvar[,1,2]
 nullT.v5.n2.smallnsmallvar <- int.reject.null.v5.n2.smallnsmallvar[,1,2]
 
-midd.ve.ne <- int.reject.null.ve.ne[,2,2]
-midd.v5.ne.bigvar <- int.reject.null.v5.ne.bigvar[,2,2]
-midd.v5.ne.smallvar <- int.reject.null.v5.ne.smallvar[,2,2]
-midd.ve.n2.bign <- int.reject.null.ve.n2.bign[,2,2]
-midd.ve.n2.smalln <- int.reject.null.ve.n2.smalln[,2,2]
-midd.v5.n2.bignbigvar <- int.reject.null.v5.n2.bignbigvar[,2,2]
-midd.v5.n2.bignsmallvar <- int.reject.null.v5.n2.bignsmallvar[,2,2]
-midd.v5.n2.smallnbigvar <- int.reject.null.v5.n2.smallnbigvar[,2,2]
-midd.v5.n2.smallnsmallvar <- int.reject.null.v5.n2.smallnsmallvar[,2,2]
 
 ## Put it in a dataframe
 int.type1.welch <- data.frame(
@@ -1956,6 +1941,141 @@ of a 2 x 2 interaction as the variance and sample size of one group varies.
 \end{figure*}
 
 
+\subsubsection{Power}
+As with the case of two groups, the type I error rate for Student's t test was near the expected $\alpha = .05$ rate when either the sample sizes or variances were equal. But when both the sample sizes and variances were unequal, the type I error rate varied widely. If just one group had a larger sample than the others, the type I error rate was too high if it had the smaller variance and too low if it had the larger variance; and if just one group had a smaller sample than the others, the type I error rate was too low if it had the smaller variance and too high if it had the larger variance. In contrast, the type I error rate for Welch's t test was consistently near .05.
+
+<<interaction data power, echo = FALSE>>=
+##### Student's t test data
+
+midd.ve.ne <- int.reject.null.ve.ne[,2,1]
+midd.v5.ne.bigvar <- int.reject.null.v5.ne.bigvar[,2,1]
+midd.v5.ne.smallvar <- int.reject.null.v5.ne.smallvar[,2,1]
+midd.ve.n2.bign <- int.reject.null.ve.n2.bign[,2,1]
+midd.ve.n2.smalln <- int.reject.null.ve.n2.smalln[,2,1]
+midd.v5.n2.bignbigvar <- int.reject.null.v5.n2.bignbigvar[,2,1]
+midd.v5.n2.bignsmallvar <- int.reject.null.v5.n2.bignsmallvar[,2,1]
+midd.v5.n2.smallnbigvar <- int.reject.null.v5.n2.smallnbigvar[,2,1]
+midd.v5.n2.smallnsmallvar <- int.reject.null.v5.n2.smallnsmallvar[,2,1]
+
+## Put it in a dataframe
+int.power.classic <- data.frame(
+    power=c(midd.ve.ne, midd.v5.ne.bigvar, midd.v5.ne.smallvar, midd.ve.n2.bign, midd.ve.n2.smalln, midd.v5.n2.bignbigvar, midd.v5.n2.bignsmallvar, midd.v5.n2.smallnbigvar, midd.v5.n2.smallnsmallvar),
+    
+Ns=factor(c('50,50,50,50','50,50,50,50','50,50,50,50','100,50,50,50','50,100,100,100','100,50,50,50','100,50,50,50','50,100,100,100','50,100,100,100'), 
+levels=c('50,50,50,50','100,50,50,50','50,100,100,100')),
+    var.ratio=factor(c(0,1,-1,0,0,1,-1,1,-1), 
+levels=c(-1,0,1), labels=c(.2,0,5)))
+
+## Plot it
+Pow.classic <- ggplot(int.power.classic, aes(x=as.numeric(var.ratio), y=power, ymin=0, ymax=.13)) + 
+    geom_point(size=4, aes(shape = Ns, color = Ns)) + 
+    scale_shape_manual(name = 'Sample size ratio \nGroup A,B,C,D',
+                       labels = c('50,50,50,50', '100,50,50,50','50,100,100,100'),
+                       values= rep(1, 3)
+                       ) +
+    geom_line(size=.5, aes(linetype = Ns, color = Ns)) + 
+    scale_linetype_manual(name = 'Sample size ratio \nGroup A,B,C,D',
+                          labels = c('50,50,50,50', '100,50,50,50','50,100,100,100'),
+                          values= c('dotted', 'dashed', 'solid')
+                          ) +
+    scale_color_manual(name = 'Sample size ratio \nGroup A,B,C,D',
+                       labels = c('50,50,50,50', '100,50,50,50','50,100,100,100'),
+                       values= rep('black', 3)
+                       ) + 
+    scale_x_continuous(breaks=seq(-1:1), labels=factor(c('1/5', '1', '5'))) +
+    scale_y_continuous(breaks=seq(from=0, to=1, by=.1)) +
+    xlab(bquote(frac(sigma[A]^2,{sigma[B]^2 == sigma[C]^2} == sigma[D]^2))) + ylab('Power (Medium Effect)') +
+    theme(panel.grid.minor.y = element_blank(), panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
+
+
+
+
+
+
+
+
+
+##### Welch's t test data
+
+
+midd.ve.ne <- int.reject.null.ve.ne[,2,2]
+midd.v5.ne.bigvar <- int.reject.null.v5.ne.bigvar[,2,2]
+midd.v5.ne.smallvar <- int.reject.null.v5.ne.smallvar[,2,2]
+midd.ve.n2.bign <- int.reject.null.ve.n2.bign[,2,2]
+midd.ve.n2.smalln <- int.reject.null.ve.n2.smalln[,2,2]
+midd.v5.n2.bignbigvar <- int.reject.null.v5.n2.bignbigvar[,2,2]
+midd.v5.n2.bignsmallvar <- int.reject.null.v5.n2.bignsmallvar[,2,2]
+midd.v5.n2.smallnbigvar <- int.reject.null.v5.n2.smallnbigvar[,2,2]
+midd.v5.n2.smallnsmallvar <- int.reject.null.v5.n2.smallnsmallvar[,2,2]
+
+## Put it in a dataframe
+int.power.welch <- data.frame(
+    power=c(midd.ve.ne, midd.v5.ne.bigvar, midd.v5.ne.smallvar, midd.ve.n2.bign, midd.ve.n2.smalln, midd.v5.n2.bignbigvar, midd.v5.n2.bignsmallvar, midd.v5.n2.smallnbigvar, midd.v5.n2.smallnsmallvar),
+    
+Ns=factor(c('50,50,50,50','50,50,50,50','50,50,50,50','100,50,50,50','50,100,100,100','100,50,50,50','100,50,50,50','50,100,100,100','50,100,100,100'), 
+levels=c('50,50,50,50','100,50,50,50','50,100,100,100')),
+    var.ratio=factor(c(0,1,-1,0,0,1,-1,1,-1), 
+levels=c(-1,0,1), labels=c(.2,0,5)))
+
+## Plot it
+Pow.welch <- ggplot(int.power.welch, aes(x=as.numeric(var.ratio), y=power, ymin=0, ymax=.13)) + 
+    geom_point(size=4, aes(shape = Ns, color = Ns)) + 
+    scale_shape_manual(name = 'Sample size ratio \nGroup A,B,C,D',
+                       labels = c('50,50,50,50', '100,50,50,50','50,100,100,100'),
+                       values= rep(1, 3)
+                       ) +
+    geom_line(size=.5, aes(linetype = Ns, color = Ns)) + 
+    scale_linetype_manual(name = 'Sample size ratio \nGroup A,B,C,D',
+                          labels = c('50,50,50,50', '100,50,50,50','50,100,100,100'),
+                          values= c('dotted', 'dashed', 'solid')
+                          ) +
+    scale_color_manual(name = 'Sample size ratio \nGroup A,B,C,D',
+                       labels = c('50,50,50,50', '100,50,50,50','50,100,100,100'),
+                       values= rep('black', 3)
+                       ) + 
+    scale_x_continuous(breaks=seq(-1:1), labels=factor(c('1/5', '1', '5'))) +
+    scale_y_continuous(breaks=seq(from=0, to=1, by=.1)) +
+    xlab(bquote(frac(sigma[A]^2,{sigma[B]^2 == sigma[C]^2} == sigma[D]^2))) + ylab('Power (Medium Effect)') +
+    theme(panel.grid.minor.y = element_blank(), panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
+
+
+
+##### Difference in power
+int.power.diff <- int.power.classic
+int.power.diff$power <- int.power.classic$power - int.power.welch$power
+
+## Plot it
+Pow.diff <- ggplot(int.power.diff, aes(x=as.numeric(var.ratio), y=power, ymin=0, ymax=.13)) + 
+    geom_point(size=4, aes(shape = Ns, color = Ns)) + 
+    scale_shape_manual(name = 'Sample size ratio \nGroup A,B,C,D',
+                       labels = c('50,50,50,50', '100,50,50,50','50,100,100,100'),
+                       values= rep(1, 3)
+                       ) +
+    geom_line(size=.5, aes(linetype = Ns, color = Ns)) + 
+    scale_linetype_manual(name = 'Sample size ratio \nGroup A,B,C,D',
+                          labels = c('50,50,50,50', '100,50,50,50','50,100,100,100'),
+                          values= c('dotted', 'dashed', 'solid')
+                          ) +
+    scale_color_manual(name = 'Sample size ratio \nGroup A,B,C,D',
+                       labels = c('50,50,50,50', '100,50,50,50','50,100,100,100'),
+                       values= rep('black', 3)
+                       ) + 
+    scale_x_continuous(breaks=seq(-1:1), labels=factor(c('1/5', '1', '5'))) +
+    scale_y_continuous(breaks=c(-.3, -.2, -.1, 0, .1, .2, .3)) +
+    coord_cartesian(ylim = c(-.3, .3)) +
+    xlab(bquote(frac(sigma[A]^2,{sigma[B]^2 == sigma[C]^2} == sigma[D]^2))) + ylab('Difference in Power') +
+    theme(panel.grid.minor.y = element_blank(), panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
+
+@
+
+\begin{figure*}    
+<<PowerInt, echo=FALSE, fig=TRUE, height=10>>=
+multiplot(Pow.classic+ggtitle("Student's t test"), Pow.welch+ggtitle("Welch's t test"), Pow.diff+ggtitle("Student - Welch"))
+@
+
+\textit{Figure 8.} Power for Student's t test and Welch's t test 
+of a 2 x 2 interaction as the variance and sample size of one group varies.
+\end{figure*}
 
 
 \section{Discussion}
