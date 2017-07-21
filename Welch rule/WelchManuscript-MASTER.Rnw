@@ -4,12 +4,12 @@
 %\documentclass[jou,noextraspace,apacite]{apa6}
 \usepackage{apacite}
 
-\title{Always Use Welch's \textit{t} Test to Compare the Means of Two Independent Groups}
+\title{Use Welch's \textit{t} Test to Compare the Means of Independent Groups}
 \shorttitle{Welch t Test}
 \author{Joshua D. Wondra and Richard Gonzalez}
 \affiliation{University of Michigan}
 
-\abstract{When testing whether the means of two independent groups are 
+\abstract{When testing whether the means of independent groups are 
 different from each other, researchers typically use Student's t test, which 
 assumes that the population variances of the two groups are equal. If there is 
 reason to believe that the group variances are unequal, then researchers can 
@@ -19,8 +19,8 @@ decide when to use Student's vs. Welch's t test. We used Monte Carlo
 simulations to compare the type I error rate, power, and coverage probability 
 of Student's and Welch's t tests when testing the difference in the means of 
 two groups across different variance ratios, sample size ratios, sample sizes, 
-and effect sizes. We recommend the following rule: Always use Welch's t test to 
-compare the means of two independent groups.}
+and effect sizes. We then expanded these simulations to tests of interactions in a 2 x 2 factorial design. We recommend the following rule: Always use Welch's t test to 
+compare the means of independent groups.}
 \keywords{t test, new statistics, Welch}
 
 \authornote{Joshua D. Wondra, Department of Psychology, University of Michigan.
@@ -1800,10 +1800,10 @@ multiplot(CovClassic.nullT, CovWelch.nullT, layout=layout)
 
 \subsection{Expanding to Interactions in 2 x 2 Factorial Designs}
 
-The use of t tests can be expanded to study designs with more than two groups, where they can be used to test main effects, interactions, or other specific contrasts between the groups. For these tests, the researcher again has the choice of Student's or Welch's t test. We tested the interaction of a 2 x 2 design using Student's and Welch's t tests when the means of the four groups were equal and when there was a cross-over interaction, but no main effects (Figure 7). The difference in means between groups B and C vs. groups A and D is the same as the difference for a medium-sized effect from simulations with two groups. We tested the interaction contrast when all sample sizes and variances were equal, as well as under selected conditions when the sample size and variance of just one group (group A) differed from the others.
+The use of t tests can be expanded to study designs with more than two groups, where they can be used to test main effects, interactions, or other specific contrasts between the groups. For these tests, the researcher again has the choice of Student's or Welch's t test. We tested the interaction of a 2 x 2 design using Student's and Welch's t tests both when there were no interaction or main effects (to test the type I error rate) and when there was a cross-over interaction but no main effect (to test power). When there was a true cross-over interaction, as shown in Figure 7, the difference in means between groups B and C vs. groups A and D was the same as the simulations of two groups with a medium-sized effect. We tested the interaction when all sample sizes and variances were equal, as well as under selected conditions when the sample size and variance of just one group (group A) differed from the others.
 
 \subsubsection{Type I Error Rates}
-As with the case of two groups, the type I error rate for Student's t test was near the expected $\alpha = .05$ rate when either the sample sizes or variances were equal. But when both the sample sizes and variances were unequal, the type I error rate varied widely. If just one group had a larger sample than the others, the type I error rate was too high if it had the smaller variance and too low if it had the larger variance; and if just one group had a smaller sample than the others, the type I error rate was too low if it had the smaller variance and too high if it had the larger variance. In contrast, the type I error rate for Welch's t test was consistently near .05.
+As with the case of two groups, the type I error rate for Student's t test was near the expected $\alpha = .05$ rate when either the sample sizes or variances were equal (see Figure 8). But when both the sample sizes and variances were unequal, the type I error rate varied widely. If just one group had a larger sample than the others, the type I error rate was too high if it had the smaller variance, and too low if it had the larger variance; and if just one group had a smaller sample than the others, the type I error rate was too low if it had the smaller variance and too high if it had the larger variance. In contrast, the type I error rate for Welch's t test was consistently near .05.
 
 \begin{figure*}
 <<plot2x2, echo = FALSE, fig = TRUE>>=
@@ -2079,7 +2079,7 @@ of a 2 x 2 interaction as the variance and sample size of one group varies.
 
 
 \subsubsection{Coverage Probability}
-Complementing the type I error rate, the coverage probability for Student's t test was near the expected .95 rate when either the sample sizes or variances were equal. But when both the sample sizes and variances were unequal, the coverage probability varied widely. If just one group had a larger sample than the others, the coverage probability was too low if it had the smaller variance and too high if it had the larger variance; and if just one group had a smaller sample than the others, the coverage probability was too high if it had the smaller variance and too low if it had the larger variance. In contrast, the coverage probability for Welch's t test was consistently near .95.
+Complementing the type I error rate, the coverage probability for Student's t test was near the expected .95 rate when either the sample sizes or variances were equal (see Figure 10). But when both the sample sizes and variances were unequal, the coverage probability varied widely. If just one group had a larger sample than the others, the coverage probability was too low if it had the smaller variance, and too high if it had the larger variance; and if just one group had a smaller sample than the others, the coverage probability was too high if it had the smaller variance, and too low if it had the larger variance. In contrast, the coverage probability for Welch's t test was consistently near .95.
 
 
 <<ClassicCoverageInt, echo=FALSE>>=
@@ -2195,7 +2195,7 @@ multiplot(Cov.classic + ggtitle("Student's t test"), Cov.welch + ggtitle("Welch'
 \section{Discussion}
     We set out to find a simple rule to help researchers decide when to use 
 Student's t test and when to use Welch's t test. We believe that the simplest 
-rule is to always use Welch's t test to compare the means of independent groups.
+rule is to always use Welch's t test to compare the means of independent groups, whether it is a contrast between just two groups or a contrast between more than two groups.
     
     The results of our simulations demonstrated that when the population 
 variances or sample sizes were equal, using Welch's t test instead of Student's 
@@ -2234,7 +2234,7 @@ others \cite<e.g.,>{Coombs1996,Zimmerman2009}; if that group has the larger
 variance, then Student's t test becomes more conservative, but if that group 
 has the smaller variance, then Student's t test becomes more liberal. In 
 contrast, Welch's t test was more stable, regardless of which sample had the 
-larger variance. This can be seen in Figures 3 and 6, where the type I error 
+larger variance. This can be seen in Figures 3, 6, 8, and 10, where the type I error 
 rate and coverage probability vary widely for Student's t test, but remain 
 stable for Welch's t test.
     
@@ -2348,8 +2348,9 @@ beneficial to emphasize Welch's t test as the default approach. As demonstrated
 in our simulations, this approach will help lead to better decision-making when 
 it comes to analyzing data. 
 
-Our discussion has focused on the relatively simple case of testing the means from two independent groups.
-The simulations show that the pattern is not straightforward and depends on complex combinations between which group has the larger sample size and which group has the larger variance.  In the case of two groups we arrived at a simple conclusion that on balance when considering the false positive rate and power a strategy that always uses the Welch t test is an efficient one. As the number of groups increases and as the study design becomes more complicated such as with repeated measures, random effect models, complex contrasts, etc., then the story will likely be even more complicated. We should move toward an overall analysis strategy that has relatively few moving parts so that it can be described easily in a scientific report, is relatively easy to describe in a  preregistration plan and provides robust estimates.
+Our discussion began with the relatively simple case of testing the means from two independent groups.
+But we expanded this discussion to demonstrate that the implications generalize to more complex designs, such as interactions in a 2 x 2 factorial design.
+The simulations show that the pattern is not straightforward and depends on complex combinations between which group has the larger sample size and which group has the larger variance.  In the case of between-groups contrasts, we arrived at a simple conclusion: on balance, when considering the false positive rate and power, an efficient strategy is to always uses the Welch t test. As the study design becomes more complicated, such as with repeated measures, random effect models, complex contrasts, etc., the story will likely be even more complicated. We should move toward an overall analysis strategy that has relatively few moving parts so that it can be described easily in a scientific report, is relatively easy to describe in a  preregistration plan, and provides robust estimates.
 
 
 << junk, echo=FALSE >>=
