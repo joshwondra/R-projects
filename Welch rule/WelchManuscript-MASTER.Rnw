@@ -54,6 +54,17 @@ load('v51andhalfnBSVSeed2184Tables.Rdata')
 load('v22nBSVSeed2184Tables.Rdata')
 load('v52nBSVSeed2184Tables.Rdata')
 
+## Retrieve tables with 2 x 2 interaction data
+load('interaction2x2-veNeSeed2184Tables.Rdata')
+load('interaction2x2-v5bigvarNeSeed2184Tables.Rdata')
+load('interaction2x2-v5smallvarNeSeed2184Tables.Rdata')
+load('interaction2x2-bignveN2Seed2184Tables.Rdata')
+load('interaction2x2-smallnveN2Seed2184Tables.Rdata')
+load('interaction2x2-biggroupbigvarSeed2184Tables.Rdata')
+load('interaction2x2-biggroupsmallvarSeed2184Tables.Rdata')
+load('interaction2x2-smallgroupbigvarSeed2184Tables.Rdata')
+load('interaction2x2-smallgroupsmallvarSeed2184Tables.Rdata')
+
 ## Retrieve data for boxplots
 load('veNeSeed2184-sim1.Rdata')
 load('v2NeSeed2184-sim1.Rdata')
@@ -666,27 +677,27 @@ levels=c(-2,-1,0,1,2), labels=c(.2,.5,1,2,5)))
 
 ## Plot it
 T1classic <- ggplot(type1.classic, aes(x=as.numeric(var.ratio), y=type1.rate, ymin=0, ymax=.13)) + 
-    geom_point(size=4, aes(shape = Ns, color = Ns)) + 
+    geom_point(size=4, aes(shape = Ns)) + 
     scale_shape_manual(name = 'Sample size ratio',
                        labels = c('20, 20', '20, 30', '20, 40',
                                   '50, 50', '50, 75', '50, 100',
                                   '100, 100', '100, 150', '100, 200'),
                        values=rep(c(1,2,0), times = 3)
                        ) +
-    geom_line(size=.5, aes(linetype = Ns, color = Ns)) + 
+    geom_line(size=.5, aes(linetype = Ns)) + 
     scale_linetype_manual(name = 'Sample size ratio',
                           labels = c('20, 20', '20, 30', '20, 40',
                                      '50, 50', '50, 75', '50, 100',
                                      '100, 100', '100, 150', '100, 200'),
                           values=rep(c('dotted', 'dashed', 'solid'), each = 3)
                           ) +
-    scale_color_manual(name = 'Sample size ratio',
-                       labels = c('20, 20', '20, 30', '20, 40',
-                                     '50, 50', '50, 75', '50, 100',
-                                     '100, 100', '100, 150', '100, 200'),
-                       values=rep(c('deepskyblue4','darkgoldenrod1', 
-'grey41'), each=3)
-                       ) + 
+#     scale_color_manual(name = 'Sample size ratio',
+#                        labels = c('20, 20', '20, 30', '20, 40',
+#                                      '50, 50', '50, 75', '50, 100',
+#                                      '100, 100', '100, 150', '100, 200'),
+#                        values=rep(c('deepskyblue4','darkgoldenrod1', 
+# 'grey41'), each=3)
+#                        ) + 
     scale_x_continuous(breaks=seq(-2:2), labels=factor(c('1/5', '1/2', '1', '2', '5'))) +
     scale_y_continuous(breaks=seq(from=0, to=.13, by=.01)) +
     xlab(bquote(frac(sigma[1]^2,sigma[2]^2))) + ylab('Type I Error Rate') +
@@ -737,27 +748,27 @@ type1.welch <- type1.welch[order(type1.welch$Ns, type1.welch$var.ratio),]
 ## Plot it
 
 T1welch <- ggplot(type1.welch, aes(x=as.numeric(var.ratio), y=type1.rate, ymin=0, ymax=.13)) + 
-    geom_point(size=4, aes(shape = Ns, color = Ns)) + 
+    geom_point(size=4, aes(shape = Ns)) + 
     scale_shape_manual(name = 'Sample size ratio',
                        labels = c('20, 20', '20, 30', '20, 40',
                                   '50, 50', '50, 75', '50, 100',
                                   '100, 100', '100, 150', '100, 200'),
                        values=rep(c(1,2,0), times = 3)
                        ) +
-    geom_line(size=.5, aes(linetype = Ns, color = Ns)) + 
+    geom_line(size=.5, aes(linetype = Ns)) + 
     scale_linetype_manual(name = 'Sample size ratio',
                           labels = c('20, 20', '20, 30', '20, 40',
                                      '50, 50', '50, 75', '50, 100',
                                      '100, 100', '100, 150', '100, 200'),
                           values=rep(c('dotted', 'dashed', 'solid'), each = 3)
                           ) +
-    scale_color_manual(name = 'Sample size ratio',
-                       labels = c('20, 20', '20, 30', '20, 40',
-                                     '50, 50', '50, 75', '50, 100',
-                                     '100, 100', '100, 150', '100, 200'),
-                       values=rep(c('deepskyblue4','darkgoldenrod1', 
-'grey41'), each=3)
-                       ) + 
+#     scale_color_manual(name = 'Sample size ratio',
+#                        labels = c('20, 20', '20, 30', '20, 40',
+#                                      '50, 50', '50, 75', '50, 100',
+#                                      '100, 100', '100, 150', '100, 200'),
+#                        values=rep(c('deepskyblue4','darkgoldenrod1', 
+# 'grey41'), each=3)
+#                        ) + 
     scale_x_continuous(breaks=seq(-2:2), labels=factor(c('1/5', '1/2', '1', '2', '5'))) +
     scale_y_continuous(breaks=seq(from=0, to=.13, by=.01)) +
     xlab(bquote(frac(sigma[1]^2,sigma[2]^2))) + ylab('Type I Error Rate') +
@@ -896,27 +907,27 @@ bigd.student$power.var.ratio),]
 ## Plot using ggplot2
 
 smalld.student.plot <- ggplot(smalld.student, aes(x=as.numeric(power.var.ratio), y=power.smalld.student, ymin=0, ymax=1)) + 
-    geom_point(size=3, aes(shape = power.Ns, color = power.Ns)) + 
+    geom_point(size=3, aes(shape = power.Ns)) + 
     scale_shape_manual(name = 'Sample size ratio',
                        labels = c('20, 20', '20, 30', '20, 40',
                                   '50, 50', '50, 75', '50, 100',
                                   '100, 100', '100, 150', '100, 200'),
                        values=rep(c(1,2,0), times = 3)
                        ) +
-    geom_line(size=.5, aes(linetype = power.Ns, color = power.Ns)) + 
+    geom_line(size=.5, aes(linetype = power.Ns)) + 
     scale_linetype_manual(name = 'Sample size ratio',
                           labels = c('20, 20', '20, 30', '20, 40',
                                      '50, 50', '50, 75', '50, 100',
                                      '100, 100', '100, 150', '100, 200'),
                           values=rep(c('dotted', 'dashed', 'solid'), each = 3)
                           ) +
-    scale_color_manual(name = 'Sample size ratio',
-                       labels = c('20, 20', '20, 30', '20, 40',
-                                     '50, 50', '50, 75', '50, 100',
-                                     '100, 100', '100, 150', '100, 200'),
-                       values=rep(c('deepskyblue4','darkgoldenrod1', 
-'grey41'), each=3)
-                       ) + 
+#     scale_color_manual(name = 'Sample size ratio',
+#                        labels = c('20, 20', '20, 30', '20, 40',
+#                                      '50, 50', '50, 75', '50, 100',
+#                                      '100, 100', '100, 150', '100, 200'),
+#                        values=rep(c('deepskyblue4','darkgoldenrod1', 
+# 'grey41'), each=3)
+#                        ) + 
     scale_x_continuous(breaks=seq(-2:2), labels=factor(c('1/5', '1/2', '1', '2', '5'))) +
     scale_y_continuous(breaks=seq(from=0, to=1, by=.1)) +
     xlab(bquote(sigma[1]^2~'/'~sigma[2]^2)) + ylab('Small Effect') +
@@ -929,27 +940,27 @@ smalld.student.plot <- ggplot(smalld.student, aes(x=as.numeric(power.var.ratio),
 ## Set up Student t test plot of deviation from expected power
 
 midd.student.plot <- ggplot(midd.student, aes(x=as.numeric(power.var.ratio), y=power.midd.student, ymin=0, ymax=1)) + 
-    geom_point(size=3, aes(shape = power.Ns, color = power.Ns)) + 
+    geom_point(size=3, aes(shape = power.Ns)) + 
     scale_shape_manual(name = 'Sample size ratio',
                        labels = c('20, 20', '20, 30', '20, 40',
                                   '50, 50', '50, 75', '50, 100',
                                   '100, 100', '100, 150', '100, 200'),
                        values=rep(c(1,2,0), times = 3)
                        ) +
-    geom_line(size=.5, aes(linetype = power.Ns, color = power.Ns)) + 
+    geom_line(size=.5, aes(linetype = power.Ns)) + 
     scale_linetype_manual(name = 'Sample size ratio',
                           labels = c('20, 20', '20, 30', '20, 40',
                                      '50, 50', '50, 75', '50, 100',
                                      '100, 100', '100, 150', '100, 200'),
                           values=rep(c('dotted', 'dashed', 'solid'), each = 3)
                           ) +
-    scale_color_manual(name = 'Sample size ratio',
-                       labels = c('20, 20', '20, 30', '20, 40',
-                                     '50, 50', '50, 75', '50, 100',
-                                     '100, 100', '100, 150', '100, 200'),
-                       values=rep(c('deepskyblue4','darkgoldenrod1', 
-'grey41'), each=3)
-                       ) + 
+#     scale_color_manual(name = 'Sample size ratio',
+#                        labels = c('20, 20', '20, 30', '20, 40',
+#                                      '50, 50', '50, 75', '50, 100',
+#                                      '100, 100', '100, 150', '100, 200'),
+#                        values=rep(c('deepskyblue4','darkgoldenrod1', 
+# 'grey41'), each=3)
+#                        ) + 
     scale_x_continuous(breaks=seq(-2:2), labels=factor(c('1/5', '1/2', '1', '2', '5'))) +
     scale_y_continuous(breaks=seq(from=0, to=1, by=.1)) +
     xlab(bquote(sigma[1]^2~'/'~sigma[2]^2)) + ylab('Medium Effect') +
@@ -960,27 +971,27 @@ midd.student.plot <- ggplot(midd.student, aes(x=as.numeric(power.var.ratio), y=p
 ## Student t, d=.8, power
 
 bigd.student.plot <- ggplot(bigd.student, aes(x=as.numeric(power.var.ratio), y=power.bigd.student, ymin=0, ymax=1)) + 
-    geom_point(size=3, aes(shape = power.Ns, color = power.Ns)) + 
+    geom_point(size=3, aes(shape = power.Ns)) + 
     scale_shape_manual(name = 'Sample size ratio',
                        labels = c('20, 20', '20, 30', '20, 40',
                                   '50, 50', '50, 75', '50, 100',
                                   '100, 100', '100, 150', '100, 200'),
                        values=rep(c(1,2,0), times = 3)
                        ) +
-    geom_line(size=.5, aes(linetype = power.Ns, color = power.Ns)) + 
+    geom_line(size=.5, aes(linetype = power.Ns)) + 
     scale_linetype_manual(name = 'Sample size ratio',
                           labels = c('20, 20', '20, 30', '20, 40',
                                      '50, 50', '50, 75', '50, 100',
                                      '100, 100', '100, 150', '100, 200'),
                           values=rep(c('dotted', 'dashed', 'solid'), each = 3)
                           ) +
-    scale_color_manual(name = 'Sample size ratio',
-                       labels = c('20, 20', '20, 30', '20, 40',
-                                     '50, 50', '50, 75', '50, 100',
-                                     '100, 100', '100, 150', '100, 200'),
-                       values=rep(c('deepskyblue4','darkgoldenrod1', 
-'grey41'), each=3)
-                       ) + 
+#     scale_color_manual(name = 'Sample size ratio',
+#                        labels = c('20, 20', '20, 30', '20, 40',
+#                                      '50, 50', '50, 75', '50, 100',
+#                                      '100, 100', '100, 150', '100, 200'),
+#                        values=rep(c('deepskyblue4','darkgoldenrod1', 
+# 'grey41'), each=3)
+#                        ) + 
     scale_x_continuous(breaks=seq(-2:2), labels=factor(c('1/5', '1/2', '1', '2', '5'))) +
     scale_y_continuous(breaks=seq(from=0, to=1, by=.1)) +
     xlab(bquote(sigma[1]^2~'/'~sigma[2]^2)) + ylab('Large Effect') +
@@ -1067,27 +1078,27 @@ bigd.welch$power.var.ratio),]
 
 ## Welch t, d=.2, power
 smalld.welch.plot <- ggplot(smalld.welch, aes(x=as.numeric(power.var.ratio), y=power.smalld.welch, ymin=0, ymax=1)) + 
-    geom_point(size=3, aes(shape = power.Ns, color = power.Ns)) + 
+    geom_point(size=3, aes(shape = power.Ns)) + 
     scale_shape_manual(name = 'Sample size ratio',
                        labels = c('20, 20', '20, 30', '20, 40',
                                   '50, 50', '50, 75', '50, 100',
                                   '100, 100', '100, 150', '100, 200'),
                        values=rep(c(1,2,0), times = 3)
                        ) +
-    geom_line(size=.5, aes(linetype = power.Ns, color = power.Ns)) + 
+    geom_line(size=.5, aes(linetype = power.Ns)) + 
     scale_linetype_manual(name = 'Sample size ratio',
                           labels = c('20, 20', '20, 30', '20, 40',
                                      '50, 50', '50, 75', '50, 100',
                                      '100, 100', '100, 150', '100, 200'),
                           values=rep(c('dotted', 'dashed', 'solid'), each = 3)
                           ) +
-    scale_color_manual(name = 'Sample size ratio',
-                       labels = c('20, 20', '20, 30', '20, 40',
-                                     '50, 50', '50, 75', '50, 100',
-                                     '100, 100', '100, 150', '100, 200'),
-                       values=rep(c('deepskyblue4','darkgoldenrod1', 
-'grey41'), each=3)
-                       ) + 
+#     scale_color_manual(name = 'Sample size ratio',
+#                        labels = c('20, 20', '20, 30', '20, 40',
+#                                      '50, 50', '50, 75', '50, 100',
+#                                      '100, 100', '100, 150', '100, 200'),
+#                        values=rep(c('deepskyblue4','darkgoldenrod1', 
+# 'grey41'), each=3)
+#                        ) + 
     scale_x_continuous(breaks=seq(-2:2), labels=factor(c('1/5', '1/2', '1', '2', '5'))) +
     scale_y_continuous(breaks=seq(from=0, to=1, by=.1)) +
     xlab(bquote(sigma[1]^2~'/'~sigma[2]^2)) + ylab('Small Effect') +
@@ -1097,27 +1108,27 @@ smalld.welch.plot <- ggplot(smalld.welch, aes(x=as.numeric(power.var.ratio), y=p
 
 ## Welch t, d=.5, power
 midd.welch.plot <- ggplot(midd.welch, aes(x=as.numeric(power.var.ratio), y=power.midd.welch, ymin=0, ymax=1)) + 
-    geom_point(size=3, aes(shape = power.Ns, color = power.Ns)) + 
+    geom_point(size=3, aes(shape = power.Ns)) + 
     scale_shape_manual(name = 'Sample size ratio',
                        labels = c('20, 20', '20, 30', '20, 40',
                                   '50, 50', '50, 75', '50, 100',
                                   '100, 100', '100, 150', '100, 200'),
                        values=rep(c(1,2,0), times = 3)
                        ) +
-    geom_line(size=.5, aes(linetype = power.Ns, color = power.Ns)) + 
+    geom_line(size=.5, aes(linetype = power.Ns)) + 
     scale_linetype_manual(name = 'Sample size ratio',
                           labels = c('20, 20', '20, 30', '20, 40',
                                      '50, 50', '50, 75', '50, 100',
                                      '100, 100', '100, 150', '100, 200'),
                           values=rep(c('dotted', 'dashed', 'solid'), each = 3)
                           ) +
-    scale_color_manual(name = 'Sample size ratio',
-                       labels = c('20, 20', '20, 30', '20, 40',
-                                     '50, 50', '50, 75', '50, 100',
-                                     '100, 100', '100, 150', '100, 200'),
-                       values=rep(c('deepskyblue4','darkgoldenrod1', 
-'grey41'), each=3)
-                       ) + 
+#     scale_color_manual(name = 'Sample size ratio',
+#                        labels = c('20, 20', '20, 30', '20, 40',
+#                                      '50, 50', '50, 75', '50, 100',
+#                                      '100, 100', '100, 150', '100, 200'),
+#                        values=rep(c('deepskyblue4','darkgoldenrod1', 
+# 'grey41'), each=3)
+#                        ) + 
     scale_x_continuous(breaks=seq(-2:2), labels=factor(c('1/5', '1/2', '1', '2', '5'))) +
     scale_y_continuous(breaks=seq(from=0, to=1, by=.1)) +
     xlab(bquote(sigma[1]^2~'/'~sigma[2]^2)) + ylab('Medium Effect') +
@@ -1126,27 +1137,27 @@ midd.welch.plot <- ggplot(midd.welch, aes(x=as.numeric(power.var.ratio), y=power
 
 ## Welch t, d=.8, power
 bigd.welch.plot <- ggplot(bigd.welch, aes(x=as.numeric(power.var.ratio), y=power.bigd.welch, ymin=0, ymax=1)) + 
-    geom_point(size=3, aes(shape = power.Ns, color = power.Ns)) + 
+    geom_point(size=3, aes(shape = power.Ns)) + 
     scale_shape_manual(name = 'Sample size ratio',
                        labels = c('20, 20', '20, 30', '20, 40',
                                   '50, 50', '50, 75', '50, 100',
                                   '100, 100', '100, 150', '100, 200'),
                        values=rep(c(1,2,0), times = 3)
                        ) +
-    geom_line(size=.5, aes(linetype = power.Ns, color = power.Ns)) + 
+    geom_line(size=.5, aes(linetype = power.Ns)) + 
     scale_linetype_manual(name = 'Sample size ratio',
                           labels = c('20, 20', '20, 30', '20, 40',
                                      '50, 50', '50, 75', '50, 100',
                                      '100, 100', '100, 150', '100, 200'),
                           values=rep(c('dotted', 'dashed', 'solid'), each = 3)
                           ) +
-    scale_color_manual(name = 'Sample size ratio',
-                       labels = c('20, 20', '20, 30', '20, 40',
-                                     '50, 50', '50, 75', '50, 100',
-                                     '100, 100', '100, 150', '100, 200'),
-                       values=rep(c('deepskyblue4','darkgoldenrod1', 
-'grey41'), each=3)
-                       ) + 
+#     scale_color_manual(name = 'Sample size ratio',
+#                        labels = c('20, 20', '20, 30', '20, 40',
+#                                      '50, 50', '50, 75', '50, 100',
+#                                      '100, 100', '100, 150', '100, 200'),
+#                        values=rep(c('deepskyblue4','darkgoldenrod1', 
+# 'grey41'), each=3)
+#                        ) + 
     scale_x_continuous(breaks=seq(-2:2), labels=factor(c('1/5', '1/2', '1', '2', '5'))) +
     scale_y_continuous(breaks=seq(from=0, to=1, by=.1)) +
     xlab(bquote(sigma[1]^2~'/'~sigma[2]^2)) + ylab('Large Effect') +
@@ -1171,81 +1182,81 @@ bigd.diff <- data.frame(power.bigd.diff, power.Ns, power.var.ratio)
 bigd.diff <- bigd.diff[order(bigd.diff$power.Ns, bigd.diff$power.var.ratio),]
 
 smalld.diff.plot <- ggplot(smalld.diff, aes(x=as.numeric(power.var.ratio), y=power.smalld.diff, ymin=-.3, ymax=.3)) + 
-    geom_point(size=3, aes(shape = power.Ns, color = power.Ns)) + 
+    geom_point(size=3, aes(shape = power.Ns)) + 
     scale_shape_manual(name = 'Sample size ratio',
                        labels = c('20, 20', '20, 30', '20, 40',
                                   '50, 50', '50, 75', '50, 100',
                                   '100, 100', '100, 150', '100, 200'),
                        values=rep(c(1,2,0), times = 3)
                        ) +
-    geom_line(size=.5, aes(linetype = power.Ns, color = power.Ns)) + 
+    geom_line(size=.5, aes(linetype = power.Ns)) + 
     scale_linetype_manual(name = 'Sample size ratio',
                           labels = c('20, 20', '20, 30', '20, 40',
                                      '50, 50', '50, 75', '50, 100',
                                      '100, 100', '100, 150', '100, 200'),
                           values=rep(c('dotted', 'dashed', 'solid'), each = 3)
                           ) +
-    scale_color_manual(name = 'Sample size ratio',
-                       labels = c('20, 20', '20, 30', '20, 40',
-                                     '50, 50', '50, 75', '50, 100',
-                                     '100, 100', '100, 150', '100, 200'),
-                       values=rep(c('deepskyblue4','darkgoldenrod1', 
-'grey41'), each=3)
-                       ) + 
+#     scale_color_manual(name = 'Sample size ratio',
+#                        labels = c('20, 20', '20, 30', '20, 40',
+#                                      '50, 50', '50, 75', '50, 100',
+#                                      '100, 100', '100, 150', '100, 200'),
+#                        values=rep(c('deepskyblue4','darkgoldenrod1', 
+# 'grey41'), each=3)
+#                        ) + 
     scale_x_continuous(breaks=seq(-2:2), labels=factor(c('1/5', '1/2', '1', '2', '5'))) +
     scale_y_continuous(breaks=seq(from=-.3, to=.3, by=.1), labels = c(-.3, -.2, -.1, 0, .1, .2, .3)) +
     xlab(bquote(sigma[1]^2~'/'~sigma[2]^2)) + ylab('Small Effect') +
     theme(panel.grid.minor.y = element_blank(), panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
 
 midd.diff.plot <- ggplot(midd.diff, aes(x=as.numeric(power.var.ratio), y=power.midd.diff, ymin=-.3, ymax=.3)) + 
-    geom_point(size=3, aes(shape = power.Ns, color = power.Ns)) + 
+    geom_point(size=3, aes(shape = power.Ns)) + 
     scale_shape_manual(name = 'Sample size ratio',
                        labels = c('20, 20', '20, 30', '20, 40',
                                   '50, 50', '50, 75', '50, 100',
                                   '100, 100', '100, 150', '100, 200'),
                        values=rep(c(1,2,0), times = 3)
                        ) +
-    geom_line(size=.5, aes(linetype = power.Ns, color = power.Ns)) + 
+    geom_line(size=.5, aes(linetype = power.Ns)) + 
     scale_linetype_manual(name = 'Sample size ratio',
                           labels = c('20, 20', '20, 30', '20, 40',
                                      '50, 50', '50, 75', '50, 100',
                                      '100, 100', '100, 150', '100, 200'),
                           values=rep(c('dotted', 'dashed', 'solid'), each = 3)
                           ) +
-    scale_color_manual(name = 'Sample size ratio',
-                       labels = c('20, 20', '20, 30', '20, 40',
-                                     '50, 50', '50, 75', '50, 100',
-                                     '100, 100', '100, 150', '100, 200'),
-                       values=rep(c('deepskyblue4','darkgoldenrod1', 
-'grey41'), each=3)
-                       ) + 
+#     scale_color_manual(name = 'Sample size ratio',
+#                        labels = c('20, 20', '20, 30', '20, 40',
+#                                      '50, 50', '50, 75', '50, 100',
+#                                      '100, 100', '100, 150', '100, 200'),
+#                        values=rep(c('deepskyblue4','darkgoldenrod1', 
+# 'grey41'), each=3)
+#                       ) + 
     scale_x_continuous(breaks=seq(-2:2), labels=factor(c('1/5', '1/2', '1', '2', '5'))) +
     scale_y_continuous(breaks=seq(from=-.3, to=.3, by=.1), labels = c(-.3, -.2, -.1, 0, .1, .2, .3)) +
     xlab(bquote(sigma[1]^2~'/'~sigma[2]^2)) + ylab('Medium Effect') +
     theme(panel.grid.minor.y = element_blank(), panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
 
 bigd.diff.plot <- ggplot(bigd.diff, aes(x=as.numeric(power.var.ratio), y=power.bigd.diff, ymin=-.3, ymax=.3)) + 
-    geom_point(size=3, aes(shape = power.Ns, color = power.Ns)) + 
+    geom_point(size=3, aes(shape = power.Ns)) + 
     scale_shape_manual(name = 'Sample size ratio',
                        labels = c('20, 20', '20, 30', '20, 40',
                                   '50, 50', '50, 75', '50, 100',
                                   '100, 100', '100, 150', '100, 200'),
                        values=rep(c(1,2,0), times = 3)
                        ) +
-    geom_line(size=.5, aes(linetype = power.Ns, color = power.Ns)) + 
+    geom_line(size=.5, aes(linetype = power.Ns)) + 
     scale_linetype_manual(name = 'Sample size ratio',
                           labels = c('20, 20', '20, 30', '20, 40',
                                      '50, 50', '50, 75', '50, 100',
                                      '100, 100', '100, 150', '100, 200'),
                           values=rep(c('dotted', 'dashed', 'solid'), each = 3)
                           ) +
-    scale_color_manual(name = 'Sample size ratio',
-                       labels = c('20, 20', '20, 30', '20, 40',
-                                     '50, 50', '50, 75', '50, 100',
-                                     '100, 100', '100, 150', '100, 200'),
-                       values=rep(c('deepskyblue4','darkgoldenrod1', 
-'grey41'), each=3)
-                       ) + 
+#     scale_color_manual(name = 'Sample size ratio',
+#                        labels = c('20, 20', '20, 30', '20, 40',
+#                                      '50, 50', '50, 75', '50, 100',
+#                                      '100, 100', '100, 150', '100, 200'),
+#                        values=rep(c('deepskyblue4','darkgoldenrod1', 
+# 'grey41'), each=3)
+#                        ) + 
     scale_x_continuous(breaks=seq(-2:2), labels=factor(c('1/5', '1/2', '1', '2', '5'))) +
     scale_y_continuous(breaks=seq(from=-.3, to=.3, by=.1), labels = c(-.3, -.2, -.1, 0, .1, .2, .3)) +
     xlab(bquote(sigma[1]^2~'/'~sigma[2]^2)) + ylab('Large Effect') +
@@ -1491,27 +1502,27 @@ coverage.classic.bigd$var.ratio),]
 
 ## Set up classic t test plot
 CovClassic.nullT <- ggplot(coverage.classic.nullT, aes(x=as.numeric(var.ratio), y=coverage.rate, ymin=.85, ymax=1)) + 
-    geom_point(size=3, aes(shape = Ns, color = Ns)) + 
+    geom_point(size=3, aes(shape = Ns)) + 
     scale_shape_manual(name = 'Sample size ratio',
                        labels = c('20, 20', '20, 30', '20, 40',
                                   '50, 50', '50, 75', '50, 100',
                                   '100, 100', '100, 150', '100, 200'),
                        values=rep(c(1,2,0), times = 3)
                        ) +
-    geom_line(size=.5, aes(linetype = Ns, color = Ns)) + 
+    geom_line(size=.5, aes(linetype = Ns)) + 
     scale_linetype_manual(name = 'Sample size ratio',
                           labels = c('20, 20', '20, 30', '20, 40',
                                      '50, 50', '50, 75', '50, 100',
                                      '100, 100', '100, 150', '100, 200'),
                           values=rep(c('dotted', 'dashed', 'solid'), each = 3)
                           ) +
-    scale_color_manual(name = 'Sample size ratio',
-                       labels = c('20, 20', '20, 30', '20, 40',
-                                  '50, 50', '50, 75', '50, 100',
-                                  '100, 100', '100, 150', '100, 200'),
-                       values=rep(c('deepskyblue4','darkgoldenrod1', 
-'grey41'), each=3)
-                       ) + 
+#     scale_color_manual(name = 'Sample size ratio',
+#                        labels = c('20, 20', '20, 30', '20, 40',
+#                                   '50, 50', '50, 75', '50, 100',
+#                                   '100, 100', '100, 150', '100, 200'),
+#                        values=rep(c('deepskyblue4','darkgoldenrod1', 
+# 'grey41'), each=3)
+#                        ) + 
     scale_x_continuous(breaks=seq(-2:2), labels=factor(c('1/5', '1/2', '1', '2', '5'))) +
     scale_y_continuous(breaks=seq(from=.85, to=1, length.out = 16)) +
     xlab(bquote(sigma[1]^2~'/'~sigma[2]^2)) + ylab('Coverage Probability') +
@@ -1519,37 +1530,37 @@ CovClassic.nullT <- ggplot(coverage.classic.nullT, aes(x=as.numeric(var.ratio), 
   ggtitle("Student's t test")
 
 CovClassic.smalld <- ggplot(coverage.classic.smalld, 
-aes(x=as.numeric(var.ratio), y=coverage.rate, shape=Ns, color=Ns, ymin=.85, 
+aes(x=as.numeric(var.ratio), y=coverage.rate, shape=Ns, ymin=.85, 
 ymax=1)) + 
     geom_point(size=3) + scale_shape(solid=FALSE) + 
     scale_shape_manual(values=rep(c(1,2,0), 3)) +
     geom_line(size=.5) + 
-    scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 
-'grey41'), each=3)) + 
+#     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 
+# 'grey41'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=.85, to=1, length.out=16)) +
     xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Coverage Probability') + 
 ggtitle("Student's t test")
 
 CovClassic.midd <- ggplot(coverage.classic.midd, aes(x=as.numeric(var.ratio), 
-y=coverage.rate, shape=Ns, color=Ns, ymin=.85, ymax=1)) + 
+y=coverage.rate, shape=Ns, ymin=.85, ymax=1)) + 
     geom_point(size=3) + scale_shape(solid=FALSE) + 
     scale_shape_manual(values=rep(c(1,2,0), 3)) +
     geom_line(size=.5) + 
-    scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 
-'grey41'), each=3)) + 
+#     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 
+# 'grey41'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=.85, to=1, length.out=16)) +
     xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Coverage Probability') + 
 ggtitle("Student's t test")
 
 CovClassic.bigd <- ggplot(coverage.classic.bigd, aes(x=as.numeric(var.ratio), 
-y=coverage.rate, shape=Ns, color=Ns, ymin=.85, ymax=1)) + 
+y=coverage.rate, shape=Ns, ymin=.85, ymax=1)) + 
     geom_point(size=3) + scale_shape(solid=FALSE) + 
     scale_shape_manual(values=rep(c(1,2,0), 3)) +
     geom_line(size=.5) + 
-    scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 
-'grey41'), each=3)) + 
+#     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 
+# 'grey41'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=.85, to=1, length.out=16)) +
     xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Coverage Probability') + 
@@ -1713,27 +1724,27 @@ coverage.welch.bigd$var.ratio),]
 
 ## Set up welch t test plot
 CovWelch.nullT <- ggplot(coverage.welch.nullT, aes(x=as.numeric(var.ratio), y=coverage.rate, ymin=.85, ymax=1)) + 
-    geom_point(size=3, aes(shape = Ns, color = Ns)) + 
+    geom_point(size=3, aes(shape = Ns)) + 
     scale_shape_manual(name = 'Sample size ratio',
                        labels = c('20, 20', '20, 30', '20, 40',
                                   '50, 50', '50, 75', '50, 100',
                                   '100, 100', '100, 150', '100, 200'),
                        values=rep(c(1,2,0), times = 3)
                        ) +
-    geom_line(size=.5, aes(linetype = Ns, color = Ns)) + 
+    geom_line(size=.5, aes(linetype = Ns)) + 
     scale_linetype_manual(name = 'Sample size ratio',
                           labels = c('20, 20', '20, 30', '20, 40',
                                      '50, 50', '50, 75', '50, 100',
                                      '100, 100', '100, 150', '100, 200'),
                           values=rep(c('dotted', 'dashed', 'solid'), each = 3)
                           ) +
-    scale_color_manual(name = 'Sample size ratio',
-                       labels = c('20, 20', '20, 30', '20, 40',
-                                  '50, 50', '50, 75', '50, 100',
-                                  '100, 100', '100, 150', '100, 200'),
-                       values=rep(c('deepskyblue4','darkgoldenrod1', 
-'grey41'), each=3)
-                       ) + 
+#     scale_color_manual(name = 'Sample size ratio',
+#                        labels = c('20, 20', '20, 30', '20, 40',
+#                                   '50, 50', '50, 75', '50, 100',
+#                                   '100, 100', '100, 150', '100, 200'),
+#                        values=rep(c('deepskyblue4','darkgoldenrod1', 
+# 'grey41'), each=3)
+#                        ) + 
     scale_x_continuous(breaks=seq(-2:2), labels=factor(c('1/5', '1/2', '1', '2', '5'))) +
     scale_y_continuous(breaks=seq(from=.85, to=1, length.out = 16)) +
     xlab(bquote(sigma[1]^2~'/'~sigma[2]^2)) + ylab('Coverage Probability') +
@@ -1741,36 +1752,36 @@ CovWelch.nullT <- ggplot(coverage.welch.nullT, aes(x=as.numeric(var.ratio), y=co
   ggtitle("Welch's t test")
 
 CovWelch.smalld <- ggplot(coverage.welch.smalld, aes(x=as.numeric(var.ratio), 
-y=coverage.rate, shape=Ns, color=Ns, ymin=.85, ymax=1)) + 
+y=coverage.rate, shape=Ns, ymin=.85, ymax=1)) + 
     geom_point(size=3) + scale_shape(solid=FALSE) + 
     scale_shape_manual(values=rep(c(1,2,0), 3)) +
     geom_line(size=.5) + 
-    scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 
-'grey41'), each=3)) + 
+#     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 
+# 'grey41'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=.85, to=1, length.out=16)) +
     xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Coverage Probability') + 
 ggtitle("Welch's t test")
 
 CovWelch.midd <- ggplot(coverage.welch.midd, aes(x=as.numeric(var.ratio), 
-y=coverage.rate, shape=Ns, color=Ns, ymin=.85, ymax=1)) + 
+y=coverage.rate, shape=Ns, ymin=.85, ymax=1)) + 
     geom_point(size=3) + scale_shape(solid=FALSE) + 
     scale_shape_manual(values=rep(c(1,2,0), 3)) +
     geom_line(size=.5) + 
-    scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 
-'grey41'), each=3)) + 
+#     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 
+# 'grey41'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=.85, to=1, length.out=16)) +
     xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Coverage Probability') + 
 ggtitle("Welch's t test")
 
 CovWelch.bigd <- ggplot(coverage.welch.bigd, aes(x=as.numeric(var.ratio), 
-y=coverage.rate, shape=Ns, color=Ns, ymin=.85, ymax=1)) + 
+y=coverage.rate, shape=Ns, ymin=.85, ymax=1)) + 
     geom_point(size=3) + scale_shape(solid=FALSE) + 
     scale_shape_manual(values=rep(c(1,2,0), 3)) +
     geom_line(size=.5) + 
-    scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 
-'grey41'), each=3)) + 
+#     scale_color_manual(values=rep(c('deepskyblue4','darkgoldenrod1', 
+# 'grey41'), each=3)) + 
     scale_x_discrete(breaks=seq(-2:2), labels=c(.2,.5,1,2,5)) +
     scale_y_continuous(breaks=seq(from=.85, to=1, length.out=16)) +
     xlab(bquote('s'[1]^2~'/'~'s'[2]^2)) + ylab('Coverage Probability') + 
@@ -1786,6 +1797,166 @@ multiplot(CovClassic.nullT, CovWelch.nullT, layout=layout)
 
 \textit{Figure 6.} Coverage probabilities for Student's and Welch's t tests.
 \end{figure*}
+
+\subsection{Expanding to Interactions in 2 x 2 Factorial Designs}
+
+The use of t tests can be expanded to study designs with more than two groups, where they can be used to test main effects, interactions, or other specific contrasts between the groups. For these tests, the researcher again has the choice of Student's or Welch's t test. To illustrate, consider the 2 x 2 design displayed in Figure 7. There are no main effects, but there is a cross-over interaction. The difference in means between groups B and C vs. groups A and D is the same as the difference for a medium-sized effect from simulations with two groups. We tested the 2 x 2 interaction using Student's and Welch's t tests when all sample sizes and variances were equal and when the sample size and variance of just one group (group A) differed from the others.
+
+\begin{figure*}
+<<plot2x2, echo = FALSE, fig = TRUE>>=
+lowmean <- 6
+highmean <- 6.71
+
+int.means <- c(6, 6.71, 6.71, 6)
+factor1 <- c(-1, -1, 1, 1)
+factor2 <- factor(c(-1, 1, -1, 1))
+int.data <- data.frame(factor1, factor2, int.means)
+ggplot(int.data) + 
+  geom_line(aes(y = int.means, x = factor1, linetype = factor2), color = 'black') +
+  geom_point(aes(y = int.means, x = factor1, shape = 1, size = 3)) +
+  scale_shape_identity() +
+  coord_cartesian(ylim = c(5, 8), xlim = c(-1.25, 1.25)) +
+  theme_classic() +
+  scale_linetype_manual(values = c('solid', 'dashed')) +
+  guides(linetype = FALSE, shape = FALSE, size = FALSE) +
+  labs(x = NULL, y = NULL) +
+  scale_x_continuous(breaks = c(-1, 1), labels = NULL) +
+  annotate('text', label = c('A', 'B', 'C', 'D'), x = c(-1.1, -1.1, 1.1, 1.1), y = c(6, 6.71, 6.71, 6))
+            
+  
+@
+
+\textit{Figure 7.} Means in a 2 x 2 design with a cross-over interaction.
+\end{figure*}
+
+
+
+<<interaction data type1, echo = FALSE>>=
+##### Student's t test data
+## Set up data
+nullT.ve.ne <- int.reject.null.ve.ne[,1,1]
+nullT.v5.ne.bigvar <- int.reject.null.v5.ne.bigvar[,1,1]
+nullT.v5.ne.smallvar <- int.reject.null.v5.ne.smallvar[,1,1]
+nullT.ve.n2.bign <- int.reject.null.ve.n2.bign[,1,1]
+nullT.ve.n2.smalln <- int.reject.null.ve.n2.smalln[,1,1]
+nullT.v5.n2.bignbigvar <- int.reject.null.v5.n2.bignbigvar[,1,1]
+nullT.v5.n2.bignsmallvar <- int.reject.null.v5.n2.bignsmallvar[,1,1]
+nullT.v5.n2.smallnbigvar <- int.reject.null.v5.n2.smallnbigvar[,1,1]
+nullT.v5.n2.smallnsmallvar <- int.reject.null.v5.n2.smallnsmallvar[,1,1]
+
+midd.ve.ne <- int.reject.null.ve.ne[,2,1]
+midd.v5.ne.bigvar <- int.reject.null.v5.ne.bigvar[,2,1]
+midd.v5.ne.smallvar <- int.reject.null.v5.ne.smallvar[,2,1]
+midd.ve.n2.bign <- int.reject.null.ve.n2.bign[,2,1]
+midd.ve.n2.smalln <- int.reject.null.ve.n2.smalln[,2,1]
+midd.v5.n2.bignbigvar <- int.reject.null.v5.n2.bignbigvar[,2,1]
+midd.v5.n2.bignsmallvar <- int.reject.null.v5.n2.bignsmallvar[,2,1]
+midd.v5.n2.smallnbigvar <- int.reject.null.v5.n2.smallnbigvar[,2,1]
+midd.v5.n2.smallnsmallvar <- int.reject.null.v5.n2.smallnsmallvar[,2,1]
+
+## Put it in a dataframe
+int.type1.classic <- data.frame(
+    type1.rate=c(nullT.ve.ne, nullT.v5.ne.bigvar, nullT.v5.ne.smallvar, nullT.ve.n2.bign, nullT.ve.n2.smalln, nullT.v5.n2.bignbigvar, nullT.v5.n2.bignsmallvar, nullT.v5.n2.smallnbigvar, nullT.v5.n2.smallnsmallvar),
+    
+Ns=factor(c('50,50,50,50','50,50,50,50','50,50,50,50','100,50,50,50','50,100,100,100','100,50,50,50','100,50,50,50','50,100,100,100','50,100,100,100'), 
+levels=c('50,50,50,50','100,50,50,50','50,100,100,100')),
+    var.ratio=factor(c(0,1,-1,0,0,1,-1,1,-1), 
+levels=c(-1,0,1), labels=c(.2,0,5)))
+
+## Plot it
+T1classic <- ggplot(int.type1.classic, aes(x=as.numeric(var.ratio), y=type1.rate, ymin=0, ymax=.13)) + 
+    geom_point(size=4, aes(shape = Ns, color = Ns)) + 
+    scale_shape_manual(name = 'Sample size ratio \nGroup A,B,C,D',
+                       labels = c('50,50,50,50', '100,50,50,50','50,100,100,100'),
+                       values= rep(1, 3)
+                       ) +
+    geom_line(size=.5, aes(linetype = Ns, color = Ns)) + 
+    scale_linetype_manual(name = 'Sample size ratio \nGroup A,B,C,D',
+                          labels = c('50,50,50,50', '100,50,50,50','50,100,100,100'),
+                          values= c('dotted', 'dashed', 'solid')
+                          ) +
+    scale_color_manual(name = 'Sample size ratio \nGroup A,B,C,D',
+                       labels = c('50,50,50,50', '100,50,50,50','50,100,100,100'),
+                       values= rep('black', 3)
+                       ) + 
+    scale_x_continuous(breaks=seq(-1:1), labels=factor(c('1/5', '1', '5'))) +
+    scale_y_continuous(breaks=seq(from=0, to=.13, by=.01)) +
+    xlab(bquote(frac(sigma[A]^2,{sigma[B]^2 == sigma[C]^2} == sigma[D]^2))) + ylab('Type I Error Rate') +
+    theme(panel.grid.minor.y = element_blank(), panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
+
+
+
+
+
+
+
+
+
+##### Welch's t test data
+## Set up data
+nullT.ve.ne <- int.reject.null.ve.ne[,1,2]
+nullT.v5.ne.bigvar <- int.reject.null.v5.ne.bigvar[,1,2]
+nullT.v5.ne.smallvar <- int.reject.null.v5.ne.smallvar[,1,2]
+nullT.ve.n2.bign <- int.reject.null.ve.n2.bign[,1,2]
+nullT.ve.n2.smalln <- int.reject.null.ve.n2.smalln[,1,2]
+nullT.v5.n2.bignbigvar <- int.reject.null.v5.n2.bignbigvar[,1,2]
+nullT.v5.n2.bignsmallvar <- int.reject.null.v5.n2.bignsmallvar[,1,2]
+nullT.v5.n2.smallnbigvar <- int.reject.null.v5.n2.smallnbigvar[,1,2]
+nullT.v5.n2.smallnsmallvar <- int.reject.null.v5.n2.smallnsmallvar[,1,2]
+
+midd.ve.ne <- int.reject.null.ve.ne[,2,2]
+midd.v5.ne.bigvar <- int.reject.null.v5.ne.bigvar[,2,2]
+midd.v5.ne.smallvar <- int.reject.null.v5.ne.smallvar[,2,2]
+midd.ve.n2.bign <- int.reject.null.ve.n2.bign[,2,2]
+midd.ve.n2.smalln <- int.reject.null.ve.n2.smalln[,2,2]
+midd.v5.n2.bignbigvar <- int.reject.null.v5.n2.bignbigvar[,2,2]
+midd.v5.n2.bignsmallvar <- int.reject.null.v5.n2.bignsmallvar[,2,2]
+midd.v5.n2.smallnbigvar <- int.reject.null.v5.n2.smallnbigvar[,2,2]
+midd.v5.n2.smallnsmallvar <- int.reject.null.v5.n2.smallnsmallvar[,2,2]
+
+## Put it in a dataframe
+int.type1.welch <- data.frame(
+    type1.rate=c(nullT.ve.ne, nullT.v5.ne.bigvar, nullT.v5.ne.smallvar, nullT.ve.n2.bign, nullT.ve.n2.smalln, nullT.v5.n2.bignbigvar, nullT.v5.n2.bignsmallvar, nullT.v5.n2.smallnbigvar, nullT.v5.n2.smallnsmallvar),
+    
+Ns=factor(c('50,50,50,50','50,50,50,50','50,50,50,50','100,50,50,50','50,100,100,100','100,50,50,50','100,50,50,50','50,100,100,100','50,100,100,100'), 
+levels=c('50,50,50,50','100,50,50,50','50,100,100,100')),
+    var.ratio=factor(c(0,1,-1,0,0,1,-1,1,-1), 
+levels=c(-1,0,1), labels=c(.2,0,5)))
+
+## Plot it
+T1welch <- ggplot(int.type1.welch, aes(x=as.numeric(var.ratio), y=type1.rate, ymin=0, ymax=.13)) + 
+    geom_point(size=4, aes(shape = Ns, color = Ns)) + 
+    scale_shape_manual(name = 'Sample size ratio \nGroup A,B,C,D',
+                       labels = c('50,50,50,50', '100,50,50,50','50,100,100,100'),
+                       values= rep(1, 3)
+                       ) +
+    geom_line(size=.5, aes(linetype = Ns, color = Ns)) + 
+    scale_linetype_manual(name = 'Sample size ratio \nGroup A,B,C,D',
+                          labels = c('50,50,50,50', '100,50,50,50','50,100,100,100'),
+                          values= c('dotted', 'dashed', 'solid')
+                          ) +
+    scale_color_manual(name = 'Sample size ratio \nGroup A,B,C,D',
+                       labels = c('50,50,50,50', '100,50,50,50','50,100,100,100'),
+                       values= rep('black', 3)
+                       ) + 
+    scale_x_continuous(breaks=seq(-1:1), labels=factor(c('1/5', '1', '5'))) +
+    scale_y_continuous(breaks=seq(from=0, to=.13, by=.01)) +
+    xlab(bquote(frac(sigma[A]^2,{sigma[B]^2 == sigma[C]^2} == sigma[D]^2))) + ylab('Type I Error Rate') +
+    theme(panel.grid.minor.y = element_blank(), panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
+
+@
+
+\begin{figure*}    
+<<Type1Int, echo=FALSE, fig=TRUE, height=10>>=
+multiplot(T1classic+ggtitle("Student's t test"), T1welch+ggtitle("Welch's t test"))
+@
+
+\textit{Figure 8.} Type I error rates for Student's t test and Welch's t test 
+of a 2 x 2 interaction as the variance and sample size of one group varies.
+\end{figure*}
+
+
+
 
 \section{Discussion}
     We set out to find a simple rule to help researchers decide when to use 

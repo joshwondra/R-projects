@@ -1993,6 +1993,195 @@ load('/users/joshwondra/R-projects/Welch rule/interaction2x2-veNeSeed2184Tables.
 
 
 
+
+
+##### Equal Ns, bigger variances simulations #####
+
+set.seed(2184)
+int.v5.ns50.ne.nullT.bigvar <- t.compare(nsims=10000, Ns=c(50,50,50,50), means=c(6,6,6,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns50.ne.midd.bigvar <- t.compare(nsims=10000, Ns=c(50,50,50,50), means=c(6,6.71,6.71,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
+
+##### Equal Ns, bigger variances false positives and power #####
+
+## array to store proportion of rejected null hypotheses
+int.reject.null.v5.ne.bigvar <- array(dim=c(1,2,2), dimnames=list(c("N=50"), c("d=0", "d=.5"), c("classic", "welch")))
+
+# true null
+int.reject.null.v5.ne.bigvar[1,1,1] <- int.v5.ns50.ne.nullT.bigvar$classic.reject
+int.reject.null.v5.ne.bigvar[1,1,2] <- int.v5.ns50.ne.nullT.bigvar$welch.reject
+int.reject.null.v5.ne.bigvar[1,2,1] <- int.v5.ns50.ne.midd.bigvar$classic.reject
+int.reject.null.v5.ne.bigvar[1,2,2] <- int.v5.ns50.ne.midd.bigvar$welch.reject
+
+
+##### Equal Ns, bigger variances coverage rate #####
+
+## store observed coverage rates
+int.obs.coverage.v5.ne.bigvar <- array(dim=c(1,2,2), dimnames=list(c("N=50"), c("d=0", "d=.5"), c("classic", "welch")))
+
+# true null
+int.obs.coverage.v5.ne.bigvar[1,1,1] <- int.v5.ns50.ne.nullT.bigvar$classic.coverage
+int.obs.coverage.v5.ne.bigvar[1,1,2] <- int.v5.ns50.ne.nullT.bigvar$welch.coverage
+int.obs.coverage.v5.ne.bigvar[1,2,1] <- int.v5.ns50.ne.midd.bigvar$classic.coverage
+int.obs.coverage.v5.ne.bigvar[1,2,2] <- int.v5.ns50.ne.midd.bigvar$welch.coverage
+
+
+
+##### Save tables from equal Ns, bigger variances simulations #####
+save(int.reject.null.v5.ne.bigvar, int.obs.coverage.v5.ne.bigvar, file='/users/joshwondra/R-projects/Welch rule/interaction2x2-v5bigvarNeSeed2184Tables.Rdata')
+load('/users/joshwondra/R-projects/Welch rule/interaction2x2-v5bigvarNeSeed2184Tables.Rdata')
+
+
+
+
+
+
+
+
+##### Equal Ns, smaller variances simulations #####
+
+set.seed(2184)
+int.v5.ns50.ne.nullT.smallvar <- t.compare(nsims=10000, Ns=c(50,50,50,50), means=c(6,6,6,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns50.ne.midd.smallvar <- t.compare(nsims=10000, Ns=c(50,50,50,50), means=c(6,6.71,6.71,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
+
+##### Equal Ns, smaller variances false positives and power #####
+
+## array to store proportion of rejected null hypotheses
+int.reject.null.v5.ne.smallvar <- array(dim=c(1,2,2), dimnames=list(c("N=50"), c("d=0", "d=.5"), c("classic", "welch")))
+
+# true null
+int.reject.null.v5.ne.smallvar[1,1,1] <- int.v5.ns50.ne.nullT.smallvar$classic.reject
+int.reject.null.v5.ne.smallvar[1,1,2] <- int.v5.ns50.ne.nullT.smallvar$welch.reject
+int.reject.null.v5.ne.smallvar[1,2,1] <- int.v5.ns50.ne.midd.smallvar$classic.reject
+int.reject.null.v5.ne.smallvar[1,2,2] <- int.v5.ns50.ne.midd.smallvar$welch.reject
+
+
+##### Equal Ns, smaller variances coverage rate #####
+
+## store observed coverage rates
+int.obs.coverage.v5.ne.smallvar <- array(dim=c(1,2,2), dimnames=list(c("N=50"), c("d=0", "d=.5"), c("classic", "welch")))
+
+# true null
+int.obs.coverage.v5.ne.smallvar[1,1,1] <- int.v5.ns50.ne.nullT.smallvar$classic.coverage
+int.obs.coverage.v5.ne.smallvar[1,1,2] <- int.v5.ns50.ne.nullT.smallvar$welch.coverage
+int.obs.coverage.v5.ne.smallvar[1,2,1] <- int.v5.ns50.ne.midd.smallvar$classic.coverage
+int.obs.coverage.v5.ne.smallvar[1,2,2] <- int.v5.ns50.ne.midd.smallvar$welch.coverage
+
+
+
+##### Save tables from equal Ns, smaller variances simulations #####
+save(int.reject.null.v5.ne.smallvar, int.obs.coverage.v5.ne.smallvar, file='/users/joshwondra/R-projects/Welch rule/interaction2x2-v5smallvarNeSeed2184Tables.Rdata')
+load('/users/joshwondra/R-projects/Welch rule/interaction2x2-v5smallvarNeSeed2184Tables.Rdata')
+
+
+
+
+
+
+
+
+
+
+##### Big N, equal variances simulations #####
+
+set.seed(2184)
+int.ve.ns50.n2.nullT.bign <- t.compare(nsims=10000, Ns=c(100,50,50,50), means=c(6,6,6,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.ve.ns50.n2.midd.bign <- t.compare(nsims=10000, Ns=c(100,50,50,50), means=c(6,6.71,6.71,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
+
+##### Equal Ns, equal variances false positives and power #####
+
+## array to store proportion of rejected null hypotheses
+int.reject.null.ve.n2.bign <- array(dim=c(1,2,2), dimnames=list(c("N=50"), c("d=0", "d=.5"), c("classic", "welch")))
+
+# true null
+int.reject.null.ve.n2.bign[1,1,1] <- int.ve.ns50.n2.nullT.bign$classic.reject
+int.reject.null.ve.n2.bign[1,1,2] <- int.ve.ns50.n2.nullT.bign$welch.reject
+int.reject.null.ve.n2.bign[1,2,1] <- int.ve.ns50.n2.midd.bign$classic.reject
+int.reject.null.ve.n2.bign[1,2,2] <- int.ve.ns50.n2.midd.bign$welch.reject
+
+
+##### Equal Ns, equal variances coverage rate #####
+
+## store observed coverage rates
+int.obs.coverage.ve.n2.bign <- array(dim=c(1,2,2), dimnames=list(c("N=50"), c("d=0", "d=.5"), c("classic", "welch")))
+
+# true null
+int.obs.coverage.ve.n2.bign[1,1,1] <- int.ve.ns50.n2.nullT.bign$classic.coverage
+int.obs.coverage.ve.n2.bign[1,1,2] <- int.ve.ns50.n2.nullT.bign$welch.coverage
+int.obs.coverage.ve.n2.bign[1,2,1] <- int.ve.ns50.n2.midd.bign$classic.coverage
+int.obs.coverage.ve.n2.bign[1,2,2] <- int.ve.ns50.n2.midd.bign$welch.coverage
+
+
+
+##### Save tables from big N, equal variances simulations #####
+save(int.reject.null.ve.n2.bign, int.obs.coverage.ve.n2.bign, file='/users/joshwondra/R-projects/Welch rule/interaction2x2-bignveN2Seed2184Tables.Rdata')
+load('/users/joshwondra/R-projects/Welch rule/interaction2x2-bignveN2Seed2184Tables.Rdata')
+
+
+
+
+
+
+
+
+
+
+
+
+
+##### Small N, equal variances simulations #####
+
+set.seed(2184)
+int.ve.ns50.n2.nullT.smalln <- t.compare(nsims=10000, Ns=c(50,100,100,100), means=c(6,6,6,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.ve.ns50.n2.midd.smalln <- t.compare(nsims=10000, Ns=c(50,100,100,100), means=c(6,6.71,6.71,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
+
+##### Small N, equal variances false positives and power #####
+
+## array to store proportion of rejected null hypotheses
+int.reject.null.ve.n2.smalln <- array(dim=c(1,2,2), dimnames=list(c("N=50"), c("d=0", "d=.5"), c("classic", "welch")))
+
+# true null
+int.reject.null.ve.n2.smalln[1,1,1] <- int.ve.ns50.n2.nullT.smalln$classic.reject
+int.reject.null.ve.n2.smalln[1,1,2] <- int.ve.ns50.n2.nullT.smalln$welch.reject
+int.reject.null.ve.n2.smalln[1,2,1] <- int.ve.ns50.n2.midd.smalln$classic.reject
+int.reject.null.ve.n2.smalln[1,2,2] <- int.ve.ns50.n2.midd.smalln$welch.reject
+
+
+##### Equal Ns, equal variances coverage rate #####
+
+## store observed coverage rates
+int.obs.coverage.ve.n2.smalln <- array(dim=c(1,2,2), dimnames=list(c("N=50"), c("d=0", "d=.5"), c("classic", "welch")))
+
+# true null
+int.obs.coverage.ve.n2.smalln[1,1,1] <- int.ve.ns50.n2.nullT.smalln$classic.coverage
+int.obs.coverage.ve.n2.smalln[1,1,2] <- int.ve.ns50.n2.nullT.smalln$welch.coverage
+int.obs.coverage.ve.n2.smalln[1,2,1] <- int.ve.ns50.n2.midd.smalln$classic.coverage
+int.obs.coverage.ve.n2.smalln[1,2,2] <- int.ve.ns50.n2.midd.smalln$welch.coverage
+
+
+
+##### Save tables from smalln N, equal variances simulations #####
+save(int.reject.null.ve.n2.smalln, int.obs.coverage.ve.n2.smalln, file='/users/joshwondra/R-projects/Welch rule/interaction2x2-smallnveN2Seed2184Tables.Rdata')
+load('/users/joshwondra/R-projects/Welch rule/interaction2x2-smallnveN2Seed2184Tables.Rdata')
+
+
+
+
+
+
+
+
+
+
+
+
 ##### Big group/small variance simulations #####
 
 set.seed(2184)
