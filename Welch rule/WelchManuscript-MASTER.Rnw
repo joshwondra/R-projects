@@ -1855,7 +1855,7 @@ int.type1.classic <- data.frame(
 Ns=factor(c('50,50,50,50','50,50,50,50','50,50,50,50','100,50,50,50','50,100,100,100','100,50,50,50','100,50,50,50','50,100,100,100','50,100,100,100'), 
 levels=c('50,50,50,50','100,50,50,50','50,100,100,100')),
     var.ratio=factor(c(0,1,-1,0,0,1,-1,1,-1), 
-levels=c(-1,0,1), labels=c(.2,0,5)))
+levels=c(-1,0,1), labels=c(.2,1,5)))
 
 ## Plot it
 T1classic <- ggplot(int.type1.classic, aes(x=as.numeric(var.ratio), y=type1.rate, ymin=0, ymax=.13)) + 
@@ -1906,7 +1906,7 @@ int.type1.welch <- data.frame(
 Ns=factor(c('50,50,50,50','50,50,50,50','50,50,50,50','100,50,50,50','50,100,100,100','100,50,50,50','100,50,50,50','50,100,100,100','50,100,100,100'), 
 levels=c('50,50,50,50','100,50,50,50','50,100,100,100')),
     var.ratio=factor(c(0,1,-1,0,0,1,-1,1,-1), 
-levels=c(-1,0,1), labels=c(.2,0,5)))
+levels=c(-1,0,1), labels=c(.2,1,5)))
 
 ## Plot it
 T1welch <- ggplot(int.type1.welch, aes(x=as.numeric(var.ratio), y=type1.rate, ymin=0, ymax=.13)) + 
@@ -1942,7 +1942,7 @@ of a 2 x 2 interaction as the variance and sample size of one group varies.
 
 
 \subsubsection{Power}
-As with the case of two groups, the type I error rate for Student's t test was near the expected $\alpha = .05$ rate when either the sample sizes or variances were equal. But when both the sample sizes and variances were unequal, the type I error rate varied widely. If just one group had a larger sample than the others, the type I error rate was too high if it had the smaller variance and too low if it had the larger variance; and if just one group had a smaller sample than the others, the type I error rate was too low if it had the smaller variance and too high if it had the larger variance. In contrast, the type I error rate for Welch's t test was consistently near .05.
+As with the case of two groups, the power of Student's t test to detect an effect was similar to the power of Welch's t test when either sample sizes or variances were equal (see Figure 9). But when both the sample sizes and variances were unequal, the power of Student's t test was highest under the conditions when it had the greatest risk of type I errors. In contrast, Welch's t test was more powerful than Student's t test under some conditions without having an increased risk of type I errors. 
 
 <<interaction data power, echo = FALSE>>=
 ##### Student's t test data
@@ -1964,7 +1964,7 @@ int.power.classic <- data.frame(
 Ns=factor(c('50,50,50,50','50,50,50,50','50,50,50,50','100,50,50,50','50,100,100,100','100,50,50,50','100,50,50,50','50,100,100,100','50,100,100,100'), 
 levels=c('50,50,50,50','100,50,50,50','50,100,100,100')),
     var.ratio=factor(c(0,1,-1,0,0,1,-1,1,-1), 
-levels=c(-1,0,1), labels=c(.2,0,5)))
+levels=c(-1,0,1), labels=c(.2,1,5)))
 
 ## Plot it
 Pow.classic <- ggplot(int.power.classic, aes(x=as.numeric(var.ratio), y=power, ymin=0, ymax=.13)) + 
@@ -2015,7 +2015,7 @@ int.power.welch <- data.frame(
 Ns=factor(c('50,50,50,50','50,50,50,50','50,50,50,50','100,50,50,50','50,100,100,100','100,50,50,50','100,50,50,50','50,100,100,100','50,100,100,100'), 
 levels=c('50,50,50,50','100,50,50,50','50,100,100,100')),
     var.ratio=factor(c(0,1,-1,0,0,1,-1,1,-1), 
-levels=c(-1,0,1), labels=c(.2,0,5)))
+levels=c(-1,0,1), labels=c(.2,1,5)))
 
 ## Plot it
 Pow.welch <- ggplot(int.power.welch, aes(x=as.numeric(var.ratio), y=power, ymin=0, ymax=.13)) + 
@@ -2073,9 +2073,123 @@ Pow.diff <- ggplot(int.power.diff, aes(x=as.numeric(var.ratio), y=power, ymin=0,
 multiplot(Pow.classic+ggtitle("Student's t test"), Pow.welch+ggtitle("Welch's t test"), Pow.diff+ggtitle("Student - Welch"))
 @
 
-\textit{Figure 8.} Power for Student's t test and Welch's t test 
+\textit{Figure 9.} Power for Student's t test and Welch's t test 
 of a 2 x 2 interaction as the variance and sample size of one group varies.
 \end{figure*}
+
+
+\subsubsection{Coverage Probability}
+Complementing the type I error rate, the coverage probability for Student's t test was near the expected .95 rate when either the sample sizes or variances were equal. But when both the sample sizes and variances were unequal, the coverage probability varied widely. If just one group had a larger sample than the others, the coverage probability was too low if it had the smaller variance and too high if it had the larger variance; and if just one group had a smaller sample than the others, the coverage probability was too high if it had the smaller variance and too low if it had the larger variance. In contrast, the coverage probability for Welch's t test was consistently near .95.
+
+
+<<ClassicCoverageInt, echo=FALSE>>=
+
+##### Plot classic results only
+
+## Set up data
+nullT.ve.ne <- int.obs.coverage.ve.ne[,1,1]
+nullT.v5.ne.bigvar <- int.obs.coverage.v5.ne.bigvar[,1,1]
+nullT.v5.ne.smallvar <- int.obs.coverage.v5.ne.smallvar[,1,1]
+nullT.ve.n2.bign <- int.obs.coverage.ve.n2.bign[,1,1]
+nullT.ve.n2.smalln <- int.obs.coverage.ve.n2.smalln[,1,1]
+nullT.v5.n2.bignbigvar <- int.obs.coverage.v5.n2.bignbigvar[,1,1]
+nullT.v5.n2.bignsmallvar <- int.obs.coverage.v5.n2.bignsmallvar[,1,1]
+nullT.v5.n2.smallnbigvar <- int.obs.coverage.v5.n2.smallnbigvar[,1,1]
+nullT.v5.n2.smallnsmallvar <- int.obs.coverage.v5.n2.smallnsmallvar[,1,1]
+
+
+## Put it in a dataframe
+coverage.classic.nullT <- data.frame(
+    coverage.rate=c(nullT.ve.ne, nullT.v5.ne.bigvar, nullT.v5.ne.smallvar, nullT.ve.n2.bign, nullT.ve.n2.smalln, nullT.v5.n2.bignbigvar, nullT.v5.n2.bignsmallvar, nullT.v5.n2.smallnbigvar, nullT.v5.n2.smallnsmallvar), #NOTE: doubled any with equal variance or 
+#equal ns because they don't have separate ssv and bsv versions
+    
+Ns=factor(c('50,50,50,50','50,50,50,50','50,50,50,50','100,50,50,50','50,100,100,100','100,50,50,50','100,50,50,50','50,100,100,100','50,100,100,100'), 
+levels=c('50,50,50,50','100,50,50,50','50,100,100,100')),
+    var.ratio=factor(c(0,1,-1,0,0,1,-1,1,-1), 
+levels=c(-1,0,1), labels=c(.2,1,5)))
+
+## Plot it
+Cov.classic <- ggplot(coverage.classic.nullT, aes(x=as.numeric(var.ratio), y=coverage.rate, ymin=.85, ymax=1)) + 
+    geom_point(size=4, aes(shape = Ns, color = Ns)) + 
+    scale_shape_manual(name = 'Sample size ratio \nGroup A,B,C,D',
+                       labels = c('50,50,50,50', '100,50,50,50','50,100,100,100'),
+                       values= rep(1, 3)
+                       ) +
+    geom_line(size=.5, aes(linetype = Ns, color = Ns)) + 
+    scale_linetype_manual(name = 'Sample size ratio \nGroup A,B,C,D',
+                          labels = c('50,50,50,50', '100,50,50,50','50,100,100,100'),
+                          values= c('dotted', 'dashed', 'solid')
+                          ) +
+    scale_color_manual(name = 'Sample size ratio \nGroup A,B,C,D',
+                       labels = c('50,50,50,50', '100,50,50,50','50,100,100,100'),
+                       values= rep('black', 3)
+                       ) + 
+    scale_x_continuous(breaks=seq(-1:1), labels=factor(c('1/5', '1', '5'))) +
+    scale_y_continuous(breaks=seq(from=.85, to=1, by=.01)) +
+    xlab(bquote(frac(sigma[A]^2,{sigma[B]^2 == sigma[C]^2} == sigma[D]^2))) + ylab('Coverage Probability') +
+    theme(panel.grid.minor.y = element_blank(), panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
+
+@
+
+
+<<WelchCoverageInt, echo=FALSE>>=
+
+##### Plot classic results only
+
+## Set up data
+nullT.ve.ne <- int.obs.coverage.ve.ne[,1,2]
+nullT.v5.ne.bigvar <- int.obs.coverage.v5.ne.bigvar[,1,2]
+nullT.v5.ne.smallvar <- int.obs.coverage.v5.ne.smallvar[,1,2]
+nullT.ve.n2.bign <- int.obs.coverage.ve.n2.bign[,1,2]
+nullT.ve.n2.smalln <- int.obs.coverage.ve.n2.smalln[,1,2]
+nullT.v5.n2.bignbigvar <- int.obs.coverage.v5.n2.bignbigvar[,1,2]
+nullT.v5.n2.bignsmallvar <- int.obs.coverage.v5.n2.bignsmallvar[,1,2]
+nullT.v5.n2.smallnbigvar <- int.obs.coverage.v5.n2.smallnbigvar[,1,2]
+nullT.v5.n2.smallnsmallvar <- int.obs.coverage.v5.n2.smallnsmallvar[,1,2]
+
+
+## Put it in a dataframe
+coverage.welch.nullT <- data.frame(
+    coverage.rate=c(nullT.ve.ne, nullT.v5.ne.bigvar, nullT.v5.ne.smallvar, nullT.ve.n2.bign, nullT.ve.n2.smalln, nullT.v5.n2.bignbigvar, nullT.v5.n2.bignsmallvar, nullT.v5.n2.smallnbigvar, nullT.v5.n2.smallnsmallvar), #NOTE: doubled any with equal variance or 
+#equal ns because they don't have separate ssv and bsv versions
+    
+Ns=factor(c('50,50,50,50','50,50,50,50','50,50,50,50','100,50,50,50','50,100,100,100','100,50,50,50','100,50,50,50','50,100,100,100','50,100,100,100'), 
+levels=c('50,50,50,50','100,50,50,50','50,100,100,100')),
+    var.ratio=factor(c(0,1,-1,0,0,1,-1,1,-1), 
+levels=c(-1,0,1), labels=c(.2,1,5)))
+
+## Plot it
+Cov.welch <- ggplot(coverage.welch.nullT, aes(x=as.numeric(var.ratio), y=coverage.rate, ymin=.85, ymax=1)) + 
+    geom_point(size=4, aes(shape = Ns, color = Ns)) + 
+    scale_shape_manual(name = 'Sample size ratio \nGroup A,B,C,D',
+                       labels = c('50,50,50,50', '100,50,50,50','50,100,100,100'),
+                       values= rep(1, 3)
+                       ) +
+    geom_line(size=.5, aes(linetype = Ns, color = Ns)) + 
+    scale_linetype_manual(name = 'Sample size ratio \nGroup A,B,C,D',
+                          labels = c('50,50,50,50', '100,50,50,50','50,100,100,100'),
+                          values= c('dotted', 'dashed', 'solid')
+                          ) +
+    scale_color_manual(name = 'Sample size ratio \nGroup A,B,C,D',
+                       labels = c('50,50,50,50', '100,50,50,50','50,100,100,100'),
+                       values= rep('black', 3)
+                       ) + 
+    scale_x_continuous(breaks=seq(-1:1), labels=factor(c('1/5', '1', '5'))) +
+    scale_y_continuous(breaks=seq(from=.85, to=1, by=.01)) +
+    xlab(bquote(frac(sigma[A]^2,{sigma[B]^2 == sigma[C]^2} == sigma[D]^2))) + ylab('Coverage Probability') +
+    theme(panel.grid.minor.y = element_blank(), panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
+
+@
+
+\begin{figure*}
+<<CoveragePlotsInt, echo=FALSE, fig=TRUE>>=
+layout <- matrix(c(1,2), nrow=2, byrow=TRUE)
+multiplot(Cov.classic + ggtitle("Student's t test"), Cov.welch + ggtitle("Welch's t test"), layout=layout)
+@
+
+\textit{Figure 10.} Coverage probabilities for Student's and Welch's t tests of a 2 x 2 interaction as the variance and sample size of one group varies.
+\end{figure*}
+
 
 
 \section{Discussion}
