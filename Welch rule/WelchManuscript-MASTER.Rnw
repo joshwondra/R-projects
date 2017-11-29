@@ -19,7 +19,7 @@ decide when to use Student's vs. Welch's t test. We used Monte Carlo
 simulations to compare the type I error rate, power, and coverage probability 
 of Student's and Welch's t tests when testing the difference in the means of 
 two groups across different variance ratios, sample size ratios, sample sizes, 
-and effect sizes. We then expanded these simulations to tests of interactions in a 2 x 2 factorial design. We recommend the following rule: Always use Welch's t test to 
+and effect sizes. We then expanded these simulations to tests of interactions in a 2 x 2 factorial design. We recommend the following rule: For normally distributed data always use Welch's t test to 
 compare the means of independent groups.}
 \keywords{t test, new statistics, Welch}
 
@@ -205,8 +205,8 @@ average that is used to estimate the common variance.
     s_{\overline{x}_1-\overline{x}_2} = \sqrt{\frac{s_p^2}{n_1}  + \frac{s_p^2}{n_2}} = s_p\sqrt{\frac{1}{n_1}  + \frac{1}{n_2}}
     \end{equation}
     with $s_1^2$ and $s_2^2$ being the two sample estimates of the population variances.
-The group 
-with the larger sample size is given more weight than the group with the 
+In the pooling equation (EQ 2) the variance of the group 
+with the larger sample size is given more weight than the variance of the group with the 
 smaller sample size. This means that when the bigger group has the bigger 
 variance, the standard error is bigger, but when the bigger group has the 
 smaller variance, the standard error is smaller.
@@ -254,7 +254,7 @@ pooled variances standard error.
     How do you decide which test to use? The typical approach is to use 
 Student's t test unless there is evidence that the two groups have unequal 
 variances. The challenge is how to find that evidence. 
-Our goal is to find a simple decision rule that can help researchers decide when to use Welch's t test instead of Student's t test. We begin by reviewing three decision strategies: testing the equal variances assumption with another statistical test, comparing the degrees of freedom of the two tests, and visually examining the data with boxplots. Then we use Monte Carlo simulations to examine when each test performs best in terms of type I errors, power, and coverage probability.
+Our goal is to find a simple decision rule that can help researchers decide when to use Welch's t test instead of Student's t test. We begin by reviewing three decision strategies: testing the equal variances assumption with another statistical test, comparing the degrees of freedom of the two tests, and visually examining the data with boxplots. Then we use Monte Carlo simulations to examine when each test performs best in terms of type I errors, power, and coverage probability. We first focus on the simple case of two groups for ease of exposition and then examine a more complex test, the interaction contrast in a 2~$\times$~2 between-subjects ANOVA.
 
     Before we proceed, we note that aside from Welch's t test, there have been Bayesian approaches 
 to the problem of comparing groups with equal or unequal variances. 
@@ -262,8 +262,8 @@ to the problem of comparing groups with equal or unequal variances.
 variances is assumed and when equal variances is not assumed. When 
 noninformative locally uniform priors are used for the group means and the 
 logarithm of the group standard deviations, and equal variances is assumed, 
-their analytic solution is identical to Student's t test. When the same priors are used, 
-but equal variances are not assumed, their solution is similar to Welch's t 
+the Bayesian analytic solution is identical to Student's t test. When the same priors are used, 
+but equal variances are not assumed, the Bayesian solution is similar to Welch's t 
 test, but slightly more conservative because the degrees of freedom are 
 generally lower and the standard error is generally larger or equal. More 
 recently, \citeA{Kruschke2013} presented a Bayesian approach to comparing group 
@@ -464,7 +464,7 @@ about whether the variances appear to differ.  With smaller sample sizes, you
 can tolerate larger apparent differences. This strategy can be enhanced by 
 simulating data for two groups that have sample sizes equal to the sample 
 sizes in your actual data, changing whether the variances are equal or unequal, 
-and seeing if the boxplots of your data look like the boxplots of the 
+and seeing if the boxplots of your data look like the typical boxplots of the 
 simulations with equal variances. 
 
     Figure 2 displays boxplots from simulations of two groups with equal 
@@ -472,7 +472,7 @@ variances (top) and from simulations of two groups with unequal variances, where
 the variance of the group to the right is five times as large as the variance 
 of the group to the left (bottom). The first row of each set of boxplots 
 displays groups with $n$ = 20 and the second row displays groups with $n$ = 
-100. The population distributions are displayed above the boxplots. 
+100. The population distributions are displayed above the boxplots.
 
 When the 
 sample sizes are smaller (first rows) there is more variability in the boxplots. Seeing some 
@@ -2348,9 +2348,9 @@ beneficial to emphasize Welch's t test as the default approach. As demonstrated
 in our simulations, this approach will help lead to better decision-making when 
 it comes to analyzing data. 
 
-Our discussion began with the relatively simple case of testing the means from two independent groups.
+Our discussion began with the relatively simple case of testing the means from two independent groups with normally distributed data.
 But we expanded this discussion to demonstrate that the implications generalize to more complex designs, such as interactions in a 2 x 2 factorial design.
-The simulations show that the pattern is not straightforward and depends on complex combinations between which group has the larger sample size and which group has the larger variance.  In the case of between-groups contrasts, we arrived at a simple conclusion: on balance, when considering the false positive rate and power, an efficient strategy is to always uses the Welch t test. As the study design becomes more complicated, such as with repeated measures, random effect models, complex contrasts, etc., the story will likely be even more complicated. We should move toward an overall analysis strategy that has relatively few moving parts so that it can be described easily in a scientific report, is relatively easy to describe in a  preregistration plan, and provides robust estimates.
+The simulations show that the pattern is not straightforward and depends on complex combinations between which group has the larger sample size and which group has the larger variance.  In the case of between-groups contrasts, we arrived at a simple conclusion: on balance, when considering the false positive rate and power, an efficient strategy is to always uses the Welch t test. As the study design becomes more complicated, such as with repeated measures, random effect models, complex contrasts, non-normally distributed data, etc., the story will likely be even more complicated. As a field we should move toward an overall analysis strategy that has relatively few moving parts so that it can be described easily in a scientific report, is relatively easy to describe in a  preregistration plan, and provides robust estimates.
 
 
 << junk, echo=FALSE >>=
