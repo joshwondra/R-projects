@@ -241,16 +241,16 @@ difference:
     \begin{equation}
     t = \frac{\hat{\mu}_1-\hat{\mu}_2}{\hat{\sigma}_{\mu_1-\mu_2}}
     \end{equation}
-    The p-value then depends on the degrees of 
+Throughout the pape we assume a null hypothesis of zero for the population mean difference.    The p-value also depends on the degrees of 
 freedom (df), $df=n_1+n_2-2$. You are more likely to reject the null 
 hypothesis and conclude there is a difference between the means
 as the t-value and 
 df get larger---when 
-the sample size gets larger (which increases the df), when the 
+the sample size gets larger (which increases the df and influences the standard error), when the 
 difference in means gets larger (which increases the numerator of t), or 
 when the standard error gets smaller (which decreases the denominator of t). 
     
-    To compute the standard error, you need to find the 
+    To compute the usual standard error, you need to find the 
 common variance of the groups which is 
 equal to the population variance of each group 
 if the equal variances assumption is true. 
@@ -275,8 +275,7 @@ smaller variance.
     If the data or study design suggests the assumptions of 
 normality, independence, and equal variances do not hold, then Student's t test 
 is not the right choice. If the group 
-variances are unequal, then the Welch-Satterthwaite t test (
-Welch's t test for the sake of brevity) is a good alternative.  In SPSS, Welch's t test is in the ``Equal 
+variances are unequal, then the Welch-Satterthwaite t test (Welch's t test for the sake of brevity) is a good alternative.  In SPSS, Welch's t test is in the ``Equal 
 variances not assumed'' row when you run an independent samples t 
 test. In R, it's the default when you use the
 \texttt{t.test()} function, and you can get Student's t test by setting 
@@ -342,23 +341,23 @@ studies \cite{Zimmerman1996,Zimmerman2004}.
 
 \subsection{Visualizing Data with Boxplots} 
 
-    A third way to decide which test to use is to visualize the data using boxplots and make a judgment 
+    A second way to decide which test to use is to visualize the data using boxplots and make a judgment 
 about whether the variances appear to differ.  With smaller samples, you 
 can tolerate larger apparent differences and still conclude the variances are equal. You can enhance this strategy by 
 simulating data that have the sample sample sizes as the real data, changing whether the variances are equal or not, 
 and checking if the boxplots from the real data look like the boxplots of 
 simulations with equal variances. 
 
-    Figure 1 displays boxplots from groups with equal 
+    Figure 1 displays five sample boxplots from groups with equal 
 variances (top) and where one group has five times the variance of the other (bottom), and where each group has $n$ = 20 (first rows) or $n$ = 
 100 (second rows). 
 
   When the 
-sample sizes are smaller it's normal to see 
+sample sizes are smaller it's typical to see 
 variability in the spread of the groups. When the population 
 variances are equal,
 sometimes the spread of the groups appears almost equal (as it should), 
-and other times it appears to differ. When the population variances are unequal, the group to the right is generally more spread out, but sometimes the spread of the groups looks similar.
+and other times it appears to differ. When the population variances are unequal, the group with the larger variance (to the right) is generally more spread out, but sometimes the spread of the groups looks similar.
 
 In contrast, when sample sizes are larger there is more 
 consistency in the boxplots Smaller differences in the spread of the groups 
@@ -507,7 +506,7 @@ full_bplots <- plot_grid(ve_distributions, ve_bplots, vun_distributions, vun_bpl
 full_bplots
 @
 
-\textit{Figure 1.} Boxplots for groups with equal variances (top) and unequal 
+\textit{Figure 1.} Five sample boxplots for groups with equal variances (top) and unequal 
 variances (bottom). For each set of boxplots, the first row displays groups 
 with $n$=20 and the second row displays groups with $n$=100.
 \end{figure}
@@ -1254,13 +1253,13 @@ rule is to always use Welch's t test to compare the means of independent groups,
 variances or sample sizes were equal, using Welch's t test instead of Student's 
 didn't hurt. Figure 1 shows the Welch's t test df could 
 drop below 70\% of Student's when only the variances 
-ratio or only the sample sizes were unequal, but the sumulated false positive rates, 
+ratio or only the sample sizes were unequal, but the simulated false positive rates, 
 power, and coverage probabilities of the two tests were almost identical under 
 these conditions. The difference in the df had a 
 negligible effect on the outcomes. 
     
     More important was the standard error, which 
-affects the t-value itself. When either the variances or sample sizes are 
+affects the t-value. When either the variances or sample sizes are 
 equal, the pooled standard error of Student's t test and the separate variances 
 standard error of Welch's t test are identical, and the two tests will 
 generally agree with each other. However, when both the variances and the 
@@ -1329,7 +1328,7 @@ meta-analysis involves an assumption that the group variances across
 the body of research are equal, an assumption which might be untenable. Differences in variances might not be just a nuisance, but rather an interesting part of the effect for meta-analysts to examine. The effect of the independent variable may be on the variances and not merely the means.
     
     The good news is that raw difference in means are also effect sizes
-\cite{Cumming2014, Kelley2012}, and you can find confidence intervals around raw differences 
+\cite{Cumming2014, Gonzalez2008, Kelley2012}, and you can find confidence intervals around raw differences 
 in means without assuming equal variances. In fact, 95\% confidence intervals
 based on Welch's t test appear in the 
 default output of programs such as SPSS and R. Reporting 
@@ -1358,7 +1357,7 @@ it comes to analyzing data.
 
 Our discussion began with the relatively simple case of testing the means from two independent groups with normally distributed data.
 But we expanded this discussion to demonstrate that the implications generalize to more complex designs, such as interactions in a 2 x 2 factorial design.
-The simulations show the pattern is not straightforward and depends on combinations of which group has the larger sample size and which group has the larger variance.  For between-groups contrasts, we arrived at a simple conclusion: on balance, when considering the false positive rate, power, and effect size estimation, an efficient strategy is to always uses the Welch t test. As the study design becomes more complicated, such as with repeated measures, random effect models, or non-normally distributed data, the story will likely be more complicated. As a field we should move toward analysis strategies that have fewer moving parts so they can be described easily in a scientific report or preregistration plan, and they provides robust estimates.
+The simulations show the pattern is not straightforward and depends on combinations of which group has the larger sample size and which group has the larger variance.  For between-groups contrasts, we arrived at a simple conclusion: on balance, when considering the false positive rate, power, and effect size estimation, an efficient strategy is to always uses the Welch t test. As the study design becomes more complicated, such as with repeated measures, random effect models, or non-normally distributed data, the story will likely be more complicated. As a field we should move toward analysis strategies that have fewer moving parts so they can be described easily in a scientific report or preregistration plan, and  provide robust estimates.
 
 
 
