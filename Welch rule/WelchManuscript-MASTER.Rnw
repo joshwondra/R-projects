@@ -6,8 +6,9 @@
 
 \title{Use Welch's \textit{t} Test to Compare the Means of Independent Groups}
 \shorttitle{Welch t Test}
-\author{Joshua D. Wondra and Richard Gonzalez}
-\affiliation{Facebook, University of Michigan}
+
+\twoauthors{Joshua D. Wondra}{Richard Gonzalez}
+\twoaffiliations{Facebook}{University of Michigan}
 
 \abstract{When testing whether the means of independent groups are 
 different from each other, researchers typically use Student's t test, which 
@@ -233,7 +234,7 @@ comparison involves a choice between the classic Student's t test
 \cite{Student1908} or the alternative Welch-Satterthwaite test \cite{Welch1938, 
 Satterthwaite1946}. When you use Student's t test to compare 
 the means of independent groups, you assume the populations follow a normal distribution,
-observations are independent of each other, and the populations have the same variance.  
+observations are independent of each other, and the populations have the same variance. Throughout the paper we assume a null hypothesis of zero for the population mean difference.
     
 The t-value is the 
 difference in group means divided by the standard error of that 
@@ -241,17 +242,17 @@ difference:
     \begin{equation}
     t = \frac{\hat{\mu}_1-\hat{\mu}_2}{\hat{\sigma}_{\mu_1-\mu_2}}
     \end{equation}
-Throughout the pape we assume a null hypothesis of zero for the population mean difference.    The p-value also depends on the degrees of 
-freedom (df), $df=n_1+n_2-2$. You are more likely to reject the null 
+The p-value also depends on the degrees of 
+freedom, $df=n_1+n_2-2$. You are more likely to reject the null 
 hypothesis and conclude there is a difference between the means
 as the t-value and 
-df get larger---when 
-the sample size gets larger (which increases the df and influences the standard error), when the 
+degrees of freedom get larger---when 
+the sample size gets larger (which increases the degrees of freedom and influences the standard error), when the 
 difference in means gets larger (which increases the numerator of t), or 
 when the standard error gets smaller (which decreases the denominator of t). 
     
     To compute the usual standard error, you need to find the 
-common variance of the groups which is 
+common variance of the groups, which is 
 equal to the population variance of each group 
 if the equal variances assumption is true. 
 In practice, you rarely know the population variances of the groups, and 
@@ -287,26 +288,26 @@ common variance:
     \begin{equation}
     s_{\overline{x}_1-\overline{x}_2} = \sqrt{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}
     \end{equation}
-Additionally, Welch's t test uses a complicated formula to compute the df: 
+Additionally, Welch's t test uses a complicated formula to compute the degrees of freedom: 
     \begin{equation}
     df = \frac{(\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2})^2}{\frac{(s_1^2)^2}{n_1^2(n_1-1)} + \frac{(s_2^2)^2}{n_2^2(n_2-1)}}
     \end{equation}
-The important thing to know is the formula decreases the df to the extent that the group
-variances differ. It can also produce a df value that is not an integer.
+The important thing to know is the formula decreases the degrees of freedom to the extent that the group
+variances differ. It can also produce a degrees of freedom value that is not an integer.
 
-Due to these differences in the standard errors and df, Student's and Welch's t tests can disagree about whether the group means are different. Because Welch's t test decreases the df, it might be more conservative. If Student's t test finds 
+Due to these differences in the standard errors and degrees of freedom, Student's and Welch's t tests can disagree about whether the group means are different. Because Welch's t test decreases the degrees of freedom, it might be more conservative. If Student's t test finds 
 too many false positives when variances are unequal, this could make Welch's t test the better choice. But if Welch's t test is not powerful enough to detect true 
 effects, this could 
 make it the worse choice. 
         
     However, Welch's t test might not always be more conservative. The power of 
-the two tests is not only based on the df, but also on the 
+the two tests is not only based on the degrees of freedom, but also on the 
 standard error, and Welch's t test could be more powerful than 
 Student's when its standard error is smaller.
     
     How do you decide which test to use? The typical approach is to use 
 Student's t test unless you have evidence that the variances are unequal. The challenge is how to find that evidence. 
-Our goal is to find a simple strategy for researchers to decide which test to use. We discuss two decision strategies in the main text---using a statistical test of the equal variances assumption and visually examining the data with boxplots---and one decision strategy in the supplemental materials---comparing the df of the two t tests. Then we use Monte Carlo simulations to empirically determine when each test performs best.
+Our goal is to find a simple strategy for researchers to decide which test to use. We discuss two decision strategies in the main text---using a statistical test of the equal variances assumption and visually examining the data with boxplots---and one decision strategy in the supplemental materials---comparing the degrees of freedom of the two t tests. Then we use Monte Carlo simulations to empirically determine when each test performs best.
 
     Before we proceed, we note that aside from Welch's t test, there have been Bayesian approaches 
 to comparing groups with equal or unequal variances \cite{Box1973, Kruschke2013}. Our purpose is to inform decisions about how to use 
@@ -344,22 +345,22 @@ studies \cite{Zimmerman1996,Zimmerman2004}.
     A second way to decide which test to use is to visualize the data using boxplots and make a judgment 
 about whether the variances appear to differ.  With smaller samples, you 
 can tolerate larger apparent differences and still conclude the variances are equal. You can enhance this strategy by 
-simulating data that have the sample sample sizes as the real data, changing whether the variances are equal or not, 
-and checking if the boxplots from the real data look like the boxplots of 
-simulations with equal variances. 
+simulating data that have the same sample sizes as the real data, changing whether the variances are equal or not, 
+and checking if the boxplots from the real data look more like the boxplots of 
+simulations with equal variances or of simulations with unequal variances. 
 
-    Figure 1 displays five sample boxplots from groups with equal 
+    Figure 1 displays sample boxplots where two groups have equal 
 variances (top) and where one group has five times the variance of the other (bottom), and where each group has $n$ = 20 (first rows) or $n$ = 
 100 (second rows). 
 
-  When the 
-sample sizes are smaller it's typical to see 
+  With smaller 
+sample sizes it's typical to see 
 variability in the spread of the groups. When the population 
 variances are equal,
 sometimes the spread of the groups appears almost equal (as it should), 
 and other times it appears to differ. When the population variances are unequal, the group with the larger variance (to the right) is generally more spread out, but sometimes the spread of the groups looks similar.
 
-In contrast, when sample sizes are larger there is more 
+In contrast, with larger sample sizes there is more 
 consistency in the boxplots Smaller differences in the spread of the groups 
 might be a sign that the population variances differ. Using boxplots
 to decide which test to use
@@ -368,7 +369,7 @@ especially when sample sizes are small.
 
    
 \begin{figure}[!ht]
-<<boxplots, echo = FALSE, fig = TRUE>>=
+<<boxplots, echo = FALSE, fig = TRUE, height = 8>>=
 
 # Boxplots (equal variances) ----
 
@@ -462,7 +463,7 @@ vun_bplots_n20 <- lapply(1:4, function(x) {
                    y = c(
                      rnorm(n = 20, mean = 6, sd = sqrt(2)),
                      rnorm(n = 20, mean = 7.13, sd = sqrt(10))
-                   )
+                   ) 
                  )
                  
                  ggplot(plot_data, aes(x = group, y = y, linetype = group)) +
@@ -470,7 +471,8 @@ vun_bplots_n20 <- lapply(1:4, function(x) {
                    labs(x = NULL, y = NULL) +
                    theme(
                      axis.text = element_blank(),
-                     axis.ticks = element_blank()
+                     axis.ticks = element_blank(),
+                     panel.grid = element_blank()
                    )
 })
 
@@ -494,21 +496,54 @@ vun_bplots_n100 <- lapply(1:4, function(x) {
 
 # Print boxplots ---- 
 
+# sample size labels
+label_20 <- ggplot() + 
+  geom_text(aes(x = 50, y = 50, label = "italic('n')*s == 20"), size = 4, parse = TRUE) + 
+  coord_cartesian(ylim = c(40, 60), xlim = c(40, 60)) + 
+  theme(
+    line = element_blank(), 
+    rect = element_blank(), 
+    text = element_blank()
+    )
+
+label_100 <- ggplot() + 
+  geom_text(aes(x = 50, y = 50, label = "italic('n')*s == 100"), size = 4, parse = TRUE) + 
+  coord_cartesian(ylim = c(40, 60), xlim = c(40, 60)) + 
+  theme(
+    line = element_blank(), 
+    rect = element_blank(), 
+    text = element_blank()
+    )
+
 # prep for printing
-ve_distributions <- plot_grid(NULL, ve_distributions, NULL, rel_widths = c(1, 2, 1), nrow = 1)
-ve_bplots <- plot_grid(plotlist = c(ve_bplots_n20, ve_bplots_n100), nrow = 2)
-vun_distributions <- plot_grid(NULL, vun_distributions, NULL, rel_widths = c(1, 2, 1), nrow = 1)
-vun_bplots <- plot_grid(plotlist = c(vun_bplots_n20, vun_bplots_n100), nrow = 2)
+ve_distributions <- plot_grid(NULL, NULL, ve_distributions, NULL, rel_widths = c(2, 3, 6, 3), nrow = 1)
+ve_bplots <- plot_grid(
+  plotlist = c(
+    append(ve_bplots_n20, list(label_20), after = 0),
+    append(ve_bplots_n100, list(label_100), after = 0)
+    ),
+  nrow = 2,
+  rel_widths = c(2, 3, 3, 3, 3)
+  )
+vun_distributions <- plot_grid(NULL, NULL, vun_distributions, NULL, rel_widths = c(2, 3, 6, 3), nrow = 1)
+vun_bplots <- plot_grid(
+  plotlist = c(
+    append(vun_bplots_n20, list(label_20), after = 0),
+    append(vun_bplots_n100, list(label_100), after = 0)
+    ),
+  nrow = 2,
+  rel_widths = c(2, 3, 3, 3, 3)
+  )
+
 
 # combine into one grid
-full_bplots <- plot_grid(ve_distributions, ve_bplots, vun_distributions, vun_bplots, nrow = 4)
+full_bplots <- plot_grid(ve_distributions, ve_bplots, vun_distributions, vun_bplots, nrow = 4, rel_heights = c(2, 3, 2, 3))
 
 full_bplots
 @
 
-\textit{Figure 1.} Five sample boxplots for groups with equal variances (top) and unequal 
-variances (bottom). For each set of boxplots, the first row displays groups 
-with $n$=20 and the second row displays groups with $n$=100.
+\textit{Figure 1.} Boxplots from simulations of groups with equal variances (top) and unequal 
+variances (bottom).
 \end{figure}
 
 \subsection{When Does Each Test Perform Best?}
@@ -1251,11 +1286,11 @@ rule is to always use Welch's t test to compare the means of independent groups,
     
     The simulations demonstrated that when the population 
 variances or sample sizes were equal, using Welch's t test instead of Student's 
-didn't hurt. Figure 1 shows the Welch's t test df could 
+didn't hurt. Figure 1 shows the Welch's t test degrees of freedom could 
 drop below 70\% of Student's when only the variances 
 ratio or only the sample sizes were unequal, but the simulated false positive rates, 
 power, and coverage probabilities of the two tests were almost identical under 
-these conditions. The difference in the df had a 
+these conditions. The difference in the degrees of freedom had a 
 negligible effect on the outcomes. 
     
     More important was the standard error, which 
