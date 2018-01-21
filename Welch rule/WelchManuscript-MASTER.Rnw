@@ -3,6 +3,13 @@
 %following looks like a journal printout; need to comment out previous line
 %\documentclass[jou,noextraspace,apacite]{apa6}
 \usepackage{apacite}
+\usepackage{setspace}
+\usepackage{listings}
+\lstset{
+basicstyle=\small\ttfamily,
+columns=flexible,
+breaklines=true
+}
 
 \title{Use Welch's \textit{t} Test to Compare the Means of Independent Groups}
 \shorttitle{Welch t Test}
@@ -567,9 +574,9 @@ Sample size did not affect the comparative performance of the two tests, so in t
 Some prior research has examined the 
 false positive rate \cite{Boneau1960, Zimmerman1993, 
 Zimmerman2004, Zimmerman1996, Zimmerman2009} and
-power of the two tests when comparing two groups, though not with the complete configuration of 
-conditions that we examined \cite{Neuhauser2002, 
-Zimmerman1993}. Nevertheless, it will be informative to display 
+power of the two tests when comparing two groups \cite{Neuhauser2002, 
+Zimmerman1993}, though not with the complete configuration of 
+conditions that we examined. Nevertheless, it will be informative to display 
 the false positives and power of the two tests here. We also discuss 
 implications for estimating effect sizes, which follows from the false positive
 results but has not, to our knowledge, been discussed explicitly in past 
@@ -1027,8 +1034,8 @@ you don't have to worry about sacrificing concerns with false positives.
 \subsubsection{Coverage Probability}
 We used 95\% confidence intervals constructed using Student's and Welch's t 
 tests to find their relative coverage probability, the proportion of confidence intervals 
-that contain the population value of the estimated parameter, which is the 
-difference in group means in this case. By 
+that contain the population value of the estimated parameter, which in this case is the 
+difference in group means. By 
 definition,  the expected coverage probability of 95\% confidence intervals  is .95. 
 % Because the coverage 
 % probability of a confidence interval is not influenced by the effect size, we 
@@ -1286,10 +1293,10 @@ rule is to always use Welch's t test to compare the means of independent groups,
     
     The simulations demonstrated that when the population 
 variances or sample sizes were equal, using Welch's t test instead of Student's 
-didn't hurt. Figure 1 shows the Welch's t test degrees of freedom could 
-drop below 70\% of Student's when only the variances 
-ratio or only the sample sizes were unequal, but the simulated false positive rates, 
-power, and coverage probabilities of the two tests were almost identical under 
+didn't hurt. Though the degrees of freedom from Welch's t test can 
+drop substantially below Student's when only the variances 
+or only the sample sizes are unequal (see Figure S1), the simulated false positive rates, 
+power, and coverage probabilities were almost identical under 
 these conditions. The difference in the degrees of freedom had a 
 negligible effect on the outcomes. 
     
@@ -1301,10 +1308,10 @@ generally agree with each other. However, when both the variances and the
 sample sizes are unequal, the pooled standard error of Student's t test gives 
 more weight to the larger group \cite<e.g.,>{Coombs1996,Zimmerman2009}; if that group has the larger 
 variance, Student's t test becomes more conservative, but if it
-has the smaller variance, Student's t test becomes more liberal. In 
+has the smaller variance, Student's t test becomes more liberal. This is why the false positive 
+rate and coverage probability varied widely for Student's t test. In 
 contrast, Welch's t test was more stable, regardless of which group had the 
-larger variance. This is why the false positive 
-rate and coverage probability varied widely for Student's t test.
+larger variance. 
     
     The biggest benefit of Student's t test was that it had more power when the larger sample had the smaller 
 variance---yet under these same conditions, it had an inflated false positive
@@ -1336,8 +1343,8 @@ for effect size estimation. Some have called for researchers to report
 effect sizes and confidence intervals to address limitations of 
 merely reporting significance tests. It is important to remember 
 that effect size estimation also involves assumptions about group variances.
-We found that using Student's t test to find the confidence
-interval for the difference in group means, which assumes equal variances, led to 
+We found that constructing confidence intervals for the difference in group means with Student's t test,
+which assumes equal variances, led to 
  unstable estimates. Under some conditions, the confidence intervals were 
 less accurate than expected because they were too narrow, and under other 
 conditions, they were more accurate than expected because they were too wide. 
@@ -1345,7 +1352,7 @@ Using Welch's t test, which does not assume equal variances, led
 to more stable estimates across conditions.
     
     Cohen's d \cite{Cohen1992} is the most popular effect size for reporting 
-the difference in two group means, but it assumes equal variances. Cohen's d standardizes the difference in means based on a 
+the difference in group means, but it assumes equal variances. Cohen's d standardizes the difference in means based on a 
 common standard deviation of the population. This common standard deviation
 is just the square root of the pooled variance from Student's t test.
 But when the group variances are unequal, there is no common standard deviation. 
@@ -1391,12 +1398,237 @@ in our simulations, this approach will lead to better decision-making when
 it comes to analyzing data. 
 
 Our discussion began with the relatively simple case of testing the means from two independent groups with normally distributed data.
-But we expanded this discussion to demonstrate that the implications generalize to more complex designs, such as interactions in a 2 x 2 factorial design.
-The simulations show the pattern is not straightforward and depends on combinations of which group has the larger sample size and which group has the larger variance.  For between-groups contrasts, we arrived at a simple conclusion: on balance, when considering the false positive rate, power, and effect size estimation, an efficient strategy is to always uses the Welch t test. As the study design becomes more complicated, such as with repeated measures, random effect models, or non-normally distributed data, the story will likely be more complicated. As a field we should move toward analysis strategies that have fewer moving parts so they can be described easily in a scientific report or preregistration plan, and  provide robust estimates.
+But our simulations demonstrate that the implications generalize to more complex designs, such as interactions in a 2 x 2 factorial design.
+For between-groups contrasts, with two groups or more, we arrived at a simple conclusion: on balance, when considering the false positive rate, power, and effect size estimation, an efficient strategy is to always uses Welch's t test. As the study design becomes more complicated, such as with repeated measures, random effect models, or non-normally distributed data, the story will likely be more complicated. As a field we should move toward analysis strategies that have fewer moving parts so they can be described easily in a scientific report or preregistration plan, and  provide robust estimates.
 
 
 
 \bibliography{bibliography}
 \bibliographystyle{apacite}
+
+\appendix
+\section{Welch t test contrasts for R}
+
+In R, you can use the following function to compute group contrasts based on Welch's t test. There is an example of how to use it below.
+
+\subsection{Function}
+
+\begin{small}
+\begin{singlespace}
+\begin{lstlisting}
+welch_contrast <- function(..., data = NULL, dv, groups) {
+  
+  # assign dv and groups if they're in a dataframe
+  if(!is.null(data)) {
+    dv <- eval(substitute(dv), data)
+    groups <- eval(substitute(groups), data)
+  }
+  
+  # make sure contrasts are numeric
+  if (!is.numeric(c(...))) {
+    return('All contrasts must be numeric')
+  }
+  
+  # make sure length of contrasts is correct
+    contrast_lengths <- lapply(list(...), length)
+    unique_lengths <- unique(contrast_lengths)
+  
+    # are contrasts the same length as each other?
+    if(length(unique_lengths) != 1) { 
+      return('All contrasts must be the same length')
+    }
+    
+    # are contrasts the same length as the number of groups?
+    if (unique_lengths != length(unique(groups))) { 
+      return(
+        cat(
+          'Contrasts must be the same length as the number of groups: ', 
+          length(unique(groups)), 
+          '. \n\nIf this number seems too large, you might have missing data (NA) in your groups.', 
+          sep = ''
+          )
+      )
+    }
+    
+  # compute group stats
+  means <- by(dv, groups, mean)
+  vars <- by(dv, groups, var)
+  Ns <- by(dv, groups, length)
+  
+  # build contrast matrix and compute contrast values
+  contrast <- matrix(c(...), nrow = length(list(...)), byrow = TRUE)
+  colnames(contrast) <- names(means)
+  rownames(contrast) <- paste0('Contrast ', 1:length(list(...)))
+  ihat <- contrast %*% means
+  
+  # t test
+  df_welch <- (contrast^2 %*% (vars / Ns))^2 / (contrast^2 %*% (vars^2 / (Ns^2 * (Ns - 1))))
+  se_welch <- sqrt(contrast^2 %*% (vars / Ns))
+  t_welch <- ihat/se_welch
+  p_welch <- 2*(1 - pt(abs(t_welch), df_welch))
+  ci_welch <- qt(.025, df = df_welch)
+  lb_welch <- ihat - ci_welch * se_welch
+  ub_welch <- ihat + ci_welch * se_welch
+  
+  # store t test results in a data frame
+  t_test <- data.frame(t = t_welch,
+                       df = df_welch,
+                       p = p_welch,
+                       lb_95CI = lb_welch,
+                       ub_95CI = ub_welch
+  )
+  t_test <- round(t_test, digits = 3)
+  
+  # combine it with the contrast matrix
+  output <- cbind(contrast, t_test)
+  
+  return(output)
+}
+\end{lstlisting}
+
+<<contrast_function, echo = FALSE>>=
+welch_contrast <- function(..., data = NULL, dv, groups) {
+  
+  # assign dv and groups if they're in a dataframe
+  if(!is.null(data)) {
+    dv <- eval(substitute(dv), data)
+    groups <- eval(substitute(groups), data)
+  }
+  
+  # make sure contrasts are numeric
+  if (!is.numeric(c(...))) {
+    return('All contrasts must be numeric')
+  }
+  
+  # make sure length of contrasts is correct
+    contrast_lengths <- lapply(list(...), length)
+    unique_lengths <- unique(contrast_lengths)
+  
+    # are contrasts the same length as each other?
+    if(length(unique_lengths) != 1) { 
+      return('All contrasts must be the same length')
+    }
+    
+    # are contrasts the same length as the number of groups?
+    if (unique_lengths != length(unique(groups))) { 
+      return(
+        cat(
+          'Contrasts must be the same length as the number of groups: ', 
+          length(unique(groups)), 
+          '. \n\nIf this number seems too large, you might have missing data (NA) in your groups.', 
+          sep = ''
+          )
+      )
+    }
+    
+  # compute group stats
+  means <- by(dv, groups, mean)
+  vars <- by(dv, groups, var)
+  Ns <- by(dv, groups, length)
+  
+  # build contrast matrix and compute contrast values
+  contrast <- matrix(c(...), nrow = length(list(...)), byrow = TRUE)
+  colnames(contrast) <- names(means)
+  rownames(contrast) <- paste0('Contrast ', 1:length(list(...)))
+  ihat <- contrast %*% means
+  
+  # t test
+  df_welch <- (contrast^2 %*% (vars / Ns))^2 / (contrast^2 %*% (vars^2 / (Ns^2 * (Ns - 1))))
+  se_welch <- sqrt(contrast^2 %*% (vars / Ns))
+  t_welch <- ihat/se_welch
+  p_welch <- 2*(1 - pt(abs(t_welch), df_welch))
+  ci_welch <- qt(.025, df = df_welch)
+  lb_welch <- ihat - ci_welch * se_welch
+  ub_welch <- ihat + ci_welch * se_welch
+  
+  # store t test results in a data frame
+  t_test <- data.frame(t = t_welch,
+                       df = df_welch,
+                       p = p_welch,
+                       lb_95CI = lb_welch,
+                       ub_95CI = ub_welch
+  )
+  t_test <- round(t_test, digits = 3)
+  
+  # combine it with the contrast matrix
+  output <- cbind(contrast, t_test)
+  
+  return(output)
+}
+@
+\end{singlespace}
+\end{small}
+
+\subsection{Arguments}
+\begin{small}
+\begin{singlespace}
+\begin{lstlisting}
+welch_contrast(data = NULL, dv, groups, ...)
+
+data: The dataframe where the dependent variable and groups are stored (optional)
+dv: The dependent variable
+groups: The group variable
+...: Any number of vectors with numeric contrasts, separated by commas, e.g., c(1, -1, 0, 0), c(-1, 0, 1, 0)
+\end{lstlisting}
+\end{singlespace}
+\end{small}
+
+\subsection{Examples}
+\begin{small}
+\begin{singlespace}
+\begin{lstlisting}
+# generate data
+set.seed(123)
+sample_data <- data.frame(
+  y = sample(1:7, size = 200, replace = TRUE),
+  groups = rep(c('A', 'B', 'C', 'D'), each = 50)
+  )
+
+# Example 1  
+# specify data argument
+# one contrast
+welch_contrast(data = sample_data, 
+               dv = y, 
+               groups = groups, 
+               c(-1, 1, 0, 0)
+               )
+\end{lstlisting}
+<<contrast_example1, echo = FALSE, size = 'tiny'>>=
+## Examples
+# generate example data
+set.seed(123)
+sample_data <- data.frame(
+  y = sample(1:7, size = 200, replace = TRUE),
+  groups = rep(c('A', 'B', 'C', 'D'), each = 50)
+  )
+  
+welch_contrast(data = sample_data, 
+               dv = y, 
+               groups = groups, 
+               c(-1, 1, 0, 0)
+               )
+@
+\begin{lstlisting}
+# Example 2
+# don't specify data argument
+# three contrasts
+welch_contrast(dv = sample_data$y, 
+               groups = sample_data$groups, 
+               c(-1, 1, 0, 0),
+               c(-1, 0, 1, 0),
+               c(-1, 0, 0, 1)
+               )
+\end{lstlisting}
+<<contrast_example2, echo = FALSE>>=
+welch_contrast(dv = sample_data$y, 
+               groups = sample_data$groups, 
+               c(-1, 1, 0, 0),
+               c(-1, 0, 1, 0),
+               c(-1, 0, 0, 1)
+               )
+@
+\end{singlespace}
+\end{small}
+
 
 \end{document}
