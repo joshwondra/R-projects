@@ -1,10 +1,19 @@
-\documentclass[man, noextraspace, apacite, floatintext]{apa6}
+\documentclass[man, noextraspace, apacite, floatsintext]{apa6}
 \usepackage{apacite}
+\usepackage{setspace}
+\usepackage{listings}
+\usepackage[section]{placeins}
+
+\lstset{
+basicstyle=\small\ttfamily,
+columns=flexible,
+breaklines=true
+}
 
 \title{Use Welch's \textit{t} Test to Compare the Means of Independent Groups: Supplemental Materials}
 \shorttitle{Welch Supplemental Materials}
-\author{Joshua D. Wondra and Richard Gonzalez}
-\affiliation{Facebook, University of Michigan}
+\twoauthors{Joshua D. Wondra}{Richard Gonzalez}
+\twoaffiliations{Facebook}{University of Michigan}
 
 \begin{document}
 \SweaveOpts{concordance=TRUE}
@@ -121,7 +130,7 @@ cross_int <- bind_rows(
   as.data.frame.table(int.reject.null.v2.1.5n.smalln.bigvar),
   as.data.frame.table(int.reject.null.v2.1.5n.smalln.smallvar),
   as.data.frame.table(int.reject.null.v2.2n.bign.bigvar),
-  as.data.frame.table(int.reject.null.v2.2n.bign.smallvar),
+  as.data.frame.table(int.reject.null.v2.2n.bign.smallvar), 
   as.data.frame.table(int.reject.null.v2.2n.smalln.bigvar),
   as.data.frame.table(int.reject.null.v2.2n.smalln.smallvar),
   as.data.frame.table(int.reject.null.v5.1.5n.bign.bigvar),
@@ -130,7 +139,7 @@ cross_int <- bind_rows(
   as.data.frame.table(int.reject.null.v5.1.5n.smalln.smallvar),
   as.data.frame.table(int.reject.null.v5.2n.bign.bigvar),
   as.data.frame.table(int.reject.null.v5.2n.bign.smallvar),
-  as.data.frame.table(int.reject.null.v5.2n.smalln.bigvar),
+  as.data.frame.table(int.reject.null.v5.2n.smalln.bigvar), 
   as.data.frame.table(int.reject.null.v5.2n.smalln.smallvar)
 ) %>% 
   rename(
@@ -140,8 +149,8 @@ cross_int <- bind_rows(
     rejects = Freq
   ) %>% 
   mutate(
-    var.ratio = rep(c(1, 1, 1, 1, 1, 2, 1/2, 5, 1/5, 2, 1/2, 2, 1/2, 2, 1/2, 2, 1/2, 5, 1/5, 5, 1/5, 5, 1/5, 5, 1/5), each = 12),
-    n.ratio = rep(c(1, 1/1.5, 1.5, 1/2, 2, 1, 1, 1, 1, 1.5, 1.5, 1/1.5, 1/1.5, 2, 2, 1/2, 1/2, 1.5, 1.5, 1/1.5, 1/1.5, 2, 2, 1/2, 1/2), each = 12),
+    var.ratio = rep(c(1, 1, 1, 1, 1, 2, 1/2, 5, 1/5, 2, 1/2, 2, 1/2, 2, 1/2, 2, 1/2, 5, 1/5, 5, 1/5, 5, 1/5, 5, 1/5), each = 24),
+    n.ratio = rep(c(1, 1/1.5, 1.5, 1/2, 2, 1, 1, 1, 1, 1.5, 1.5, 1/1.5, 1/1.5, 2, 2, 1/2, 1/2, 1.5, 1.5, 1/1.5, 1/1.5, 2, 2, 1/2, 1/2), each = 24),
     Ns = case_when(
       n.ratio == 1 & small_n == 'N=20' ~ '20, 20, 20, 20',
       n.ratio == 1 & small_n == 'N=50' ~ '50, 50, 50, 50',
@@ -184,6 +193,119 @@ theme_set(theme_bw())
 
 @
 
+\section{Comparing the Degrees of Freedom of Student's and Welch's t Tests}
+
+    One way to decide which t test to use might be to compare the
+degrees of freedom from Welch's t test to the degrees of freedom from
+Student's t test. When the group variances are equal, the degrees of freedom of the two tests
+are also equal. As the variances become unequal, the degrees of freedom
+of Welch's t test decrease but the degrees of freedom of Student's t test
+stay the same. Although the degrees of freedom of the two tests typically
+differ slightly due to sampling error, 
+once the difference in the degrees of freedom reaches a certain point,
+it might reliably signal that the group variances
+are unequal. For example, perhaps when the Welch's t test degrees of freedom 
+are 95-100\% of the Student's t test degrees of freedom, that difference is what typically appears when variances are equal, but 
+when the Welch's t test degrees of freedom are 90\% or less of the Student's t test degrees of freedom,
+it reliably indicates that the population variances are unequal. 
+
+    We examined whether the ratio of the Welch's t 
+test degrees of freedom from to the Student's t test degrees of freedom 
+could provide a heuristic for deciding that 
+the group variances are unequal and you should use Welch's t test. 
+To our knowledge, this possibility has never
+been examined. We used the analytical formulas for the  
+degrees of freedom from the two tests to see how the degrees of freedom (df) ratio should change as 
+the population variances and the sample sizes of the two groups change (Figure S1).
+
+    The top graph of Figure 1 displays the change in the df ratio as the 
+variance ratio increases when sample sizes are equal. As expected, the ratio 
+decreases as the difference in variances grows larger. When the variances are 
+equal, the df ratio is equal to one. When 
+the variance of one group is double the variance of the other, the ratio drops 
+to .9. A useful heuristic might be to assume that the variances are unequal 
+when the ratio falls below some value, such as  96\%.
+  
+\begin{figure}[!ht]
+<<dfratiosDiffvars, echo=FALSE, collapse=TRUE, fig=TRUE, height=10>>=
+
+load('dfs.list.RData')
+
+df.ratio.Ns <- function(n1, n2, var1, var2) {
+    welch.num <- (var1/n1 + var2/n2)^2
+    welch.denom <- var1^2/(n1^2*(n1-1)) + var2^2/(n2^2*(n2-1))
+    classic.df <- n1+n2-2
+    (welch.num/welch.denom)/classic.df
+}
+
+df.ratio.defaults <- list('n1'=50,'n2'=50,'var1'=2,'var2'=2)
+
+partial.df <- function(var = 'a', params=df.ratio.defaults){
+    params[[var]]=as.name('x')
+    function(x)do.call(df.ratio.Ns, params)
+}
+
+dfchange.var <- ggplot(data.frame(x=seq(2,10,.1)), aes(x)) +
+    stat_function(fun=partial.df(var='var2', 
+params=list('n1'=50,'n2'=50,'var1'=2,'var2'=2))) + #NOTE: the sample sizes 
+#don't affect the df ratio
+    labs(y=bquote(frac('df'['Welch'],'df'['Student'])), 
+x=bquote(frac(sigma[1]^2,sigma[2]^2))) +
+    scale_x_continuous(breaks=c(2,4,6,8,10), labels=c(2,4,6,8,10)/2)
+
+dfchange.Ns <- ggplot(data.frame(x=seq(50,100,.1)), aes(x)) + 
+    stat_function(fun=partial.df(var='n2', 
+params=list('n1'=50,'n2'=50,'var1'=2,'var2'=2))) +
+    labs(y=bquote(frac('df'['Welch'],'df'['Student'])), 
+x=bquote(frac('n'[1],'n'[2]))) +
+    scale_x_continuous(breaks=c(50,60,70,80,90,100), 
+labels=c(50,60,70,80,90,100)/50)
+
+dfchange.both <- ggplot(data.frame(x=seq(2,10,.1)), aes(x)) + 
+    stat_function(fun=partial.df(var='var2', 
+params=list('n1'=75,'n2'=50,'var1'=2,'var2'=2)), aes(linetype = 'n2')) +
+    stat_function(fun=partial.df(var='var2', 
+params=list('n1'=50,'n2'=75,'var1'=2,'var2'=2)), aes(linetype = 'n1/2')) +
+    scale_linetype_manual(name = 'Sample size ratio',
+                        values=c('solid', 'dashed'), 
+                        labels=c(bquote(frac('n'[1],'n'[2])~'='~frac(3,2)), 
+                                 bquote(frac('n'[1],'n'[2])~'='~frac(2,3)))
+                        ) +
+    labs(y=bquote(frac('df'['Welch'],'df'['Student'])), 
+x=bquote(frac(sigma[1]^2,sigma[2]^2))) +
+    scale_x_continuous(breaks=c(2,4,6,8,10), labels=c(2,4,6,8,10)/2)
+
+plot_grid(dfchange.var, dfchange.Ns, dfchange.both, nrow = 3)
+
+@
+
+\textit{Figure S1.} Degrees of freedom ratio when sample sizes are equal and 
+variances are unequal (top), when variances are equal and sample sizes are 
+unequal (middle), and when both variances and sample sizes are unequal (bottom).
+\end{figure}
+
+    But now look at what happens when the variances are equal and the sample 
+size ratio changes (middle graph of Figure S1). Even though the variances stay 
+the same, the df ratio decreases as the difference in sample sizes grows 
+larger. The 96\% heuristic would lead you astray and you would incorrectly 
+conclude that the variances are unequal when only the sample sizes are unequal.
+
+    The picture becomes even more complicated when both the sample sizes and 
+the variances are unequal (bottom of Figure S1). In this case, the effect of 
+different variances on the df ratio depends on whether the larger group has the 
+larger variance or the smaller variance. As the variance of the smaller group 
+increases, the immediate drop in the df ratio is quite dramatic before it 
+begins to level off. However, as the variance of the larger group increases, 
+the move from equal to unequal variances actually counteracts the effect of 
+unequal sample sizes at first, and the df ratio approaches one before it drops 
+again. Due to the difference in sample sizes, a 96\% heuristic could mislead you 
+into concluding that variances are equal when they are actually 2-3 times 
+different from each other.
+
+In short, a heuristic based on the df ratio would only be useful when the sample sizes are equal.
+
+
+\clearpage
 \section{False Positives: All Conditions}
 <<false positive plots, echo = FALSE>>=
 
@@ -232,7 +354,7 @@ falsepos_int_smalln <- ggplot(filter(cross_int, effect == 'd=0', !(n.ratio %in% 
                                   '100, 100, 100, 100',
                                   '100, 150, 150, 150',
                                   '100, 200, 200, 200'),
-                       values = rep(c(1, 0, 5), times = 3)
+                       values = rep(c(1, 2, 0), times = 3)
                        ) +
     geom_line(size = .5) + 
     scale_linetype_manual(name = 'Sample sizes \nGroup 1, 2, 3, 4',
@@ -275,7 +397,7 @@ falsepos_int_bign <- ggplot(filter(cross_int, effect == 'd=0', !(n.ratio %in% c(
                                   '100, 100, 100, 100',
                                   '150, 100, 100, 100',
                                   '200, 100, 100, 100'),
-                       values = rep(c(1, 16, 18), times = 3)
+                       values = rep(c(1, 2, 0), times = 3)
                        ) +
     geom_line(size = .5) + 
     scale_linetype_manual(name = 'Sample sizes \nGroup 1, 2, 3, 4',
@@ -317,13 +439,320 @@ plottype1 <- plot_grid(falsepos_two, falsepos_int_smalln, falsepos_int_bign, nro
 plottype1
 @
 
-\textit{Figure S1.} False positive rates for Student's t test and Welch's t test 
+\textit{Figure S2.} False positive rates for Student's t test and Welch's t test 
 as the variance ratio, sample size ratio, and sample sizes vary.
 \end{figure}
 
+\clearpage
 \section{Power: All Conditions}
+\subsection{Small Effect (d = .2)}
+<<power medium effect, echo = FALSE>>=
 
-<<power plots, echo = FALSE>>=
+# Power plot (two groups) ----
+power_two <- ggplot(filter(two_groups, effect == 'd=.2'), 
+       aes(x = as.factor(var.ratio), y = rejects, ymin = 0, ymax = 1, group = Ns, shape = Ns, linetype = Ns)) + 
+    geom_point(size = 4) + 
+    scale_shape_manual(name = 'Sample sizes \nGroup 1, 2',
+                       labels = c('20, 20', '20, 30', '20, 40',
+                                     '50, 50', '50, 75', '50, 100',
+                                     '100, 100', '100, 150', '100, 200'),
+                       values = rep(c(1, 2, 0), times = 3)) +
+    geom_line(size = .5) + 
+    scale_linetype_manual(name = 'Sample sizes \nGroup 1, 2',
+                          labels = c('20, 20', '20, 30', '20, 40',
+                                     '50, 50', '50, 75', '50, 100',
+                                     '100, 100', '100, 150', '100, 200'),
+                          values=rep(c('dotted', 'dashed', 'solid'), each = 3)
+                          ) +
+    scale_x_discrete(labels = factor(c('1/5', '1/2', '1', '2', '5'))) +
+    scale_y_continuous(breaks = seq(0, 1, .10), minor_breaks = seq(0, 1, .01)) +
+    labs(
+      x = bquote(frac(sigma[1]^2, sigma[2]^2)),
+      y = 'Power',
+      title = 'Two groups'
+      ) +
+    facet_grid(. ~ test) +
+    theme(
+      panel.grid = element_blank(),
+#      panel.grid.minor.y = element_line(color = 'gray90'),
+      panel.grid.major.y = element_line(color = 'gray80')
+      )
+
+
+# Power plot (interaction, one group has small n) ----
+power_int_smalln <- ggplot(filter(cross_int, effect == 'd=.2', !(n.ratio %in% c(1.5, 2))), 
+       aes(x = as.factor(var.ratio), y = rejects, ymin = 0, ymax = 1, group = Ns, shape = Ns, linetype = Ns)) + 
+    geom_point(size = 4) + 
+    scale_shape_manual(name = 'Sample sizes \nGroup 1, 2, 3, 4',
+                       labels = c('20, 20, 20, 20',
+                                  '20, 30, 30, 30',
+                                  '20, 40, 40, 40',
+                                  '50, 50, 50, 50',
+                                  '50, 75, 75, 75',
+                                  '50, 100, 100, 100',
+                                  '100, 100, 100, 100',
+                                  '100, 150, 150, 150',
+                                  '100, 200, 200, 200'),
+                       values = rep(c(1, 2, 0), times = 3)
+                       ) +
+    geom_line(size = .5) + 
+    scale_linetype_manual(name = 'Sample sizes \nGroup 1, 2, 3, 4',
+                          labels = c('20, 20, 20, 20',
+                                  '20, 30, 30, 30',
+                                  '20, 40, 40, 40',
+                                  '50, 50, 50, 50',
+                                  '50, 75, 75, 75',
+                                  '50, 100, 100, 100',
+                                  '100, 100, 100, 100',
+                                  '100, 150, 150, 150',
+                                  '100, 200, 200, 200'),
+                          values = rep(c('dotted', 'dashed', 'solid'), each = 3)
+                          ) +
+    scale_x_discrete(labels = factor(c('1/5', '1/2', '1', '2', '5'))) +
+    scale_y_continuous(breaks = seq(0, 1, .10), minor_breaks = seq(0, 1, .01)) +
+    labs(
+      x = bquote(frac(sigma[1]^2,{sigma[2]^2 == sigma[3]^2} == sigma[4]^2)),
+      y = 'Power',
+      title = 'Crossover interaction - Group 1 has small sample'
+      ) +
+    facet_grid(. ~ test) +
+    theme(
+      panel.grid = element_blank(),
+#      panel.grid.minor.y = element_line(color = 'gray90'),
+      panel.grid.major.y = element_line(color = 'gray80')
+      )
+
+# Power plot (interaction, one group has large n) ----
+power_int_bign <- ggplot(filter(cross_int, effect == 'd=.2', !(n.ratio %in% c(1/1.5, 1/2))), 
+       aes(x = as.factor(var.ratio), y = rejects, ymin = 0, ymax = 1, group = Ns, shape = Ns, linetype = Ns)) + 
+    geom_point(size = 4) + 
+    scale_shape_manual(name = 'Sample sizes \nGroup 1, 2, 3, 4',
+                       labels = c('20, 20, 20, 20',
+                                  '30, 20, 20, 20',
+                                  '40, 20, 20, 20',
+                                  '50, 50, 50, 50',
+                                  '75, 50, 50, 50',
+                                  '100, 50, 50, 50',
+                                  '100, 100, 100, 100',
+                                  '150, 100, 100, 100',
+                                  '200, 100, 100, 100'),
+                       values = rep(c(1, 2, 0), times = 3)
+                       ) +
+    geom_line(size = .5) + 
+    scale_linetype_manual(name = 'Sample sizes \nGroup 1, 2, 3, 4',
+                          labels = c('20, 20, 20, 20',
+                                  '30, 20, 20, 20',
+                                  '40, 20, 20, 20',
+                                  '50, 50, 50, 50',
+                                  '75, 50, 50, 50',
+                                  '100, 50, 50, 50',
+                                  '100, 100, 100, 100',
+                                  '150, 100, 100, 100',
+                                  '200, 100, 100, 100'),
+                          values = rep(c('dotted', 'dashed', 'solid'), each = 3)
+                          ) +
+    scale_x_discrete(labels = factor(c('1/5', '1/2', '1', '2', '5'))) +
+    scale_y_continuous(breaks = seq(0, 1, .10), minor_breaks = seq(0, 1, .01)) +
+    labs(
+      x = bquote(frac(sigma[1]^2,{sigma[2]^2 == sigma[3]^2} == sigma[4]^2)),
+      y = 'Power',
+      title = 'Crossover interaction - Group 1 has large sample'
+      ) +
+    facet_grid(. ~ test) +
+    theme(
+      panel.grid = element_blank(),
+#      panel.grid.minor.y = element_line(color = 'gray90'),
+      panel.grid.major.y = element_line(color = 'gray80')
+      )
+
+@
+
+<<power difference, echo = FALSE>>=
+
+# Power difference data (two groups) ----
+classic_rejects_two <- two_groups %>% 
+  filter(test == "Student's t test") %>% 
+  select(-test) %>% 
+  rename(classic_rejects = rejects)
+
+welch_rejects_two <- two_groups %>% 
+  filter(test == "Welch's t test") %>% 
+  select(-test) %>% 
+  rename(welch_rejects = rejects)
+
+power_diff_two <- full_join(x = classic_rejects_two, y = welch_rejects_two) %>% 
+  filter(effect != 'd=0') %>% 
+  mutate(
+    effect = str_replace(effect, '=', ' = '),
+    diff_rejects = classic_rejects - welch_rejects,
+    test = 'Student - Welch'
+    )
+
+# Power difference data (interaction) ----
+classic_rejects_int <- cross_int %>% 
+  filter(test == "Student's t test") %>% 
+  select(-test) %>% 
+  rename(classic_rejects = rejects)
+
+welch_rejects_int <- cross_int %>% 
+  filter(test == "Welch's t test") %>% 
+  select(-test) %>% 
+  rename(welch_rejects = rejects)
+
+power_diff_int <- full_join(x = classic_rejects_int, y = welch_rejects_int) %>% 
+  filter(effect != 'd=0') %>% 
+  mutate(
+    effect = str_replace(effect, '=', ' = '),
+    diff_rejects = classic_rejects - welch_rejects,
+    test = 'Student - Welch'
+    )
+
+# Power difference plot (two groups) ----
+diff_plot_two <- ggplot(filter(power_diff_two, effect == 'd = .5'), 
+       aes(x = as.factor(var.ratio), y = diff_rejects, ymin = -.3, ymax = .3, group = Ns, shape = Ns, linetype = Ns)) + 
+    geom_point(size = 4) + 
+    scale_shape_manual(name = 'Sample sizes \nGroup 1, 2',
+                       labels = c('20, 20', '20, 30', '20, 40',
+                                     '50, 50', '50, 75', '50, 100',
+                                     '100, 100', '100, 150', '100, 200'),
+                       values = rep(c(1, 2, 0), times = 3)) +
+    geom_line(size = .5) + 
+    scale_linetype_manual(name = 'Sample sizes \nGroup 1, 2',
+                          labels = c('20, 20', '20, 30', '20, 40',
+                                     '50, 50', '50, 75', '50, 100',
+                                     '100, 100', '100, 150', '100, 200'),
+                          values=rep(c('dotted', 'dashed', 'solid'), each = 3)
+                          ) +
+    scale_x_discrete(labels = factor(c('1/5', '1/2', '1', '2', '5'))) +
+    scale_y_continuous(breaks = seq(-.30, .30, .10), minor_breaks = seq(-.30, .30, .01), labels = round(seq(-.30, .30, .10), digits = 2)) +
+    labs(
+      x = bquote(frac(sigma[1]^2, sigma[2]^2)),
+      y = 'Difference in \nPower',
+      title = ' '
+      ) +
+    facet_grid(. ~ test) +
+    theme(
+      panel.grid = element_blank(),
+#      panel.grid.minor.y = element_line(color = 'gray90'),
+      panel.grid.major.y = element_line(color = 'gray80')
+      )
+
+
+# Power difference plot (interaction, one group has small n) ----
+diff_plot_int_smalln <- ggplot(filter(power_diff_int, effect == 'd = .5', !(n.ratio %in% c(1.5, 2))), 
+       aes(x = as.factor(var.ratio), y = diff_rejects, ymin = -.3, ymax = .3, group = Ns, shape = Ns, linetype = Ns)) + 
+    geom_point(size = 4) + 
+    scale_shape_manual(name = 'Sample sizes \nGroup 1, 2, 3, 4',
+                       labels = c('20, 20, 20, 20',
+                                  '20, 30, 30, 30',
+                                  '20, 40, 40, 40',
+                                  '50, 50, 50, 50',
+                                  '50, 75, 75, 75',
+                                  '50, 100, 100, 100',
+                                  '100, 100, 100, 100',
+                                  '100, 150, 150, 150',
+                                  '100, 200, 200, 200'),
+                       values = rep(c(1, 2, 0), times = 3)
+                       ) +
+    geom_line(size = .5) + 
+    scale_linetype_manual(name = 'Sample sizes \nGroup 1, 2, 3, 4',
+                          labels = c('20, 20, 20, 20',
+                                  '20, 30, 30, 30',
+                                  '20, 40, 40, 40',
+                                  '50, 50, 50, 50',
+                                  '50, 75, 75, 75',
+                                  '50, 100, 100, 100',
+                                  '100, 100, 100, 100',
+                                  '100, 150, 150, 150',
+                                  '100, 200, 200, 200'),
+                          values = rep(c('dotted', 'dashed', 'solid'), each = 3)
+                          ) +
+    scale_x_discrete(labels = factor(c('1/5', '1/2', '1', '2', '5'))) +
+    scale_y_continuous(breaks = seq(-.30, .30, .10), minor_breaks = seq(-.30, .30, .01), labels = round(seq(-.30, .30, .10), digits = 2)) +
+    labs(
+      x = bquote(frac(sigma[1]^2, sigma[2]^2)),
+      y = 'Difference in \nPower',
+      title = ' '
+      ) +
+    facet_grid(. ~ test) +
+    theme(
+      panel.grid = element_blank(),
+#      panel.grid.minor.y = element_line(color = 'gray90'),
+      panel.grid.major.y = element_line(color = 'gray80')
+      )
+
+
+
+# Power difference plot (interaction, one group has small n) ----
+diff_plot_int_bign <- ggplot(filter(power_diff_int, effect == 'd = .5', !(n.ratio %in% c(1/1.5, 1/2))), 
+       aes(x = as.factor(var.ratio), y = diff_rejects, ymin = -.3, ymax = .3, group = Ns, shape = Ns, linetype = Ns)) + 
+    geom_point(size = 4) + 
+    scale_shape_manual(name = 'Sample sizes \nGroup 1, 2, 3, 4',
+                       labels = c('20, 20, 20, 20',
+                                  '30, 20, 20, 20',
+                                  '40, 20, 20, 20',
+                                  '50, 50, 50, 50',
+                                  '75, 50, 50, 50',
+                                  '100, 50, 50, 50',
+                                  '100, 100, 100, 100',
+                                  '150, 100, 100, 100',
+                                  '200, 100, 100, 100'),
+                       values = rep(c(1, 2, 0), times = 3)
+                       ) +
+    geom_line(size = .5) + 
+    scale_linetype_manual(name = 'Sample sizes \nGroup 1, 2, 3, 4',
+                          labels = c('20, 20, 20, 20',
+                                  '30, 20, 20, 20',
+                                  '40, 20, 20, 20',
+                                  '50, 50, 50, 50',
+                                  '75, 50, 50, 50',
+                                  '100, 50, 50, 50',
+                                  '100, 100, 100, 100',
+                                  '150, 100, 100, 100',
+                                  '200, 100, 100, 100'),
+                          values = rep(c('dotted', 'dashed', 'solid'), each = 3)
+                          ) +
+    scale_x_discrete(labels = factor(c('1/5', '1/2', '1', '2', '5'))) +
+    scale_y_continuous(breaks = seq(-.30, .30, .10), minor_breaks = seq(-.30, .30, .01), labels = round(seq(-.30, .30, .10), digits = 2)) +
+    labs(
+      x = bquote(frac(sigma[1]^2, sigma[2]^2)),
+      y = 'Difference in \nPower',
+      title = ' '
+      ) +
+    facet_grid(. ~ test) +
+    theme(
+      panel.grid = element_blank(),
+#      panel.grid.minor.y = element_line(color = 'gray90'),
+      panel.grid.major.y = element_line(color = 'gray80')
+      )
+
+# Print power plots ----
+
+power_plots <- plot_grid(
+  power_two + guides(shape = FALSE, linetype = FALSE), 
+  diff_plot_two, 
+
+  power_int_smalln + guides(shape = FALSE, linetype = FALSE), 
+  diff_plot_int_smalln, 
+
+  power_int_bign + guides(shape = FALSE, linetype = FALSE), 
+  diff_plot_int_bign, 
+  nrow = 3
+  )
+@
+
+\begin{figure}[!ht]
+
+<<PowerPlots, echo = FALSE,  collapse = TRUE, fig = TRUE, width = 8, height = 11>>=
+power_plots
+@
+
+\textit{Figure S4.} Power of Student's and Welch's t tests to detect a medium effect.
+\end{figure}
+
+\clearpage
+\subsection{Medium Effect (d = .5)}
+<<power medium effect, echo = FALSE>>=
 
 # Power plot (two groups) ----
 power_two <- ggplot(filter(two_groups, effect == 'd=.5'), 
@@ -603,10 +1032,7 @@ diff_plot_int_bign <- ggplot(filter(power_diff_int, effect == 'd = .5', !(n.rati
       panel.grid.major.y = element_line(color = 'gray80')
       )
 
-@
-
-\begin{figure}[!ht]
-<<PowerPlots, echo = FALSE,  collapse = TRUE, fig = TRUE, width = 8, height = 11>>=
+# Print power plots ----
 
 power_plots <- plot_grid(
   power_two + guides(shape = FALSE, linetype = FALSE), 
@@ -619,16 +1045,324 @@ power_plots <- plot_grid(
   diff_plot_int_bign, 
   nrow = 3
   )
+@
 
+\begin{figure}[!ht]
+
+<<PowerPlots, echo = FALSE,  collapse = TRUE, fig = TRUE, width = 8, height = 11>>=
 power_plots
+@
+
+\textit{Figure S4.} Power of Student's and Welch's t tests to detect a medium effect.
+\end{figure}
+
+\clearpage
+\subsection{Large Effect (d = .8)}
+<<power medium effect, echo = FALSE>>=
+
+# Power plot (two groups) ----
+power_two <- ggplot(filter(two_groups, effect == 'd=.8'), 
+       aes(x = as.factor(var.ratio), y = rejects, ymin = 0, ymax = 1, group = Ns, shape = Ns, linetype = Ns)) + 
+    geom_point(size = 4) + 
+    scale_shape_manual(name = 'Sample sizes \nGroup 1, 2',
+                       labels = c('20, 20', '20, 30', '20, 40',
+                                     '50, 50', '50, 75', '50, 100',
+                                     '100, 100', '100, 150', '100, 200'),
+                       values = rep(c(1, 2, 0), times = 3)) +
+    geom_line(size = .5) + 
+    scale_linetype_manual(name = 'Sample sizes \nGroup 1, 2',
+                          labels = c('20, 20', '20, 30', '20, 40',
+                                     '50, 50', '50, 75', '50, 100',
+                                     '100, 100', '100, 150', '100, 200'),
+                          values=rep(c('dotted', 'dashed', 'solid'), each = 3)
+                          ) +
+    scale_x_discrete(labels = factor(c('1/5', '1/2', '1', '2', '5'))) +
+    scale_y_continuous(breaks = seq(0, 1, .10), minor_breaks = seq(0, 1, .01)) +
+    labs(
+      x = bquote(frac(sigma[1]^2, sigma[2]^2)),
+      y = 'Power',
+      title = 'Two groups'
+      ) +
+    facet_grid(. ~ test) +
+    theme(
+      panel.grid = element_blank(),
+#      panel.grid.minor.y = element_line(color = 'gray90'),
+      panel.grid.major.y = element_line(color = 'gray80')
+      )
+
+
+# Power plot (interaction, one group has small n) ----
+power_int_smalln <- ggplot(filter(cross_int, effect == 'd=.8', !(n.ratio %in% c(1.5, 2))), 
+       aes(x = as.factor(var.ratio), y = rejects, ymin = 0, ymax = 1, group = Ns, shape = Ns, linetype = Ns)) + 
+    geom_point(size = 4) + 
+    scale_shape_manual(name = 'Sample sizes \nGroup 1, 2, 3, 4',
+                       labels = c('20, 20, 20, 20',
+                                  '20, 30, 30, 30',
+                                  '20, 40, 40, 40',
+                                  '50, 50, 50, 50',
+                                  '50, 75, 75, 75',
+                                  '50, 100, 100, 100',
+                                  '100, 100, 100, 100',
+                                  '100, 150, 150, 150',
+                                  '100, 200, 200, 200'),
+                       values = rep(c(1, 2, 0), times = 3)
+                       ) +
+    geom_line(size = .5) + 
+    scale_linetype_manual(name = 'Sample sizes \nGroup 1, 2, 3, 4',
+                          labels = c('20, 20, 20, 20',
+                                  '20, 30, 30, 30',
+                                  '20, 40, 40, 40',
+                                  '50, 50, 50, 50',
+                                  '50, 75, 75, 75',
+                                  '50, 100, 100, 100',
+                                  '100, 100, 100, 100',
+                                  '100, 150, 150, 150',
+                                  '100, 200, 200, 200'),
+                          values = rep(c('dotted', 'dashed', 'solid'), each = 3)
+                          ) +
+    scale_x_discrete(labels = factor(c('1/5', '1/2', '1', '2', '5'))) +
+    scale_y_continuous(breaks = seq(0, 1, .10), minor_breaks = seq(0, 1, .01)) +
+    labs(
+      x = bquote(frac(sigma[1]^2,{sigma[2]^2 == sigma[3]^2} == sigma[4]^2)),
+      y = 'Power',
+      title = 'Crossover interaction - Group 1 has small sample'
+      ) +
+    facet_grid(. ~ test) +
+    theme(
+      panel.grid = element_blank(),
+#      panel.grid.minor.y = element_line(color = 'gray90'),
+      panel.grid.major.y = element_line(color = 'gray80')
+      )
+
+# Power plot (interaction, one group has large n) ----
+power_int_bign <- ggplot(filter(cross_int, effect == 'd=.8', !(n.ratio %in% c(1/1.5, 1/2))), 
+       aes(x = as.factor(var.ratio), y = rejects, ymin = 0, ymax = 1, group = Ns, shape = Ns, linetype = Ns)) + 
+    geom_point(size = 4) + 
+    scale_shape_manual(name = 'Sample sizes \nGroup 1, 2, 3, 4',
+                       labels = c('20, 20, 20, 20',
+                                  '30, 20, 20, 20',
+                                  '40, 20, 20, 20',
+                                  '50, 50, 50, 50',
+                                  '75, 50, 50, 50',
+                                  '100, 50, 50, 50',
+                                  '100, 100, 100, 100',
+                                  '150, 100, 100, 100',
+                                  '200, 100, 100, 100'),
+                       values = rep(c(1, 2, 0), times = 3)
+                       ) +
+    geom_line(size = .5) + 
+    scale_linetype_manual(name = 'Sample sizes \nGroup 1, 2, 3, 4',
+                          labels = c('20, 20, 20, 20',
+                                  '30, 20, 20, 20',
+                                  '40, 20, 20, 20',
+                                  '50, 50, 50, 50',
+                                  '75, 50, 50, 50',
+                                  '100, 50, 50, 50',
+                                  '100, 100, 100, 100',
+                                  '150, 100, 100, 100',
+                                  '200, 100, 100, 100'),
+                          values = rep(c('dotted', 'dashed', 'solid'), each = 3)
+                          ) +
+    scale_x_discrete(labels = factor(c('1/5', '1/2', '1', '2', '5'))) +
+    scale_y_continuous(breaks = seq(0, 1, .10), minor_breaks = seq(0, 1, .01)) +
+    labs(
+      x = bquote(frac(sigma[1]^2,{sigma[2]^2 == sigma[3]^2} == sigma[4]^2)),
+      y = 'Power',
+      title = 'Crossover interaction - Group 1 has large sample'
+      ) +
+    facet_grid(. ~ test) +
+    theme(
+      panel.grid = element_blank(),
+#      panel.grid.minor.y = element_line(color = 'gray90'),
+      panel.grid.major.y = element_line(color = 'gray80')
+      )
 
 @
 
-\textit{Figure S2.} Power of Student's and Welch's t tests to detect a medium effect.
+<<power difference, echo = FALSE>>=
+
+# Power difference data (two groups) ----
+classic_rejects_two <- two_groups %>% 
+  filter(test == "Student's t test") %>% 
+  select(-test) %>% 
+  rename(classic_rejects = rejects)
+
+welch_rejects_two <- two_groups %>% 
+  filter(test == "Welch's t test") %>% 
+  select(-test) %>% 
+  rename(welch_rejects = rejects)
+
+power_diff_two <- full_join(x = classic_rejects_two, y = welch_rejects_two) %>% 
+  filter(effect != 'd=0') %>% 
+  mutate(
+    effect = str_replace(effect, '=', ' = '),
+    diff_rejects = classic_rejects - welch_rejects,
+    test = 'Student - Welch'
+    )
+
+# Power difference data (interaction) ----
+classic_rejects_int <- cross_int %>% 
+  filter(test == "Student's t test") %>% 
+  select(-test) %>% 
+  rename(classic_rejects = rejects)
+
+welch_rejects_int <- cross_int %>% 
+  filter(test == "Welch's t test") %>% 
+  select(-test) %>% 
+  rename(welch_rejects = rejects)
+
+power_diff_int <- full_join(x = classic_rejects_int, y = welch_rejects_int) %>% 
+  filter(effect != 'd=0') %>% 
+  mutate(
+    effect = str_replace(effect, '=', ' = '),
+    diff_rejects = classic_rejects - welch_rejects,
+    test = 'Student - Welch'
+    )
+
+# Power difference plot (two groups) ----
+diff_plot_two <- ggplot(filter(power_diff_two, effect == 'd = .5'), 
+       aes(x = as.factor(var.ratio), y = diff_rejects, ymin = -.3, ymax = .3, group = Ns, shape = Ns, linetype = Ns)) + 
+    geom_point(size = 4) + 
+    scale_shape_manual(name = 'Sample sizes \nGroup 1, 2',
+                       labels = c('20, 20', '20, 30', '20, 40',
+                                     '50, 50', '50, 75', '50, 100',
+                                     '100, 100', '100, 150', '100, 200'),
+                       values = rep(c(1, 2, 0), times = 3)) +
+    geom_line(size = .5) + 
+    scale_linetype_manual(name = 'Sample sizes \nGroup 1, 2',
+                          labels = c('20, 20', '20, 30', '20, 40',
+                                     '50, 50', '50, 75', '50, 100',
+                                     '100, 100', '100, 150', '100, 200'),
+                          values=rep(c('dotted', 'dashed', 'solid'), each = 3)
+                          ) +
+    scale_x_discrete(labels = factor(c('1/5', '1/2', '1', '2', '5'))) +
+    scale_y_continuous(breaks = seq(-.30, .30, .10), minor_breaks = seq(-.30, .30, .01), labels = round(seq(-.30, .30, .10), digits = 2)) +
+    labs(
+      x = bquote(frac(sigma[1]^2, sigma[2]^2)),
+      y = 'Difference in \nPower',
+      title = ' '
+      ) +
+    facet_grid(. ~ test) +
+    theme(
+      panel.grid = element_blank(),
+#      panel.grid.minor.y = element_line(color = 'gray90'),
+      panel.grid.major.y = element_line(color = 'gray80')
+      )
+
+
+# Power difference plot (interaction, one group has small n) ----
+diff_plot_int_smalln <- ggplot(filter(power_diff_int, effect == 'd = .5', !(n.ratio %in% c(1.5, 2))), 
+       aes(x = as.factor(var.ratio), y = diff_rejects, ymin = -.3, ymax = .3, group = Ns, shape = Ns, linetype = Ns)) + 
+    geom_point(size = 4) + 
+    scale_shape_manual(name = 'Sample sizes \nGroup 1, 2, 3, 4',
+                       labels = c('20, 20, 20, 20',
+                                  '20, 30, 30, 30',
+                                  '20, 40, 40, 40',
+                                  '50, 50, 50, 50',
+                                  '50, 75, 75, 75',
+                                  '50, 100, 100, 100',
+                                  '100, 100, 100, 100',
+                                  '100, 150, 150, 150',
+                                  '100, 200, 200, 200'),
+                       values = rep(c(1, 2, 0), times = 3)
+                       ) +
+    geom_line(size = .5) + 
+    scale_linetype_manual(name = 'Sample sizes \nGroup 1, 2, 3, 4',
+                          labels = c('20, 20, 20, 20',
+                                  '20, 30, 30, 30',
+                                  '20, 40, 40, 40',
+                                  '50, 50, 50, 50',
+                                  '50, 75, 75, 75',
+                                  '50, 100, 100, 100',
+                                  '100, 100, 100, 100',
+                                  '100, 150, 150, 150',
+                                  '100, 200, 200, 200'),
+                          values = rep(c('dotted', 'dashed', 'solid'), each = 3)
+                          ) +
+    scale_x_discrete(labels = factor(c('1/5', '1/2', '1', '2', '5'))) +
+    scale_y_continuous(breaks = seq(-.30, .30, .10), minor_breaks = seq(-.30, .30, .01), labels = round(seq(-.30, .30, .10), digits = 2)) +
+    labs(
+      x = bquote(frac(sigma[1]^2, sigma[2]^2)),
+      y = 'Difference in \nPower',
+      title = ' '
+      ) +
+    facet_grid(. ~ test) +
+    theme(
+      panel.grid = element_blank(),
+#      panel.grid.minor.y = element_line(color = 'gray90'),
+      panel.grid.major.y = element_line(color = 'gray80')
+      )
+
+
+
+# Power difference plot (interaction, one group has small n) ----
+diff_plot_int_bign <- ggplot(filter(power_diff_int, effect == 'd = .5', !(n.ratio %in% c(1/1.5, 1/2))), 
+       aes(x = as.factor(var.ratio), y = diff_rejects, ymin = -.3, ymax = .3, group = Ns, shape = Ns, linetype = Ns)) + 
+    geom_point(size = 4) + 
+    scale_shape_manual(name = 'Sample sizes \nGroup 1, 2, 3, 4',
+                       labels = c('20, 20, 20, 20',
+                                  '30, 20, 20, 20',
+                                  '40, 20, 20, 20',
+                                  '50, 50, 50, 50',
+                                  '75, 50, 50, 50',
+                                  '100, 50, 50, 50',
+                                  '100, 100, 100, 100',
+                                  '150, 100, 100, 100',
+                                  '200, 100, 100, 100'),
+                       values = rep(c(1, 2, 0), times = 3)
+                       ) +
+    geom_line(size = .5) + 
+    scale_linetype_manual(name = 'Sample sizes \nGroup 1, 2, 3, 4',
+                          labels = c('20, 20, 20, 20',
+                                  '30, 20, 20, 20',
+                                  '40, 20, 20, 20',
+                                  '50, 50, 50, 50',
+                                  '75, 50, 50, 50',
+                                  '100, 50, 50, 50',
+                                  '100, 100, 100, 100',
+                                  '150, 100, 100, 100',
+                                  '200, 100, 100, 100'),
+                          values = rep(c('dotted', 'dashed', 'solid'), each = 3)
+                          ) +
+    scale_x_discrete(labels = factor(c('1/5', '1/2', '1', '2', '5'))) +
+    scale_y_continuous(breaks = seq(-.30, .30, .10), minor_breaks = seq(-.30, .30, .01), labels = round(seq(-.30, .30, .10), digits = 2)) +
+    labs(
+      x = bquote(frac(sigma[1]^2, sigma[2]^2)),
+      y = 'Difference in \nPower',
+      title = ' '
+      ) +
+    facet_grid(. ~ test) +
+    theme(
+      panel.grid = element_blank(),
+#      panel.grid.minor.y = element_line(color = 'gray90'),
+      panel.grid.major.y = element_line(color = 'gray80')
+      )
+
+# Print power plots ----
+
+power_plots <- plot_grid(
+  power_two + guides(shape = FALSE, linetype = FALSE), 
+  diff_plot_two, 
+
+  power_int_smalln + guides(shape = FALSE, linetype = FALSE), 
+  diff_plot_int_smalln, 
+
+  power_int_bign + guides(shape = FALSE, linetype = FALSE), 
+  diff_plot_int_bign, 
+  nrow = 3
+  )
+@
+
+\begin{figure}[!ht]
+
+<<PowerPlots, echo = FALSE,  collapse = TRUE, fig = TRUE, width = 8, height = 11>>=
+power_plots
+@
+
+\textit{Figure S4.} Power of Student's and Welch's t tests to detect a medium effect.
 \end{figure}
 
-
-
+\clearpage
 \section{Coverage Probability: All Conditions}
 
 <<ClassicCoverage, echo=FALSE>>=
@@ -708,8 +1442,8 @@ cross_int <- bind_rows(
     rejects = Freq
   ) %>% 
   mutate(
-    var.ratio = rep(c(1, 1, 1, 1, 1, 2, 1/2, 5, 1/5, 2, 1/2, 2, 1/2, 2, 1/2, 2, 1/2, 5, 1/5, 5, 1/5, 5, 1/5, 5, 1/5), each = 12),
-    n.ratio = rep(c(1, 1/1.5, 1.5, 1/2, 2, 1, 1, 1, 1, 1.5, 1.5, 1/1.5, 1/1.5, 2, 2, 1/2, 1/2, 1.5, 1.5, 1/1.5, 1/1.5, 2, 2, 1/2, 1/2), each = 12),
+    var.ratio = rep(c(1, 1, 1, 1, 1, 2, 1/2, 5, 1/5, 2, 1/2, 2, 1/2, 2, 1/2, 2, 1/2, 5, 1/5, 5, 1/5, 5, 1/5, 5, 1/5), each = 24),
+    n.ratio = rep(c(1, 1/1.5, 1.5, 1/2, 2, 1, 1, 1, 1, 1.5, 1.5, 1/1.5, 1/1.5, 2, 2, 1/2, 1/2, 1.5, 1.5, 1/1.5, 1/1.5, 2, 2, 1/2, 1/2), each = 24),
     Ns = case_when(
       n.ratio == 1 & small_n == 'N=20' ~ '20, 20, 20, 20',
       n.ratio == 1 & small_n == 'N=50' ~ '50, 50, 50, 50',
@@ -878,7 +1612,7 @@ plot_coverage
 
 @
 
-\textit{Figure S3.} Coverage probabilities for Student's and Welch's t tests.
+\textit{Figure S6.} Coverage probabilities for Student's and Welch's t tests.
 \end{figure}
 
 

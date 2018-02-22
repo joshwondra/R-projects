@@ -1964,6 +1964,16 @@ int.ve.ns50.ne.nullT <- t.compare(nsims=10000, Ns=c(50,50,50,50), means=c(6,6,6,
 set.seed(2184)
 int.ve.ns100.ne.nullT <- t.compare(nsims=10000, Ns=c(100,100,100,100), means=c(6,6,6,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
 
+# Small d
+set.seed(2184)
+int.ve.ns20.ne.smalld <- t.compare(nsims=10000, Ns=c(20,20,20,20), means=c(6,6.28,6.28,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.ve.ns50.ne.smalld <- t.compare(nsims=10000, Ns=c(50,50,50,50), means=c(6,6.28,6.28,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.ve.ns100.ne.smalld <- t.compare(nsims=10000, Ns=c(100,100,100,100), means=c(6,6.28,6.28,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
+
 # Mid d
 set.seed(2184)
 int.ve.ns20.ne.midd <- t.compare(nsims=10000, Ns=c(20,20,20,20), means=c(6,6.71,6.71,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
@@ -1974,19 +1984,43 @@ int.ve.ns50.ne.midd <- t.compare(nsims=10000, Ns=c(50,50,50,50), means=c(6,6.71,
 set.seed(2184)
 int.ve.ns100.ne.midd <- t.compare(nsims=10000, Ns=c(100,100,100,100), means=c(6,6.71,6.71,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
 
+# Big d
+set.seed(2184)
+int.ve.ns20.ne.bigd <- t.compare(nsims=10000, Ns=c(20,20,20,20), means=c(6,7.13,7.13,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.ve.ns50.ne.bigd <- t.compare(nsims=10000, Ns=c(50,50,50,50), means=c(6,7.13,7.13,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.ve.ns100.ne.bigd <- t.compare(nsims=10000, Ns=c(100,100,100,100), means=c(6,7.13,7.13,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
+
+
+
+
+
+
+
 
 ##### Equal Ns, equal variances false positives and power #####
 
 ## array to store proportion of rejected null hypotheses
-int.reject.null.ve.ne <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.reject.null.ve.ne <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.reject.null.ve.ne[,1,1] <- c(int.ve.ns20.ne.nullT$classic.reject, int.ve.ns50.ne.nullT$classic.reject, int.ve.ns100.ne.nullT$classic.reject)
 int.reject.null.ve.ne[,1,2] <- c(int.ve.ns20.ne.nullT$welch.reject, int.ve.ns50.ne.nullT$welch.reject, int.ve.ns100.ne.nullT$welch.reject)
 
+# small effect
+int.reject.null.ve.ne[,2,1] <- c(int.ve.ns20.ne.smalld$classic.reject, int.ve.ns50.ne.smalld$classic.reject, int.ve.ns100.ne.smalld$classic.reject)
+int.reject.null.ve.ne[,2,2] <- c(int.ve.ns20.ne.smalld$welch.reject, int.ve.ns50.ne.smalld$welch.reject, int.ve.ns100.ne.smalld$welch.reject)
+
 # medium effect
-int.reject.null.ve.ne[,2,1] <- c(int.ve.ns20.ne.midd$classic.reject, int.ve.ns50.ne.midd$classic.reject, int.ve.ns100.ne.midd$classic.reject)
-int.reject.null.ve.ne[,2,2] <- c(int.ve.ns20.ne.midd$welch.reject, int.ve.ns50.ne.midd$welch.reject, int.ve.ns100.ne.midd$welch.reject)
+int.reject.null.ve.ne[,3,1] <- c(int.ve.ns20.ne.midd$classic.reject, int.ve.ns50.ne.midd$classic.reject, int.ve.ns100.ne.midd$classic.reject)
+int.reject.null.ve.ne[,3,2] <- c(int.ve.ns20.ne.midd$welch.reject, int.ve.ns50.ne.midd$welch.reject, int.ve.ns100.ne.midd$welch.reject)
+
+# medium effect
+int.reject.null.ve.ne[,4,1] <- c(int.ve.ns20.ne.bigd$classic.reject, int.ve.ns50.ne.bigd$classic.reject, int.ve.ns100.ne.bigd$classic.reject)
+int.reject.null.ve.ne[,4,2] <- c(int.ve.ns20.ne.bigd$welch.reject, int.ve.ns50.ne.bigd$welch.reject, int.ve.ns100.ne.bigd$welch.reject)
 
 
 
@@ -1994,21 +2028,33 @@ int.reject.null.ve.ne[,2,2] <- c(int.ve.ns20.ne.midd$welch.reject, int.ve.ns50.n
 ##### Equal Ns, equal variances coverage rate #####
 
 ## store observed coverage rates
-int.obs.coverage.ve.ne <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.obs.coverage.ve.ne <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.obs.coverage.ve.ne[1,1,1] <- int.ve.ns20.ne.nullT$classic.coverage
 int.obs.coverage.ve.ne[1,1,2] <- int.ve.ns20.ne.nullT$welch.coverage
-int.obs.coverage.ve.ne[1,2,1] <- int.ve.ns20.ne.midd$classic.coverage
-int.obs.coverage.ve.ne[1,2,2] <- int.ve.ns20.ne.midd$welch.coverage
+int.obs.coverage.ve.ne[1,2,1] <- int.ve.ns20.ne.smalld$classic.coverage
+int.obs.coverage.ve.ne[1,2,2] <- int.ve.ns20.ne.smalld$welch.coverage
+int.obs.coverage.ve.ne[1,3,1] <- int.ve.ns20.ne.midd$classic.coverage
+int.obs.coverage.ve.ne[1,3,2] <- int.ve.ns20.ne.midd$welch.coverage
+int.obs.coverage.ve.ne[1,4,1] <- int.ve.ns20.ne.bigd$classic.coverage
+int.obs.coverage.ve.ne[1,4,2] <- int.ve.ns20.ne.bigd$welch.coverage
 int.obs.coverage.ve.ne[2,1,1] <- int.ve.ns50.ne.nullT$classic.coverage
 int.obs.coverage.ve.ne[2,1,2] <- int.ve.ns50.ne.nullT$welch.coverage
-int.obs.coverage.ve.ne[2,2,1] <- int.ve.ns50.ne.midd$classic.coverage
-int.obs.coverage.ve.ne[2,2,2] <- int.ve.ns50.ne.midd$welch.coverage
+int.obs.coverage.ve.ne[2,2,1] <- int.ve.ns50.ne.smalld$classic.coverage
+int.obs.coverage.ve.ne[2,2,2] <- int.ve.ns50.ne.smalld$welch.coverage
+int.obs.coverage.ve.ne[2,3,1] <- int.ve.ns50.ne.midd$classic.coverage
+int.obs.coverage.ve.ne[2,3,2] <- int.ve.ns50.ne.midd$welch.coverage
+int.obs.coverage.ve.ne[2,4,1] <- int.ve.ns50.ne.bigd$classic.coverage
+int.obs.coverage.ve.ne[2,4,2] <- int.ve.ns50.ne.bigd$welch.coverage
 int.obs.coverage.ve.ne[3,1,1] <- int.ve.ns100.ne.nullT$classic.coverage
 int.obs.coverage.ve.ne[3,1,2] <- int.ve.ns100.ne.nullT$welch.coverage
-int.obs.coverage.ve.ne[3,2,1] <- int.ve.ns100.ne.midd$classic.coverage
-int.obs.coverage.ve.ne[3,2,2] <- int.ve.ns100.ne.midd$welch.coverage
+int.obs.coverage.ve.ne[3,2,1] <- int.ve.ns100.ne.smalld$classic.coverage
+int.obs.coverage.ve.ne[3,2,2] <- int.ve.ns100.ne.smalld$welch.coverage
+int.obs.coverage.ve.ne[3,3,1] <- int.ve.ns100.ne.midd$classic.coverage
+int.obs.coverage.ve.ne[3,3,2] <- int.ve.ns100.ne.midd$welch.coverage
+int.obs.coverage.ve.ne[3,4,1] <- int.ve.ns100.ne.bigd$classic.coverage
+int.obs.coverage.ve.ne[3,4,2] <- int.ve.ns100.ne.bigd$welch.coverage
 
 
 
@@ -2035,6 +2081,16 @@ int.v2.ns50.ne.nullT.bigvar <- t.compare(nsims=10000, Ns=c(50,50,50,50), means=c
 set.seed(2184)
 int.v2.ns100.ne.nullT.bigvar <- t.compare(nsims=10000, Ns=c(100,100,100,100), means=c(6,6,6,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
 
+# Small d
+set.seed(2184)
+int.v2.ns20.ne.smalld.bigvar <- t.compare(nsims=10000, Ns=c(20,20,20,20), means=c(6,6.28,6.28,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns50.ne.smalld.bigvar <- t.compare(nsims=10000, Ns=c(50,50,50,50), means=c(6,6.28,6.28,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns100.ne.smalld.bigvar <- t.compare(nsims=10000, Ns=c(100,100,100,100), means=c(6,6.28,6.28,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
+
 # Mid d
 set.seed(2184)
 int.v2.ns20.ne.midd.bigvar <- t.compare(nsims=10000, Ns=c(20,20,20,20), means=c(6,6.71,6.71,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
@@ -2045,44 +2101,78 @@ int.v2.ns50.ne.midd.bigvar <- t.compare(nsims=10000, Ns=c(50,50,50,50), means=c(
 set.seed(2184)
 int.v2.ns100.ne.midd.bigvar <- t.compare(nsims=10000, Ns=c(100,100,100,100), means=c(6,6.71,6.71,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
 
+# Big d
+set.seed(2184)
+int.v2.ns20.ne.bigd.bigvar <- t.compare(nsims=10000, Ns=c(20,20,20,20), means=c(6,7.13,7.13,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns50.ne.bigd.bigvar <- t.compare(nsims=10000, Ns=c(50,50,50,50), means=c(6,7.13,7.13,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns100.ne.bigd.bigvar <- t.compare(nsims=10000, Ns=c(100,100,100,100), means=c(6,7.13,7.13,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
+
 ##### Equal Ns, double variance, bigger variances false positives and power #####
 
 ## array to store proportion of rejected null hypotheses
-int.reject.null.v2.ne.bigvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.reject.null.v2.ne.bigvar <- array(dim=c(3, 4, 2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.reject.null.v2.ne.bigvar[1,1,1] <- int.v2.ns20.ne.nullT.bigvar$classic.reject
 int.reject.null.v2.ne.bigvar[1,1,2] <- int.v2.ns20.ne.nullT.bigvar$welch.reject
-int.reject.null.v2.ne.bigvar[1,2,1] <- int.v2.ns20.ne.midd.bigvar$classic.reject
-int.reject.null.v2.ne.bigvar[1,2,2] <- int.v2.ns20.ne.midd.bigvar$welch.reject
+int.reject.null.v2.ne.bigvar[1,2,1] <- int.v2.ns20.ne.smalld.bigvar$classic.reject
+int.reject.null.v2.ne.bigvar[1,2,2] <- int.v2.ns20.ne.smalld.bigvar$welch.reject
+int.reject.null.v2.ne.bigvar[1,3,1] <- int.v2.ns20.ne.midd.bigvar$classic.reject
+int.reject.null.v2.ne.bigvar[1,3,2] <- int.v2.ns20.ne.midd.bigvar$welch.reject
+int.reject.null.v2.ne.bigvar[1,4,1] <- int.v2.ns20.ne.bigd.bigvar$classic.reject
+int.reject.null.v2.ne.bigvar[1,4,2] <- int.v2.ns20.ne.bigd.bigvar$welch.reject
 int.reject.null.v2.ne.bigvar[2,1,1] <- int.v2.ns50.ne.nullT.bigvar$classic.reject
 int.reject.null.v2.ne.bigvar[2,1,2] <- int.v2.ns50.ne.nullT.bigvar$welch.reject
-int.reject.null.v2.ne.bigvar[2,2,1] <- int.v2.ns50.ne.midd.bigvar$classic.reject
-int.reject.null.v2.ne.bigvar[2,2,2] <- int.v2.ns50.ne.midd.bigvar$welch.reject
+int.reject.null.v2.ne.bigvar[2,2,1] <- int.v2.ns50.ne.smalld.bigvar$classic.reject
+int.reject.null.v2.ne.bigvar[2,2,2] <- int.v2.ns50.ne.smalld.bigvar$welch.reject
+int.reject.null.v2.ne.bigvar[2,3,1] <- int.v2.ns50.ne.midd.bigvar$classic.reject
+int.reject.null.v2.ne.bigvar[2,3,2] <- int.v2.ns50.ne.midd.bigvar$welch.reject
+int.reject.null.v2.ne.bigvar[2,4,1] <- int.v2.ns50.ne.bigd.bigvar$classic.reject
+int.reject.null.v2.ne.bigvar[2,4,2] <- int.v2.ns50.ne.bigd.bigvar$welch.reject
 int.reject.null.v2.ne.bigvar[3,1,1] <- int.v2.ns100.ne.nullT.bigvar$classic.reject
 int.reject.null.v2.ne.bigvar[3,1,2] <- int.v2.ns100.ne.nullT.bigvar$welch.reject
-int.reject.null.v2.ne.bigvar[3,2,1] <- int.v2.ns100.ne.midd.bigvar$classic.reject
-int.reject.null.v2.ne.bigvar[3,2,2] <- int.v2.ns100.ne.midd.bigvar$welch.reject
+int.reject.null.v2.ne.bigvar[3,2,1] <- int.v2.ns100.ne.smalld.bigvar$classic.reject
+int.reject.null.v2.ne.bigvar[3,2,2] <- int.v2.ns100.ne.smalld.bigvar$welch.reject
+int.reject.null.v2.ne.bigvar[3,3,1] <- int.v2.ns100.ne.midd.bigvar$classic.reject
+int.reject.null.v2.ne.bigvar[3,3,2] <- int.v2.ns100.ne.midd.bigvar$welch.reject
+int.reject.null.v2.ne.bigvar[3,4,1] <- int.v2.ns100.ne.bigd.bigvar$classic.reject
+int.reject.null.v2.ne.bigvar[3,4,2] <- int.v2.ns100.ne.bigd.bigvar$welch.reject
 
 
 ##### Equal Ns, double variance, bigger variances coverage rate #####
 
 ## store observed coverage rates
-int.obs.coverage.v2.ne.bigvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.obs.coverage.v2.ne.bigvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.obs.coverage.v2.ne.bigvar[1,1,1] <- int.v2.ns20.ne.nullT.bigvar$classic.coverage
 int.obs.coverage.v2.ne.bigvar[1,1,2] <- int.v2.ns20.ne.nullT.bigvar$welch.coverage
-int.obs.coverage.v2.ne.bigvar[1,2,1] <- int.v2.ns20.ne.midd.bigvar$classic.coverage
-int.obs.coverage.v2.ne.bigvar[1,2,2] <- int.v2.ns20.ne.midd.bigvar$welch.coverage
+int.obs.coverage.v2.ne.bigvar[1,2,1] <- int.v2.ns20.ne.smalld.bigvar$classic.coverage
+int.obs.coverage.v2.ne.bigvar[1,2,2] <- int.v2.ns20.ne.smalld.bigvar$welch.coverage
+int.obs.coverage.v2.ne.bigvar[1,3,1] <- int.v2.ns20.ne.midd.bigvar$classic.coverage
+int.obs.coverage.v2.ne.bigvar[1,3,2] <- int.v2.ns20.ne.midd.bigvar$welch.coverage
+int.obs.coverage.v2.ne.bigvar[1,4,1] <- int.v2.ns20.ne.bigd.bigvar$classic.coverage
+int.obs.coverage.v2.ne.bigvar[1,4,2] <- int.v2.ns20.ne.bigd.bigvar$welch.coverage
 int.obs.coverage.v2.ne.bigvar[2,1,1] <- int.v2.ns50.ne.nullT.bigvar$classic.coverage
 int.obs.coverage.v2.ne.bigvar[2,1,2] <- int.v2.ns50.ne.nullT.bigvar$welch.coverage
-int.obs.coverage.v2.ne.bigvar[2,2,1] <- int.v2.ns50.ne.midd.bigvar$classic.coverage
-int.obs.coverage.v2.ne.bigvar[2,2,2] <- int.v2.ns50.ne.midd.bigvar$welch.coverage
+int.obs.coverage.v2.ne.bigvar[2,2,1] <- int.v2.ns50.ne.smalld.bigvar$classic.coverage
+int.obs.coverage.v2.ne.bigvar[2,2,2] <- int.v2.ns50.ne.smalld.bigvar$welch.coverage
+int.obs.coverage.v2.ne.bigvar[2,3,1] <- int.v2.ns50.ne.midd.bigvar$classic.coverage
+int.obs.coverage.v2.ne.bigvar[2,3,2] <- int.v2.ns50.ne.midd.bigvar$welch.coverage
+int.obs.coverage.v2.ne.bigvar[2,4,1] <- int.v2.ns50.ne.bigd.bigvar$classic.coverage
+int.obs.coverage.v2.ne.bigvar[2,4,2] <- int.v2.ns50.ne.bigd.bigvar$welch.coverage
 int.obs.coverage.v2.ne.bigvar[3,1,1] <- int.v2.ns100.ne.nullT.bigvar$classic.coverage
 int.obs.coverage.v2.ne.bigvar[3,1,2] <- int.v2.ns100.ne.nullT.bigvar$welch.coverage
-int.obs.coverage.v2.ne.bigvar[3,2,1] <- int.v2.ns100.ne.midd.bigvar$classic.coverage
-int.obs.coverage.v2.ne.bigvar[3,2,2] <- int.v2.ns100.ne.midd.bigvar$welch.coverage
+int.obs.coverage.v2.ne.bigvar[3,2,1] <- int.v2.ns100.ne.smalld.bigvar$classic.coverage
+int.obs.coverage.v2.ne.bigvar[3,2,2] <- int.v2.ns100.ne.smalld.bigvar$welch.coverage
+int.obs.coverage.v2.ne.bigvar[3,3,1] <- int.v2.ns100.ne.midd.bigvar$classic.coverage
+int.obs.coverage.v2.ne.bigvar[3,3,2] <- int.v2.ns100.ne.midd.bigvar$welch.coverage
+int.obs.coverage.v2.ne.bigvar[3,4,1] <- int.v2.ns100.ne.bigd.bigvar$classic.coverage
+int.obs.coverage.v2.ne.bigvar[3,4,2] <- int.v2.ns100.ne.bigd.bigvar$welch.coverage
 
 
 ##### Save tables from equal Ns, bigger variances simulations #####
@@ -2109,6 +2199,16 @@ int.v5.ns50.ne.nullT.bigvar <- t.compare(nsims=10000, Ns=c(50,50,50,50), means=c
 set.seed(2184)
 int.v5.ns100.ne.nullT.bigvar <- t.compare(nsims=10000, Ns=c(100,100,100,100), means=c(6,6,6,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
 
+# Small d
+set.seed(2184)
+int.v5.ns20.ne.smalld.bigvar <- t.compare(nsims=10000, Ns=c(20,20,20,20), means=c(6,6.28,6.28,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns50.ne.smalld.bigvar <- t.compare(nsims=10000, Ns=c(50,50,50,50), means=c(6,6.28,6.28,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns100.ne.smalld.bigvar <- t.compare(nsims=10000, Ns=c(100,100,100,100), means=c(6,6.28,6.28,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
+
 # Mid d
 set.seed(2184)
 int.v5.ns20.ne.midd.bigvar <- t.compare(nsims=10000, Ns=c(20,20,20,20), means=c(6,6.71,6.71,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
@@ -2119,51 +2219,84 @@ int.v5.ns50.ne.midd.bigvar <- t.compare(nsims=10000, Ns=c(50,50,50,50), means=c(
 set.seed(2184)
 int.v5.ns100.ne.midd.bigvar <- t.compare(nsims=10000, Ns=c(100,100,100,100), means=c(6,6.71,6.71,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
 
+# Big d
+set.seed(2184)
+int.v5.ns20.ne.bigd.bigvar <- t.compare(nsims=10000, Ns=c(20,20,20,20), means=c(6,7.13,7.13,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns50.ne.bigd.bigvar <- t.compare(nsims=10000, Ns=c(50,50,50,50), means=c(6,7.13,7.13,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns100.ne.bigd.bigvar <- t.compare(nsims=10000, Ns=c(100,100,100,100), means=c(6,7.13,7.13,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
+
 
 ##### Equal Ns, 5x variance, bigger variances false positives and power #####
 
 ## array to store proportion of rejected null hypotheses
-int.reject.null.v5.ne.bigvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.reject.null.v5.ne.bigvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.reject.null.v5.ne.bigvar[1,1,1] <- int.v5.ns20.ne.nullT.bigvar$classic.reject
 int.reject.null.v5.ne.bigvar[1,1,2] <- int.v5.ns20.ne.nullT.bigvar$welch.reject
-int.reject.null.v5.ne.bigvar[1,2,1] <- int.v5.ns20.ne.midd.bigvar$classic.reject
-int.reject.null.v5.ne.bigvar[1,2,2] <- int.v5.ns20.ne.midd.bigvar$welch.reject
+int.reject.null.v5.ne.bigvar[1,2,1] <- int.v5.ns20.ne.smalld.bigvar$classic.reject
+int.reject.null.v5.ne.bigvar[1,2,2] <- int.v5.ns20.ne.smalld.bigvar$welch.reject
+int.reject.null.v5.ne.bigvar[1,3,1] <- int.v5.ns20.ne.midd.bigvar$classic.reject
+int.reject.null.v5.ne.bigvar[1,3,2] <- int.v5.ns20.ne.midd.bigvar$welch.reject
+int.reject.null.v5.ne.bigvar[1,4,1] <- int.v5.ns20.ne.bigd.bigvar$classic.reject
+int.reject.null.v5.ne.bigvar[1,4,2] <- int.v5.ns20.ne.bigd.bigvar$welch.reject
 int.reject.null.v5.ne.bigvar[2,1,1] <- int.v5.ns50.ne.nullT.bigvar$classic.reject
 int.reject.null.v5.ne.bigvar[2,1,2] <- int.v5.ns50.ne.nullT.bigvar$welch.reject
-int.reject.null.v5.ne.bigvar[2,2,1] <- int.v5.ns50.ne.midd.bigvar$classic.reject
-int.reject.null.v5.ne.bigvar[2,2,2] <- int.v5.ns50.ne.midd.bigvar$welch.reject
+int.reject.null.v5.ne.bigvar[2,2,1] <- int.v5.ns50.ne.smalld.bigvar$classic.reject
+int.reject.null.v5.ne.bigvar[2,2,2] <- int.v5.ns50.ne.smalld.bigvar$welch.reject
+int.reject.null.v5.ne.bigvar[2,3,1] <- int.v5.ns50.ne.midd.bigvar$classic.reject
+int.reject.null.v5.ne.bigvar[2,3,2] <- int.v5.ns50.ne.midd.bigvar$welch.reject
+int.reject.null.v5.ne.bigvar[2,4,1] <- int.v5.ns50.ne.bigd.bigvar$classic.reject
+int.reject.null.v5.ne.bigvar[2,4,2] <- int.v5.ns50.ne.bigd.bigvar$welch.reject
 int.reject.null.v5.ne.bigvar[3,1,1] <- int.v5.ns100.ne.nullT.bigvar$classic.reject
 int.reject.null.v5.ne.bigvar[3,1,2] <- int.v5.ns100.ne.nullT.bigvar$welch.reject
-int.reject.null.v5.ne.bigvar[3,2,1] <- int.v5.ns100.ne.midd.bigvar$classic.reject
-int.reject.null.v5.ne.bigvar[3,2,2] <- int.v5.ns100.ne.midd.bigvar$welch.reject
+int.reject.null.v5.ne.bigvar[3,2,1] <- int.v5.ns100.ne.smalld.bigvar$classic.reject
+int.reject.null.v5.ne.bigvar[3,2,2] <- int.v5.ns100.ne.smalld.bigvar$welch.reject
+int.reject.null.v5.ne.bigvar[3,3,1] <- int.v5.ns100.ne.midd.bigvar$classic.reject
+int.reject.null.v5.ne.bigvar[3,3,2] <- int.v5.ns100.ne.midd.bigvar$welch.reject
+int.reject.null.v5.ne.bigvar[3,4,1] <- int.v5.ns100.ne.bigd.bigvar$classic.reject
+int.reject.null.v5.ne.bigvar[3,4,2] <- int.v5.ns100.ne.bigd.bigvar$welch.reject
 
 
 ##### Equal Ns, 5x variance, bigger variances coverage rate #####
 
 ## store observed coverage rates
-int.obs.coverage.v5.ne.bigvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.obs.coverage.v5.ne.bigvar <- array(dim=c(3, 4, 2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.obs.coverage.v5.ne.bigvar[1,1,1] <- int.v5.ns20.ne.nullT.bigvar$classic.coverage
 int.obs.coverage.v5.ne.bigvar[1,1,2] <- int.v5.ns20.ne.nullT.bigvar$welch.coverage
-int.obs.coverage.v5.ne.bigvar[1,2,1] <- int.v5.ns20.ne.midd.bigvar$classic.coverage
-int.obs.coverage.v5.ne.bigvar[1,2,2] <- int.v5.ns20.ne.midd.bigvar$welch.coverage
+int.obs.coverage.v5.ne.bigvar[1,2,1] <- int.v5.ns20.ne.smalld.bigvar$classic.coverage
+int.obs.coverage.v5.ne.bigvar[1,2,2] <- int.v5.ns20.ne.smalld.bigvar$welch.coverage
+int.obs.coverage.v5.ne.bigvar[1,3,1] <- int.v5.ns20.ne.midd.bigvar$classic.coverage
+int.obs.coverage.v5.ne.bigvar[1,3,2] <- int.v5.ns20.ne.midd.bigvar$welch.coverage
+int.obs.coverage.v5.ne.bigvar[1,4,1] <- int.v5.ns20.ne.bigd.bigvar$classic.coverage
+int.obs.coverage.v5.ne.bigvar[1,4,2] <- int.v5.ns20.ne.bigd.bigvar$welch.coverage
 int.obs.coverage.v5.ne.bigvar[2,1,1] <- int.v5.ns50.ne.nullT.bigvar$classic.coverage
 int.obs.coverage.v5.ne.bigvar[2,1,2] <- int.v5.ns50.ne.nullT.bigvar$welch.coverage
-int.obs.coverage.v5.ne.bigvar[2,2,1] <- int.v5.ns50.ne.midd.bigvar$classic.coverage
-int.obs.coverage.v5.ne.bigvar[2,2,2] <- int.v5.ns50.ne.midd.bigvar$welch.coverage
+int.obs.coverage.v5.ne.bigvar[2,2,1] <- int.v5.ns50.ne.smalld.bigvar$classic.coverage
+int.obs.coverage.v5.ne.bigvar[2,2,2] <- int.v5.ns50.ne.smalld.bigvar$welch.coverage
+int.obs.coverage.v5.ne.bigvar[2,3,1] <- int.v5.ns50.ne.midd.bigvar$classic.coverage
+int.obs.coverage.v5.ne.bigvar[2,3,2] <- int.v5.ns50.ne.midd.bigvar$welch.coverage
+int.obs.coverage.v5.ne.bigvar[2,4,1] <- int.v5.ns50.ne.bigd.bigvar$classic.coverage
+int.obs.coverage.v5.ne.bigvar[2,4,2] <- int.v5.ns50.ne.bigd.bigvar$welch.coverage
 int.obs.coverage.v5.ne.bigvar[3,1,1] <- int.v5.ns100.ne.nullT.bigvar$classic.coverage
 int.obs.coverage.v5.ne.bigvar[3,1,2] <- int.v5.ns100.ne.nullT.bigvar$welch.coverage
-int.obs.coverage.v5.ne.bigvar[3,2,1] <- int.v5.ns100.ne.midd.bigvar$classic.coverage
-int.obs.coverage.v5.ne.bigvar[3,2,2] <- int.v5.ns100.ne.midd.bigvar$welch.coverage
+int.obs.coverage.v5.ne.bigvar[3,2,1] <- int.v5.ns100.ne.smalld.bigvar$classic.coverage
+int.obs.coverage.v5.ne.bigvar[3,2,2] <- int.v5.ns100.ne.smalld.bigvar$welch.coverage
+int.obs.coverage.v5.ne.bigvar[3,3,1] <- int.v5.ns100.ne.midd.bigvar$classic.coverage
+int.obs.coverage.v5.ne.bigvar[3,3,2] <- int.v5.ns100.ne.midd.bigvar$welch.coverage
+int.obs.coverage.v5.ne.bigvar[3,4,1] <- int.v5.ns100.ne.bigd.bigvar$classic.coverage
+int.obs.coverage.v5.ne.bigvar[3,4,2] <- int.v5.ns100.ne.bigd.bigvar$welch.coverage
 
 
 ##### Save tables from equal Ns, bigger variances simulations #####
 save(int.reject.null.v5.ne.bigvar, int.obs.coverage.v5.ne.bigvar, file='/users/joshwondra/R-projects/Welch rule/interaction2x2-v5bigvarNeSeed2184Tables.Rdata')
 load('/users/joshwondra/R-projects/Welch rule/interaction2x2-v5bigvarNeSeed2184Tables.Rdata')
-
 
 
 
@@ -2183,6 +2316,16 @@ int.v2.ns50.ne.nullT.smallvar <- t.compare(nsims=10000, Ns=c(50,50,50,50), means
 set.seed(2184)
 int.v2.ns100.ne.nullT.smallvar <- t.compare(nsims=10000, Ns=c(100,100,100,100), means=c(6,6,6,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
 
+# Small d
+set.seed(2184)
+int.v2.ns20.ne.smalld.smallvar <- t.compare(nsims=10000, Ns=c(20,20,20,20), means=c(6,6.28,6.28,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns50.ne.smalld.smallvar <- t.compare(nsims=10000, Ns=c(50,50,50,50), means=c(6,6.28,6.28,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns100.ne.smalld.smallvar <- t.compare(nsims=10000, Ns=c(100,100,100,100), means=c(6,6.28,6.28,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
+
 # Mid d
 set.seed(2184)
 int.v2.ns20.ne.midd.smallvar <- t.compare(nsims=10000, Ns=c(20,20,20,20), means=c(6,6.71,6.71,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
@@ -2193,50 +2336,83 @@ int.v2.ns50.ne.midd.smallvar <- t.compare(nsims=10000, Ns=c(50,50,50,50), means=
 set.seed(2184)
 int.v2.ns100.ne.midd.smallvar <- t.compare(nsims=10000, Ns=c(100,100,100,100), means=c(6,6.71,6.71,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
 
+# Big d
+set.seed(2184)
+int.v2.ns20.ne.bigd.smallvar <- t.compare(nsims=10000, Ns=c(20,20,20,20), means=c(6,7.13,7.13,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns50.ne.bigd.smallvar <- t.compare(nsims=10000, Ns=c(50,50,50,50), means=c(6,7.13,7.13,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns100.ne.bigd.smallvar <- t.compare(nsims=10000, Ns=c(100,100,100,100), means=c(6,7.13,7.13,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
+
 ##### Equal Ns, double variance, smaller variances false positives and power #####
 
 ## array to store proportion of rejected null hypotheses
-int.reject.null.v2.ne.smallvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.reject.null.v2.ne.smallvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.reject.null.v2.ne.smallvar[1,1,1] <- int.v2.ns20.ne.nullT.smallvar$classic.reject
 int.reject.null.v2.ne.smallvar[1,1,2] <- int.v2.ns20.ne.nullT.smallvar$welch.reject
-int.reject.null.v2.ne.smallvar[1,2,1] <- int.v2.ns20.ne.midd.smallvar$classic.reject
-int.reject.null.v2.ne.smallvar[1,2,2] <- int.v2.ns20.ne.midd.smallvar$welch.reject
+int.reject.null.v2.ne.smallvar[1,2,1] <- int.v2.ns20.ne.smalld.smallvar$classic.reject
+int.reject.null.v2.ne.smallvar[1,2,2] <- int.v2.ns20.ne.smalld.smallvar$welch.reject
+int.reject.null.v2.ne.smallvar[1,3,1] <- int.v2.ns20.ne.midd.smallvar$classic.reject
+int.reject.null.v2.ne.smallvar[1,3,2] <- int.v2.ns20.ne.midd.smallvar$welch.reject
+int.reject.null.v2.ne.smallvar[1,4,1] <- int.v2.ns20.ne.bigd.smallvar$classic.reject
+int.reject.null.v2.ne.smallvar[1,4,2] <- int.v2.ns20.ne.bigd.smallvar$welch.reject
 int.reject.null.v2.ne.smallvar[2,1,1] <- int.v2.ns50.ne.nullT.smallvar$classic.reject
 int.reject.null.v2.ne.smallvar[2,1,2] <- int.v2.ns50.ne.nullT.smallvar$welch.reject
-int.reject.null.v2.ne.smallvar[2,2,1] <- int.v2.ns50.ne.midd.smallvar$classic.reject
-int.reject.null.v2.ne.smallvar[2,2,2] <- int.v2.ns50.ne.midd.smallvar$welch.reject
+int.reject.null.v2.ne.smallvar[2,2,1] <- int.v2.ns50.ne.smalld.smallvar$classic.reject
+int.reject.null.v2.ne.smallvar[2,2,2] <- int.v2.ns50.ne.smalld.smallvar$welch.reject
+int.reject.null.v2.ne.smallvar[2,3,1] <- int.v2.ns50.ne.midd.smallvar$classic.reject
+int.reject.null.v2.ne.smallvar[2,3,2] <- int.v2.ns50.ne.midd.smallvar$welch.reject
+int.reject.null.v2.ne.smallvar[2,4,1] <- int.v2.ns50.ne.bigd.smallvar$classic.reject
+int.reject.null.v2.ne.smallvar[2,4,2] <- int.v2.ns50.ne.bigd.smallvar$welch.reject
 int.reject.null.v2.ne.smallvar[3,1,1] <- int.v2.ns100.ne.nullT.smallvar$classic.reject
 int.reject.null.v2.ne.smallvar[3,1,2] <- int.v2.ns100.ne.nullT.smallvar$welch.reject
-int.reject.null.v2.ne.smallvar[3,2,1] <- int.v2.ns100.ne.midd.smallvar$classic.reject
-int.reject.null.v2.ne.smallvar[3,2,2] <- int.v2.ns100.ne.midd.smallvar$welch.reject
+int.reject.null.v2.ne.smallvar[3,2,1] <- int.v2.ns100.ne.smalld.smallvar$classic.reject
+int.reject.null.v2.ne.smallvar[3,2,2] <- int.v2.ns100.ne.smalld.smallvar$welch.reject
+int.reject.null.v2.ne.smallvar[3,3,1] <- int.v2.ns100.ne.midd.smallvar$classic.reject
+int.reject.null.v2.ne.smallvar[3,3,2] <- int.v2.ns100.ne.midd.smallvar$welch.reject
+int.reject.null.v2.ne.smallvar[3,4,1] <- int.v2.ns100.ne.bigd.smallvar$classic.reject
+int.reject.null.v2.ne.smallvar[3,4,2] <- int.v2.ns100.ne.bigd.smallvar$welch.reject
 
 
 ##### Equal Ns, double variance, smaller variances coverage rate #####
 
 ## store observed coverage rates
-int.obs.coverage.v2.ne.smallvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.obs.coverage.v2.ne.smallvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.obs.coverage.v2.ne.smallvar[1,1,1] <- int.v2.ns20.ne.nullT.smallvar$classic.coverage
 int.obs.coverage.v2.ne.smallvar[1,1,2] <- int.v2.ns20.ne.nullT.smallvar$welch.coverage
-int.obs.coverage.v2.ne.smallvar[1,2,1] <- int.v2.ns20.ne.midd.smallvar$classic.coverage
-int.obs.coverage.v2.ne.smallvar[1,2,2] <- int.v2.ns20.ne.midd.smallvar$welch.coverage
+int.obs.coverage.v2.ne.smallvar[1,2,1] <- int.v2.ns20.ne.smalld.smallvar$classic.coverage
+int.obs.coverage.v2.ne.smallvar[1,2,2] <- int.v2.ns20.ne.smalld.smallvar$welch.coverage
+int.obs.coverage.v2.ne.smallvar[1,3,1] <- int.v2.ns20.ne.midd.smallvar$classic.coverage
+int.obs.coverage.v2.ne.smallvar[1,3,2] <- int.v2.ns20.ne.midd.smallvar$welch.coverage
+int.obs.coverage.v2.ne.smallvar[1,4,1] <- int.v2.ns20.ne.bigd.smallvar$classic.coverage
+int.obs.coverage.v2.ne.smallvar[1,4,2] <- int.v2.ns20.ne.bigd.smallvar$welch.coverage
 int.obs.coverage.v2.ne.smallvar[2,1,1] <- int.v2.ns50.ne.nullT.smallvar$classic.coverage
 int.obs.coverage.v2.ne.smallvar[2,1,2] <- int.v2.ns50.ne.nullT.smallvar$welch.coverage
-int.obs.coverage.v2.ne.smallvar[2,2,1] <- int.v2.ns50.ne.midd.smallvar$classic.coverage
-int.obs.coverage.v2.ne.smallvar[2,2,2] <- int.v2.ns50.ne.midd.smallvar$welch.coverage
+int.obs.coverage.v2.ne.smallvar[2,2,1] <- int.v2.ns50.ne.smalld.smallvar$classic.coverage
+int.obs.coverage.v2.ne.smallvar[2,2,2] <- int.v2.ns50.ne.smalld.smallvar$welch.coverage
+int.obs.coverage.v2.ne.smallvar[2,3,1] <- int.v2.ns50.ne.midd.smallvar$classic.coverage
+int.obs.coverage.v2.ne.smallvar[2,3,2] <- int.v2.ns50.ne.midd.smallvar$welch.coverage
+int.obs.coverage.v2.ne.smallvar[2,4,1] <- int.v2.ns50.ne.bigd.smallvar$classic.coverage
+int.obs.coverage.v2.ne.smallvar[2,4,2] <- int.v2.ns50.ne.bigd.smallvar$welch.coverage
 int.obs.coverage.v2.ne.smallvar[3,1,1] <- int.v2.ns100.ne.nullT.smallvar$classic.coverage
 int.obs.coverage.v2.ne.smallvar[3,1,2] <- int.v2.ns100.ne.nullT.smallvar$welch.coverage
-int.obs.coverage.v2.ne.smallvar[3,2,1] <- int.v2.ns100.ne.midd.smallvar$classic.coverage
-int.obs.coverage.v2.ne.smallvar[3,2,2] <- int.v2.ns100.ne.midd.smallvar$welch.coverage
+int.obs.coverage.v2.ne.smallvar[3,2,1] <- int.v2.ns100.ne.smalld.smallvar$classic.coverage
+int.obs.coverage.v2.ne.smallvar[3,2,2] <- int.v2.ns100.ne.smalld.smallvar$welch.coverage
+int.obs.coverage.v2.ne.smallvar[3,3,1] <- int.v2.ns100.ne.midd.smallvar$classic.coverage
+int.obs.coverage.v2.ne.smallvar[3,3,2] <- int.v2.ns100.ne.midd.smallvar$welch.coverage
+int.obs.coverage.v2.ne.smallvar[3,4,1] <- int.v2.ns100.ne.bigd.smallvar$classic.coverage
+int.obs.coverage.v2.ne.smallvar[3,4,2] <- int.v2.ns100.ne.bigd.smallvar$welch.coverage
 
 
 ##### Save tables from equal Ns, smaller variances simulations #####
 save(int.reject.null.v2.ne.smallvar, int.obs.coverage.v2.ne.smallvar, file='/users/joshwondra/R-projects/Welch rule/interaction2x2-v2smallvarNeSeed2184Tables.Rdata')
 load('/users/joshwondra/R-projects/Welch rule/interaction2x2-v2smallvarNeSeed2184Tables.Rdata')
-
 
 
 
@@ -2256,6 +2432,16 @@ int.v5.ns50.ne.nullT.smallvar <- t.compare(nsims=10000, Ns=c(50,50,50,50), means
 set.seed(2184)
 int.v5.ns100.ne.nullT.smallvar <- t.compare(nsims=10000, Ns=c(100,100,100,100), means=c(6,6,6,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
 
+# Small d
+set.seed(2184)
+int.v5.ns20.ne.smalld.smallvar <- t.compare(nsims=10000, Ns=c(20,20,20,20), means=c(6,6.28,6.28,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns50.ne.smalld.smallvar <- t.compare(nsims=10000, Ns=c(50,50,50,50), means=c(6,6.28,6.28,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns100.ne.smalld.smallvar <- t.compare(nsims=10000, Ns=c(100,100,100,100), means=c(6,6.28,6.28,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
+
 # Mid d
 set.seed(2184)
 int.v5.ns20.ne.midd.smallvar <- t.compare(nsims=10000, Ns=c(20,20,20,20), means=c(6,6.71,6.71,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
@@ -2266,45 +2452,79 @@ int.v5.ns50.ne.midd.smallvar <- t.compare(nsims=10000, Ns=c(50,50,50,50), means=
 set.seed(2184)
 int.v5.ns100.ne.midd.smallvar <- t.compare(nsims=10000, Ns=c(100,100,100,100), means=c(6,6.71,6.71,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
 
+# Big d
+set.seed(2184)
+int.v5.ns20.ne.bigd.smallvar <- t.compare(nsims=10000, Ns=c(20,20,20,20), means=c(6,7.13,7.13,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns50.ne.bigd.smallvar <- t.compare(nsims=10000, Ns=c(50,50,50,50), means=c(6,7.13,7.13,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns100.ne.bigd.smallvar <- t.compare(nsims=10000, Ns=c(100,100,100,100), means=c(6,7.13,7.13,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
+
 
 ##### Equal Ns, 5x variance, smaller variances false positives and power #####
 
 ## array to store proportion of rejected null hypotheses
-int.reject.null.v5.ne.smallvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.reject.null.v5.ne.smallvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.reject.null.v5.ne.smallvar[1,1,1] <- int.v5.ns20.ne.nullT.smallvar$classic.reject
 int.reject.null.v5.ne.smallvar[1,1,2] <- int.v5.ns20.ne.nullT.smallvar$welch.reject
-int.reject.null.v5.ne.smallvar[1,2,1] <- int.v5.ns20.ne.midd.smallvar$classic.reject
-int.reject.null.v5.ne.smallvar[1,2,2] <- int.v5.ns20.ne.midd.smallvar$welch.reject
+int.reject.null.v5.ne.smallvar[1,2,1] <- int.v5.ns20.ne.smalld.smallvar$classic.reject
+int.reject.null.v5.ne.smallvar[1,2,2] <- int.v5.ns20.ne.smalld.smallvar$welch.reject
+int.reject.null.v5.ne.smallvar[1,3,1] <- int.v5.ns20.ne.midd.smallvar$classic.reject
+int.reject.null.v5.ne.smallvar[1,3,2] <- int.v5.ns20.ne.midd.smallvar$welch.reject
+int.reject.null.v5.ne.smallvar[1,4,1] <- int.v5.ns20.ne.bigd.smallvar$classic.reject
+int.reject.null.v5.ne.smallvar[1,4,2] <- int.v5.ns20.ne.bigd.smallvar$welch.reject
 int.reject.null.v5.ne.smallvar[2,1,1] <- int.v5.ns50.ne.nullT.smallvar$classic.reject
 int.reject.null.v5.ne.smallvar[2,1,2] <- int.v5.ns50.ne.nullT.smallvar$welch.reject
-int.reject.null.v5.ne.smallvar[2,2,1] <- int.v5.ns50.ne.midd.smallvar$classic.reject
-int.reject.null.v5.ne.smallvar[2,2,2] <- int.v5.ns50.ne.midd.smallvar$welch.reject
+int.reject.null.v5.ne.smallvar[2,2,1] <- int.v5.ns50.ne.smalld.smallvar$classic.reject
+int.reject.null.v5.ne.smallvar[2,2,2] <- int.v5.ns50.ne.smalld.smallvar$welch.reject
+int.reject.null.v5.ne.smallvar[2,3,1] <- int.v5.ns50.ne.midd.smallvar$classic.reject
+int.reject.null.v5.ne.smallvar[2,3,2] <- int.v5.ns50.ne.midd.smallvar$welch.reject
+int.reject.null.v5.ne.smallvar[2,4,1] <- int.v5.ns50.ne.bigd.smallvar$classic.reject
+int.reject.null.v5.ne.smallvar[2,4,2] <- int.v5.ns50.ne.bigd.smallvar$welch.reject
 int.reject.null.v5.ne.smallvar[3,1,1] <- int.v5.ns100.ne.nullT.smallvar$classic.reject
 int.reject.null.v5.ne.smallvar[3,1,2] <- int.v5.ns100.ne.nullT.smallvar$welch.reject
-int.reject.null.v5.ne.smallvar[3,2,1] <- int.v5.ns100.ne.midd.smallvar$classic.reject
-int.reject.null.v5.ne.smallvar[3,2,2] <- int.v5.ns100.ne.midd.smallvar$welch.reject
+int.reject.null.v5.ne.smallvar[3,2,1] <- int.v5.ns100.ne.smalld.smallvar$classic.reject
+int.reject.null.v5.ne.smallvar[3,2,2] <- int.v5.ns100.ne.smalld.smallvar$welch.reject
+int.reject.null.v5.ne.smallvar[3,3,1] <- int.v5.ns100.ne.midd.smallvar$classic.reject
+int.reject.null.v5.ne.smallvar[3,3,2] <- int.v5.ns100.ne.midd.smallvar$welch.reject
+int.reject.null.v5.ne.smallvar[3,4,1] <- int.v5.ns100.ne.bigd.smallvar$classic.reject
+int.reject.null.v5.ne.smallvar[3,4,2] <- int.v5.ns100.ne.bigd.smallvar$welch.reject
 
 
 ##### Equal Ns, 5x variance, smaller variances coverage rate #####
 
 ## store observed coverage rates
-int.obs.coverage.v5.ne.smallvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.obs.coverage.v5.ne.smallvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.obs.coverage.v5.ne.smallvar[1,1,1] <- int.v5.ns20.ne.nullT.smallvar$classic.coverage
 int.obs.coverage.v5.ne.smallvar[1,1,2] <- int.v5.ns20.ne.nullT.smallvar$welch.coverage
-int.obs.coverage.v5.ne.smallvar[1,2,1] <- int.v5.ns20.ne.midd.smallvar$classic.coverage
-int.obs.coverage.v5.ne.smallvar[1,2,2] <- int.v5.ns20.ne.midd.smallvar$welch.coverage
+int.obs.coverage.v5.ne.smallvar[1,2,1] <- int.v5.ns20.ne.smalld.smallvar$classic.coverage
+int.obs.coverage.v5.ne.smallvar[1,2,2] <- int.v5.ns20.ne.smalld.smallvar$welch.coverage
+int.obs.coverage.v5.ne.smallvar[1,3,1] <- int.v5.ns20.ne.midd.smallvar$classic.coverage
+int.obs.coverage.v5.ne.smallvar[1,3,2] <- int.v5.ns20.ne.midd.smallvar$welch.coverage
+int.obs.coverage.v5.ne.smallvar[1,4,1] <- int.v5.ns20.ne.bigd.smallvar$classic.coverage
+int.obs.coverage.v5.ne.smallvar[1,4,2] <- int.v5.ns20.ne.bigd.smallvar$welch.coverage
 int.obs.coverage.v5.ne.smallvar[2,1,1] <- int.v5.ns50.ne.nullT.smallvar$classic.coverage
 int.obs.coverage.v5.ne.smallvar[2,1,2] <- int.v5.ns50.ne.nullT.smallvar$welch.coverage
-int.obs.coverage.v5.ne.smallvar[2,2,1] <- int.v5.ns50.ne.midd.smallvar$classic.coverage
-int.obs.coverage.v5.ne.smallvar[2,2,2] <- int.v5.ns50.ne.midd.smallvar$welch.coverage
+int.obs.coverage.v5.ne.smallvar[2,2,1] <- int.v5.ns50.ne.smalld.smallvar$classic.coverage
+int.obs.coverage.v5.ne.smallvar[2,2,2] <- int.v5.ns50.ne.smalld.smallvar$welch.coverage
+int.obs.coverage.v5.ne.smallvar[2,3,1] <- int.v5.ns50.ne.midd.smallvar$classic.coverage
+int.obs.coverage.v5.ne.smallvar[2,3,2] <- int.v5.ns50.ne.midd.smallvar$welch.coverage
+int.obs.coverage.v5.ne.smallvar[2,4,1] <- int.v5.ns50.ne.bigd.smallvar$classic.coverage
+int.obs.coverage.v5.ne.smallvar[2,4,2] <- int.v5.ns50.ne.bigd.smallvar$welch.coverage
 int.obs.coverage.v5.ne.smallvar[3,1,1] <- int.v5.ns100.ne.nullT.smallvar$classic.coverage
 int.obs.coverage.v5.ne.smallvar[3,1,2] <- int.v5.ns100.ne.nullT.smallvar$welch.coverage
-int.obs.coverage.v5.ne.smallvar[3,2,1] <- int.v5.ns100.ne.midd.smallvar$classic.coverage
-int.obs.coverage.v5.ne.smallvar[3,2,2] <- int.v5.ns100.ne.midd.smallvar$welch.coverage
+int.obs.coverage.v5.ne.smallvar[3,2,1] <- int.v5.ns100.ne.smalld.smallvar$classic.coverage
+int.obs.coverage.v5.ne.smallvar[3,2,2] <- int.v5.ns100.ne.smalld.smallvar$welch.coverage
+int.obs.coverage.v5.ne.smallvar[3,3,1] <- int.v5.ns100.ne.midd.smallvar$classic.coverage
+int.obs.coverage.v5.ne.smallvar[3,3,2] <- int.v5.ns100.ne.midd.smallvar$welch.coverage
+int.obs.coverage.v5.ne.smallvar[3,4,1] <- int.v5.ns100.ne.bigd.smallvar$classic.coverage
+int.obs.coverage.v5.ne.smallvar[3,4,2] <- int.v5.ns100.ne.bigd.smallvar$welch.coverage
 
 
 ##### Save tables from equal Ns, 5x variances, smaller variances simulations #####
@@ -2331,6 +2551,16 @@ int.ve.ns50.1.5n.nullT.bign <- t.compare(nsims=10000, Ns=c(75,50,50,50), means=c
 set.seed(2184)
 int.ve.ns100.1.5n.nullT.bign <- t.compare(nsims=10000, Ns=c(150,100,100,100), means=c(6,6,6,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
 
+# Small d
+set.seed(2184)
+int.ve.ns20.1.5n.smalld.bign <- t.compare(nsims=10000, Ns=c(30,20,20,20), means=c(6,6.28,6.28,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.ve.ns50.1.5n.smalld.bign <- t.compare(nsims=10000, Ns=c(75,50,50,50), means=c(6,6.28,6.28,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.ve.ns100.1.5n.smalld.bign <- t.compare(nsims=10000, Ns=c(150,100,100,100), means=c(6,6.28,6.28,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
+
 # Mid d
 set.seed(2184)
 int.ve.ns20.1.5n.midd.bign <- t.compare(nsims=10000, Ns=c(30,20,20,20), means=c(6,6.71,6.71,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
@@ -2341,49 +2571,84 @@ int.ve.ns50.1.5n.midd.bign <- t.compare(nsims=10000, Ns=c(75,50,50,50), means=c(
 set.seed(2184)
 int.ve.ns100.1.5n.midd.bign <- t.compare(nsims=10000, Ns=c(150,100,100,100), means=c(6,6.71,6.71,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
 
+# Big d
+set.seed(2184)
+int.ve.ns20.1.5n.bigd.bign <- t.compare(nsims=10000, Ns=c(30,20,20,20), means=c(6,7.13,7.13,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.ve.ns50.1.5n.bigd.bign <- t.compare(nsims=10000, Ns=c(75,50,50,50), means=c(6,7.13,7.13,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.ve.ns100.1.5n.bigd.bign <- t.compare(nsims=10000, Ns=c(150,100,100,100), means=c(6,7.13,7.13,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
+
 ##### 1.Double N, Big N, equal variances false positives and power #####
 
 ## array to store proportion of rejected null hypotheses
-int.reject.null.ve.1.5n.bign <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.reject.null.ve.1.5n.bign <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.reject.null.ve.1.5n.bign[1,1,1] <- int.ve.ns20.1.5n.nullT.bign$classic.reject
 int.reject.null.ve.1.5n.bign[1,1,2] <- int.ve.ns20.1.5n.nullT.bign$welch.reject
-int.reject.null.ve.1.5n.bign[1,2,1] <- int.ve.ns20.1.5n.midd.bign$classic.reject
-int.reject.null.ve.1.5n.bign[1,2,2] <- int.ve.ns20.1.5n.midd.bign$welch.reject
+int.reject.null.ve.1.5n.bign[1,2,1] <- int.ve.ns20.1.5n.smalld.bign$classic.reject
+int.reject.null.ve.1.5n.bign[1,2,2] <- int.ve.ns20.1.5n.smalld.bign$welch.reject
+int.reject.null.ve.1.5n.bign[1,3,1] <- int.ve.ns20.1.5n.midd.bign$classic.reject
+int.reject.null.ve.1.5n.bign[1,3,2] <- int.ve.ns20.1.5n.midd.bign$welch.reject
+int.reject.null.ve.1.5n.bign[1,4,1] <- int.ve.ns20.1.5n.bigd.bign$classic.reject
+int.reject.null.ve.1.5n.bign[1,4,2] <- int.ve.ns20.1.5n.bigd.bign$welch.reject
 int.reject.null.ve.1.5n.bign[2,1,1] <- int.ve.ns50.1.5n.nullT.bign$classic.reject
 int.reject.null.ve.1.5n.bign[2,1,2] <- int.ve.ns50.1.5n.nullT.bign$welch.reject
-int.reject.null.ve.1.5n.bign[2,2,1] <- int.ve.ns50.1.5n.midd.bign$classic.reject
-int.reject.null.ve.1.5n.bign[2,2,2] <- int.ve.ns50.1.5n.midd.bign$welch.reject
+int.reject.null.ve.1.5n.bign[2,2,1] <- int.ve.ns50.1.5n.smalld.bign$classic.reject
+int.reject.null.ve.1.5n.bign[2,2,2] <- int.ve.ns50.1.5n.smalld.bign$welch.reject
+int.reject.null.ve.1.5n.bign[2,3,1] <- int.ve.ns50.1.5n.midd.bign$classic.reject
+int.reject.null.ve.1.5n.bign[2,3,2] <- int.ve.ns50.1.5n.midd.bign$welch.reject
+int.reject.null.ve.1.5n.bign[2,4,1] <- int.ve.ns50.1.5n.bigd.bign$classic.reject
+int.reject.null.ve.1.5n.bign[2,4,2] <- int.ve.ns50.1.5n.bigd.bign$welch.reject
 int.reject.null.ve.1.5n.bign[3,1,1] <- int.ve.ns100.1.5n.nullT.bign$classic.reject
 int.reject.null.ve.1.5n.bign[3,1,2] <- int.ve.ns100.1.5n.nullT.bign$welch.reject
-int.reject.null.ve.1.5n.bign[3,2,1] <- int.ve.ns100.1.5n.midd.bign$classic.reject
-int.reject.null.ve.1.5n.bign[3,2,2] <- int.ve.ns100.1.5n.midd.bign$welch.reject
+int.reject.null.ve.1.5n.bign[3,2,1] <- int.ve.ns100.1.5n.smalld.bign$classic.reject
+int.reject.null.ve.1.5n.bign[3,2,2] <- int.ve.ns100.1.5n.smalld.bign$welch.reject
+int.reject.null.ve.1.5n.bign[3,3,1] <- int.ve.ns100.1.5n.midd.bign$classic.reject
+int.reject.null.ve.1.5n.bign[3,3,2] <- int.ve.ns100.1.5n.midd.bign$welch.reject
+int.reject.null.ve.1.5n.bign[3,4,1] <- int.ve.ns100.1.5n.bigd.bign$classic.reject
+int.reject.null.ve.1.5n.bign[3,4,2] <- int.ve.ns100.1.5n.bigd.bign$welch.reject
 
 
 ##### 1.Double N, Big N, equal variances coverage rate #####
 
 ## store observed coverage rates
-int.obs.coverage.ve.1.5n.bign <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.obs.coverage.ve.1.5n.bign <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.obs.coverage.ve.1.5n.bign[1,1,1] <- int.ve.ns20.1.5n.nullT.bign$classic.coverage
 int.obs.coverage.ve.1.5n.bign[1,1,2] <- int.ve.ns20.1.5n.nullT.bign$welch.coverage
-int.obs.coverage.ve.1.5n.bign[1,2,1] <- int.ve.ns20.1.5n.midd.bign$classic.coverage
-int.obs.coverage.ve.1.5n.bign[1,2,2] <- int.ve.ns20.1.5n.midd.bign$welch.coverage
+int.obs.coverage.ve.1.5n.bign[1,2,1] <- int.ve.ns20.1.5n.smalld.bign$classic.coverage
+int.obs.coverage.ve.1.5n.bign[1,2,2] <- int.ve.ns20.1.5n.smalld.bign$welch.coverage
+int.obs.coverage.ve.1.5n.bign[1,3,1] <- int.ve.ns20.1.5n.midd.bign$classic.coverage
+int.obs.coverage.ve.1.5n.bign[1,3,2] <- int.ve.ns20.1.5n.midd.bign$welch.coverage
+int.obs.coverage.ve.1.5n.bign[1,4,1] <- int.ve.ns20.1.5n.bigd.bign$classic.coverage
+int.obs.coverage.ve.1.5n.bign[1,4,2] <- int.ve.ns20.1.5n.bigd.bign$welch.coverage
 int.obs.coverage.ve.1.5n.bign[2,1,1] <- int.ve.ns50.1.5n.nullT.bign$classic.coverage
 int.obs.coverage.ve.1.5n.bign[2,1,2] <- int.ve.ns50.1.5n.nullT.bign$welch.coverage
-int.obs.coverage.ve.1.5n.bign[2,2,1] <- int.ve.ns50.1.5n.midd.bign$classic.coverage
-int.obs.coverage.ve.1.5n.bign[2,2,2] <- int.ve.ns50.1.5n.midd.bign$welch.coverage
+int.obs.coverage.ve.1.5n.bign[2,2,1] <- int.ve.ns50.1.5n.smalld.bign$classic.coverage
+int.obs.coverage.ve.1.5n.bign[2,2,2] <- int.ve.ns50.1.5n.smalld.bign$welch.coverage
+int.obs.coverage.ve.1.5n.bign[2,3,1] <- int.ve.ns50.1.5n.midd.bign$classic.coverage
+int.obs.coverage.ve.1.5n.bign[2,3,2] <- int.ve.ns50.1.5n.midd.bign$welch.coverage
+int.obs.coverage.ve.1.5n.bign[2,4,1] <- int.ve.ns50.1.5n.bigd.bign$classic.coverage
+int.obs.coverage.ve.1.5n.bign[2,4,2] <- int.ve.ns50.1.5n.bigd.bign$welch.coverage
 int.obs.coverage.ve.1.5n.bign[3,1,1] <- int.ve.ns100.1.5n.nullT.bign$classic.coverage
 int.obs.coverage.ve.1.5n.bign[3,1,2] <- int.ve.ns100.1.5n.nullT.bign$welch.coverage
-int.obs.coverage.ve.1.5n.bign[3,2,1] <- int.ve.ns100.1.5n.midd.bign$classic.coverage
-int.obs.coverage.ve.1.5n.bign[3,2,2] <- int.ve.ns100.1.5n.midd.bign$welch.coverage
+int.obs.coverage.ve.1.5n.bign[3,2,1] <- int.ve.ns100.1.5n.smalld.bign$classic.coverage
+int.obs.coverage.ve.1.5n.bign[3,2,2] <- int.ve.ns100.1.5n.smalld.bign$welch.coverage
+int.obs.coverage.ve.1.5n.bign[3,3,1] <- int.ve.ns100.1.5n.midd.bign$classic.coverage
+int.obs.coverage.ve.1.5n.bign[3,3,2] <- int.ve.ns100.1.5n.midd.bign$welch.coverage
+int.obs.coverage.ve.1.5n.bign[3,4,1] <- int.ve.ns100.1.5n.bigd.bign$classic.coverage
+int.obs.coverage.ve.1.5n.bign[3,4,2] <- int.ve.ns100.1.5n.bigd.bign$welch.coverage
 
 
 ##### Save tables from 1.Double N, Big N, equal variances simulations #####
 save(int.reject.null.ve.1.5n.bign, int.obs.coverage.ve.1.5n.bign, file='/users/joshwondra/R-projects/Welch rule/interaction2x2-vebign1.5nSeed2184Tables.Rdata')
 load('/users/joshwondra/R-projects/Welch rule/interaction2x2-vebign1.5nSeed2184Tables.Rdata')
+
 
 
 
@@ -2404,6 +2669,16 @@ int.ve.ns50.2n.nullT.bign <- t.compare(nsims=10000, Ns=c(100,50,50,50), means=c(
 set.seed(2184)
 int.ve.ns100.2n.nullT.bign <- t.compare(nsims=10000, Ns=c(200,100,100,100), means=c(6,6,6,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
 
+# Small d
+set.seed(2184)
+int.ve.ns20.2n.smalld.bign <- t.compare(nsims=10000, Ns=c(40,20,20,20), means=c(6,6.28,6.28,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.ve.ns50.2n.smalld.bign <- t.compare(nsims=10000, Ns=c(100,50,50,50), means=c(6,6.28,6.28,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.ve.ns100.2n.smalld.bign <- t.compare(nsims=10000, Ns=c(200,100,100,100), means=c(6,6.28,6.28,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
+
 # Mid d
 set.seed(2184)
 int.ve.ns20.2n.midd.bign <- t.compare(nsims=10000, Ns=c(40,20,20,20), means=c(6,6.71,6.71,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
@@ -2414,44 +2689,78 @@ int.ve.ns50.2n.midd.bign <- t.compare(nsims=10000, Ns=c(100,50,50,50), means=c(6
 set.seed(2184)
 int.ve.ns100.2n.midd.bign <- t.compare(nsims=10000, Ns=c(200,100,100,100), means=c(6,6.71,6.71,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
 
+# Big d
+set.seed(2184)
+int.ve.ns20.2n.bigd.bign <- t.compare(nsims=10000, Ns=c(40,20,20,20), means=c(6,7.13,7.13,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.ve.ns50.2n.bigd.bign <- t.compare(nsims=10000, Ns=c(100,50,50,50), means=c(6,7.13,7.13,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.ve.ns100.2n.bigd.bign <- t.compare(nsims=10000, Ns=c(200,100,100,100), means=c(6,7.13,7.13,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
+
 ##### Double N, Big N, equal variances false positives and power #####
 
 ## array to store proportion of rejected null hypotheses
-int.reject.null.ve.2n.bign <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.reject.null.ve.2n.bign <- array(dim=c(3, 4, 2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.reject.null.ve.2n.bign[1,1,1] <- int.ve.ns20.2n.nullT.bign$classic.reject
 int.reject.null.ve.2n.bign[1,1,2] <- int.ve.ns20.2n.nullT.bign$welch.reject
-int.reject.null.ve.2n.bign[1,2,1] <- int.ve.ns20.2n.midd.bign$classic.reject
-int.reject.null.ve.2n.bign[1,2,2] <- int.ve.ns20.2n.midd.bign$welch.reject
+int.reject.null.ve.2n.bign[1,2,1] <- int.ve.ns20.2n.smalld.bign$classic.reject
+int.reject.null.ve.2n.bign[1,2,2] <- int.ve.ns20.2n.smalld.bign$welch.reject
+int.reject.null.ve.2n.bign[1,3,1] <- int.ve.ns20.2n.midd.bign$classic.reject
+int.reject.null.ve.2n.bign[1,3,2] <- int.ve.ns20.2n.midd.bign$welch.reject
+int.reject.null.ve.2n.bign[1,4,1] <- int.ve.ns20.2n.bigd.bign$classic.reject
+int.reject.null.ve.2n.bign[1,4,2] <- int.ve.ns20.2n.bigd.bign$welch.reject
 int.reject.null.ve.2n.bign[2,1,1] <- int.ve.ns50.2n.nullT.bign$classic.reject
 int.reject.null.ve.2n.bign[2,1,2] <- int.ve.ns50.2n.nullT.bign$welch.reject
-int.reject.null.ve.2n.bign[2,2,1] <- int.ve.ns50.2n.midd.bign$classic.reject
-int.reject.null.ve.2n.bign[2,2,2] <- int.ve.ns50.2n.midd.bign$welch.reject
+int.reject.null.ve.2n.bign[2,2,1] <- int.ve.ns50.2n.smalld.bign$classic.reject
+int.reject.null.ve.2n.bign[2,2,2] <- int.ve.ns50.2n.smalld.bign$welch.reject
+int.reject.null.ve.2n.bign[2,3,1] <- int.ve.ns50.2n.midd.bign$classic.reject
+int.reject.null.ve.2n.bign[2,3,2] <- int.ve.ns50.2n.midd.bign$welch.reject
+int.reject.null.ve.2n.bign[2,4,1] <- int.ve.ns50.2n.bigd.bign$classic.reject
+int.reject.null.ve.2n.bign[2,4,2] <- int.ve.ns50.2n.bigd.bign$welch.reject
 int.reject.null.ve.2n.bign[3,1,1] <- int.ve.ns100.2n.nullT.bign$classic.reject
 int.reject.null.ve.2n.bign[3,1,2] <- int.ve.ns100.2n.nullT.bign$welch.reject
-int.reject.null.ve.2n.bign[3,2,1] <- int.ve.ns100.2n.midd.bign$classic.reject
-int.reject.null.ve.2n.bign[3,2,2] <- int.ve.ns100.2n.midd.bign$welch.reject
+int.reject.null.ve.2n.bign[3,2,1] <- int.ve.ns100.2n.smalld.bign$classic.reject
+int.reject.null.ve.2n.bign[3,2,2] <- int.ve.ns100.2n.smalld.bign$welch.reject
+int.reject.null.ve.2n.bign[3,3,1] <- int.ve.ns100.2n.midd.bign$classic.reject
+int.reject.null.ve.2n.bign[3,3,2] <- int.ve.ns100.2n.midd.bign$welch.reject
+int.reject.null.ve.2n.bign[3,4,1] <- int.ve.ns100.2n.bigd.bign$classic.reject
+int.reject.null.ve.2n.bign[3,4,2] <- int.ve.ns100.2n.bigd.bign$welch.reject
 
 
 ##### Double N, Big N, equal variances coverage rate #####
 
 ## store observed coverage rates
-int.obs.coverage.ve.2n.bign <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.obs.coverage.ve.2n.bign <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.obs.coverage.ve.2n.bign[1,1,1] <- int.ve.ns20.2n.nullT.bign$classic.coverage
 int.obs.coverage.ve.2n.bign[1,1,2] <- int.ve.ns20.2n.nullT.bign$welch.coverage
-int.obs.coverage.ve.2n.bign[1,2,1] <- int.ve.ns20.2n.midd.bign$classic.coverage
-int.obs.coverage.ve.2n.bign[1,2,2] <- int.ve.ns20.2n.midd.bign$welch.coverage
+int.obs.coverage.ve.2n.bign[1,2,1] <- int.ve.ns20.2n.smalld.bign$classic.coverage
+int.obs.coverage.ve.2n.bign[1,2,2] <- int.ve.ns20.2n.smalld.bign$welch.coverage
+int.obs.coverage.ve.2n.bign[1,3,1] <- int.ve.ns20.2n.midd.bign$classic.coverage
+int.obs.coverage.ve.2n.bign[1,3,2] <- int.ve.ns20.2n.midd.bign$welch.coverage
+int.obs.coverage.ve.2n.bign[1,4,1] <- int.ve.ns20.2n.bigd.bign$classic.coverage
+int.obs.coverage.ve.2n.bign[1,4,2] <- int.ve.ns20.2n.bigd.bign$welch.coverage
 int.obs.coverage.ve.2n.bign[2,1,1] <- int.ve.ns50.2n.nullT.bign$classic.coverage
 int.obs.coverage.ve.2n.bign[2,1,2] <- int.ve.ns50.2n.nullT.bign$welch.coverage
-int.obs.coverage.ve.2n.bign[2,2,1] <- int.ve.ns50.2n.midd.bign$classic.coverage
-int.obs.coverage.ve.2n.bign[2,2,2] <- int.ve.ns50.2n.midd.bign$welch.coverage
+int.obs.coverage.ve.2n.bign[2,2,1] <- int.ve.ns50.2n.smalld.bign$classic.coverage
+int.obs.coverage.ve.2n.bign[2,2,2] <- int.ve.ns50.2n.smalld.bign$welch.coverage
+int.obs.coverage.ve.2n.bign[2,3,1] <- int.ve.ns50.2n.midd.bign$classic.coverage
+int.obs.coverage.ve.2n.bign[2,3,2] <- int.ve.ns50.2n.midd.bign$welch.coverage
+int.obs.coverage.ve.2n.bign[2,4,1] <- int.ve.ns50.2n.bigd.bign$classic.coverage
+int.obs.coverage.ve.2n.bign[2,4,2] <- int.ve.ns50.2n.bigd.bign$welch.coverage
 int.obs.coverage.ve.2n.bign[3,1,1] <- int.ve.ns100.2n.nullT.bign$classic.coverage
 int.obs.coverage.ve.2n.bign[3,1,2] <- int.ve.ns100.2n.nullT.bign$welch.coverage
-int.obs.coverage.ve.2n.bign[3,2,1] <- int.ve.ns100.2n.midd.bign$classic.coverage
-int.obs.coverage.ve.2n.bign[3,2,2] <- int.ve.ns100.2n.midd.bign$welch.coverage
+int.obs.coverage.ve.2n.bign[3,2,1] <- int.ve.ns100.2n.smalld.bign$classic.coverage
+int.obs.coverage.ve.2n.bign[3,2,2] <- int.ve.ns100.2n.smalld.bign$welch.coverage
+int.obs.coverage.ve.2n.bign[3,3,1] <- int.ve.ns100.2n.midd.bign$classic.coverage
+int.obs.coverage.ve.2n.bign[3,3,2] <- int.ve.ns100.2n.midd.bign$welch.coverage
+int.obs.coverage.ve.2n.bign[3,4,1] <- int.ve.ns100.2n.bigd.bign$classic.coverage
+int.obs.coverage.ve.2n.bign[3,4,2] <- int.ve.ns100.2n.bigd.bign$welch.coverage
 
 
 ##### Save tables from double Ns, Big N, equal variances simulations #####
@@ -2477,6 +2786,16 @@ int.ve.ns50.1.5n.nullT.smalln <- t.compare(nsims=10000, Ns=c(50,75,75,75), means
 set.seed(2184)
 int.ve.ns100.1.5n.nullT.smalln <- t.compare(nsims=10000, Ns=c(100,150,150,150), means=c(6,6,6,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
 
+# Small d
+set.seed(2184)
+int.ve.ns20.1.5n.smalld.smalln <- t.compare(nsims=10000, Ns=c(20,30,30,30), means=c(6,6.28,6.28,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.ve.ns50.1.5n.smalld.smalln <- t.compare(nsims=10000, Ns=c(50,75,75,75), means=c(6,6.28,6.28,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.ve.ns100.1.5n.smalld.smalln <- t.compare(nsims=10000, Ns=c(100,150,150,150), means=c(6,6.28,6.28,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
+
 # Mid d
 set.seed(2184)
 int.ve.ns20.1.5n.midd.smalln <- t.compare(nsims=10000, Ns=c(20,30,30,30), means=c(6,6.71,6.71,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
@@ -2487,50 +2806,83 @@ int.ve.ns50.1.5n.midd.smalln <- t.compare(nsims=10000, Ns=c(50,75,75,75), means=
 set.seed(2184)
 int.ve.ns100.1.5n.midd.smalln <- t.compare(nsims=10000, Ns=c(100,150,150,150), means=c(6,6.71,6.71,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
 
+# Big d
+set.seed(2184)
+int.ve.ns20.1.5n.bigd.smalln <- t.compare(nsims=10000, Ns=c(20,30,30,30), means=c(6,7.13,7.13,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.ve.ns50.1.5n.bigd.smalln <- t.compare(nsims=10000, Ns=c(50,75,75,75), means=c(6,7.13,7.13,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.ve.ns100.1.5n.bigd.smalln <- t.compare(nsims=10000, Ns=c(100,150,150,150), means=c(6,7.13,7.13,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
+
 ##### 1.Double N, Small N, equal variances false positives and power #####
 
 ## array to store proportion of rejected null hypotheses
-int.reject.null.ve.1.5n.smalln <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.reject.null.ve.1.5n.smalln <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.reject.null.ve.1.5n.smalln[1,1,1] <- int.ve.ns20.1.5n.nullT.smalln$classic.reject
 int.reject.null.ve.1.5n.smalln[1,1,2] <- int.ve.ns20.1.5n.nullT.smalln$welch.reject
-int.reject.null.ve.1.5n.smalln[1,2,1] <- int.ve.ns20.1.5n.midd.smalln$classic.reject
-int.reject.null.ve.1.5n.smalln[1,2,2] <- int.ve.ns20.1.5n.midd.smalln$welch.reject
+int.reject.null.ve.1.5n.smalln[1,2,1] <- int.ve.ns20.1.5n.smalld.smalln$classic.reject
+int.reject.null.ve.1.5n.smalln[1,2,2] <- int.ve.ns20.1.5n.smalld.smalln$welch.reject
+int.reject.null.ve.1.5n.smalln[1,3,1] <- int.ve.ns20.1.5n.midd.smalln$classic.reject
+int.reject.null.ve.1.5n.smalln[1,3,2] <- int.ve.ns20.1.5n.midd.smalln$welch.reject
+int.reject.null.ve.1.5n.smalln[1,4,1] <- int.ve.ns20.1.5n.bigd.smalln$classic.reject
+int.reject.null.ve.1.5n.smalln[1,4,2] <- int.ve.ns20.1.5n.bigd.smalln$welch.reject
 int.reject.null.ve.1.5n.smalln[2,1,1] <- int.ve.ns50.1.5n.nullT.smalln$classic.reject
 int.reject.null.ve.1.5n.smalln[2,1,2] <- int.ve.ns50.1.5n.nullT.smalln$welch.reject
-int.reject.null.ve.1.5n.smalln[2,2,1] <- int.ve.ns50.1.5n.midd.smalln$classic.reject
-int.reject.null.ve.1.5n.smalln[2,2,2] <- int.ve.ns50.1.5n.midd.smalln$welch.reject
+int.reject.null.ve.1.5n.smalln[2,2,1] <- int.ve.ns50.1.5n.smalld.smalln$classic.reject
+int.reject.null.ve.1.5n.smalln[2,2,2] <- int.ve.ns50.1.5n.smalld.smalln$welch.reject
+int.reject.null.ve.1.5n.smalln[2,3,1] <- int.ve.ns50.1.5n.midd.smalln$classic.reject
+int.reject.null.ve.1.5n.smalln[2,3,2] <- int.ve.ns50.1.5n.midd.smalln$welch.reject
+int.reject.null.ve.1.5n.smalln[2,4,1] <- int.ve.ns50.1.5n.bigd.smalln$classic.reject
+int.reject.null.ve.1.5n.smalln[2,4,2] <- int.ve.ns50.1.5n.bigd.smalln$welch.reject
 int.reject.null.ve.1.5n.smalln[3,1,1] <- int.ve.ns100.1.5n.nullT.smalln$classic.reject
 int.reject.null.ve.1.5n.smalln[3,1,2] <- int.ve.ns100.1.5n.nullT.smalln$welch.reject
-int.reject.null.ve.1.5n.smalln[3,2,1] <- int.ve.ns100.1.5n.midd.smalln$classic.reject
-int.reject.null.ve.1.5n.smalln[3,2,2] <- int.ve.ns100.1.5n.midd.smalln$welch.reject
+int.reject.null.ve.1.5n.smalln[3,2,1] <- int.ve.ns100.1.5n.smalld.smalln$classic.reject
+int.reject.null.ve.1.5n.smalln[3,2,2] <- int.ve.ns100.1.5n.smalld.smalln$welch.reject
+int.reject.null.ve.1.5n.smalln[3,3,1] <- int.ve.ns100.1.5n.midd.smalln$classic.reject
+int.reject.null.ve.1.5n.smalln[3,3,2] <- int.ve.ns100.1.5n.midd.smalln$welch.reject
+int.reject.null.ve.1.5n.smalln[3,4,1] <- int.ve.ns100.1.5n.bigd.smalln$classic.reject
+int.reject.null.ve.1.5n.smalln[3,4,2] <- int.ve.ns100.1.5n.bigd.smalln$welch.reject
 
 
 ##### 1.Double N, Small N, equal variances coverage rate #####
 
 ## store observed coverage rates
-int.obs.coverage.ve.1.5n.smalln <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.obs.coverage.ve.1.5n.smalln <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.obs.coverage.ve.1.5n.smalln[1,1,1] <- int.ve.ns20.1.5n.nullT.smalln$classic.coverage
 int.obs.coverage.ve.1.5n.smalln[1,1,2] <- int.ve.ns20.1.5n.nullT.smalln$welch.coverage
-int.obs.coverage.ve.1.5n.smalln[1,2,1] <- int.ve.ns20.1.5n.midd.smalln$classic.coverage
-int.obs.coverage.ve.1.5n.smalln[1,2,2] <- int.ve.ns20.1.5n.midd.smalln$welch.coverage
+int.obs.coverage.ve.1.5n.smalln[1,2,1] <- int.ve.ns20.1.5n.smalld.smalln$classic.coverage
+int.obs.coverage.ve.1.5n.smalln[1,2,2] <- int.ve.ns20.1.5n.smalld.smalln$welch.coverage
+int.obs.coverage.ve.1.5n.smalln[1,3,1] <- int.ve.ns20.1.5n.midd.smalln$classic.coverage
+int.obs.coverage.ve.1.5n.smalln[1,3,2] <- int.ve.ns20.1.5n.midd.smalln$welch.coverage
+int.obs.coverage.ve.1.5n.smalln[1,4,1] <- int.ve.ns20.1.5n.bigd.smalln$classic.coverage
+int.obs.coverage.ve.1.5n.smalln[1,4,2] <- int.ve.ns20.1.5n.bigd.smalln$welch.coverage
 int.obs.coverage.ve.1.5n.smalln[2,1,1] <- int.ve.ns50.1.5n.nullT.smalln$classic.coverage
 int.obs.coverage.ve.1.5n.smalln[2,1,2] <- int.ve.ns50.1.5n.nullT.smalln$welch.coverage
-int.obs.coverage.ve.1.5n.smalln[2,2,1] <- int.ve.ns50.1.5n.midd.smalln$classic.coverage
-int.obs.coverage.ve.1.5n.smalln[2,2,2] <- int.ve.ns50.1.5n.midd.smalln$welch.coverage
+int.obs.coverage.ve.1.5n.smalln[2,2,1] <- int.ve.ns50.1.5n.smalld.smalln$classic.coverage
+int.obs.coverage.ve.1.5n.smalln[2,2,2] <- int.ve.ns50.1.5n.smalld.smalln$welch.coverage
+int.obs.coverage.ve.1.5n.smalln[2,3,1] <- int.ve.ns50.1.5n.midd.smalln$classic.coverage
+int.obs.coverage.ve.1.5n.smalln[2,3,2] <- int.ve.ns50.1.5n.midd.smalln$welch.coverage
+int.obs.coverage.ve.1.5n.smalln[2,4,1] <- int.ve.ns50.1.5n.bigd.smalln$classic.coverage
+int.obs.coverage.ve.1.5n.smalln[2,4,2] <- int.ve.ns50.1.5n.bigd.smalln$welch.coverage
 int.obs.coverage.ve.1.5n.smalln[3,1,1] <- int.ve.ns100.1.5n.nullT.smalln$classic.coverage
 int.obs.coverage.ve.1.5n.smalln[3,1,2] <- int.ve.ns100.1.5n.nullT.smalln$welch.coverage
-int.obs.coverage.ve.1.5n.smalln[3,2,1] <- int.ve.ns100.1.5n.midd.smalln$classic.coverage
-int.obs.coverage.ve.1.5n.smalln[3,2,2] <- int.ve.ns100.1.5n.midd.smalln$welch.coverage
+int.obs.coverage.ve.1.5n.smalln[3,2,1] <- int.ve.ns100.1.5n.smalld.smalln$classic.coverage
+int.obs.coverage.ve.1.5n.smalln[3,2,2] <- int.ve.ns100.1.5n.smalld.smalln$welch.coverage
+int.obs.coverage.ve.1.5n.smalln[3,3,1] <- int.ve.ns100.1.5n.midd.smalln$classic.coverage
+int.obs.coverage.ve.1.5n.smalln[3,3,2] <- int.ve.ns100.1.5n.midd.smalln$welch.coverage
+int.obs.coverage.ve.1.5n.smalln[3,4,1] <- int.ve.ns100.1.5n.bigd.smalln$classic.coverage
+int.obs.coverage.ve.1.5n.smalln[3,4,2] <- int.ve.ns100.1.5n.bigd.smalln$welch.coverage
 
 
 ##### Save tables from 1.Double N, Small N, equal variances simulations #####
 save(int.reject.null.ve.1.5n.smalln, int.obs.coverage.ve.1.5n.smalln, file='/users/joshwondra/R-projects/Welch rule/interaction2x2-vesmalln1.5nSeed2184Tables.Rdata')
 load('/users/joshwondra/R-projects/Welch rule/interaction2x2-vesmalln1.5nSeed2184Tables.Rdata')
-
 
 
 
@@ -2550,6 +2902,16 @@ int.ve.ns50.2n.nullT.smalln <- t.compare(nsims=10000, Ns=c(50,100,100,100), mean
 set.seed(2184)
 int.ve.ns100.2n.nullT.smalln <- t.compare(nsims=10000, Ns=c(100,200,200,200), means=c(6,6,6,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
 
+# Small d
+set.seed(2184)
+int.ve.ns20.2n.smalld.smalln <- t.compare(nsims=10000, Ns=c(20,40,40,40), means=c(6,6.28,6.28,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.ve.ns50.2n.smalld.smalln <- t.compare(nsims=10000, Ns=c(50,100,100,100), means=c(6,6.28,6.28,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.ve.ns100.2n.smalld.smalln <- t.compare(nsims=10000, Ns=c(100,200,200,200), means=c(6,6.28,6.28,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
+
 # Mid d
 set.seed(2184)
 int.ve.ns20.2n.midd.smalln <- t.compare(nsims=10000, Ns=c(20,40,40,40), means=c(6,6.71,6.71,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
@@ -2560,50 +2922,83 @@ int.ve.ns50.2n.midd.smalln <- t.compare(nsims=10000, Ns=c(50,100,100,100), means
 set.seed(2184)
 int.ve.ns100.2n.midd.smalln <- t.compare(nsims=10000, Ns=c(100,200,200,200), means=c(6,6.71,6.71,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
 
+# Big d
+set.seed(2184)
+int.ve.ns20.2n.bigd.smalln <- t.compare(nsims=10000, Ns=c(20,40,40,40), means=c(6,7.13,7.13,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.ve.ns50.2n.bigd.smalln <- t.compare(nsims=10000, Ns=c(50,100,100,100), means=c(6,7.13,7.13,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.ve.ns100.2n.bigd.smalln <- t.compare(nsims=10000, Ns=c(100,200,200,200), means=c(6,7.13,7.13,6), vars=c(2,2,2,2), contrast=c(-1,1,1,-1))
+
 ##### Double N, Small N, equal variances false positives and power #####
 
 ## array to store proportion of rejected null hypotheses
-int.reject.null.ve.2n.smalln <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.reject.null.ve.2n.smalln <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.reject.null.ve.2n.smalln[1,1,1] <- int.ve.ns20.2n.nullT.smalln$classic.reject
 int.reject.null.ve.2n.smalln[1,1,2] <- int.ve.ns20.2n.nullT.smalln$welch.reject
-int.reject.null.ve.2n.smalln[1,2,1] <- int.ve.ns20.2n.midd.smalln$classic.reject
-int.reject.null.ve.2n.smalln[1,2,2] <- int.ve.ns20.2n.midd.smalln$welch.reject
+int.reject.null.ve.2n.smalln[1,2,1] <- int.ve.ns20.2n.smalld.smalln$classic.reject
+int.reject.null.ve.2n.smalln[1,2,2] <- int.ve.ns20.2n.smalld.smalln$welch.reject
+int.reject.null.ve.2n.smalln[1,3,1] <- int.ve.ns20.2n.midd.smalln$classic.reject
+int.reject.null.ve.2n.smalln[1,3,2] <- int.ve.ns20.2n.midd.smalln$welch.reject
+int.reject.null.ve.2n.smalln[1,4,1] <- int.ve.ns20.2n.bigd.smalln$classic.reject
+int.reject.null.ve.2n.smalln[1,4,2] <- int.ve.ns20.2n.bigd.smalln$welch.reject
 int.reject.null.ve.2n.smalln[2,1,1] <- int.ve.ns50.2n.nullT.smalln$classic.reject
 int.reject.null.ve.2n.smalln[2,1,2] <- int.ve.ns50.2n.nullT.smalln$welch.reject
-int.reject.null.ve.2n.smalln[2,2,1] <- int.ve.ns50.2n.midd.smalln$classic.reject
-int.reject.null.ve.2n.smalln[2,2,2] <- int.ve.ns50.2n.midd.smalln$welch.reject
+int.reject.null.ve.2n.smalln[2,2,1] <- int.ve.ns50.2n.smalld.smalln$classic.reject
+int.reject.null.ve.2n.smalln[2,2,2] <- int.ve.ns50.2n.smalld.smalln$welch.reject
+int.reject.null.ve.2n.smalln[2,3,1] <- int.ve.ns50.2n.midd.smalln$classic.reject
+int.reject.null.ve.2n.smalln[2,3,2] <- int.ve.ns50.2n.midd.smalln$welch.reject
+int.reject.null.ve.2n.smalln[2,4,1] <- int.ve.ns50.2n.bigd.smalln$classic.reject
+int.reject.null.ve.2n.smalln[2,4,2] <- int.ve.ns50.2n.bigd.smalln$welch.reject
 int.reject.null.ve.2n.smalln[3,1,1] <- int.ve.ns100.2n.nullT.smalln$classic.reject
 int.reject.null.ve.2n.smalln[3,1,2] <- int.ve.ns100.2n.nullT.smalln$welch.reject
-int.reject.null.ve.2n.smalln[3,2,1] <- int.ve.ns100.2n.midd.smalln$classic.reject
-int.reject.null.ve.2n.smalln[3,2,2] <- int.ve.ns100.2n.midd.smalln$welch.reject
+int.reject.null.ve.2n.smalln[3,2,1] <- int.ve.ns100.2n.smalld.smalln$classic.reject
+int.reject.null.ve.2n.smalln[3,2,2] <- int.ve.ns100.2n.smalld.smalln$welch.reject
+int.reject.null.ve.2n.smalln[3,3,1] <- int.ve.ns100.2n.midd.smalln$classic.reject
+int.reject.null.ve.2n.smalln[3,3,2] <- int.ve.ns100.2n.midd.smalln$welch.reject
+int.reject.null.ve.2n.smalln[3,4,1] <- int.ve.ns100.2n.bigd.smalln$classic.reject
+int.reject.null.ve.2n.smalln[3,4,2] <- int.ve.ns100.2n.bigd.smalln$welch.reject
 
 
 ##### Double N, Small N, equal variances coverage rate #####
 
 ## store observed coverage rates
-int.obs.coverage.ve.2n.smalln <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.obs.coverage.ve.2n.smalln <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.obs.coverage.ve.2n.smalln[1,1,1] <- int.ve.ns20.2n.nullT.smalln$classic.coverage
 int.obs.coverage.ve.2n.smalln[1,1,2] <- int.ve.ns20.2n.nullT.smalln$welch.coverage
-int.obs.coverage.ve.2n.smalln[1,2,1] <- int.ve.ns20.2n.midd.smalln$classic.coverage
-int.obs.coverage.ve.2n.smalln[1,2,2] <- int.ve.ns20.2n.midd.smalln$welch.coverage
+int.obs.coverage.ve.2n.smalln[1,2,1] <- int.ve.ns20.2n.smalld.smalln$classic.coverage
+int.obs.coverage.ve.2n.smalln[1,2,2] <- int.ve.ns20.2n.smalld.smalln$welch.coverage
+int.obs.coverage.ve.2n.smalln[1,3,1] <- int.ve.ns20.2n.midd.smalln$classic.coverage
+int.obs.coverage.ve.2n.smalln[1,3,2] <- int.ve.ns20.2n.midd.smalln$welch.coverage
+int.obs.coverage.ve.2n.smalln[1,4,1] <- int.ve.ns20.2n.bigd.smalln$classic.coverage
+int.obs.coverage.ve.2n.smalln[1,4,2] <- int.ve.ns20.2n.bigd.smalln$welch.coverage
 int.obs.coverage.ve.2n.smalln[2,1,1] <- int.ve.ns50.2n.nullT.smalln$classic.coverage
 int.obs.coverage.ve.2n.smalln[2,1,2] <- int.ve.ns50.2n.nullT.smalln$welch.coverage
-int.obs.coverage.ve.2n.smalln[2,2,1] <- int.ve.ns50.2n.midd.smalln$classic.coverage
-int.obs.coverage.ve.2n.smalln[2,2,2] <- int.ve.ns50.2n.midd.smalln$welch.coverage
+int.obs.coverage.ve.2n.smalln[2,2,1] <- int.ve.ns50.2n.smalld.smalln$classic.coverage
+int.obs.coverage.ve.2n.smalln[2,2,2] <- int.ve.ns50.2n.smalld.smalln$welch.coverage
+int.obs.coverage.ve.2n.smalln[2,3,1] <- int.ve.ns50.2n.midd.smalln$classic.coverage
+int.obs.coverage.ve.2n.smalln[2,3,2] <- int.ve.ns50.2n.midd.smalln$welch.coverage
+int.obs.coverage.ve.2n.smalln[2,4,1] <- int.ve.ns50.2n.bigd.smalln$classic.coverage
+int.obs.coverage.ve.2n.smalln[2,4,2] <- int.ve.ns50.2n.bigd.smalln$welch.coverage
 int.obs.coverage.ve.2n.smalln[3,1,1] <- int.ve.ns100.2n.nullT.smalln$classic.coverage
 int.obs.coverage.ve.2n.smalln[3,1,2] <- int.ve.ns100.2n.nullT.smalln$welch.coverage
-int.obs.coverage.ve.2n.smalln[3,2,1] <- int.ve.ns100.2n.midd.smalln$classic.coverage
-int.obs.coverage.ve.2n.smalln[3,2,2] <- int.ve.ns100.2n.midd.smalln$welch.coverage
+int.obs.coverage.ve.2n.smalln[3,2,1] <- int.ve.ns100.2n.smalld.smalln$classic.coverage
+int.obs.coverage.ve.2n.smalln[3,2,2] <- int.ve.ns100.2n.smalld.smalln$welch.coverage
+int.obs.coverage.ve.2n.smalln[3,3,1] <- int.ve.ns100.2n.midd.smalln$classic.coverage
+int.obs.coverage.ve.2n.smalln[3,3,2] <- int.ve.ns100.2n.midd.smalln$welch.coverage
+int.obs.coverage.ve.2n.smalln[3,4,1] <- int.ve.ns100.2n.bigd.smalln$classic.coverage
+int.obs.coverage.ve.2n.smalln[3,4,2] <- int.ve.ns100.2n.bigd.smalln$welch.coverage
 
 
 ##### Save tables from double Ns, Small N, equal variances simulations #####
 save(int.reject.null.ve.2n.smalln, int.obs.coverage.ve.2n.smalln, file='/users/joshwondra/R-projects/Welch rule/interaction2x2-vesmalln2nSeed2184Tables.Rdata')
 load('/users/joshwondra/R-projects/Welch rule/interaction2x2-vesmalln2nSeed2184Tables.Rdata')
-
 
 
 
@@ -2624,6 +3019,16 @@ int.v2.ns50.1.5n.nullT.bign.bigvar <- t.compare(nsims=10000, Ns=c(75,50,50,50), 
 set.seed(2184)
 int.v2.ns100.1.5n.nullT.bign.bigvar <- t.compare(nsims=10000, Ns=c(150,100,100,100), means=c(6,6,6,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
 
+# Small d
+set.seed(2184)
+int.v2.ns20.1.5n.smalld.bign.bigvar <- t.compare(nsims=10000, Ns=c(30,20,20,20), means=c(6,6.28,6.28,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns50.1.5n.smalld.bign.bigvar <- t.compare(nsims=10000, Ns=c(75,50,50,50), means=c(6,6.28,6.28,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns100.1.5n.smalld.bign.bigvar <- t.compare(nsims=10000, Ns=c(150,100,100,100), means=c(6,6.28,6.28,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
+
 # Mid d
 set.seed(2184)
 int.v2.ns20.1.5n.midd.bign.bigvar <- t.compare(nsims=10000, Ns=c(30,20,20,20), means=c(6,6.71,6.71,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
@@ -2634,44 +3039,78 @@ int.v2.ns50.1.5n.midd.bign.bigvar <- t.compare(nsims=10000, Ns=c(75,50,50,50), m
 set.seed(2184)
 int.v2.ns100.1.5n.midd.bign.bigvar <- t.compare(nsims=10000, Ns=c(150,100,100,100), means=c(6,6.71,6.71,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
 
+# Big d
+set.seed(2184)
+int.v2.ns20.1.5n.bigd.bign.bigvar <- t.compare(nsims=10000, Ns=c(30,20,20,20), means=c(6,7.13,7.13,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns50.1.5n.bigd.bign.bigvar <- t.compare(nsims=10000, Ns=c(75,50,50,50), means=c(6,7.13,7.13,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns100.1.5n.bigd.bign.bigvar <- t.compare(nsims=10000, Ns=c(150,100,100,100), means=c(6,7.13,7.13,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
+
 ##### 1.Double N, Big N, double variances, big variance false positives and power #####
 
 ## array to store proportion of rejected null hypotheses
-int.reject.null.v2.1.5n.bign.bigvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.reject.null.v2.1.5n.bign.bigvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.reject.null.v2.1.5n.bign.bigvar[1,1,1] <- int.v2.ns20.1.5n.nullT.bign.bigvar$classic.reject
 int.reject.null.v2.1.5n.bign.bigvar[1,1,2] <- int.v2.ns20.1.5n.nullT.bign.bigvar$welch.reject
-int.reject.null.v2.1.5n.bign.bigvar[1,2,1] <- int.v2.ns20.1.5n.midd.bign.bigvar$classic.reject
-int.reject.null.v2.1.5n.bign.bigvar[1,2,2] <- int.v2.ns20.1.5n.midd.bign.bigvar$welch.reject
+int.reject.null.v2.1.5n.bign.bigvar[1,2,1] <- int.v2.ns20.1.5n.smalld.bign.bigvar$classic.reject
+int.reject.null.v2.1.5n.bign.bigvar[1,2,2] <- int.v2.ns20.1.5n.smalld.bign.bigvar$welch.reject
+int.reject.null.v2.1.5n.bign.bigvar[1,3,1] <- int.v2.ns20.1.5n.midd.bign.bigvar$classic.reject
+int.reject.null.v2.1.5n.bign.bigvar[1,3,2] <- int.v2.ns20.1.5n.midd.bign.bigvar$welch.reject
+int.reject.null.v2.1.5n.bign.bigvar[1,4,1] <- int.v2.ns20.1.5n.bigd.bign.bigvar$classic.reject
+int.reject.null.v2.1.5n.bign.bigvar[1,4,2] <- int.v2.ns20.1.5n.bigd.bign.bigvar$welch.reject
 int.reject.null.v2.1.5n.bign.bigvar[2,1,1] <- int.v2.ns50.1.5n.nullT.bign.bigvar$classic.reject
 int.reject.null.v2.1.5n.bign.bigvar[2,1,2] <- int.v2.ns50.1.5n.nullT.bign.bigvar$welch.reject
-int.reject.null.v2.1.5n.bign.bigvar[2,2,1] <- int.v2.ns50.1.5n.midd.bign.bigvar$classic.reject
-int.reject.null.v2.1.5n.bign.bigvar[2,2,2] <- int.v2.ns50.1.5n.midd.bign.bigvar$welch.reject
+int.reject.null.v2.1.5n.bign.bigvar[2,2,1] <- int.v2.ns50.1.5n.smalld.bign.bigvar$classic.reject
+int.reject.null.v2.1.5n.bign.bigvar[2,2,2] <- int.v2.ns50.1.5n.smalld.bign.bigvar$welch.reject
+int.reject.null.v2.1.5n.bign.bigvar[2,3,1] <- int.v2.ns50.1.5n.midd.bign.bigvar$classic.reject
+int.reject.null.v2.1.5n.bign.bigvar[2,3,2] <- int.v2.ns50.1.5n.midd.bign.bigvar$welch.reject
+int.reject.null.v2.1.5n.bign.bigvar[2,4,1] <- int.v2.ns50.1.5n.bigd.bign.bigvar$classic.reject
+int.reject.null.v2.1.5n.bign.bigvar[2,4,2] <- int.v2.ns50.1.5n.bigd.bign.bigvar$welch.reject
 int.reject.null.v2.1.5n.bign.bigvar[3,1,1] <- int.v2.ns100.1.5n.nullT.bign.bigvar$classic.reject
 int.reject.null.v2.1.5n.bign.bigvar[3,1,2] <- int.v2.ns100.1.5n.nullT.bign.bigvar$welch.reject
-int.reject.null.v2.1.5n.bign.bigvar[3,2,1] <- int.v2.ns100.1.5n.midd.bign.bigvar$classic.reject
-int.reject.null.v2.1.5n.bign.bigvar[3,2,2] <- int.v2.ns100.1.5n.midd.bign.bigvar$welch.reject
+int.reject.null.v2.1.5n.bign.bigvar[3,2,1] <- int.v2.ns100.1.5n.smalld.bign.bigvar$classic.reject
+int.reject.null.v2.1.5n.bign.bigvar[3,2,2] <- int.v2.ns100.1.5n.smalld.bign.bigvar$welch.reject
+int.reject.null.v2.1.5n.bign.bigvar[3,3,1] <- int.v2.ns100.1.5n.midd.bign.bigvar$classic.reject
+int.reject.null.v2.1.5n.bign.bigvar[3,3,2] <- int.v2.ns100.1.5n.midd.bign.bigvar$welch.reject
+int.reject.null.v2.1.5n.bign.bigvar[3,4,1] <- int.v2.ns100.1.5n.bigd.bign.bigvar$classic.reject
+int.reject.null.v2.1.5n.bign.bigvar[3,4,2] <- int.v2.ns100.1.5n.bigd.bign.bigvar$welch.reject
 
 
 ##### 1.Double N, Big N, double variances, big variance coverage rate #####
 
 ## store observed coverage rates
-int.obs.coverage.v2.1.5n.bign.bigvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.obs.coverage.v2.1.5n.bign.bigvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.obs.coverage.v2.1.5n.bign.bigvar[1,1,1] <- int.v2.ns20.1.5n.nullT.bign.bigvar$classic.coverage
 int.obs.coverage.v2.1.5n.bign.bigvar[1,1,2] <- int.v2.ns20.1.5n.nullT.bign.bigvar$welch.coverage
-int.obs.coverage.v2.1.5n.bign.bigvar[1,2,1] <- int.v2.ns20.1.5n.midd.bign.bigvar$classic.coverage
-int.obs.coverage.v2.1.5n.bign.bigvar[1,2,2] <- int.v2.ns20.1.5n.midd.bign.bigvar$welch.coverage
+int.obs.coverage.v2.1.5n.bign.bigvar[1,2,1] <- int.v2.ns20.1.5n.smalld.bign.bigvar$classic.coverage
+int.obs.coverage.v2.1.5n.bign.bigvar[1,2,2] <- int.v2.ns20.1.5n.smalld.bign.bigvar$welch.coverage
+int.obs.coverage.v2.1.5n.bign.bigvar[1,3,1] <- int.v2.ns20.1.5n.midd.bign.bigvar$classic.coverage
+int.obs.coverage.v2.1.5n.bign.bigvar[1,3,2] <- int.v2.ns20.1.5n.midd.bign.bigvar$welch.coverage
+int.obs.coverage.v2.1.5n.bign.bigvar[1,4,1] <- int.v2.ns20.1.5n.bigd.bign.bigvar$classic.coverage
+int.obs.coverage.v2.1.5n.bign.bigvar[1,4,2] <- int.v2.ns20.1.5n.bigd.bign.bigvar$welch.coverage
 int.obs.coverage.v2.1.5n.bign.bigvar[2,1,1] <- int.v2.ns50.1.5n.nullT.bign.bigvar$classic.coverage
 int.obs.coverage.v2.1.5n.bign.bigvar[2,1,2] <- int.v2.ns50.1.5n.nullT.bign.bigvar$welch.coverage
-int.obs.coverage.v2.1.5n.bign.bigvar[2,2,1] <- int.v2.ns50.1.5n.midd.bign.bigvar$classic.coverage
-int.obs.coverage.v2.1.5n.bign.bigvar[2,2,2] <- int.v2.ns50.1.5n.midd.bign.bigvar$welch.coverage
+int.obs.coverage.v2.1.5n.bign.bigvar[2,2,1] <- int.v2.ns50.1.5n.smalld.bign.bigvar$classic.coverage
+int.obs.coverage.v2.1.5n.bign.bigvar[2,2,2] <- int.v2.ns50.1.5n.smalld.bign.bigvar$welch.coverage
+int.obs.coverage.v2.1.5n.bign.bigvar[2,3,1] <- int.v2.ns50.1.5n.midd.bign.bigvar$classic.coverage
+int.obs.coverage.v2.1.5n.bign.bigvar[2,3,2] <- int.v2.ns50.1.5n.midd.bign.bigvar$welch.coverage
+int.obs.coverage.v2.1.5n.bign.bigvar[2,4,1] <- int.v2.ns50.1.5n.bigd.bign.bigvar$classic.coverage
+int.obs.coverage.v2.1.5n.bign.bigvar[2,4,2] <- int.v2.ns50.1.5n.bigd.bign.bigvar$welch.coverage
 int.obs.coverage.v2.1.5n.bign.bigvar[3,1,1] <- int.v2.ns100.1.5n.nullT.bign.bigvar$classic.coverage
 int.obs.coverage.v2.1.5n.bign.bigvar[3,1,2] <- int.v2.ns100.1.5n.nullT.bign.bigvar$welch.coverage
-int.obs.coverage.v2.1.5n.bign.bigvar[3,2,1] <- int.v2.ns100.1.5n.midd.bign.bigvar$classic.coverage
-int.obs.coverage.v2.1.5n.bign.bigvar[3,2,2] <- int.v2.ns100.1.5n.midd.bign.bigvar$welch.coverage
+int.obs.coverage.v2.1.5n.bign.bigvar[3,2,1] <- int.v2.ns100.1.5n.smalld.bign.bigvar$classic.coverage
+int.obs.coverage.v2.1.5n.bign.bigvar[3,2,2] <- int.v2.ns100.1.5n.smalld.bign.bigvar$welch.coverage
+int.obs.coverage.v2.1.5n.bign.bigvar[3,3,1] <- int.v2.ns100.1.5n.midd.bign.bigvar$classic.coverage
+int.obs.coverage.v2.1.5n.bign.bigvar[3,3,2] <- int.v2.ns100.1.5n.midd.bign.bigvar$welch.coverage
+int.obs.coverage.v2.1.5n.bign.bigvar[3,4,1] <- int.v2.ns100.1.5n.bigd.bign.bigvar$classic.coverage
+int.obs.coverage.v2.1.5n.bign.bigvar[3,4,2] <- int.v2.ns100.1.5n.bigd.bign.bigvar$welch.coverage
 
 
 ##### Save tables from 1.Double N, Big N, double variances, big variance simulations #####
@@ -2697,6 +3136,16 @@ int.v2.ns50.2n.nullT.bign.bigvar <- t.compare(nsims=10000, Ns=c(100,50,50,50), m
 set.seed(2184)
 int.v2.ns100.2n.nullT.bign.bigvar <- t.compare(nsims=10000, Ns=c(200,100,100,100), means=c(6,6,6,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
 
+# Small d
+set.seed(2184)
+int.v2.ns20.2n.smalld.bign.bigvar <- t.compare(nsims=10000, Ns=c(40,20,20,20), means=c(6,6.28,6.28,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns50.2n.smalld.bign.bigvar <- t.compare(nsims=10000, Ns=c(100,50,50,50), means=c(6,6.28,6.28,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns100.2n.smalld.bign.bigvar <- t.compare(nsims=10000, Ns=c(200,100,100,100), means=c(6,6.28,6.28,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
+
 # Mid d
 set.seed(2184)
 int.v2.ns20.2n.midd.bign.bigvar <- t.compare(nsims=10000, Ns=c(40,20,20,20), means=c(6,6.71,6.71,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
@@ -2707,50 +3156,87 @@ int.v2.ns50.2n.midd.bign.bigvar <- t.compare(nsims=10000, Ns=c(100,50,50,50), me
 set.seed(2184)
 int.v2.ns100.2n.midd.bign.bigvar <- t.compare(nsims=10000, Ns=c(200,100,100,100), means=c(6,6.71,6.71,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
 
+# Big d
+set.seed(2184)
+int.v2.ns20.2n.bigd.bign.bigvar <- t.compare(nsims=10000, Ns=c(40,20,20,20), means=c(6,7.13,7.13,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns50.2n.bigd.bign.bigvar <- t.compare(nsims=10000, Ns=c(100,50,50,50), means=c(6,7.13,7.13,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns100.2n.bigd.bign.bigvar <- t.compare(nsims=10000, Ns=c(200,100,100,100), means=c(6,7.13,7.13,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
+
+
+
+
+
 ##### Double N, Big N, double variance, big variance false positives and power #####
 
 ## array to store proportion of rejected null hypotheses
-int.reject.null.v2.2n.bign.bigvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.reject.null.v2.2n.bign.bigvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.reject.null.v2.2n.bign.bigvar[1,1,1] <- int.v2.ns20.2n.nullT.bign.bigvar$classic.reject
 int.reject.null.v2.2n.bign.bigvar[1,1,2] <- int.v2.ns20.2n.nullT.bign.bigvar$welch.reject
-int.reject.null.v2.2n.bign.bigvar[1,2,1] <- int.v2.ns20.2n.midd.bign.bigvar$classic.reject
-int.reject.null.v2.2n.bign.bigvar[1,2,2] <- int.v2.ns20.2n.midd.bign.bigvar$welch.reject
+int.reject.null.v2.2n.bign.bigvar[1,2,1] <- int.v2.ns20.2n.smalld.bign.bigvar$classic.reject
+int.reject.null.v2.2n.bign.bigvar[1,2,2] <- int.v2.ns20.2n.smalld.bign.bigvar$welch.reject
+int.reject.null.v2.2n.bign.bigvar[1,3,1] <- int.v2.ns20.2n.midd.bign.bigvar$classic.reject
+int.reject.null.v2.2n.bign.bigvar[1,3,2] <- int.v2.ns20.2n.midd.bign.bigvar$welch.reject
+int.reject.null.v2.2n.bign.bigvar[1,4,1] <- int.v2.ns20.2n.bigd.bign.bigvar$classic.reject
+int.reject.null.v2.2n.bign.bigvar[1,4,2] <- int.v2.ns20.2n.bigd.bign.bigvar$welch.reject
 int.reject.null.v2.2n.bign.bigvar[2,1,1] <- int.v2.ns50.2n.nullT.bign.bigvar$classic.reject
 int.reject.null.v2.2n.bign.bigvar[2,1,2] <- int.v2.ns50.2n.nullT.bign.bigvar$welch.reject
-int.reject.null.v2.2n.bign.bigvar[2,2,1] <- int.v2.ns50.2n.midd.bign.bigvar$classic.reject
-int.reject.null.v2.2n.bign.bigvar[2,2,2] <- int.v2.ns50.2n.midd.bign.bigvar$welch.reject
+int.reject.null.v2.2n.bign.bigvar[2,2,1] <- int.v2.ns50.2n.smalld.bign.bigvar$classic.reject
+int.reject.null.v2.2n.bign.bigvar[2,2,2] <- int.v2.ns50.2n.smalld.bign.bigvar$welch.reject
+int.reject.null.v2.2n.bign.bigvar[2,3,1] <- int.v2.ns50.2n.midd.bign.bigvar$classic.reject
+int.reject.null.v2.2n.bign.bigvar[2,3,2] <- int.v2.ns50.2n.midd.bign.bigvar$welch.reject
+int.reject.null.v2.2n.bign.bigvar[2,4,1] <- int.v2.ns50.2n.bigd.bign.bigvar$classic.reject
+int.reject.null.v2.2n.bign.bigvar[2,4,2] <- int.v2.ns50.2n.bigd.bign.bigvar$welch.reject
 int.reject.null.v2.2n.bign.bigvar[3,1,1] <- int.v2.ns100.2n.nullT.bign.bigvar$classic.reject
 int.reject.null.v2.2n.bign.bigvar[3,1,2] <- int.v2.ns100.2n.nullT.bign.bigvar$welch.reject
-int.reject.null.v2.2n.bign.bigvar[3,2,1] <- int.v2.ns100.2n.midd.bign.bigvar$classic.reject
-int.reject.null.v2.2n.bign.bigvar[3,2,2] <- int.v2.ns100.2n.midd.bign.bigvar$welch.reject
+int.reject.null.v2.2n.bign.bigvar[3,2,1] <- int.v2.ns100.2n.smalld.bign.bigvar$classic.reject
+int.reject.null.v2.2n.bign.bigvar[3,2,2] <- int.v2.ns100.2n.smalld.bign.bigvar$welch.reject
+int.reject.null.v2.2n.bign.bigvar[3,3,1] <- int.v2.ns100.2n.midd.bign.bigvar$classic.reject
+int.reject.null.v2.2n.bign.bigvar[3,3,2] <- int.v2.ns100.2n.midd.bign.bigvar$welch.reject
+int.reject.null.v2.2n.bign.bigvar[3,4,1] <- int.v2.ns100.2n.bigd.bign.bigvar$classic.reject
+int.reject.null.v2.2n.bign.bigvar[3,4,2] <- int.v2.ns100.2n.bigd.bign.bigvar$welch.reject
 
 
 ##### Double N, Big N, double variance, big variance coverage rate #####
 
 ## store observed coverage rates
-int.obs.coverage.v2.2n.bign.bigvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.obs.coverage.v2.2n.bign.bigvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.obs.coverage.v2.2n.bign.bigvar[1,1,1] <- int.v2.ns20.2n.nullT.bign.bigvar$classic.coverage
 int.obs.coverage.v2.2n.bign.bigvar[1,1,2] <- int.v2.ns20.2n.nullT.bign.bigvar$welch.coverage
-int.obs.coverage.v2.2n.bign.bigvar[1,2,1] <- int.v2.ns20.2n.midd.bign.bigvar$classic.coverage
-int.obs.coverage.v2.2n.bign.bigvar[1,2,2] <- int.v2.ns20.2n.midd.bign.bigvar$welch.coverage
+int.obs.coverage.v2.2n.bign.bigvar[1,2,1] <- int.v2.ns20.2n.smalld.bign.bigvar$classic.coverage
+int.obs.coverage.v2.2n.bign.bigvar[1,2,2] <- int.v2.ns20.2n.smalld.bign.bigvar$welch.coverage
+int.obs.coverage.v2.2n.bign.bigvar[1,3,1] <- int.v2.ns20.2n.midd.bign.bigvar$classic.coverage
+int.obs.coverage.v2.2n.bign.bigvar[1,3,2] <- int.v2.ns20.2n.midd.bign.bigvar$welch.coverage
+int.obs.coverage.v2.2n.bign.bigvar[1,4,1] <- int.v2.ns20.2n.bigd.bign.bigvar$classic.coverage
+int.obs.coverage.v2.2n.bign.bigvar[1,4,2] <- int.v2.ns20.2n.bigd.bign.bigvar$welch.coverage
 int.obs.coverage.v2.2n.bign.bigvar[2,1,1] <- int.v2.ns50.2n.nullT.bign.bigvar$classic.coverage
 int.obs.coverage.v2.2n.bign.bigvar[2,1,2] <- int.v2.ns50.2n.nullT.bign.bigvar$welch.coverage
-int.obs.coverage.v2.2n.bign.bigvar[2,2,1] <- int.v2.ns50.2n.midd.bign.bigvar$classic.coverage
-int.obs.coverage.v2.2n.bign.bigvar[2,2,2] <- int.v2.ns50.2n.midd.bign.bigvar$welch.coverage
+int.obs.coverage.v2.2n.bign.bigvar[2,2,1] <- int.v2.ns50.2n.smalld.bign.bigvar$classic.coverage
+int.obs.coverage.v2.2n.bign.bigvar[2,2,2] <- int.v2.ns50.2n.smalld.bign.bigvar$welch.coverage
+int.obs.coverage.v2.2n.bign.bigvar[2,3,1] <- int.v2.ns50.2n.midd.bign.bigvar$classic.coverage
+int.obs.coverage.v2.2n.bign.bigvar[2,3,2] <- int.v2.ns50.2n.midd.bign.bigvar$welch.coverage
+int.obs.coverage.v2.2n.bign.bigvar[2,4,1] <- int.v2.ns50.2n.bigd.bign.bigvar$classic.coverage
+int.obs.coverage.v2.2n.bign.bigvar[2,4,2] <- int.v2.ns50.2n.bigd.bign.bigvar$welch.coverage
 int.obs.coverage.v2.2n.bign.bigvar[3,1,1] <- int.v2.ns100.2n.nullT.bign.bigvar$classic.coverage
 int.obs.coverage.v2.2n.bign.bigvar[3,1,2] <- int.v2.ns100.2n.nullT.bign.bigvar$welch.coverage
-int.obs.coverage.v2.2n.bign.bigvar[3,2,1] <- int.v2.ns100.2n.midd.bign.bigvar$classic.coverage
-int.obs.coverage.v2.2n.bign.bigvar[3,2,2] <- int.v2.ns100.2n.midd.bign.bigvar$welch.coverage
+int.obs.coverage.v2.2n.bign.bigvar[3,2,1] <- int.v2.ns100.2n.smalld.bign.bigvar$classic.coverage
+int.obs.coverage.v2.2n.bign.bigvar[3,2,2] <- int.v2.ns100.2n.smalld.bign.bigvar$welch.coverage
+int.obs.coverage.v2.2n.bign.bigvar[3,3,1] <- int.v2.ns100.2n.midd.bign.bigvar$classic.coverage
+int.obs.coverage.v2.2n.bign.bigvar[3,3,2] <- int.v2.ns100.2n.midd.bign.bigvar$welch.coverage
+int.obs.coverage.v2.2n.bign.bigvar[3,4,1] <- int.v2.ns100.2n.bigd.bign.bigvar$classic.coverage
+int.obs.coverage.v2.2n.bign.bigvar[3,4,2] <- int.v2.ns100.2n.bigd.bign.bigvar$welch.coverage
 
 
 ##### Save tables from Double N, Big N, double variance, big variance simulations #####
 save(int.reject.null.v2.2n.bign.bigvar, int.obs.coverage.v2.2n.bign.bigvar, file='/users/joshwondra/R-projects/Welch rule/interaction2x2-v2bigvarbign2nSeed2184Tables.Rdata')
 load('/users/joshwondra/R-projects/Welch rule/interaction2x2-v2bigvarbign2nSeed2184Tables.Rdata')
-
 
 
 
@@ -2771,6 +3257,16 @@ int.v2.ns50.1.5n.nullT.smalln.bigvar <- t.compare(nsims=10000, Ns=c(50,75,75,75)
 set.seed(2184)
 int.v2.ns100.1.5n.nullT.smalln.bigvar <- t.compare(nsims=10000, Ns=c(100,150,150,150), means=c(6,6,6,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
 
+# Small d
+set.seed(2184)
+int.v2.ns20.1.5n.smalld.smalln.bigvar <- t.compare(nsims=10000, Ns=c(20,30,30,30), means=c(6,6.28,6.28,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns50.1.5n.smalld.smalln.bigvar <- t.compare(nsims=10000, Ns=c(50,75,75,75), means=c(6,6.28,6.28,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns100.1.5n.smalld.smalln.bigvar <- t.compare(nsims=10000, Ns=c(100,150,150,150), means=c(6,6.28,6.28,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
+
 # Mid d
 set.seed(2184)
 int.v2.ns20.1.5n.midd.smalln.bigvar <- t.compare(nsims=10000, Ns=c(20,30,30,30), means=c(6,6.71,6.71,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
@@ -2781,44 +3277,79 @@ int.v2.ns50.1.5n.midd.smalln.bigvar <- t.compare(nsims=10000, Ns=c(50,75,75,75),
 set.seed(2184)
 int.v2.ns100.1.5n.midd.smalln.bigvar <- t.compare(nsims=10000, Ns=c(100,150,150,150), means=c(6,6.71,6.71,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
 
+# Big d
+set.seed(2184)
+int.v2.ns20.1.5n.bigd.smalln.bigvar <- t.compare(nsims=10000, Ns=c(20,30,30,30), means=c(6,7.13,7.13,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns50.1.5n.bigd.smalln.bigvar <- t.compare(nsims=10000, Ns=c(50,75,75,75), means=c(6,7.13,7.13,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns100.1.5n.bigd.smalln.bigvar <- t.compare(nsims=10000, Ns=c(100,150,150,150), means=c(6,7.13,7.13,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
+
+
 ##### 1.Double N, Small N, double variances, big variance false positives and power #####
 
 ## array to store proportion of rejected null hypotheses
-int.reject.null.v2.1.5n.smalln.bigvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.reject.null.v2.1.5n.smalln.bigvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.reject.null.v2.1.5n.smalln.bigvar[1,1,1] <- int.v2.ns20.1.5n.nullT.smalln.bigvar$classic.reject
 int.reject.null.v2.1.5n.smalln.bigvar[1,1,2] <- int.v2.ns20.1.5n.nullT.smalln.bigvar$welch.reject
-int.reject.null.v2.1.5n.smalln.bigvar[1,2,1] <- int.v2.ns20.1.5n.midd.smalln.bigvar$classic.reject
-int.reject.null.v2.1.5n.smalln.bigvar[1,2,2] <- int.v2.ns20.1.5n.midd.smalln.bigvar$welch.reject
+int.reject.null.v2.1.5n.smalln.bigvar[1,2,1] <- int.v2.ns20.1.5n.smalld.smalln.bigvar$classic.reject
+int.reject.null.v2.1.5n.smalln.bigvar[1,2,2] <- int.v2.ns20.1.5n.smalld.smalln.bigvar$welch.reject
+int.reject.null.v2.1.5n.smalln.bigvar[1,3,1] <- int.v2.ns20.1.5n.midd.smalln.bigvar$classic.reject
+int.reject.null.v2.1.5n.smalln.bigvar[1,3,2] <- int.v2.ns20.1.5n.midd.smalln.bigvar$welch.reject
+int.reject.null.v2.1.5n.smalln.bigvar[1,4,1] <- int.v2.ns20.1.5n.bigd.smalln.bigvar$classic.reject
+int.reject.null.v2.1.5n.smalln.bigvar[1,4,2] <- int.v2.ns20.1.5n.bigd.smalln.bigvar$welch.reject
 int.reject.null.v2.1.5n.smalln.bigvar[2,1,1] <- int.v2.ns50.1.5n.nullT.smalln.bigvar$classic.reject
 int.reject.null.v2.1.5n.smalln.bigvar[2,1,2] <- int.v2.ns50.1.5n.nullT.smalln.bigvar$welch.reject
-int.reject.null.v2.1.5n.smalln.bigvar[2,2,1] <- int.v2.ns50.1.5n.midd.smalln.bigvar$classic.reject
-int.reject.null.v2.1.5n.smalln.bigvar[2,2,2] <- int.v2.ns50.1.5n.midd.smalln.bigvar$welch.reject
+int.reject.null.v2.1.5n.smalln.bigvar[2,2,1] <- int.v2.ns50.1.5n.smalld.smalln.bigvar$classic.reject
+int.reject.null.v2.1.5n.smalln.bigvar[2,2,2] <- int.v2.ns50.1.5n.smalld.smalln.bigvar$welch.reject
+int.reject.null.v2.1.5n.smalln.bigvar[2,3,1] <- int.v2.ns50.1.5n.midd.smalln.bigvar$classic.reject
+int.reject.null.v2.1.5n.smalln.bigvar[2,3,2] <- int.v2.ns50.1.5n.midd.smalln.bigvar$welch.reject
+int.reject.null.v2.1.5n.smalln.bigvar[2,4,1] <- int.v2.ns50.1.5n.bigd.smalln.bigvar$classic.reject
+int.reject.null.v2.1.5n.smalln.bigvar[2,4,2] <- int.v2.ns50.1.5n.bigd.smalln.bigvar$welch.reject
 int.reject.null.v2.1.5n.smalln.bigvar[3,1,1] <- int.v2.ns100.1.5n.nullT.smalln.bigvar$classic.reject
 int.reject.null.v2.1.5n.smalln.bigvar[3,1,2] <- int.v2.ns100.1.5n.nullT.smalln.bigvar$welch.reject
-int.reject.null.v2.1.5n.smalln.bigvar[3,2,1] <- int.v2.ns100.1.5n.midd.smalln.bigvar$classic.reject
-int.reject.null.v2.1.5n.smalln.bigvar[3,2,2] <- int.v2.ns100.1.5n.midd.smalln.bigvar$welch.reject
+int.reject.null.v2.1.5n.smalln.bigvar[3,2,1] <- int.v2.ns100.1.5n.smalld.smalln.bigvar$classic.reject
+int.reject.null.v2.1.5n.smalln.bigvar[3,2,2] <- int.v2.ns100.1.5n.smalld.smalln.bigvar$welch.reject
+int.reject.null.v2.1.5n.smalln.bigvar[3,3,1] <- int.v2.ns100.1.5n.midd.smalln.bigvar$classic.reject
+int.reject.null.v2.1.5n.smalln.bigvar[3,3,2] <- int.v2.ns100.1.5n.midd.smalln.bigvar$welch.reject
+int.reject.null.v2.1.5n.smalln.bigvar[3,4,1] <- int.v2.ns100.1.5n.bigd.smalln.bigvar$classic.reject
+int.reject.null.v2.1.5n.smalln.bigvar[3,4,2] <- int.v2.ns100.1.5n.bigd.smalln.bigvar$welch.reject
 
 
 ##### 1.Double N, Small N, double variances, big variance coverage rate #####
 
 ## store observed coverage rates
-int.obs.coverage.v2.1.5n.smalln.bigvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.obs.coverage.v2.1.5n.smalln.bigvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.obs.coverage.v2.1.5n.smalln.bigvar[1,1,1] <- int.v2.ns20.1.5n.nullT.smalln.bigvar$classic.coverage
 int.obs.coverage.v2.1.5n.smalln.bigvar[1,1,2] <- int.v2.ns20.1.5n.nullT.smalln.bigvar$welch.coverage
-int.obs.coverage.v2.1.5n.smalln.bigvar[1,2,1] <- int.v2.ns20.1.5n.midd.smalln.bigvar$classic.coverage
-int.obs.coverage.v2.1.5n.smalln.bigvar[1,2,2] <- int.v2.ns20.1.5n.midd.smalln.bigvar$welch.coverage
+int.obs.coverage.v2.1.5n.smalln.bigvar[1,2,1] <- int.v2.ns20.1.5n.smalld.smalln.bigvar$classic.coverage
+int.obs.coverage.v2.1.5n.smalln.bigvar[1,2,2] <- int.v2.ns20.1.5n.smalld.smalln.bigvar$welch.coverage
+int.obs.coverage.v2.1.5n.smalln.bigvar[1,3,1] <- int.v2.ns20.1.5n.midd.smalln.bigvar$classic.coverage
+int.obs.coverage.v2.1.5n.smalln.bigvar[1,3,2] <- int.v2.ns20.1.5n.midd.smalln.bigvar$welch.coverage
+int.obs.coverage.v2.1.5n.smalln.bigvar[1,4,1] <- int.v2.ns20.1.5n.bigd.smalln.bigvar$classic.coverage
+int.obs.coverage.v2.1.5n.smalln.bigvar[1,4,2] <- int.v2.ns20.1.5n.bigd.smalln.bigvar$welch.coverage
 int.obs.coverage.v2.1.5n.smalln.bigvar[2,1,1] <- int.v2.ns50.1.5n.nullT.smalln.bigvar$classic.coverage
 int.obs.coverage.v2.1.5n.smalln.bigvar[2,1,2] <- int.v2.ns50.1.5n.nullT.smalln.bigvar$welch.coverage
-int.obs.coverage.v2.1.5n.smalln.bigvar[2,2,1] <- int.v2.ns50.1.5n.midd.smalln.bigvar$classic.coverage
-int.obs.coverage.v2.1.5n.smalln.bigvar[2,2,2] <- int.v2.ns50.1.5n.midd.smalln.bigvar$welch.coverage
+int.obs.coverage.v2.1.5n.smalln.bigvar[2,2,1] <- int.v2.ns50.1.5n.smalld.smalln.bigvar$classic.coverage
+int.obs.coverage.v2.1.5n.smalln.bigvar[2,2,2] <- int.v2.ns50.1.5n.smalld.smalln.bigvar$welch.coverage
+int.obs.coverage.v2.1.5n.smalln.bigvar[2,3,1] <- int.v2.ns50.1.5n.midd.smalln.bigvar$classic.coverage
+int.obs.coverage.v2.1.5n.smalln.bigvar[2,3,2] <- int.v2.ns50.1.5n.midd.smalln.bigvar$welch.coverage
+int.obs.coverage.v2.1.5n.smalln.bigvar[2,4,1] <- int.v2.ns50.1.5n.bigd.smalln.bigvar$classic.coverage
+int.obs.coverage.v2.1.5n.smalln.bigvar[2,4,2] <- int.v2.ns50.1.5n.bigd.smalln.bigvar$welch.coverage
 int.obs.coverage.v2.1.5n.smalln.bigvar[3,1,1] <- int.v2.ns100.1.5n.nullT.smalln.bigvar$classic.coverage
 int.obs.coverage.v2.1.5n.smalln.bigvar[3,1,2] <- int.v2.ns100.1.5n.nullT.smalln.bigvar$welch.coverage
-int.obs.coverage.v2.1.5n.smalln.bigvar[3,2,1] <- int.v2.ns100.1.5n.midd.smalln.bigvar$classic.coverage
-int.obs.coverage.v2.1.5n.smalln.bigvar[3,2,2] <- int.v2.ns100.1.5n.midd.smalln.bigvar$welch.coverage
+int.obs.coverage.v2.1.5n.smalln.bigvar[3,2,1] <- int.v2.ns100.1.5n.smalld.smalln.bigvar$classic.coverage
+int.obs.coverage.v2.1.5n.smalln.bigvar[3,2,2] <- int.v2.ns100.1.5n.smalld.smalln.bigvar$welch.coverage
+int.obs.coverage.v2.1.5n.smalln.bigvar[3,3,1] <- int.v2.ns100.1.5n.midd.smalln.bigvar$classic.coverage
+int.obs.coverage.v2.1.5n.smalln.bigvar[3,3,2] <- int.v2.ns100.1.5n.midd.smalln.bigvar$welch.coverage
+int.obs.coverage.v2.1.5n.smalln.bigvar[3,4,1] <- int.v2.ns100.1.5n.bigd.smalln.bigvar$classic.coverage
+int.obs.coverage.v2.1.5n.smalln.bigvar[3,4,2] <- int.v2.ns100.1.5n.bigd.smalln.bigvar$welch.coverage
 
 
 ##### Save tables from 1.Double N, Small N, double variances, big variance simulations #####
@@ -2844,6 +3375,16 @@ int.v2.ns50.2n.nullT.smalln.bigvar <- t.compare(nsims=10000, Ns=c(50,100,100,100
 set.seed(2184)
 int.v2.ns100.2n.nullT.smalln.bigvar <- t.compare(nsims=10000, Ns=c(100,200,200,200), means=c(6,6,6,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
 
+# Small d
+set.seed(2184)
+int.v2.ns20.2n.smalld.smalln.bigvar <- t.compare(nsims=10000, Ns=c(20,40,40,40), means=c(6,6.28,6.28,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns50.2n.smalld.smalln.bigvar <- t.compare(nsims=10000, Ns=c(50,100,100,100), means=c(6,6.28,6.28,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns100.2n.smalld.smalln.bigvar <- t.compare(nsims=10000, Ns=c(100,200,200,200), means=c(6,6.28,6.28,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
+
 # Mid d
 set.seed(2184)
 int.v2.ns20.2n.midd.smalln.bigvar <- t.compare(nsims=10000, Ns=c(20,40,40,40), means=c(6,6.71,6.71,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
@@ -2854,49 +3395,84 @@ int.v2.ns50.2n.midd.smalln.bigvar <- t.compare(nsims=10000, Ns=c(50,100,100,100)
 set.seed(2184)
 int.v2.ns100.2n.midd.smalln.bigvar <- t.compare(nsims=10000, Ns=c(100,200,200,200), means=c(6,6.71,6.71,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
 
+# Big d
+set.seed(2184)
+int.v2.ns20.2n.bigd.smalln.bigvar <- t.compare(nsims=10000, Ns=c(20,40,40,40), means=c(6,7.13,7.13,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns50.2n.bigd.smalln.bigvar <- t.compare(nsims=10000, Ns=c(50,100,100,100), means=c(6,7.13,7.13,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns100.2n.bigd.smalln.bigvar <- t.compare(nsims=10000, Ns=c(100,200,200,200), means=c(6,7.13,7.13,6), vars=c(4,2,2,2), contrast=c(-1,1,1,-1))
+
 ##### Double N, Small N, double variances, big variance false positives and power #####
 
 ## array to store proportion of rejected null hypotheses
-int.reject.null.v2.2n.smalln.bigvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.reject.null.v2.2n.smalln.bigvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.reject.null.v2.2n.smalln.bigvar[1,1,1] <- int.v2.ns20.2n.nullT.smalln.bigvar$classic.reject
 int.reject.null.v2.2n.smalln.bigvar[1,1,2] <- int.v2.ns20.2n.nullT.smalln.bigvar$welch.reject
-int.reject.null.v2.2n.smalln.bigvar[1,2,1] <- int.v2.ns20.2n.midd.smalln.bigvar$classic.reject
-int.reject.null.v2.2n.smalln.bigvar[1,2,2] <- int.v2.ns20.2n.midd.smalln.bigvar$welch.reject
+int.reject.null.v2.2n.smalln.bigvar[1,2,1] <- int.v2.ns20.2n.smalld.smalln.bigvar$classic.reject
+int.reject.null.v2.2n.smalln.bigvar[1,2,2] <- int.v2.ns20.2n.smalld.smalln.bigvar$welch.reject
+int.reject.null.v2.2n.smalln.bigvar[1,3,1] <- int.v2.ns20.2n.midd.smalln.bigvar$classic.reject
+int.reject.null.v2.2n.smalln.bigvar[1,3,2] <- int.v2.ns20.2n.midd.smalln.bigvar$welch.reject
+int.reject.null.v2.2n.smalln.bigvar[1,4,1] <- int.v2.ns20.2n.bigd.smalln.bigvar$classic.reject
+int.reject.null.v2.2n.smalln.bigvar[1,4,2] <- int.v2.ns20.2n.bigd.smalln.bigvar$welch.reject
 int.reject.null.v2.2n.smalln.bigvar[2,1,1] <- int.v2.ns50.2n.nullT.smalln.bigvar$classic.reject
 int.reject.null.v2.2n.smalln.bigvar[2,1,2] <- int.v2.ns50.2n.nullT.smalln.bigvar$welch.reject
-int.reject.null.v2.2n.smalln.bigvar[2,2,1] <- int.v2.ns50.2n.midd.smalln.bigvar$classic.reject
-int.reject.null.v2.2n.smalln.bigvar[2,2,2] <- int.v2.ns50.2n.midd.smalln.bigvar$welch.reject
+int.reject.null.v2.2n.smalln.bigvar[2,2,1] <- int.v2.ns50.2n.smalld.smalln.bigvar$classic.reject
+int.reject.null.v2.2n.smalln.bigvar[2,2,2] <- int.v2.ns50.2n.smalld.smalln.bigvar$welch.reject
+int.reject.null.v2.2n.smalln.bigvar[2,3,1] <- int.v2.ns50.2n.midd.smalln.bigvar$classic.reject
+int.reject.null.v2.2n.smalln.bigvar[2,3,2] <- int.v2.ns50.2n.midd.smalln.bigvar$welch.reject
+int.reject.null.v2.2n.smalln.bigvar[2,4,1] <- int.v2.ns50.2n.bigd.smalln.bigvar$classic.reject
+int.reject.null.v2.2n.smalln.bigvar[2,4,2] <- int.v2.ns50.2n.bigd.smalln.bigvar$welch.reject
 int.reject.null.v2.2n.smalln.bigvar[3,1,1] <- int.v2.ns100.2n.nullT.smalln.bigvar$classic.reject
 int.reject.null.v2.2n.smalln.bigvar[3,1,2] <- int.v2.ns100.2n.nullT.smalln.bigvar$welch.reject
-int.reject.null.v2.2n.smalln.bigvar[3,2,1] <- int.v2.ns100.2n.midd.smalln.bigvar$classic.reject
-int.reject.null.v2.2n.smalln.bigvar[3,2,2] <- int.v2.ns100.2n.midd.smalln.bigvar$welch.reject
+int.reject.null.v2.2n.smalln.bigvar[3,2,1] <- int.v2.ns100.2n.smalld.smalln.bigvar$classic.reject
+int.reject.null.v2.2n.smalln.bigvar[3,2,2] <- int.v2.ns100.2n.smalld.smalln.bigvar$welch.reject
+int.reject.null.v2.2n.smalln.bigvar[3,3,1] <- int.v2.ns100.2n.midd.smalln.bigvar$classic.reject
+int.reject.null.v2.2n.smalln.bigvar[3,3,2] <- int.v2.ns100.2n.midd.smalln.bigvar$welch.reject
+int.reject.null.v2.2n.smalln.bigvar[3,4,1] <- int.v2.ns100.2n.bigd.smalln.bigvar$classic.reject
+int.reject.null.v2.2n.smalln.bigvar[3,4,2] <- int.v2.ns100.2n.bigd.smalln.bigvar$welch.reject
 
 
 ##### Double N, Small N, double variances, big variance coverage rate #####
 
 ## store observed coverage rates
-int.obs.coverage.v2.2n.smalln.bigvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.obs.coverage.v2.2n.smalln.bigvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.obs.coverage.v2.2n.smalln.bigvar[1,1,1] <- int.v2.ns20.2n.nullT.smalln.bigvar$classic.coverage
 int.obs.coverage.v2.2n.smalln.bigvar[1,1,2] <- int.v2.ns20.2n.nullT.smalln.bigvar$welch.coverage
-int.obs.coverage.v2.2n.smalln.bigvar[1,2,1] <- int.v2.ns20.2n.midd.smalln.bigvar$classic.coverage
-int.obs.coverage.v2.2n.smalln.bigvar[1,2,2] <- int.v2.ns20.2n.midd.smalln.bigvar$welch.coverage
+int.obs.coverage.v2.2n.smalln.bigvar[1,2,1] <- int.v2.ns20.2n.smalld.smalln.bigvar$classic.coverage
+int.obs.coverage.v2.2n.smalln.bigvar[1,2,2] <- int.v2.ns20.2n.smalld.smalln.bigvar$welch.coverage
+int.obs.coverage.v2.2n.smalln.bigvar[1,3,1] <- int.v2.ns20.2n.midd.smalln.bigvar$classic.coverage
+int.obs.coverage.v2.2n.smalln.bigvar[1,3,2] <- int.v2.ns20.2n.midd.smalln.bigvar$welch.coverage
+int.obs.coverage.v2.2n.smalln.bigvar[1,4,1] <- int.v2.ns20.2n.bigd.smalln.bigvar$classic.coverage
+int.obs.coverage.v2.2n.smalln.bigvar[1,4,2] <- int.v2.ns20.2n.bigd.smalln.bigvar$welch.coverage
 int.obs.coverage.v2.2n.smalln.bigvar[2,1,1] <- int.v2.ns50.2n.nullT.smalln.bigvar$classic.coverage
 int.obs.coverage.v2.2n.smalln.bigvar[2,1,2] <- int.v2.ns50.2n.nullT.smalln.bigvar$welch.coverage
-int.obs.coverage.v2.2n.smalln.bigvar[2,2,1] <- int.v2.ns50.2n.midd.smalln.bigvar$classic.coverage
-int.obs.coverage.v2.2n.smalln.bigvar[2,2,2] <- int.v2.ns50.2n.midd.smalln.bigvar$welch.coverage
+int.obs.coverage.v2.2n.smalln.bigvar[2,2,1] <- int.v2.ns50.2n.smalld.smalln.bigvar$classic.coverage
+int.obs.coverage.v2.2n.smalln.bigvar[2,2,2] <- int.v2.ns50.2n.smalld.smalln.bigvar$welch.coverage
+int.obs.coverage.v2.2n.smalln.bigvar[2,3,1] <- int.v2.ns50.2n.midd.smalln.bigvar$classic.coverage
+int.obs.coverage.v2.2n.smalln.bigvar[2,3,2] <- int.v2.ns50.2n.midd.smalln.bigvar$welch.coverage
+int.obs.coverage.v2.2n.smalln.bigvar[2,4,1] <- int.v2.ns50.2n.bigd.smalln.bigvar$classic.coverage
+int.obs.coverage.v2.2n.smalln.bigvar[2,4,2] <- int.v2.ns50.2n.bigd.smalln.bigvar$welch.coverage
 int.obs.coverage.v2.2n.smalln.bigvar[3,1,1] <- int.v2.ns100.2n.nullT.smalln.bigvar$classic.coverage
 int.obs.coverage.v2.2n.smalln.bigvar[3,1,2] <- int.v2.ns100.2n.nullT.smalln.bigvar$welch.coverage
-int.obs.coverage.v2.2n.smalln.bigvar[3,2,1] <- int.v2.ns100.2n.midd.smalln.bigvar$classic.coverage
-int.obs.coverage.v2.2n.smalln.bigvar[3,2,2] <- int.v2.ns100.2n.midd.smalln.bigvar$welch.coverage
+int.obs.coverage.v2.2n.smalln.bigvar[3,2,1] <- int.v2.ns100.2n.smalld.smalln.bigvar$classic.coverage
+int.obs.coverage.v2.2n.smalln.bigvar[3,2,2] <- int.v2.ns100.2n.smalld.smalln.bigvar$welch.coverage
+int.obs.coverage.v2.2n.smalln.bigvar[3,3,1] <- int.v2.ns100.2n.midd.smalln.bigvar$classic.coverage
+int.obs.coverage.v2.2n.smalln.bigvar[3,3,2] <- int.v2.ns100.2n.midd.smalln.bigvar$welch.coverage
+int.obs.coverage.v2.2n.smalln.bigvar[3,4,1] <- int.v2.ns100.2n.bigd.smalln.bigvar$classic.coverage
+int.obs.coverage.v2.2n.smalln.bigvar[3,4,2] <- int.v2.ns100.2n.bigd.smalln.bigvar$welch.coverage
 
 
 ##### Save tables from Double N, Small N, double variances, big variance simulations #####
 save(int.reject.null.v2.2n.smalln.bigvar, int.obs.coverage.v2.2n.smalln.bigvar, file='/users/joshwondra/R-projects/Welch rule/interaction2x2-v2bigvarsmalln2nSeed2184Tables.Rdata')
 load('/users/joshwondra/R-projects/Welch rule/interaction2x2-v2bigvarsmalln2nSeed2184Tables.Rdata')
+
 
 
 
@@ -2914,6 +3490,16 @@ int.v5.ns50.1.5n.nullT.bign.bigvar <- t.compare(nsims=10000, Ns=c(75,50,50,50), 
 set.seed(2184)
 int.v5.ns100.1.5n.nullT.bign.bigvar <- t.compare(nsims=10000, Ns=c(150,100,100,100), means=c(6,6,6,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
 
+# Small d
+set.seed(2184)
+int.v5.ns20.1.5n.smalld.bign.bigvar <- t.compare(nsims=10000, Ns=c(30,20,20,20), means=c(6,6.28,6.28,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns50.1.5n.smalld.bign.bigvar <- t.compare(nsims=10000, Ns=c(75,50,50,50), means=c(6,6.28,6.28,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns100.1.5n.smalld.bign.bigvar <- t.compare(nsims=10000, Ns=c(150,100,100,100), means=c(6,6.28,6.28,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
+
 # Mid d
 set.seed(2184)
 int.v5.ns20.1.5n.midd.bign.bigvar <- t.compare(nsims=10000, Ns=c(30,20,20,20), means=c(6,6.71,6.71,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
@@ -2924,50 +3510,83 @@ int.v5.ns50.1.5n.midd.bign.bigvar <- t.compare(nsims=10000, Ns=c(75,50,50,50), m
 set.seed(2184)
 int.v5.ns100.1.5n.midd.bign.bigvar <- t.compare(nsims=10000, Ns=c(150,100,100,100), means=c(6,6.71,6.71,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
 
+# Big d
+set.seed(2184)
+int.v5.ns20.1.5n.bigd.bign.bigvar <- t.compare(nsims=10000, Ns=c(30,20,20,20), means=c(6,7.13,7.13,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns50.1.5n.bigd.bign.bigvar <- t.compare(nsims=10000, Ns=c(75,50,50,50), means=c(6,7.13,7.13,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns100.1.5n.bigd.bign.bigvar <- t.compare(nsims=10000, Ns=c(150,100,100,100), means=c(6,7.13,7.13,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
+
 ##### 1.Double N, Big N, 5x variances, big variance false positives and power #####
 
 ## array to store proportion of rejected null hypotheses
-int.reject.null.v5.1.5n.bign.bigvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.reject.null.v5.1.5n.bign.bigvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.reject.null.v5.1.5n.bign.bigvar[1,1,1] <- int.v5.ns20.1.5n.nullT.bign.bigvar$classic.reject
 int.reject.null.v5.1.5n.bign.bigvar[1,1,2] <- int.v5.ns20.1.5n.nullT.bign.bigvar$welch.reject
-int.reject.null.v5.1.5n.bign.bigvar[1,2,1] <- int.v5.ns20.1.5n.midd.bign.bigvar$classic.reject
-int.reject.null.v5.1.5n.bign.bigvar[1,2,2] <- int.v5.ns20.1.5n.midd.bign.bigvar$welch.reject
+int.reject.null.v5.1.5n.bign.bigvar[1,2,1] <- int.v5.ns20.1.5n.smalld.bign.bigvar$classic.reject
+int.reject.null.v5.1.5n.bign.bigvar[1,2,2] <- int.v5.ns20.1.5n.smalld.bign.bigvar$welch.reject
+int.reject.null.v5.1.5n.bign.bigvar[1,3,1] <- int.v5.ns20.1.5n.midd.bign.bigvar$classic.reject
+int.reject.null.v5.1.5n.bign.bigvar[1,3,2] <- int.v5.ns20.1.5n.midd.bign.bigvar$welch.reject
+int.reject.null.v5.1.5n.bign.bigvar[1,4,1] <- int.v5.ns20.1.5n.bigd.bign.bigvar$classic.reject
+int.reject.null.v5.1.5n.bign.bigvar[1,4,2] <- int.v5.ns20.1.5n.bigd.bign.bigvar$welch.reject
 int.reject.null.v5.1.5n.bign.bigvar[2,1,1] <- int.v5.ns50.1.5n.nullT.bign.bigvar$classic.reject
 int.reject.null.v5.1.5n.bign.bigvar[2,1,2] <- int.v5.ns50.1.5n.nullT.bign.bigvar$welch.reject
-int.reject.null.v5.1.5n.bign.bigvar[2,2,1] <- int.v5.ns50.1.5n.midd.bign.bigvar$classic.reject
-int.reject.null.v5.1.5n.bign.bigvar[2,2,2] <- int.v5.ns50.1.5n.midd.bign.bigvar$welch.reject
+int.reject.null.v5.1.5n.bign.bigvar[2,2,1] <- int.v5.ns50.1.5n.smalld.bign.bigvar$classic.reject
+int.reject.null.v5.1.5n.bign.bigvar[2,2,2] <- int.v5.ns50.1.5n.smalld.bign.bigvar$welch.reject
+int.reject.null.v5.1.5n.bign.bigvar[2,3,1] <- int.v5.ns50.1.5n.midd.bign.bigvar$classic.reject
+int.reject.null.v5.1.5n.bign.bigvar[2,3,2] <- int.v5.ns50.1.5n.midd.bign.bigvar$welch.reject
+int.reject.null.v5.1.5n.bign.bigvar[2,4,1] <- int.v5.ns50.1.5n.bigd.bign.bigvar$classic.reject
+int.reject.null.v5.1.5n.bign.bigvar[2,4,2] <- int.v5.ns50.1.5n.bigd.bign.bigvar$welch.reject
 int.reject.null.v5.1.5n.bign.bigvar[3,1,1] <- int.v5.ns100.1.5n.nullT.bign.bigvar$classic.reject
 int.reject.null.v5.1.5n.bign.bigvar[3,1,2] <- int.v5.ns100.1.5n.nullT.bign.bigvar$welch.reject
-int.reject.null.v5.1.5n.bign.bigvar[3,2,1] <- int.v5.ns100.1.5n.midd.bign.bigvar$classic.reject
-int.reject.null.v5.1.5n.bign.bigvar[3,2,2] <- int.v5.ns100.1.5n.midd.bign.bigvar$welch.reject
+int.reject.null.v5.1.5n.bign.bigvar[3,2,1] <- int.v5.ns100.1.5n.smalld.bign.bigvar$classic.reject
+int.reject.null.v5.1.5n.bign.bigvar[3,2,2] <- int.v5.ns100.1.5n.smalld.bign.bigvar$welch.reject
+int.reject.null.v5.1.5n.bign.bigvar[3,3,1] <- int.v5.ns100.1.5n.midd.bign.bigvar$classic.reject
+int.reject.null.v5.1.5n.bign.bigvar[3,3,2] <- int.v5.ns100.1.5n.midd.bign.bigvar$welch.reject
+int.reject.null.v5.1.5n.bign.bigvar[3,4,1] <- int.v5.ns100.1.5n.bigd.bign.bigvar$classic.reject
+int.reject.null.v5.1.5n.bign.bigvar[3,4,2] <- int.v5.ns100.1.5n.bigd.bign.bigvar$welch.reject
 
 
 ##### 1.Double N, Big N, 5x variances, big variance coverage rate #####
 
 ## store observed coverage rates
-int.obs.coverage.v5.1.5n.bign.bigvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.obs.coverage.v5.1.5n.bign.bigvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.obs.coverage.v5.1.5n.bign.bigvar[1,1,1] <- int.v5.ns20.1.5n.nullT.bign.bigvar$classic.coverage
 int.obs.coverage.v5.1.5n.bign.bigvar[1,1,2] <- int.v5.ns20.1.5n.nullT.bign.bigvar$welch.coverage
-int.obs.coverage.v5.1.5n.bign.bigvar[1,2,1] <- int.v5.ns20.1.5n.midd.bign.bigvar$classic.coverage
-int.obs.coverage.v5.1.5n.bign.bigvar[1,2,2] <- int.v5.ns20.1.5n.midd.bign.bigvar$welch.coverage
+int.obs.coverage.v5.1.5n.bign.bigvar[1,2,1] <- int.v5.ns20.1.5n.smalld.bign.bigvar$classic.coverage
+int.obs.coverage.v5.1.5n.bign.bigvar[1,2,2] <- int.v5.ns20.1.5n.smalld.bign.bigvar$welch.coverage
+int.obs.coverage.v5.1.5n.bign.bigvar[1,3,1] <- int.v5.ns20.1.5n.midd.bign.bigvar$classic.coverage
+int.obs.coverage.v5.1.5n.bign.bigvar[1,3,2] <- int.v5.ns20.1.5n.midd.bign.bigvar$welch.coverage
+int.obs.coverage.v5.1.5n.bign.bigvar[1,4,1] <- int.v5.ns20.1.5n.bigd.bign.bigvar$classic.coverage
+int.obs.coverage.v5.1.5n.bign.bigvar[1,4,2] <- int.v5.ns20.1.5n.bigd.bign.bigvar$welch.coverage
 int.obs.coverage.v5.1.5n.bign.bigvar[2,1,1] <- int.v5.ns50.1.5n.nullT.bign.bigvar$classic.coverage
 int.obs.coverage.v5.1.5n.bign.bigvar[2,1,2] <- int.v5.ns50.1.5n.nullT.bign.bigvar$welch.coverage
-int.obs.coverage.v5.1.5n.bign.bigvar[2,2,1] <- int.v5.ns50.1.5n.midd.bign.bigvar$classic.coverage
-int.obs.coverage.v5.1.5n.bign.bigvar[2,2,2] <- int.v5.ns50.1.5n.midd.bign.bigvar$welch.coverage
+int.obs.coverage.v5.1.5n.bign.bigvar[2,2,1] <- int.v5.ns50.1.5n.smalld.bign.bigvar$classic.coverage
+int.obs.coverage.v5.1.5n.bign.bigvar[2,2,2] <- int.v5.ns50.1.5n.smalld.bign.bigvar$welch.coverage
+int.obs.coverage.v5.1.5n.bign.bigvar[2,3,1] <- int.v5.ns50.1.5n.midd.bign.bigvar$classic.coverage
+int.obs.coverage.v5.1.5n.bign.bigvar[2,3,2] <- int.v5.ns50.1.5n.midd.bign.bigvar$welch.coverage
+int.obs.coverage.v5.1.5n.bign.bigvar[2,4,1] <- int.v5.ns50.1.5n.bigd.bign.bigvar$classic.coverage
+int.obs.coverage.v5.1.5n.bign.bigvar[2,4,2] <- int.v5.ns50.1.5n.bigd.bign.bigvar$welch.coverage
 int.obs.coverage.v5.1.5n.bign.bigvar[3,1,1] <- int.v5.ns100.1.5n.nullT.bign.bigvar$classic.coverage
 int.obs.coverage.v5.1.5n.bign.bigvar[3,1,2] <- int.v5.ns100.1.5n.nullT.bign.bigvar$welch.coverage
-int.obs.coverage.v5.1.5n.bign.bigvar[3,2,1] <- int.v5.ns100.1.5n.midd.bign.bigvar$classic.coverage
-int.obs.coverage.v5.1.5n.bign.bigvar[3,2,2] <- int.v5.ns100.1.5n.midd.bign.bigvar$welch.coverage
+int.obs.coverage.v5.1.5n.bign.bigvar[3,2,1] <- int.v5.ns100.1.5n.smalld.bign.bigvar$classic.coverage
+int.obs.coverage.v5.1.5n.bign.bigvar[3,2,2] <- int.v5.ns100.1.5n.smalld.bign.bigvar$welch.coverage
+int.obs.coverage.v5.1.5n.bign.bigvar[3,3,1] <- int.v5.ns100.1.5n.midd.bign.bigvar$classic.coverage
+int.obs.coverage.v5.1.5n.bign.bigvar[3,3,2] <- int.v5.ns100.1.5n.midd.bign.bigvar$welch.coverage
+int.obs.coverage.v5.1.5n.bign.bigvar[3,4,1] <- int.v5.ns100.1.5n.bigd.bign.bigvar$classic.coverage
+int.obs.coverage.v5.1.5n.bign.bigvar[3,4,2] <- int.v5.ns100.1.5n.bigd.bign.bigvar$welch.coverage
 
 
 ##### Save tables from 1.Double N, Big N, 5x variances, big variance simulations #####
 save(int.reject.null.v5.1.5n.bign.bigvar, int.obs.coverage.v5.1.5n.bign.bigvar, file='/users/joshwondra/R-projects/Welch rule/interaction2x2-v5bigvarbign1.5nSeed2184Tables.Rdata')
 load('/users/joshwondra/R-projects/Welch rule/interaction2x2-v5bigvarbign1.5nSeed2184Tables.Rdata')
-
 
 
 
@@ -2989,6 +3608,16 @@ int.v5.ns50.2n.nullT.bign.bigvar <- t.compare(nsims=10000, Ns=c(100,50,50,50), m
 set.seed(2184)
 int.v5.ns100.2n.nullT.bign.bigvar <- t.compare(nsims=10000, Ns=c(200,100,100,100), means=c(6,6,6,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
 
+# Small d
+set.seed(2184)
+int.v5.ns20.2n.smalld.bign.bigvar <- t.compare(nsims=10000, Ns=c(40,20,20,20), means=c(6,6.28,6.28,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns50.2n.smalld.bign.bigvar <- t.compare(nsims=10000, Ns=c(100,50,50,50), means=c(6,6.28,6.28,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns100.2n.smalld.bign.bigvar <- t.compare(nsims=10000, Ns=c(200,100,100,100), means=c(6,6.28,6.28,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
+
 # Mid d
 set.seed(2184)
 int.v5.ns20.2n.midd.bign.bigvar <- t.compare(nsims=10000, Ns=c(40,20,20,20), means=c(6,6.71,6.71,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
@@ -2999,50 +3628,83 @@ int.v5.ns50.2n.midd.bign.bigvar <- t.compare(nsims=10000, Ns=c(100,50,50,50), me
 set.seed(2184)
 int.v5.ns100.2n.midd.bign.bigvar <- t.compare(nsims=10000, Ns=c(200,100,100,100), means=c(6,6.71,6.71,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
 
+# Big d
+set.seed(2184)
+int.v5.ns20.2n.bigd.bign.bigvar <- t.compare(nsims=10000, Ns=c(40,20,20,20), means=c(6,7.13,7.13,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns50.2n.bigd.bign.bigvar <- t.compare(nsims=10000, Ns=c(100,50,50,50), means=c(6,7.13,7.13,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns100.2n.bigd.bign.bigvar <- t.compare(nsims=10000, Ns=c(200,100,100,100), means=c(6,7.13,7.13,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
+
 ##### Double N, Big N, 5x variance, big variance false positives and power #####
 
 ## array to store proportion of rejected null hypotheses
-int.reject.null.v5.2n.bign.bigvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.reject.null.v5.2n.bign.bigvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.reject.null.v5.2n.bign.bigvar[1,1,1] <- int.v5.ns20.2n.nullT.bign.bigvar$classic.reject
 int.reject.null.v5.2n.bign.bigvar[1,1,2] <- int.v5.ns20.2n.nullT.bign.bigvar$welch.reject
-int.reject.null.v5.2n.bign.bigvar[1,2,1] <- int.v5.ns20.2n.midd.bign.bigvar$classic.reject
-int.reject.null.v5.2n.bign.bigvar[1,2,2] <- int.v5.ns20.2n.midd.bign.bigvar$welch.reject
+int.reject.null.v5.2n.bign.bigvar[1,2,1] <- int.v5.ns20.2n.smalld.bign.bigvar$classic.reject
+int.reject.null.v5.2n.bign.bigvar[1,2,2] <- int.v5.ns20.2n.smalld.bign.bigvar$welch.reject
+int.reject.null.v5.2n.bign.bigvar[1,3,1] <- int.v5.ns20.2n.midd.bign.bigvar$classic.reject
+int.reject.null.v5.2n.bign.bigvar[1,3,2] <- int.v5.ns20.2n.midd.bign.bigvar$welch.reject
+int.reject.null.v5.2n.bign.bigvar[1,4,1] <- int.v5.ns20.2n.bigd.bign.bigvar$classic.reject
+int.reject.null.v5.2n.bign.bigvar[1,4,2] <- int.v5.ns20.2n.bigd.bign.bigvar$welch.reject
 int.reject.null.v5.2n.bign.bigvar[2,1,1] <- int.v5.ns50.2n.nullT.bign.bigvar$classic.reject
 int.reject.null.v5.2n.bign.bigvar[2,1,2] <- int.v5.ns50.2n.nullT.bign.bigvar$welch.reject
-int.reject.null.v5.2n.bign.bigvar[2,2,1] <- int.v5.ns50.2n.midd.bign.bigvar$classic.reject
-int.reject.null.v5.2n.bign.bigvar[2,2,2] <- int.v5.ns50.2n.midd.bign.bigvar$welch.reject
+int.reject.null.v5.2n.bign.bigvar[2,2,1] <- int.v5.ns50.2n.smalld.bign.bigvar$classic.reject
+int.reject.null.v5.2n.bign.bigvar[2,2,2] <- int.v5.ns50.2n.smalld.bign.bigvar$welch.reject
+int.reject.null.v5.2n.bign.bigvar[2,3,1] <- int.v5.ns50.2n.midd.bign.bigvar$classic.reject
+int.reject.null.v5.2n.bign.bigvar[2,3,2] <- int.v5.ns50.2n.midd.bign.bigvar$welch.reject
+int.reject.null.v5.2n.bign.bigvar[2,4,1] <- int.v5.ns50.2n.bigd.bign.bigvar$classic.reject
+int.reject.null.v5.2n.bign.bigvar[2,4,2] <- int.v5.ns50.2n.bigd.bign.bigvar$welch.reject
 int.reject.null.v5.2n.bign.bigvar[3,1,1] <- int.v5.ns100.2n.nullT.bign.bigvar$classic.reject
 int.reject.null.v5.2n.bign.bigvar[3,1,2] <- int.v5.ns100.2n.nullT.bign.bigvar$welch.reject
-int.reject.null.v5.2n.bign.bigvar[3,2,1] <- int.v5.ns100.2n.midd.bign.bigvar$classic.reject
-int.reject.null.v5.2n.bign.bigvar[3,2,2] <- int.v5.ns100.2n.midd.bign.bigvar$welch.reject
+int.reject.null.v5.2n.bign.bigvar[3,2,1] <- int.v5.ns100.2n.smalld.bign.bigvar$classic.reject
+int.reject.null.v5.2n.bign.bigvar[3,2,2] <- int.v5.ns100.2n.smalld.bign.bigvar$welch.reject
+int.reject.null.v5.2n.bign.bigvar[3,3,1] <- int.v5.ns100.2n.midd.bign.bigvar$classic.reject
+int.reject.null.v5.2n.bign.bigvar[3,3,2] <- int.v5.ns100.2n.midd.bign.bigvar$welch.reject
+int.reject.null.v5.2n.bign.bigvar[3,4,1] <- int.v5.ns100.2n.bigd.bign.bigvar$classic.reject
+int.reject.null.v5.2n.bign.bigvar[3,4,2] <- int.v5.ns100.2n.bigd.bign.bigvar$welch.reject
 
 
 ##### Double N, Big N, 5x variance, big variance coverage rate #####
 
 ## store observed coverage rates
-int.obs.coverage.v5.2n.bign.bigvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.obs.coverage.v5.2n.bign.bigvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.obs.coverage.v5.2n.bign.bigvar[1,1,1] <- int.v5.ns20.2n.nullT.bign.bigvar$classic.coverage
 int.obs.coverage.v5.2n.bign.bigvar[1,1,2] <- int.v5.ns20.2n.nullT.bign.bigvar$welch.coverage
-int.obs.coverage.v5.2n.bign.bigvar[1,2,1] <- int.v5.ns20.2n.midd.bign.bigvar$classic.coverage
-int.obs.coverage.v5.2n.bign.bigvar[1,2,2] <- int.v5.ns20.2n.midd.bign.bigvar$welch.coverage
+int.obs.coverage.v5.2n.bign.bigvar[1,2,1] <- int.v5.ns20.2n.smalld.bign.bigvar$classic.coverage
+int.obs.coverage.v5.2n.bign.bigvar[1,2,2] <- int.v5.ns20.2n.smalld.bign.bigvar$welch.coverage
+int.obs.coverage.v5.2n.bign.bigvar[1,3,1] <- int.v5.ns20.2n.midd.bign.bigvar$classic.coverage
+int.obs.coverage.v5.2n.bign.bigvar[1,3,2] <- int.v5.ns20.2n.midd.bign.bigvar$welch.coverage
+int.obs.coverage.v5.2n.bign.bigvar[1,4,1] <- int.v5.ns20.2n.bigd.bign.bigvar$classic.coverage
+int.obs.coverage.v5.2n.bign.bigvar[1,4,2] <- int.v5.ns20.2n.bigd.bign.bigvar$welch.coverage
 int.obs.coverage.v5.2n.bign.bigvar[2,1,1] <- int.v5.ns50.2n.nullT.bign.bigvar$classic.coverage
 int.obs.coverage.v5.2n.bign.bigvar[2,1,2] <- int.v5.ns50.2n.nullT.bign.bigvar$welch.coverage
-int.obs.coverage.v5.2n.bign.bigvar[2,2,1] <- int.v5.ns50.2n.midd.bign.bigvar$classic.coverage
-int.obs.coverage.v5.2n.bign.bigvar[2,2,2] <- int.v5.ns50.2n.midd.bign.bigvar$welch.coverage
+int.obs.coverage.v5.2n.bign.bigvar[2,2,1] <- int.v5.ns50.2n.smalld.bign.bigvar$classic.coverage
+int.obs.coverage.v5.2n.bign.bigvar[2,2,2] <- int.v5.ns50.2n.smalld.bign.bigvar$welch.coverage
+int.obs.coverage.v5.2n.bign.bigvar[2,3,1] <- int.v5.ns50.2n.midd.bign.bigvar$classic.coverage
+int.obs.coverage.v5.2n.bign.bigvar[2,3,2] <- int.v5.ns50.2n.midd.bign.bigvar$welch.coverage
+int.obs.coverage.v5.2n.bign.bigvar[2,4,1] <- int.v5.ns50.2n.bigd.bign.bigvar$classic.coverage
+int.obs.coverage.v5.2n.bign.bigvar[2,4,2] <- int.v5.ns50.2n.bigd.bign.bigvar$welch.coverage
 int.obs.coverage.v5.2n.bign.bigvar[3,1,1] <- int.v5.ns100.2n.nullT.bign.bigvar$classic.coverage
 int.obs.coverage.v5.2n.bign.bigvar[3,1,2] <- int.v5.ns100.2n.nullT.bign.bigvar$welch.coverage
-int.obs.coverage.v5.2n.bign.bigvar[3,2,1] <- int.v5.ns100.2n.midd.bign.bigvar$classic.coverage
-int.obs.coverage.v5.2n.bign.bigvar[3,2,2] <- int.v5.ns100.2n.midd.bign.bigvar$welch.coverage
+int.obs.coverage.v5.2n.bign.bigvar[3,2,1] <- int.v5.ns100.2n.smalld.bign.bigvar$classic.coverage
+int.obs.coverage.v5.2n.bign.bigvar[3,2,2] <- int.v5.ns100.2n.smalld.bign.bigvar$welch.coverage
+int.obs.coverage.v5.2n.bign.bigvar[3,3,1] <- int.v5.ns100.2n.midd.bign.bigvar$classic.coverage
+int.obs.coverage.v5.2n.bign.bigvar[3,3,2] <- int.v5.ns100.2n.midd.bign.bigvar$welch.coverage
+int.obs.coverage.v5.2n.bign.bigvar[3,4,1] <- int.v5.ns100.2n.bigd.bign.bigvar$classic.coverage
+int.obs.coverage.v5.2n.bign.bigvar[3,4,2] <- int.v5.ns100.2n.bigd.bign.bigvar$welch.coverage
 
 
 ##### Save tables from Double N, Big N, 5x variance, big variance simulations #####
 save(int.reject.null.v5.2n.bign.bigvar, int.obs.coverage.v5.2n.bign.bigvar, file='/users/joshwondra/R-projects/Welch rule/interaction2x2-v5bigvarbign2nSeed2184Tables.Rdata')
 load('/users/joshwondra/R-projects/Welch rule/interaction2x2-v5bigvarbign2nSeed2184Tables.Rdata')
-
 
 
 
@@ -3063,6 +3725,16 @@ int.v5.ns50.1.5n.nullT.smalln.bigvar <- t.compare(nsims=10000, Ns=c(50,75,75,75)
 set.seed(2184)
 int.v5.ns100.1.5n.nullT.smalln.bigvar <- t.compare(nsims=10000, Ns=c(100,150,150,150), means=c(6,6,6,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
 
+# Small d
+set.seed(2184)
+int.v5.ns20.1.5n.smalld.smalln.bigvar <- t.compare(nsims=10000, Ns=c(20,30,30,30), means=c(6,6.28,6.28,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns50.1.5n.smalld.smalln.bigvar <- t.compare(nsims=10000, Ns=c(50,75,75,75), means=c(6,6.28,6.28,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns100.1.5n.smalld.smalln.bigvar <- t.compare(nsims=10000, Ns=c(100,150,150,150), means=c(6,6.28,6.28,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
+
 # Mid d
 set.seed(2184)
 int.v5.ns20.1.5n.midd.smalln.bigvar <- t.compare(nsims=10000, Ns=c(20,30,30,30), means=c(6,6.71,6.71,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
@@ -3073,44 +3745,78 @@ int.v5.ns50.1.5n.midd.smalln.bigvar <- t.compare(nsims=10000, Ns=c(50,75,75,75),
 set.seed(2184)
 int.v5.ns100.1.5n.midd.smalln.bigvar <- t.compare(nsims=10000, Ns=c(100,150,150,150), means=c(6,6.71,6.71,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
 
+# Big d
+set.seed(2184)
+int.v5.ns20.1.5n.bigd.smalln.bigvar <- t.compare(nsims=10000, Ns=c(20,30,30,30), means=c(6,7.13,7.13,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns50.1.5n.bigd.smalln.bigvar <- t.compare(nsims=10000, Ns=c(50,75,75,75), means=c(6,7.13,7.13,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns100.1.5n.bigd.smalln.bigvar <- t.compare(nsims=10000, Ns=c(100,150,150,150), means=c(6,7.13,7.13,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
+
 ##### 1.Double N, Small N, 5x variances, big variance false positives and power #####
 
 ## array to store proportion of rejected null hypotheses
-int.reject.null.v5.1.5n.smalln.bigvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.reject.null.v5.1.5n.smalln.bigvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.reject.null.v5.1.5n.smalln.bigvar[1,1,1] <- int.v5.ns20.1.5n.nullT.smalln.bigvar$classic.reject
 int.reject.null.v5.1.5n.smalln.bigvar[1,1,2] <- int.v5.ns20.1.5n.nullT.smalln.bigvar$welch.reject
-int.reject.null.v5.1.5n.smalln.bigvar[1,2,1] <- int.v5.ns20.1.5n.midd.smalln.bigvar$classic.reject
-int.reject.null.v5.1.5n.smalln.bigvar[1,2,2] <- int.v5.ns20.1.5n.midd.smalln.bigvar$welch.reject
+int.reject.null.v5.1.5n.smalln.bigvar[1,2,1] <- int.v5.ns20.1.5n.smalld.smalln.bigvar$classic.reject
+int.reject.null.v5.1.5n.smalln.bigvar[1,2,2] <- int.v5.ns20.1.5n.smalld.smalln.bigvar$welch.reject
+int.reject.null.v5.1.5n.smalln.bigvar[1,3,1] <- int.v5.ns20.1.5n.midd.smalln.bigvar$classic.reject
+int.reject.null.v5.1.5n.smalln.bigvar[1,3,2] <- int.v5.ns20.1.5n.midd.smalln.bigvar$welch.reject
+int.reject.null.v5.1.5n.smalln.bigvar[1,4,1] <- int.v5.ns20.1.5n.bigd.smalln.bigvar$classic.reject
+int.reject.null.v5.1.5n.smalln.bigvar[1,4,2] <- int.v5.ns20.1.5n.bigd.smalln.bigvar$welch.reject
 int.reject.null.v5.1.5n.smalln.bigvar[2,1,1] <- int.v5.ns50.1.5n.nullT.smalln.bigvar$classic.reject
 int.reject.null.v5.1.5n.smalln.bigvar[2,1,2] <- int.v5.ns50.1.5n.nullT.smalln.bigvar$welch.reject
-int.reject.null.v5.1.5n.smalln.bigvar[2,2,1] <- int.v5.ns50.1.5n.midd.smalln.bigvar$classic.reject
-int.reject.null.v5.1.5n.smalln.bigvar[2,2,2] <- int.v5.ns50.1.5n.midd.smalln.bigvar$welch.reject
+int.reject.null.v5.1.5n.smalln.bigvar[2,2,1] <- int.v5.ns50.1.5n.smalld.smalln.bigvar$classic.reject
+int.reject.null.v5.1.5n.smalln.bigvar[2,2,2] <- int.v5.ns50.1.5n.smalld.smalln.bigvar$welch.reject
+int.reject.null.v5.1.5n.smalln.bigvar[2,3,1] <- int.v5.ns50.1.5n.midd.smalln.bigvar$classic.reject
+int.reject.null.v5.1.5n.smalln.bigvar[2,3,2] <- int.v5.ns50.1.5n.midd.smalln.bigvar$welch.reject
+int.reject.null.v5.1.5n.smalln.bigvar[2,4,1] <- int.v5.ns50.1.5n.bigd.smalln.bigvar$classic.reject
+int.reject.null.v5.1.5n.smalln.bigvar[2,4,2] <- int.v5.ns50.1.5n.bigd.smalln.bigvar$welch.reject
 int.reject.null.v5.1.5n.smalln.bigvar[3,1,1] <- int.v5.ns100.1.5n.nullT.smalln.bigvar$classic.reject
 int.reject.null.v5.1.5n.smalln.bigvar[3,1,2] <- int.v5.ns100.1.5n.nullT.smalln.bigvar$welch.reject
-int.reject.null.v5.1.5n.smalln.bigvar[3,2,1] <- int.v5.ns100.1.5n.midd.smalln.bigvar$classic.reject
-int.reject.null.v5.1.5n.smalln.bigvar[3,2,2] <- int.v5.ns100.1.5n.midd.smalln.bigvar$welch.reject
+int.reject.null.v5.1.5n.smalln.bigvar[3,2,1] <- int.v5.ns100.1.5n.smalld.smalln.bigvar$classic.reject
+int.reject.null.v5.1.5n.smalln.bigvar[3,2,2] <- int.v5.ns100.1.5n.smalld.smalln.bigvar$welch.reject
+int.reject.null.v5.1.5n.smalln.bigvar[3,3,1] <- int.v5.ns100.1.5n.midd.smalln.bigvar$classic.reject
+int.reject.null.v5.1.5n.smalln.bigvar[3,3,2] <- int.v5.ns100.1.5n.midd.smalln.bigvar$welch.reject
+int.reject.null.v5.1.5n.smalln.bigvar[3,4,1] <- int.v5.ns100.1.5n.bigd.smalln.bigvar$classic.reject
+int.reject.null.v5.1.5n.smalln.bigvar[3,4,2] <- int.v5.ns100.1.5n.bigd.smalln.bigvar$welch.reject
 
 
 ##### 1.Double N, Small N, 5x variances, big variance coverage rate #####
 
 ## store observed coverage rates
-int.obs.coverage.v5.1.5n.smalln.bigvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.obs.coverage.v5.1.5n.smalln.bigvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.obs.coverage.v5.1.5n.smalln.bigvar[1,1,1] <- int.v5.ns20.1.5n.nullT.smalln.bigvar$classic.coverage
 int.obs.coverage.v5.1.5n.smalln.bigvar[1,1,2] <- int.v5.ns20.1.5n.nullT.smalln.bigvar$welch.coverage
-int.obs.coverage.v5.1.5n.smalln.bigvar[1,2,1] <- int.v5.ns20.1.5n.midd.smalln.bigvar$classic.coverage
-int.obs.coverage.v5.1.5n.smalln.bigvar[1,2,2] <- int.v5.ns20.1.5n.midd.smalln.bigvar$welch.coverage
+int.obs.coverage.v5.1.5n.smalln.bigvar[1,2,1] <- int.v5.ns20.1.5n.smalld.smalln.bigvar$classic.coverage
+int.obs.coverage.v5.1.5n.smalln.bigvar[1,2,2] <- int.v5.ns20.1.5n.smalld.smalln.bigvar$welch.coverage
+int.obs.coverage.v5.1.5n.smalln.bigvar[1,3,1] <- int.v5.ns20.1.5n.midd.smalln.bigvar$classic.coverage
+int.obs.coverage.v5.1.5n.smalln.bigvar[1,3,2] <- int.v5.ns20.1.5n.midd.smalln.bigvar$welch.coverage
+int.obs.coverage.v5.1.5n.smalln.bigvar[1,4,1] <- int.v5.ns20.1.5n.bigd.smalln.bigvar$classic.coverage
+int.obs.coverage.v5.1.5n.smalln.bigvar[1,4,2] <- int.v5.ns20.1.5n.bigd.smalln.bigvar$welch.coverage
 int.obs.coverage.v5.1.5n.smalln.bigvar[2,1,1] <- int.v5.ns50.1.5n.nullT.smalln.bigvar$classic.coverage
 int.obs.coverage.v5.1.5n.smalln.bigvar[2,1,2] <- int.v5.ns50.1.5n.nullT.smalln.bigvar$welch.coverage
-int.obs.coverage.v5.1.5n.smalln.bigvar[2,2,1] <- int.v5.ns50.1.5n.midd.smalln.bigvar$classic.coverage
-int.obs.coverage.v5.1.5n.smalln.bigvar[2,2,2] <- int.v5.ns50.1.5n.midd.smalln.bigvar$welch.coverage
+int.obs.coverage.v5.1.5n.smalln.bigvar[2,2,1] <- int.v5.ns50.1.5n.smalld.smalln.bigvar$classic.coverage
+int.obs.coverage.v5.1.5n.smalln.bigvar[2,2,2] <- int.v5.ns50.1.5n.smalld.smalln.bigvar$welch.coverage
+int.obs.coverage.v5.1.5n.smalln.bigvar[2,3,1] <- int.v5.ns50.1.5n.midd.smalln.bigvar$classic.coverage
+int.obs.coverage.v5.1.5n.smalln.bigvar[2,3,2] <- int.v5.ns50.1.5n.midd.smalln.bigvar$welch.coverage
+int.obs.coverage.v5.1.5n.smalln.bigvar[2,4,1] <- int.v5.ns50.1.5n.bigd.smalln.bigvar$classic.coverage
+int.obs.coverage.v5.1.5n.smalln.bigvar[2,4,2] <- int.v5.ns50.1.5n.bigd.smalln.bigvar$welch.coverage
 int.obs.coverage.v5.1.5n.smalln.bigvar[3,1,1] <- int.v5.ns100.1.5n.nullT.smalln.bigvar$classic.coverage
 int.obs.coverage.v5.1.5n.smalln.bigvar[3,1,2] <- int.v5.ns100.1.5n.nullT.smalln.bigvar$welch.coverage
-int.obs.coverage.v5.1.5n.smalln.bigvar[3,2,1] <- int.v5.ns100.1.5n.midd.smalln.bigvar$classic.coverage
-int.obs.coverage.v5.1.5n.smalln.bigvar[3,2,2] <- int.v5.ns100.1.5n.midd.smalln.bigvar$welch.coverage
+int.obs.coverage.v5.1.5n.smalln.bigvar[3,2,1] <- int.v5.ns100.1.5n.smalld.smalln.bigvar$classic.coverage
+int.obs.coverage.v5.1.5n.smalln.bigvar[3,2,2] <- int.v5.ns100.1.5n.smalld.smalln.bigvar$welch.coverage
+int.obs.coverage.v5.1.5n.smalln.bigvar[3,3,1] <- int.v5.ns100.1.5n.midd.smalln.bigvar$classic.coverage
+int.obs.coverage.v5.1.5n.smalln.bigvar[3,3,2] <- int.v5.ns100.1.5n.midd.smalln.bigvar$welch.coverage
+int.obs.coverage.v5.1.5n.smalln.bigvar[3,4,1] <- int.v5.ns100.1.5n.bigd.smalln.bigvar$classic.coverage
+int.obs.coverage.v5.1.5n.smalln.bigvar[3,4,2] <- int.v5.ns100.1.5n.bigd.smalln.bigvar$welch.coverage
 
 
 ##### Save tables from 1.Double N, Small N, 5x variances, big variance simulations #####
@@ -3136,6 +3842,16 @@ int.v5.ns50.2n.nullT.smalln.bigvar <- t.compare(nsims=10000, Ns=c(50,100,100,100
 set.seed(2184)
 int.v5.ns100.2n.nullT.smalln.bigvar <- t.compare(nsims=10000, Ns=c(100,200,200,200), means=c(6,6,6,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
 
+# Small d
+set.seed(2184)
+int.v5.ns20.2n.smalld.smalln.bigvar <- t.compare(nsims=10000, Ns=c(20,40,40,40), means=c(6,6.28,6.28,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns50.2n.smalld.smalln.bigvar <- t.compare(nsims=10000, Ns=c(50,100,100,100), means=c(6,6.28,6.28,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns100.2n.smalld.smalln.bigvar <- t.compare(nsims=10000, Ns=c(100,200,200,200), means=c(6,6.28,6.28,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
+
 # Mid d
 set.seed(2184)
 int.v5.ns20.2n.midd.smalln.bigvar <- t.compare(nsims=10000, Ns=c(20,40,40,40), means=c(6,6.71,6.71,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
@@ -3146,44 +3862,78 @@ int.v5.ns50.2n.midd.smalln.bigvar <- t.compare(nsims=10000, Ns=c(50,100,100,100)
 set.seed(2184)
 int.v5.ns100.2n.midd.smalln.bigvar <- t.compare(nsims=10000, Ns=c(100,200,200,200), means=c(6,6.71,6.71,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
 
+# Big d
+set.seed(2184)
+int.v5.ns20.2n.bigd.smalln.bigvar <- t.compare(nsims=10000, Ns=c(20,40,40,40), means=c(6,7.13,7.13,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns50.2n.bigd.smalln.bigvar <- t.compare(nsims=10000, Ns=c(50,100,100,100), means=c(6,7.13,7.13,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns100.2n.bigd.smalln.bigvar <- t.compare(nsims=10000, Ns=c(100,200,200,200), means=c(6,7.13,7.13,6), vars=c(10,2,2,2), contrast=c(-1,1,1,-1))
+
 ##### Double N, Small N, 5x variances, big variance false positives and power #####
 
 ## array to store proportion of rejected null hypotheses
-int.reject.null.v5.2n.smalln.bigvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.reject.null.v5.2n.smalln.bigvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.reject.null.v5.2n.smalln.bigvar[1,1,1] <- int.v5.ns20.2n.nullT.smalln.bigvar$classic.reject
 int.reject.null.v5.2n.smalln.bigvar[1,1,2] <- int.v5.ns20.2n.nullT.smalln.bigvar$welch.reject
-int.reject.null.v5.2n.smalln.bigvar[1,2,1] <- int.v5.ns20.2n.midd.smalln.bigvar$classic.reject
-int.reject.null.v5.2n.smalln.bigvar[1,2,2] <- int.v5.ns20.2n.midd.smalln.bigvar$welch.reject
+int.reject.null.v5.2n.smalln.bigvar[1,2,1] <- int.v5.ns20.2n.smalld.smalln.bigvar$classic.reject
+int.reject.null.v5.2n.smalln.bigvar[1,2,2] <- int.v5.ns20.2n.smalld.smalln.bigvar$welch.reject
+int.reject.null.v5.2n.smalln.bigvar[1,3,1] <- int.v5.ns20.2n.midd.smalln.bigvar$classic.reject
+int.reject.null.v5.2n.smalln.bigvar[1,3,2] <- int.v5.ns20.2n.midd.smalln.bigvar$welch.reject
+int.reject.null.v5.2n.smalln.bigvar[1,4,1] <- int.v5.ns20.2n.bigd.smalln.bigvar$classic.reject
+int.reject.null.v5.2n.smalln.bigvar[1,4,2] <- int.v5.ns20.2n.bigd.smalln.bigvar$welch.reject
 int.reject.null.v5.2n.smalln.bigvar[2,1,1] <- int.v5.ns50.2n.nullT.smalln.bigvar$classic.reject
 int.reject.null.v5.2n.smalln.bigvar[2,1,2] <- int.v5.ns50.2n.nullT.smalln.bigvar$welch.reject
-int.reject.null.v5.2n.smalln.bigvar[2,2,1] <- int.v5.ns50.2n.midd.smalln.bigvar$classic.reject
-int.reject.null.v5.2n.smalln.bigvar[2,2,2] <- int.v5.ns50.2n.midd.smalln.bigvar$welch.reject
+int.reject.null.v5.2n.smalln.bigvar[2,2,1] <- int.v5.ns50.2n.smalld.smalln.bigvar$classic.reject
+int.reject.null.v5.2n.smalln.bigvar[2,2,2] <- int.v5.ns50.2n.smalld.smalln.bigvar$welch.reject
+int.reject.null.v5.2n.smalln.bigvar[2,3,1] <- int.v5.ns50.2n.midd.smalln.bigvar$classic.reject
+int.reject.null.v5.2n.smalln.bigvar[2,3,2] <- int.v5.ns50.2n.midd.smalln.bigvar$welch.reject
+int.reject.null.v5.2n.smalln.bigvar[2,4,1] <- int.v5.ns50.2n.bigd.smalln.bigvar$classic.reject
+int.reject.null.v5.2n.smalln.bigvar[2,4,2] <- int.v5.ns50.2n.bigd.smalln.bigvar$welch.reject
 int.reject.null.v5.2n.smalln.bigvar[3,1,1] <- int.v5.ns100.2n.nullT.smalln.bigvar$classic.reject
 int.reject.null.v5.2n.smalln.bigvar[3,1,2] <- int.v5.ns100.2n.nullT.smalln.bigvar$welch.reject
-int.reject.null.v5.2n.smalln.bigvar[3,2,1] <- int.v5.ns100.2n.midd.smalln.bigvar$classic.reject
-int.reject.null.v5.2n.smalln.bigvar[3,2,2] <- int.v5.ns100.2n.midd.smalln.bigvar$welch.reject
+int.reject.null.v5.2n.smalln.bigvar[3,2,1] <- int.v5.ns100.2n.smalld.smalln.bigvar$classic.reject
+int.reject.null.v5.2n.smalln.bigvar[3,2,2] <- int.v5.ns100.2n.smalld.smalln.bigvar$welch.reject
+int.reject.null.v5.2n.smalln.bigvar[3,3,1] <- int.v5.ns100.2n.midd.smalln.bigvar$classic.reject
+int.reject.null.v5.2n.smalln.bigvar[3,3,2] <- int.v5.ns100.2n.midd.smalln.bigvar$welch.reject
+int.reject.null.v5.2n.smalln.bigvar[3,4,1] <- int.v5.ns100.2n.bigd.smalln.bigvar$classic.reject
+int.reject.null.v5.2n.smalln.bigvar[3,4,2] <- int.v5.ns100.2n.bigd.smalln.bigvar$welch.reject
 
 
 ##### Double N, Small N, 5x variances, big variance coverage rate #####
 
 ## store observed coverage rates
-int.obs.coverage.v5.2n.smalln.bigvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.obs.coverage.v5.2n.smalln.bigvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.obs.coverage.v5.2n.smalln.bigvar[1,1,1] <- int.v5.ns20.2n.nullT.smalln.bigvar$classic.coverage
 int.obs.coverage.v5.2n.smalln.bigvar[1,1,2] <- int.v5.ns20.2n.nullT.smalln.bigvar$welch.coverage
-int.obs.coverage.v5.2n.smalln.bigvar[1,2,1] <- int.v5.ns20.2n.midd.smalln.bigvar$classic.coverage
-int.obs.coverage.v5.2n.smalln.bigvar[1,2,2] <- int.v5.ns20.2n.midd.smalln.bigvar$welch.coverage
+int.obs.coverage.v5.2n.smalln.bigvar[1,2,1] <- int.v5.ns20.2n.smalld.smalln.bigvar$classic.coverage
+int.obs.coverage.v5.2n.smalln.bigvar[1,2,2] <- int.v5.ns20.2n.smalld.smalln.bigvar$welch.coverage
+int.obs.coverage.v5.2n.smalln.bigvar[1,3,1] <- int.v5.ns20.2n.midd.smalln.bigvar$classic.coverage
+int.obs.coverage.v5.2n.smalln.bigvar[1,3,2] <- int.v5.ns20.2n.midd.smalln.bigvar$welch.coverage
+int.obs.coverage.v5.2n.smalln.bigvar[1,4,1] <- int.v5.ns20.2n.bigd.smalln.bigvar$classic.coverage
+int.obs.coverage.v5.2n.smalln.bigvar[1,4,2] <- int.v5.ns20.2n.bigd.smalln.bigvar$welch.coverage
 int.obs.coverage.v5.2n.smalln.bigvar[2,1,1] <- int.v5.ns50.2n.nullT.smalln.bigvar$classic.coverage
 int.obs.coverage.v5.2n.smalln.bigvar[2,1,2] <- int.v5.ns50.2n.nullT.smalln.bigvar$welch.coverage
-int.obs.coverage.v5.2n.smalln.bigvar[2,2,1] <- int.v5.ns50.2n.midd.smalln.bigvar$classic.coverage
-int.obs.coverage.v5.2n.smalln.bigvar[2,2,2] <- int.v5.ns50.2n.midd.smalln.bigvar$welch.coverage
+int.obs.coverage.v5.2n.smalln.bigvar[2,2,1] <- int.v5.ns50.2n.smalld.smalln.bigvar$classic.coverage
+int.obs.coverage.v5.2n.smalln.bigvar[2,2,2] <- int.v5.ns50.2n.smalld.smalln.bigvar$welch.coverage
+int.obs.coverage.v5.2n.smalln.bigvar[2,3,1] <- int.v5.ns50.2n.midd.smalln.bigvar$classic.coverage
+int.obs.coverage.v5.2n.smalln.bigvar[2,3,2] <- int.v5.ns50.2n.midd.smalln.bigvar$welch.coverage
+int.obs.coverage.v5.2n.smalln.bigvar[2,4,1] <- int.v5.ns50.2n.bigd.smalln.bigvar$classic.coverage
+int.obs.coverage.v5.2n.smalln.bigvar[2,4,2] <- int.v5.ns50.2n.bigd.smalln.bigvar$welch.coverage
 int.obs.coverage.v5.2n.smalln.bigvar[3,1,1] <- int.v5.ns100.2n.nullT.smalln.bigvar$classic.coverage
 int.obs.coverage.v5.2n.smalln.bigvar[3,1,2] <- int.v5.ns100.2n.nullT.smalln.bigvar$welch.coverage
-int.obs.coverage.v5.2n.smalln.bigvar[3,2,1] <- int.v5.ns100.2n.midd.smalln.bigvar$classic.coverage
-int.obs.coverage.v5.2n.smalln.bigvar[3,2,2] <- int.v5.ns100.2n.midd.smalln.bigvar$welch.coverage
+int.obs.coverage.v5.2n.smalln.bigvar[3,2,1] <- int.v5.ns100.2n.smalld.smalln.bigvar$classic.coverage
+int.obs.coverage.v5.2n.smalln.bigvar[3,2,2] <- int.v5.ns100.2n.smalld.smalln.bigvar$welch.coverage
+int.obs.coverage.v5.2n.smalln.bigvar[3,3,1] <- int.v5.ns100.2n.midd.smalln.bigvar$classic.coverage
+int.obs.coverage.v5.2n.smalln.bigvar[3,3,2] <- int.v5.ns100.2n.midd.smalln.bigvar$welch.coverage
+int.obs.coverage.v5.2n.smalln.bigvar[3,4,1] <- int.v5.ns100.2n.bigd.smalln.bigvar$classic.coverage
+int.obs.coverage.v5.2n.smalln.bigvar[3,4,2] <- int.v5.ns100.2n.bigd.smalln.bigvar$welch.coverage
 
 
 ##### Save tables from Double N, Small N, 5x variances, big variance simulations #####
@@ -3215,6 +3965,16 @@ int.v2.ns50.1.5n.nullT.bign.smallvar <- t.compare(nsims=10000, Ns=c(75,50,50,50)
 set.seed(2184)
 int.v2.ns100.1.5n.nullT.bign.smallvar <- t.compare(nsims=10000, Ns=c(150,100,100,100), means=c(6,6,6,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
 
+# Small d
+set.seed(2184)
+int.v2.ns20.1.5n.smalld.bign.smallvar <- t.compare(nsims=10000, Ns=c(30,20,20,20), means=c(6,6.28,6.28,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns50.1.5n.smalld.bign.smallvar <- t.compare(nsims=10000, Ns=c(75,50,50,50), means=c(6,6.28,6.28,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns100.1.5n.smalld.bign.smallvar <- t.compare(nsims=10000, Ns=c(150,100,100,100), means=c(6,6.28,6.28,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
+
 # Mid d
 set.seed(2184)
 int.v2.ns20.1.5n.midd.bign.smallvar <- t.compare(nsims=10000, Ns=c(30,20,20,20), means=c(6,6.71,6.71,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
@@ -3225,44 +3985,78 @@ int.v2.ns50.1.5n.midd.bign.smallvar <- t.compare(nsims=10000, Ns=c(75,50,50,50),
 set.seed(2184)
 int.v2.ns100.1.5n.midd.bign.smallvar <- t.compare(nsims=10000, Ns=c(150,100,100,100), means=c(6,6.71,6.71,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
 
+# Big d
+set.seed(2184)
+int.v2.ns20.1.5n.bigd.bign.smallvar <- t.compare(nsims=10000, Ns=c(30,20,20,20), means=c(6,7.13,7.13,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns50.1.5n.bigd.bign.smallvar <- t.compare(nsims=10000, Ns=c(75,50,50,50), means=c(6,7.13,7.13,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns100.1.5n.bigd.bign.smallvar <- t.compare(nsims=10000, Ns=c(150,100,100,100), means=c(6,7.13,7.13,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
+
 ##### 1.Double N, Big N, double variances, small variance false positives and power #####
 
 ## array to store proportion of rejected null hypotheses
-int.reject.null.v2.1.5n.bign.smallvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.reject.null.v2.1.5n.bign.smallvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.reject.null.v2.1.5n.bign.smallvar[1,1,1] <- int.v2.ns20.1.5n.nullT.bign.smallvar$classic.reject
 int.reject.null.v2.1.5n.bign.smallvar[1,1,2] <- int.v2.ns20.1.5n.nullT.bign.smallvar$welch.reject
-int.reject.null.v2.1.5n.bign.smallvar[1,2,1] <- int.v2.ns20.1.5n.midd.bign.smallvar$classic.reject
-int.reject.null.v2.1.5n.bign.smallvar[1,2,2] <- int.v2.ns20.1.5n.midd.bign.smallvar$welch.reject
+int.reject.null.v2.1.5n.bign.smallvar[1,2,1] <- int.v2.ns20.1.5n.smalld.bign.smallvar$classic.reject
+int.reject.null.v2.1.5n.bign.smallvar[1,2,2] <- int.v2.ns20.1.5n.smalld.bign.smallvar$welch.reject
+int.reject.null.v2.1.5n.bign.smallvar[1,3,1] <- int.v2.ns20.1.5n.midd.bign.smallvar$classic.reject
+int.reject.null.v2.1.5n.bign.smallvar[1,3,2] <- int.v2.ns20.1.5n.midd.bign.smallvar$welch.reject
+int.reject.null.v2.1.5n.bign.smallvar[1,4,1] <- int.v2.ns20.1.5n.bigd.bign.smallvar$classic.reject
+int.reject.null.v2.1.5n.bign.smallvar[1,4,2] <- int.v2.ns20.1.5n.bigd.bign.smallvar$welch.reject
 int.reject.null.v2.1.5n.bign.smallvar[2,1,1] <- int.v2.ns50.1.5n.nullT.bign.smallvar$classic.reject
 int.reject.null.v2.1.5n.bign.smallvar[2,1,2] <- int.v2.ns50.1.5n.nullT.bign.smallvar$welch.reject
-int.reject.null.v2.1.5n.bign.smallvar[2,2,1] <- int.v2.ns50.1.5n.midd.bign.smallvar$classic.reject
-int.reject.null.v2.1.5n.bign.smallvar[2,2,2] <- int.v2.ns50.1.5n.midd.bign.smallvar$welch.reject
+int.reject.null.v2.1.5n.bign.smallvar[2,2,1] <- int.v2.ns50.1.5n.smalld.bign.smallvar$classic.reject
+int.reject.null.v2.1.5n.bign.smallvar[2,2,2] <- int.v2.ns50.1.5n.smalld.bign.smallvar$welch.reject
+int.reject.null.v2.1.5n.bign.smallvar[2,3,1] <- int.v2.ns50.1.5n.midd.bign.smallvar$classic.reject
+int.reject.null.v2.1.5n.bign.smallvar[2,3,2] <- int.v2.ns50.1.5n.midd.bign.smallvar$welch.reject
+int.reject.null.v2.1.5n.bign.smallvar[2,4,1] <- int.v2.ns50.1.5n.bigd.bign.smallvar$classic.reject
+int.reject.null.v2.1.5n.bign.smallvar[2,4,2] <- int.v2.ns50.1.5n.bigd.bign.smallvar$welch.reject
 int.reject.null.v2.1.5n.bign.smallvar[3,1,1] <- int.v2.ns100.1.5n.nullT.bign.smallvar$classic.reject
 int.reject.null.v2.1.5n.bign.smallvar[3,1,2] <- int.v2.ns100.1.5n.nullT.bign.smallvar$welch.reject
-int.reject.null.v2.1.5n.bign.smallvar[3,2,1] <- int.v2.ns100.1.5n.midd.bign.smallvar$classic.reject
-int.reject.null.v2.1.5n.bign.smallvar[3,2,2] <- int.v2.ns100.1.5n.midd.bign.smallvar$welch.reject
+int.reject.null.v2.1.5n.bign.smallvar[3,2,1] <- int.v2.ns100.1.5n.smalld.bign.smallvar$classic.reject
+int.reject.null.v2.1.5n.bign.smallvar[3,2,2] <- int.v2.ns100.1.5n.smalld.bign.smallvar$welch.reject
+int.reject.null.v2.1.5n.bign.smallvar[3,3,1] <- int.v2.ns100.1.5n.midd.bign.smallvar$classic.reject
+int.reject.null.v2.1.5n.bign.smallvar[3,3,2] <- int.v2.ns100.1.5n.midd.bign.smallvar$welch.reject
+int.reject.null.v2.1.5n.bign.smallvar[3,4,1] <- int.v2.ns100.1.5n.bigd.bign.smallvar$classic.reject
+int.reject.null.v2.1.5n.bign.smallvar[3,4,2] <- int.v2.ns100.1.5n.bigd.bign.smallvar$welch.reject
 
 
 ##### 1.Double N, Big N, double variances, small variance coverage rate #####
 
 ## store observed coverage rates
-int.obs.coverage.v2.1.5n.bign.smallvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.obs.coverage.v2.1.5n.bign.smallvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.obs.coverage.v2.1.5n.bign.smallvar[1,1,1] <- int.v2.ns20.1.5n.nullT.bign.smallvar$classic.coverage
 int.obs.coverage.v2.1.5n.bign.smallvar[1,1,2] <- int.v2.ns20.1.5n.nullT.bign.smallvar$welch.coverage
-int.obs.coverage.v2.1.5n.bign.smallvar[1,2,1] <- int.v2.ns20.1.5n.midd.bign.smallvar$classic.coverage
-int.obs.coverage.v2.1.5n.bign.smallvar[1,2,2] <- int.v2.ns20.1.5n.midd.bign.smallvar$welch.coverage
+int.obs.coverage.v2.1.5n.bign.smallvar[1,2,1] <- int.v2.ns20.1.5n.smalld.bign.smallvar$classic.coverage
+int.obs.coverage.v2.1.5n.bign.smallvar[1,2,2] <- int.v2.ns20.1.5n.smalld.bign.smallvar$welch.coverage
+int.obs.coverage.v2.1.5n.bign.smallvar[1,3,1] <- int.v2.ns20.1.5n.midd.bign.smallvar$classic.coverage
+int.obs.coverage.v2.1.5n.bign.smallvar[1,3,2] <- int.v2.ns20.1.5n.midd.bign.smallvar$welch.coverage
+int.obs.coverage.v2.1.5n.bign.smallvar[1,4,1] <- int.v2.ns20.1.5n.bigd.bign.smallvar$classic.coverage
+int.obs.coverage.v2.1.5n.bign.smallvar[1,4,2] <- int.v2.ns20.1.5n.bigd.bign.smallvar$welch.coverage
 int.obs.coverage.v2.1.5n.bign.smallvar[2,1,1] <- int.v2.ns50.1.5n.nullT.bign.smallvar$classic.coverage
 int.obs.coverage.v2.1.5n.bign.smallvar[2,1,2] <- int.v2.ns50.1.5n.nullT.bign.smallvar$welch.coverage
-int.obs.coverage.v2.1.5n.bign.smallvar[2,2,1] <- int.v2.ns50.1.5n.midd.bign.smallvar$classic.coverage
-int.obs.coverage.v2.1.5n.bign.smallvar[2,2,2] <- int.v2.ns50.1.5n.midd.bign.smallvar$welch.coverage
+int.obs.coverage.v2.1.5n.bign.smallvar[2,2,1] <- int.v2.ns50.1.5n.smalld.bign.smallvar$classic.coverage
+int.obs.coverage.v2.1.5n.bign.smallvar[2,2,2] <- int.v2.ns50.1.5n.smalld.bign.smallvar$welch.coverage
+int.obs.coverage.v2.1.5n.bign.smallvar[2,3,1] <- int.v2.ns50.1.5n.midd.bign.smallvar$classic.coverage
+int.obs.coverage.v2.1.5n.bign.smallvar[2,3,2] <- int.v2.ns50.1.5n.midd.bign.smallvar$welch.coverage
+int.obs.coverage.v2.1.5n.bign.smallvar[2,4,1] <- int.v2.ns50.1.5n.bigd.bign.smallvar$classic.coverage
+int.obs.coverage.v2.1.5n.bign.smallvar[2,4,2] <- int.v2.ns50.1.5n.bigd.bign.smallvar$welch.coverage
 int.obs.coverage.v2.1.5n.bign.smallvar[3,1,1] <- int.v2.ns100.1.5n.nullT.bign.smallvar$classic.coverage
 int.obs.coverage.v2.1.5n.bign.smallvar[3,1,2] <- int.v2.ns100.1.5n.nullT.bign.smallvar$welch.coverage
-int.obs.coverage.v2.1.5n.bign.smallvar[3,2,1] <- int.v2.ns100.1.5n.midd.bign.smallvar$classic.coverage
-int.obs.coverage.v2.1.5n.bign.smallvar[3,2,2] <- int.v2.ns100.1.5n.midd.bign.smallvar$welch.coverage
+int.obs.coverage.v2.1.5n.bign.smallvar[3,2,1] <- int.v2.ns100.1.5n.smalld.bign.smallvar$classic.coverage
+int.obs.coverage.v2.1.5n.bign.smallvar[3,2,2] <- int.v2.ns100.1.5n.smalld.bign.smallvar$welch.coverage
+int.obs.coverage.v2.1.5n.bign.smallvar[3,3,1] <- int.v2.ns100.1.5n.midd.bign.smallvar$classic.coverage
+int.obs.coverage.v2.1.5n.bign.smallvar[3,3,2] <- int.v2.ns100.1.5n.midd.bign.smallvar$welch.coverage
+int.obs.coverage.v2.1.5n.bign.smallvar[3,4,1] <- int.v2.ns100.1.5n.bigd.bign.smallvar$classic.coverage
+int.obs.coverage.v2.1.5n.bign.smallvar[3,4,2] <- int.v2.ns100.1.5n.bigd.bign.smallvar$welch.coverage
 
 
 ##### Save tables from 1.Double N, Big N, double variances, small variance simulations #####
@@ -3288,6 +4082,16 @@ int.v2.ns50.2n.nullT.bign.smallvar <- t.compare(nsims=10000, Ns=c(100,50,50,50),
 set.seed(2184)
 int.v2.ns100.2n.nullT.bign.smallvar <- t.compare(nsims=10000, Ns=c(200,100,100,100), means=c(6,6,6,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
 
+# Small d
+set.seed(2184)
+int.v2.ns20.2n.smalld.bign.smallvar <- t.compare(nsims=10000, Ns=c(40,20,20,20), means=c(6,6.28,6.28,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns50.2n.smalld.bign.smallvar <- t.compare(nsims=10000, Ns=c(100,50,50,50), means=c(6,6.28,6.28,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns100.2n.smalld.bign.smallvar <- t.compare(nsims=10000, Ns=c(200,100,100,100), means=c(6,6.28,6.28,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
+
 # Mid d
 set.seed(2184)
 int.v2.ns20.2n.midd.bign.smallvar <- t.compare(nsims=10000, Ns=c(40,20,20,20), means=c(6,6.71,6.71,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
@@ -3298,49 +4102,85 @@ int.v2.ns50.2n.midd.bign.smallvar <- t.compare(nsims=10000, Ns=c(100,50,50,50), 
 set.seed(2184)
 int.v2.ns100.2n.midd.bign.smallvar <- t.compare(nsims=10000, Ns=c(200,100,100,100), means=c(6,6.71,6.71,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
 
+# Big d
+set.seed(2184)
+int.v2.ns20.2n.bigd.bign.smallvar <- t.compare(nsims=10000, Ns=c(40,20,20,20), means=c(6,7.13,7.13,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns50.2n.bigd.bign.smallvar <- t.compare(nsims=10000, Ns=c(100,50,50,50), means=c(6,7.13,7.13,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns100.2n.bigd.bign.smallvar <- t.compare(nsims=10000, Ns=c(200,100,100,100), means=c(6,7.13,7.13,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
+
+
 ##### Double N, Big N, double variance, small variance false positives and power #####
 
 ## array to store proportion of rejected null hypotheses
-int.reject.null.v2.2n.bign.smallvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.reject.null.v2.2n.bign.smallvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.reject.null.v2.2n.bign.smallvar[1,1,1] <- int.v2.ns20.2n.nullT.bign.smallvar$classic.reject
 int.reject.null.v2.2n.bign.smallvar[1,1,2] <- int.v2.ns20.2n.nullT.bign.smallvar$welch.reject
-int.reject.null.v2.2n.bign.smallvar[1,2,1] <- int.v2.ns20.2n.midd.bign.smallvar$classic.reject
-int.reject.null.v2.2n.bign.smallvar[1,2,2] <- int.v2.ns20.2n.midd.bign.smallvar$welch.reject
+int.reject.null.v2.2n.bign.smallvar[1,2,1] <- int.v2.ns20.2n.smalld.bign.smallvar$classic.reject
+int.reject.null.v2.2n.bign.smallvar[1,2,2] <- int.v2.ns20.2n.smalld.bign.smallvar$welch.reject
+int.reject.null.v2.2n.bign.smallvar[1,3,1] <- int.v2.ns20.2n.midd.bign.smallvar$classic.reject
+int.reject.null.v2.2n.bign.smallvar[1,3,2] <- int.v2.ns20.2n.midd.bign.smallvar$welch.reject
+int.reject.null.v2.2n.bign.smallvar[1,4,1] <- int.v2.ns20.2n.bigd.bign.smallvar$classic.reject
+int.reject.null.v2.2n.bign.smallvar[1,4,2] <- int.v2.ns20.2n.bigd.bign.smallvar$welch.reject
 int.reject.null.v2.2n.bign.smallvar[2,1,1] <- int.v2.ns50.2n.nullT.bign.smallvar$classic.reject
 int.reject.null.v2.2n.bign.smallvar[2,1,2] <- int.v2.ns50.2n.nullT.bign.smallvar$welch.reject
-int.reject.null.v2.2n.bign.smallvar[2,2,1] <- int.v2.ns50.2n.midd.bign.smallvar$classic.reject
-int.reject.null.v2.2n.bign.smallvar[2,2,2] <- int.v2.ns50.2n.midd.bign.smallvar$welch.reject
+int.reject.null.v2.2n.bign.smallvar[2,2,1] <- int.v2.ns50.2n.smalld.bign.smallvar$classic.reject
+int.reject.null.v2.2n.bign.smallvar[2,2,2] <- int.v2.ns50.2n.smalld.bign.smallvar$welch.reject
+int.reject.null.v2.2n.bign.smallvar[2,3,1] <- int.v2.ns50.2n.midd.bign.smallvar$classic.reject
+int.reject.null.v2.2n.bign.smallvar[2,3,2] <- int.v2.ns50.2n.midd.bign.smallvar$welch.reject
+int.reject.null.v2.2n.bign.smallvar[2,4,1] <- int.v2.ns50.2n.bigd.bign.smallvar$classic.reject
+int.reject.null.v2.2n.bign.smallvar[2,4,2] <- int.v2.ns50.2n.bigd.bign.smallvar$welch.reject
 int.reject.null.v2.2n.bign.smallvar[3,1,1] <- int.v2.ns100.2n.nullT.bign.smallvar$classic.reject
 int.reject.null.v2.2n.bign.smallvar[3,1,2] <- int.v2.ns100.2n.nullT.bign.smallvar$welch.reject
-int.reject.null.v2.2n.bign.smallvar[3,2,1] <- int.v2.ns100.2n.midd.bign.smallvar$classic.reject
-int.reject.null.v2.2n.bign.smallvar[3,2,2] <- int.v2.ns100.2n.midd.bign.smallvar$welch.reject
+int.reject.null.v2.2n.bign.smallvar[3,2,1] <- int.v2.ns100.2n.smalld.bign.smallvar$classic.reject
+int.reject.null.v2.2n.bign.smallvar[3,2,2] <- int.v2.ns100.2n.smalld.bign.smallvar$welch.reject
+int.reject.null.v2.2n.bign.smallvar[3,3,1] <- int.v2.ns100.2n.midd.bign.smallvar$classic.reject
+int.reject.null.v2.2n.bign.smallvar[3,3,2] <- int.v2.ns100.2n.midd.bign.smallvar$welch.reject
+int.reject.null.v2.2n.bign.smallvar[3,4,1] <- int.v2.ns100.2n.bigd.bign.smallvar$classic.reject
+int.reject.null.v2.2n.bign.smallvar[3,4,2] <- int.v2.ns100.2n.bigd.bign.smallvar$welch.reject
 
 
 ##### Double N, Big N, double variance, small variance coverage rate #####
 
 ## store observed coverage rates
-int.obs.coverage.v2.2n.bign.smallvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.obs.coverage.v2.2n.bign.smallvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.obs.coverage.v2.2n.bign.smallvar[1,1,1] <- int.v2.ns20.2n.nullT.bign.smallvar$classic.coverage
 int.obs.coverage.v2.2n.bign.smallvar[1,1,2] <- int.v2.ns20.2n.nullT.bign.smallvar$welch.coverage
-int.obs.coverage.v2.2n.bign.smallvar[1,2,1] <- int.v2.ns20.2n.midd.bign.smallvar$classic.coverage
-int.obs.coverage.v2.2n.bign.smallvar[1,2,2] <- int.v2.ns20.2n.midd.bign.smallvar$welch.coverage
+int.obs.coverage.v2.2n.bign.smallvar[1,2,1] <- int.v2.ns20.2n.smalld.bign.smallvar$classic.coverage
+int.obs.coverage.v2.2n.bign.smallvar[1,2,2] <- int.v2.ns20.2n.smalld.bign.smallvar$welch.coverage
+int.obs.coverage.v2.2n.bign.smallvar[1,3,1] <- int.v2.ns20.2n.midd.bign.smallvar$classic.coverage
+int.obs.coverage.v2.2n.bign.smallvar[1,3,2] <- int.v2.ns20.2n.midd.bign.smallvar$welch.coverage
+int.obs.coverage.v2.2n.bign.smallvar[1,4,1] <- int.v2.ns20.2n.bigd.bign.smallvar$classic.coverage
+int.obs.coverage.v2.2n.bign.smallvar[1,4,2] <- int.v2.ns20.2n.bigd.bign.smallvar$welch.coverage
 int.obs.coverage.v2.2n.bign.smallvar[2,1,1] <- int.v2.ns50.2n.nullT.bign.smallvar$classic.coverage
 int.obs.coverage.v2.2n.bign.smallvar[2,1,2] <- int.v2.ns50.2n.nullT.bign.smallvar$welch.coverage
-int.obs.coverage.v2.2n.bign.smallvar[2,2,1] <- int.v2.ns50.2n.midd.bign.smallvar$classic.coverage
-int.obs.coverage.v2.2n.bign.smallvar[2,2,2] <- int.v2.ns50.2n.midd.bign.smallvar$welch.coverage
+int.obs.coverage.v2.2n.bign.smallvar[2,2,1] <- int.v2.ns50.2n.smalld.bign.smallvar$classic.coverage
+int.obs.coverage.v2.2n.bign.smallvar[2,2,2] <- int.v2.ns50.2n.smalld.bign.smallvar$welch.coverage
+int.obs.coverage.v2.2n.bign.smallvar[2,3,1] <- int.v2.ns50.2n.midd.bign.smallvar$classic.coverage
+int.obs.coverage.v2.2n.bign.smallvar[2,3,2] <- int.v2.ns50.2n.midd.bign.smallvar$welch.coverage
+int.obs.coverage.v2.2n.bign.smallvar[2,4,1] <- int.v2.ns50.2n.bigd.bign.smallvar$classic.coverage
+int.obs.coverage.v2.2n.bign.smallvar[2,4,2] <- int.v2.ns50.2n.bigd.bign.smallvar$welch.coverage
 int.obs.coverage.v2.2n.bign.smallvar[3,1,1] <- int.v2.ns100.2n.nullT.bign.smallvar$classic.coverage
 int.obs.coverage.v2.2n.bign.smallvar[3,1,2] <- int.v2.ns100.2n.nullT.bign.smallvar$welch.coverage
-int.obs.coverage.v2.2n.bign.smallvar[3,2,1] <- int.v2.ns100.2n.midd.bign.smallvar$classic.coverage
-int.obs.coverage.v2.2n.bign.smallvar[3,2,2] <- int.v2.ns100.2n.midd.bign.smallvar$welch.coverage
+int.obs.coverage.v2.2n.bign.smallvar[3,2,1] <- int.v2.ns100.2n.smalld.bign.smallvar$classic.coverage
+int.obs.coverage.v2.2n.bign.smallvar[3,2,2] <- int.v2.ns100.2n.smalld.bign.smallvar$welch.coverage
+int.obs.coverage.v2.2n.bign.smallvar[3,3,1] <- int.v2.ns100.2n.midd.bign.smallvar$classic.coverage
+int.obs.coverage.v2.2n.bign.smallvar[3,3,2] <- int.v2.ns100.2n.midd.bign.smallvar$welch.coverage
+int.obs.coverage.v2.2n.bign.smallvar[3,4,1] <- int.v2.ns100.2n.bigd.bign.smallvar$classic.coverage
+int.obs.coverage.v2.2n.bign.smallvar[3,4,2] <- int.v2.ns100.2n.bigd.bign.smallvar$welch.coverage
 
 
 ##### Save tables from Double N, Big N, double variance, small variance simulations #####
 save(int.reject.null.v2.2n.bign.smallvar, int.obs.coverage.v2.2n.bign.smallvar, file='/users/joshwondra/R-projects/Welch rule/interaction2x2-v2smallvarbign2nSeed2184Tables.Rdata')
 load('/users/joshwondra/R-projects/Welch rule/interaction2x2-v2smallvarbign2nSeed2184Tables.Rdata')
+
 
 
 
@@ -3362,6 +4202,16 @@ int.v2.ns50.1.5n.nullT.smalln.smallvar <- t.compare(nsims=10000, Ns=c(50,75,75,7
 set.seed(2184)
 int.v2.ns100.1.5n.nullT.smalln.smallvar <- t.compare(nsims=10000, Ns=c(100,150,150,150), means=c(6,6,6,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
 
+# Small d
+set.seed(2184)
+int.v2.ns20.1.5n.smalld.smalln.smallvar <- t.compare(nsims=10000, Ns=c(20,30,30,30), means=c(6,6.28,6.28,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns50.1.5n.smalld.smalln.smallvar <- t.compare(nsims=10000, Ns=c(50,75,75,75), means=c(6,6.28,6.28,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns100.1.5n.smalld.smalln.smallvar <- t.compare(nsims=10000, Ns=c(100,150,150,150), means=c(6,6.28,6.28,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
+
 # Mid d
 set.seed(2184)
 int.v2.ns20.1.5n.midd.smalln.smallvar <- t.compare(nsims=10000, Ns=c(20,30,30,30), means=c(6,6.71,6.71,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
@@ -3372,44 +4222,79 @@ int.v2.ns50.1.5n.midd.smalln.smallvar <- t.compare(nsims=10000, Ns=c(50,75,75,75
 set.seed(2184)
 int.v2.ns100.1.5n.midd.smalln.smallvar <- t.compare(nsims=10000, Ns=c(100,150,150,150), means=c(6,6.71,6.71,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
 
+# Big d
+set.seed(2184)
+int.v2.ns20.1.5n.bigd.smalln.smallvar <- t.compare(nsims=10000, Ns=c(20,30,30,30), means=c(6,7.13,7.13,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns50.1.5n.bigd.smalln.smallvar <- t.compare(nsims=10000, Ns=c(50,75,75,75), means=c(6,7.13,7.13,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns100.1.5n.bigd.smalln.smallvar <- t.compare(nsims=10000, Ns=c(100,150,150,150), means=c(6,7.13,7.13,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
+
+
 ##### 1.Double N, Small N, double variances, small variance false positives and power #####
 
 ## array to store proportion of rejected null hypotheses
-int.reject.null.v2.1.5n.smalln.smallvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.reject.null.v2.1.5n.smalln.smallvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.reject.null.v2.1.5n.smalln.smallvar[1,1,1] <- int.v2.ns20.1.5n.nullT.smalln.smallvar$classic.reject
 int.reject.null.v2.1.5n.smalln.smallvar[1,1,2] <- int.v2.ns20.1.5n.nullT.smalln.smallvar$welch.reject
-int.reject.null.v2.1.5n.smalln.smallvar[1,2,1] <- int.v2.ns20.1.5n.midd.smalln.smallvar$classic.reject
-int.reject.null.v2.1.5n.smalln.smallvar[1,2,2] <- int.v2.ns20.1.5n.midd.smalln.smallvar$welch.reject
+int.reject.null.v2.1.5n.smalln.smallvar[1,2,1] <- int.v2.ns20.1.5n.smalld.smalln.smallvar$classic.reject
+int.reject.null.v2.1.5n.smalln.smallvar[1,2,2] <- int.v2.ns20.1.5n.smalld.smalln.smallvar$welch.reject
+int.reject.null.v2.1.5n.smalln.smallvar[1,3,1] <- int.v2.ns20.1.5n.midd.smalln.smallvar$classic.reject
+int.reject.null.v2.1.5n.smalln.smallvar[1,3,2] <- int.v2.ns20.1.5n.midd.smalln.smallvar$welch.reject
+int.reject.null.v2.1.5n.smalln.smallvar[1,4,1] <- int.v2.ns20.1.5n.bigd.smalln.smallvar$classic.reject
+int.reject.null.v2.1.5n.smalln.smallvar[1,4,2] <- int.v2.ns20.1.5n.bigd.smalln.smallvar$welch.reject
 int.reject.null.v2.1.5n.smalln.smallvar[2,1,1] <- int.v2.ns50.1.5n.nullT.smalln.smallvar$classic.reject
 int.reject.null.v2.1.5n.smalln.smallvar[2,1,2] <- int.v2.ns50.1.5n.nullT.smalln.smallvar$welch.reject
-int.reject.null.v2.1.5n.smalln.smallvar[2,2,1] <- int.v2.ns50.1.5n.midd.smalln.smallvar$classic.reject
-int.reject.null.v2.1.5n.smalln.smallvar[2,2,2] <- int.v2.ns50.1.5n.midd.smalln.smallvar$welch.reject
+int.reject.null.v2.1.5n.smalln.smallvar[2,2,1] <- int.v2.ns50.1.5n.smalld.smalln.smallvar$classic.reject
+int.reject.null.v2.1.5n.smalln.smallvar[2,2,2] <- int.v2.ns50.1.5n.smalld.smalln.smallvar$welch.reject
+int.reject.null.v2.1.5n.smalln.smallvar[2,3,1] <- int.v2.ns50.1.5n.midd.smalln.smallvar$classic.reject
+int.reject.null.v2.1.5n.smalln.smallvar[2,3,2] <- int.v2.ns50.1.5n.midd.smalln.smallvar$welch.reject
+int.reject.null.v2.1.5n.smalln.smallvar[2,4,1] <- int.v2.ns50.1.5n.bigd.smalln.smallvar$classic.reject
+int.reject.null.v2.1.5n.smalln.smallvar[2,4,2] <- int.v2.ns50.1.5n.bigd.smalln.smallvar$welch.reject
 int.reject.null.v2.1.5n.smalln.smallvar[3,1,1] <- int.v2.ns100.1.5n.nullT.smalln.smallvar$classic.reject
 int.reject.null.v2.1.5n.smalln.smallvar[3,1,2] <- int.v2.ns100.1.5n.nullT.smalln.smallvar$welch.reject
-int.reject.null.v2.1.5n.smalln.smallvar[3,2,1] <- int.v2.ns100.1.5n.midd.smalln.smallvar$classic.reject
-int.reject.null.v2.1.5n.smalln.smallvar[3,2,2] <- int.v2.ns100.1.5n.midd.smalln.smallvar$welch.reject
+int.reject.null.v2.1.5n.smalln.smallvar[3,2,1] <- int.v2.ns100.1.5n.smalld.smalln.smallvar$classic.reject
+int.reject.null.v2.1.5n.smalln.smallvar[3,2,2] <- int.v2.ns100.1.5n.smalld.smalln.smallvar$welch.reject
+int.reject.null.v2.1.5n.smalln.smallvar[3,3,1] <- int.v2.ns100.1.5n.midd.smalln.smallvar$classic.reject
+int.reject.null.v2.1.5n.smalln.smallvar[3,3,2] <- int.v2.ns100.1.5n.midd.smalln.smallvar$welch.reject
+int.reject.null.v2.1.5n.smalln.smallvar[3,4,1] <- int.v2.ns100.1.5n.bigd.smalln.smallvar$classic.reject
+int.reject.null.v2.1.5n.smalln.smallvar[3,4,2] <- int.v2.ns100.1.5n.bigd.smalln.smallvar$welch.reject
 
 
 ##### 1.Double N, Small N, double variances, small variance coverage rate #####
 
 ## store observed coverage rates
-int.obs.coverage.v2.1.5n.smalln.smallvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.obs.coverage.v2.1.5n.smalln.smallvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.obs.coverage.v2.1.5n.smalln.smallvar[1,1,1] <- int.v2.ns20.1.5n.nullT.smalln.smallvar$classic.coverage
 int.obs.coverage.v2.1.5n.smalln.smallvar[1,1,2] <- int.v2.ns20.1.5n.nullT.smalln.smallvar$welch.coverage
-int.obs.coverage.v2.1.5n.smalln.smallvar[1,2,1] <- int.v2.ns20.1.5n.midd.smalln.smallvar$classic.coverage
-int.obs.coverage.v2.1.5n.smalln.smallvar[1,2,2] <- int.v2.ns20.1.5n.midd.smalln.smallvar$welch.coverage
+int.obs.coverage.v2.1.5n.smalln.smallvar[1,2,1] <- int.v2.ns20.1.5n.smalld.smalln.smallvar$classic.coverage
+int.obs.coverage.v2.1.5n.smalln.smallvar[1,2,2] <- int.v2.ns20.1.5n.smalld.smalln.smallvar$welch.coverage
+int.obs.coverage.v2.1.5n.smalln.smallvar[1,3,1] <- int.v2.ns20.1.5n.midd.smalln.smallvar$classic.coverage
+int.obs.coverage.v2.1.5n.smalln.smallvar[1,3,2] <- int.v2.ns20.1.5n.midd.smalln.smallvar$welch.coverage
+int.obs.coverage.v2.1.5n.smalln.smallvar[1,4,1] <- int.v2.ns20.1.5n.bigd.smalln.smallvar$classic.coverage
+int.obs.coverage.v2.1.5n.smalln.smallvar[1,4,2] <- int.v2.ns20.1.5n.bigd.smalln.smallvar$welch.coverage
 int.obs.coverage.v2.1.5n.smalln.smallvar[2,1,1] <- int.v2.ns50.1.5n.nullT.smalln.smallvar$classic.coverage
 int.obs.coverage.v2.1.5n.smalln.smallvar[2,1,2] <- int.v2.ns50.1.5n.nullT.smalln.smallvar$welch.coverage
-int.obs.coverage.v2.1.5n.smalln.smallvar[2,2,1] <- int.v2.ns50.1.5n.midd.smalln.smallvar$classic.coverage
-int.obs.coverage.v2.1.5n.smalln.smallvar[2,2,2] <- int.v2.ns50.1.5n.midd.smalln.smallvar$welch.coverage
+int.obs.coverage.v2.1.5n.smalln.smallvar[2,2,1] <- int.v2.ns50.1.5n.smalld.smalln.smallvar$classic.coverage
+int.obs.coverage.v2.1.5n.smalln.smallvar[2,2,2] <- int.v2.ns50.1.5n.smalld.smalln.smallvar$welch.coverage
+int.obs.coverage.v2.1.5n.smalln.smallvar[2,3,1] <- int.v2.ns50.1.5n.midd.smalln.smallvar$classic.coverage
+int.obs.coverage.v2.1.5n.smalln.smallvar[2,3,2] <- int.v2.ns50.1.5n.midd.smalln.smallvar$welch.coverage
+int.obs.coverage.v2.1.5n.smalln.smallvar[2,4,1] <- int.v2.ns50.1.5n.bigd.smalln.smallvar$classic.coverage
+int.obs.coverage.v2.1.5n.smalln.smallvar[2,4,2] <- int.v2.ns50.1.5n.bigd.smalln.smallvar$welch.coverage
 int.obs.coverage.v2.1.5n.smalln.smallvar[3,1,1] <- int.v2.ns100.1.5n.nullT.smalln.smallvar$classic.coverage
 int.obs.coverage.v2.1.5n.smalln.smallvar[3,1,2] <- int.v2.ns100.1.5n.nullT.smalln.smallvar$welch.coverage
-int.obs.coverage.v2.1.5n.smalln.smallvar[3,2,1] <- int.v2.ns100.1.5n.midd.smalln.smallvar$classic.coverage
-int.obs.coverage.v2.1.5n.smalln.smallvar[3,2,2] <- int.v2.ns100.1.5n.midd.smalln.smallvar$welch.coverage
+int.obs.coverage.v2.1.5n.smalln.smallvar[3,2,1] <- int.v2.ns100.1.5n.smalld.smalln.smallvar$classic.coverage
+int.obs.coverage.v2.1.5n.smalln.smallvar[3,2,2] <- int.v2.ns100.1.5n.smalld.smalln.smallvar$welch.coverage
+int.obs.coverage.v2.1.5n.smalln.smallvar[3,3,1] <- int.v2.ns100.1.5n.midd.smalln.smallvar$classic.coverage
+int.obs.coverage.v2.1.5n.smalln.smallvar[3,3,2] <- int.v2.ns100.1.5n.midd.smalln.smallvar$welch.coverage
+int.obs.coverage.v2.1.5n.smalln.smallvar[3,4,1] <- int.v2.ns100.1.5n.bigd.smalln.smallvar$classic.coverage
+int.obs.coverage.v2.1.5n.smalln.smallvar[3,4,2] <- int.v2.ns100.1.5n.bigd.smalln.smallvar$welch.coverage
 
 
 ##### Save tables from 1.Double N, Small N, double variances, small variance simulations #####
@@ -3435,6 +4320,16 @@ int.v2.ns50.2n.nullT.smalln.smallvar <- t.compare(nsims=10000, Ns=c(50,100,100,1
 set.seed(2184)
 int.v2.ns100.2n.nullT.smalln.smallvar <- t.compare(nsims=10000, Ns=c(100,200,200,200), means=c(6,6,6,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
 
+# Small d
+set.seed(2184)
+int.v2.ns20.2n.smalld.smalln.smallvar <- t.compare(nsims=10000, Ns=c(20,40,40,40), means=c(6,6.28,6.28,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns50.2n.smalld.smalln.smallvar <- t.compare(nsims=10000, Ns=c(50,100,100,100), means=c(6,6.28,6.28,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns100.2n.smalld.smalln.smallvar <- t.compare(nsims=10000, Ns=c(100,200,200,200), means=c(6,6.28,6.28,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
+
 # Mid d
 set.seed(2184)
 int.v2.ns20.2n.midd.smalln.smallvar <- t.compare(nsims=10000, Ns=c(20,40,40,40), means=c(6,6.71,6.71,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
@@ -3445,44 +4340,79 @@ int.v2.ns50.2n.midd.smalln.smallvar <- t.compare(nsims=10000, Ns=c(50,100,100,10
 set.seed(2184)
 int.v2.ns100.2n.midd.smalln.smallvar <- t.compare(nsims=10000, Ns=c(100,200,200,200), means=c(6,6.71,6.71,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
 
+# Big d
+set.seed(2184)
+int.v2.ns20.2n.bigd.smalln.smallvar <- t.compare(nsims=10000, Ns=c(20,40,40,40), means=c(6,7.13,7.13,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns50.2n.bigd.smalln.smallvar <- t.compare(nsims=10000, Ns=c(50,100,100,100), means=c(6,7.13,7.13,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v2.ns100.2n.bigd.smalln.smallvar <- t.compare(nsims=10000, Ns=c(100,200,200,200), means=c(6,7.13,7.13,6), vars=c(2,4,4,4), contrast=c(-1,1,1,-1))
+
 ##### Double N, Small N, double variances, small variance false positives and power #####
 
 ## array to store proportion of rejected null hypotheses
-int.reject.null.v2.2n.smalln.smallvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.reject.null.v2.2n.smalln.smallvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.reject.null.v2.2n.smalln.smallvar[1,1,1] <- int.v2.ns20.2n.nullT.smalln.smallvar$classic.reject
 int.reject.null.v2.2n.smalln.smallvar[1,1,2] <- int.v2.ns20.2n.nullT.smalln.smallvar$welch.reject
-int.reject.null.v2.2n.smalln.smallvar[1,2,1] <- int.v2.ns20.2n.midd.smalln.smallvar$classic.reject
-int.reject.null.v2.2n.smalln.smallvar[1,2,2] <- int.v2.ns20.2n.midd.smalln.smallvar$welch.reject
+int.reject.null.v2.2n.smalln.smallvar[1,2,1] <- int.v2.ns20.2n.smalld.smalln.smallvar$classic.reject
+int.reject.null.v2.2n.smalln.smallvar[1,2,2] <- int.v2.ns20.2n.smalld.smalln.smallvar$welch.reject
+int.reject.null.v2.2n.smalln.smallvar[1,3,1] <- int.v2.ns20.2n.midd.smalln.smallvar$classic.reject
+int.reject.null.v2.2n.smalln.smallvar[1,3,2] <- int.v2.ns20.2n.midd.smalln.smallvar$welch.reject
+int.reject.null.v2.2n.smalln.smallvar[1,4,1] <- int.v2.ns20.2n.bigd.smalln.smallvar$classic.reject
+int.reject.null.v2.2n.smalln.smallvar[1,4,2] <- int.v2.ns20.2n.bigd.smalln.smallvar$welch.reject
 int.reject.null.v2.2n.smalln.smallvar[2,1,1] <- int.v2.ns50.2n.nullT.smalln.smallvar$classic.reject
 int.reject.null.v2.2n.smalln.smallvar[2,1,2] <- int.v2.ns50.2n.nullT.smalln.smallvar$welch.reject
-int.reject.null.v2.2n.smalln.smallvar[2,2,1] <- int.v2.ns50.2n.midd.smalln.smallvar$classic.reject
-int.reject.null.v2.2n.smalln.smallvar[2,2,2] <- int.v2.ns50.2n.midd.smalln.smallvar$welch.reject
+int.reject.null.v2.2n.smalln.smallvar[2,2,1] <- int.v2.ns50.2n.smalld.smalln.smallvar$classic.reject
+int.reject.null.v2.2n.smalln.smallvar[2,2,2] <- int.v2.ns50.2n.smalld.smalln.smallvar$welch.reject
+int.reject.null.v2.2n.smalln.smallvar[2,3,1] <- int.v2.ns50.2n.midd.smalln.smallvar$classic.reject
+int.reject.null.v2.2n.smalln.smallvar[2,3,2] <- int.v2.ns50.2n.midd.smalln.smallvar$welch.reject
+int.reject.null.v2.2n.smalln.smallvar[2,4,1] <- int.v2.ns50.2n.bigd.smalln.smallvar$classic.reject
+int.reject.null.v2.2n.smalln.smallvar[2,4,2] <- int.v2.ns50.2n.bigd.smalln.smallvar$welch.reject
 int.reject.null.v2.2n.smalln.smallvar[3,1,1] <- int.v2.ns100.2n.nullT.smalln.smallvar$classic.reject
 int.reject.null.v2.2n.smalln.smallvar[3,1,2] <- int.v2.ns100.2n.nullT.smalln.smallvar$welch.reject
-int.reject.null.v2.2n.smalln.smallvar[3,2,1] <- int.v2.ns100.2n.midd.smalln.smallvar$classic.reject
-int.reject.null.v2.2n.smalln.smallvar[3,2,2] <- int.v2.ns100.2n.midd.smalln.smallvar$welch.reject
+int.reject.null.v2.2n.smalln.smallvar[3,2,1] <- int.v2.ns100.2n.smalld.smalln.smallvar$classic.reject
+int.reject.null.v2.2n.smalln.smallvar[3,2,2] <- int.v2.ns100.2n.smalld.smalln.smallvar$welch.reject
+int.reject.null.v2.2n.smalln.smallvar[3,3,1] <- int.v2.ns100.2n.midd.smalln.smallvar$classic.reject
+int.reject.null.v2.2n.smalln.smallvar[3,3,2] <- int.v2.ns100.2n.midd.smalln.smallvar$welch.reject
+int.reject.null.v2.2n.smalln.smallvar[3,4,1] <- int.v2.ns100.2n.bigd.smalln.smallvar$classic.reject
+int.reject.null.v2.2n.smalln.smallvar[3,4,2] <- int.v2.ns100.2n.bigd.smalln.smallvar$welch.reject
+
 
 
 ##### Double N, Small N, double variances, small variance coverage rate #####
 
 ## store observed coverage rates
-int.obs.coverage.v2.2n.smalln.smallvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.obs.coverage.v2.2n.smalln.smallvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.obs.coverage.v2.2n.smalln.smallvar[1,1,1] <- int.v2.ns20.2n.nullT.smalln.smallvar$classic.coverage
 int.obs.coverage.v2.2n.smalln.smallvar[1,1,2] <- int.v2.ns20.2n.nullT.smalln.smallvar$welch.coverage
-int.obs.coverage.v2.2n.smalln.smallvar[1,2,1] <- int.v2.ns20.2n.midd.smalln.smallvar$classic.coverage
-int.obs.coverage.v2.2n.smalln.smallvar[1,2,2] <- int.v2.ns20.2n.midd.smalln.smallvar$welch.coverage
+int.obs.coverage.v2.2n.smalln.smallvar[1,2,1] <- int.v2.ns20.2n.smalld.smalln.smallvar$classic.coverage
+int.obs.coverage.v2.2n.smalln.smallvar[1,2,2] <- int.v2.ns20.2n.smalld.smalln.smallvar$welch.coverage
+int.obs.coverage.v2.2n.smalln.smallvar[1,3,1] <- int.v2.ns20.2n.midd.smalln.smallvar$classic.coverage
+int.obs.coverage.v2.2n.smalln.smallvar[1,3,2] <- int.v2.ns20.2n.midd.smalln.smallvar$welch.coverage
+int.obs.coverage.v2.2n.smalln.smallvar[1,4,1] <- int.v2.ns20.2n.bigd.smalln.smallvar$classic.coverage
+int.obs.coverage.v2.2n.smalln.smallvar[1,4,2] <- int.v2.ns20.2n.bigd.smalln.smallvar$welch.coverage
 int.obs.coverage.v2.2n.smalln.smallvar[2,1,1] <- int.v2.ns50.2n.nullT.smalln.smallvar$classic.coverage
 int.obs.coverage.v2.2n.smalln.smallvar[2,1,2] <- int.v2.ns50.2n.nullT.smalln.smallvar$welch.coverage
-int.obs.coverage.v2.2n.smalln.smallvar[2,2,1] <- int.v2.ns50.2n.midd.smalln.smallvar$classic.coverage
-int.obs.coverage.v2.2n.smalln.smallvar[2,2,2] <- int.v2.ns50.2n.midd.smalln.smallvar$welch.coverage
+int.obs.coverage.v2.2n.smalln.smallvar[2,2,1] <- int.v2.ns50.2n.smalld.smalln.smallvar$classic.coverage
+int.obs.coverage.v2.2n.smalln.smallvar[2,2,2] <- int.v2.ns50.2n.smalld.smalln.smallvar$welch.coverage
+int.obs.coverage.v2.2n.smalln.smallvar[2,3,1] <- int.v2.ns50.2n.midd.smalln.smallvar$classic.coverage
+int.obs.coverage.v2.2n.smalln.smallvar[2,3,2] <- int.v2.ns50.2n.midd.smalln.smallvar$welch.coverage
+int.obs.coverage.v2.2n.smalln.smallvar[2,4,1] <- int.v2.ns50.2n.bigd.smalln.smallvar$classic.coverage
+int.obs.coverage.v2.2n.smalln.smallvar[2,4,2] <- int.v2.ns50.2n.bigd.smalln.smallvar$welch.coverage
 int.obs.coverage.v2.2n.smalln.smallvar[3,1,1] <- int.v2.ns100.2n.nullT.smalln.smallvar$classic.coverage
 int.obs.coverage.v2.2n.smalln.smallvar[3,1,2] <- int.v2.ns100.2n.nullT.smalln.smallvar$welch.coverage
-int.obs.coverage.v2.2n.smalln.smallvar[3,2,1] <- int.v2.ns100.2n.midd.smalln.smallvar$classic.coverage
-int.obs.coverage.v2.2n.smalln.smallvar[3,2,2] <- int.v2.ns100.2n.midd.smalln.smallvar$welch.coverage
+int.obs.coverage.v2.2n.smalln.smallvar[3,2,1] <- int.v2.ns100.2n.smalld.smalln.smallvar$classic.coverage
+int.obs.coverage.v2.2n.smalln.smallvar[3,2,2] <- int.v2.ns100.2n.smalld.smalln.smallvar$welch.coverage
+int.obs.coverage.v2.2n.smalln.smallvar[3,3,1] <- int.v2.ns100.2n.midd.smalln.smallvar$classic.coverage
+int.obs.coverage.v2.2n.smalln.smallvar[3,3,2] <- int.v2.ns100.2n.midd.smalln.smallvar$welch.coverage
+int.obs.coverage.v2.2n.smalln.smallvar[3,4,1] <- int.v2.ns100.2n.bigd.smalln.smallvar$classic.coverage
+int.obs.coverage.v2.2n.smalln.smallvar[3,4,2] <- int.v2.ns100.2n.bigd.smalln.smallvar$welch.coverage
 
 
 ##### Save tables from Double N, Small N, double variances, small variance simulations #####
@@ -3506,6 +4436,16 @@ int.v5.ns50.1.5n.nullT.bign.smallvar <- t.compare(nsims=10000, Ns=c(75,50,50,50)
 set.seed(2184)
 int.v5.ns100.1.5n.nullT.bign.smallvar <- t.compare(nsims=10000, Ns=c(150,100,100,100), means=c(6,6,6,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
 
+# Small d
+set.seed(2184)
+int.v5.ns20.1.5n.smalld.bign.smallvar <- t.compare(nsims=10000, Ns=c(30,20,20,20), means=c(6,6.28,6.28,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns50.1.5n.smalld.bign.smallvar <- t.compare(nsims=10000, Ns=c(75,50,50,50), means=c(6,6.28,6.28,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns100.1.5n.smalld.bign.smallvar <- t.compare(nsims=10000, Ns=c(150,100,100,100), means=c(6,6.28,6.28,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
+
 # Mid d
 set.seed(2184)
 int.v5.ns20.1.5n.midd.bign.smallvar <- t.compare(nsims=10000, Ns=c(30,20,20,20), means=c(6,6.71,6.71,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
@@ -3516,44 +4456,78 @@ int.v5.ns50.1.5n.midd.bign.smallvar <- t.compare(nsims=10000, Ns=c(75,50,50,50),
 set.seed(2184)
 int.v5.ns100.1.5n.midd.bign.smallvar <- t.compare(nsims=10000, Ns=c(150,100,100,100), means=c(6,6.71,6.71,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
 
+# Big d
+set.seed(2184)
+int.v5.ns20.1.5n.bigd.bign.smallvar <- t.compare(nsims=10000, Ns=c(30,20,20,20), means=c(6,7.13,7.13,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns50.1.5n.bigd.bign.smallvar <- t.compare(nsims=10000, Ns=c(75,50,50,50), means=c(6,7.13,7.13,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns100.1.5n.bigd.bign.smallvar <- t.compare(nsims=10000, Ns=c(150,100,100,100), means=c(6,7.13,7.13,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
+
 ##### 1.Double N, Big N, 5x variances, small variance false positives and power #####
 
 ## array to store proportion of rejected null hypotheses
-int.reject.null.v5.1.5n.bign.smallvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.reject.null.v5.1.5n.bign.smallvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.reject.null.v5.1.5n.bign.smallvar[1,1,1] <- int.v5.ns20.1.5n.nullT.bign.smallvar$classic.reject
 int.reject.null.v5.1.5n.bign.smallvar[1,1,2] <- int.v5.ns20.1.5n.nullT.bign.smallvar$welch.reject
-int.reject.null.v5.1.5n.bign.smallvar[1,2,1] <- int.v5.ns20.1.5n.midd.bign.smallvar$classic.reject
-int.reject.null.v5.1.5n.bign.smallvar[1,2,2] <- int.v5.ns20.1.5n.midd.bign.smallvar$welch.reject
+int.reject.null.v5.1.5n.bign.smallvar[1,2,1] <- int.v5.ns20.1.5n.smalld.bign.smallvar$classic.reject
+int.reject.null.v5.1.5n.bign.smallvar[1,2,2] <- int.v5.ns20.1.5n.smalld.bign.smallvar$welch.reject
+int.reject.null.v5.1.5n.bign.smallvar[1,3,1] <- int.v5.ns20.1.5n.midd.bign.smallvar$classic.reject
+int.reject.null.v5.1.5n.bign.smallvar[1,3,2] <- int.v5.ns20.1.5n.midd.bign.smallvar$welch.reject
+int.reject.null.v5.1.5n.bign.smallvar[1,4,1] <- int.v5.ns20.1.5n.bigd.bign.smallvar$classic.reject
+int.reject.null.v5.1.5n.bign.smallvar[1,4,2] <- int.v5.ns20.1.5n.bigd.bign.smallvar$welch.reject
 int.reject.null.v5.1.5n.bign.smallvar[2,1,1] <- int.v5.ns50.1.5n.nullT.bign.smallvar$classic.reject
 int.reject.null.v5.1.5n.bign.smallvar[2,1,2] <- int.v5.ns50.1.5n.nullT.bign.smallvar$welch.reject
-int.reject.null.v5.1.5n.bign.smallvar[2,2,1] <- int.v5.ns50.1.5n.midd.bign.smallvar$classic.reject
-int.reject.null.v5.1.5n.bign.smallvar[2,2,2] <- int.v5.ns50.1.5n.midd.bign.smallvar$welch.reject
+int.reject.null.v5.1.5n.bign.smallvar[2,2,1] <- int.v5.ns50.1.5n.smalld.bign.smallvar$classic.reject
+int.reject.null.v5.1.5n.bign.smallvar[2,2,2] <- int.v5.ns50.1.5n.smalld.bign.smallvar$welch.reject
+int.reject.null.v5.1.5n.bign.smallvar[2,3,1] <- int.v5.ns50.1.5n.midd.bign.smallvar$classic.reject
+int.reject.null.v5.1.5n.bign.smallvar[2,3,2] <- int.v5.ns50.1.5n.midd.bign.smallvar$welch.reject
+int.reject.null.v5.1.5n.bign.smallvar[2,4,1] <- int.v5.ns50.1.5n.bigd.bign.smallvar$classic.reject
+int.reject.null.v5.1.5n.bign.smallvar[2,4,2] <- int.v5.ns50.1.5n.bigd.bign.smallvar$welch.reject
 int.reject.null.v5.1.5n.bign.smallvar[3,1,1] <- int.v5.ns100.1.5n.nullT.bign.smallvar$classic.reject
 int.reject.null.v5.1.5n.bign.smallvar[3,1,2] <- int.v5.ns100.1.5n.nullT.bign.smallvar$welch.reject
-int.reject.null.v5.1.5n.bign.smallvar[3,2,1] <- int.v5.ns100.1.5n.midd.bign.smallvar$classic.reject
-int.reject.null.v5.1.5n.bign.smallvar[3,2,2] <- int.v5.ns100.1.5n.midd.bign.smallvar$welch.reject
+int.reject.null.v5.1.5n.bign.smallvar[3,2,1] <- int.v5.ns100.1.5n.smalld.bign.smallvar$classic.reject
+int.reject.null.v5.1.5n.bign.smallvar[3,2,2] <- int.v5.ns100.1.5n.smalld.bign.smallvar$welch.reject
+int.reject.null.v5.1.5n.bign.smallvar[3,3,1] <- int.v5.ns100.1.5n.midd.bign.smallvar$classic.reject
+int.reject.null.v5.1.5n.bign.smallvar[3,3,2] <- int.v5.ns100.1.5n.midd.bign.smallvar$welch.reject
+int.reject.null.v5.1.5n.bign.smallvar[3,4,1] <- int.v5.ns100.1.5n.bigd.bign.smallvar$classic.reject
+int.reject.null.v5.1.5n.bign.smallvar[3,4,2] <- int.v5.ns100.1.5n.bigd.bign.smallvar$welch.reject
 
 
 ##### 1.Double N, Big N, 5x variances, small variance coverage rate #####
 
 ## store observed coverage rates
-int.obs.coverage.v5.1.5n.bign.smallvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.obs.coverage.v5.1.5n.bign.smallvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.obs.coverage.v5.1.5n.bign.smallvar[1,1,1] <- int.v5.ns20.1.5n.nullT.bign.smallvar$classic.coverage
 int.obs.coverage.v5.1.5n.bign.smallvar[1,1,2] <- int.v5.ns20.1.5n.nullT.bign.smallvar$welch.coverage
-int.obs.coverage.v5.1.5n.bign.smallvar[1,2,1] <- int.v5.ns20.1.5n.midd.bign.smallvar$classic.coverage
-int.obs.coverage.v5.1.5n.bign.smallvar[1,2,2] <- int.v5.ns20.1.5n.midd.bign.smallvar$welch.coverage
+int.obs.coverage.v5.1.5n.bign.smallvar[1,2,1] <- int.v5.ns20.1.5n.smalld.bign.smallvar$classic.coverage
+int.obs.coverage.v5.1.5n.bign.smallvar[1,2,2] <- int.v5.ns20.1.5n.smalld.bign.smallvar$welch.coverage
+int.obs.coverage.v5.1.5n.bign.smallvar[1,3,1] <- int.v5.ns20.1.5n.midd.bign.smallvar$classic.coverage
+int.obs.coverage.v5.1.5n.bign.smallvar[1,3,2] <- int.v5.ns20.1.5n.midd.bign.smallvar$welch.coverage
+int.obs.coverage.v5.1.5n.bign.smallvar[1,4,1] <- int.v5.ns20.1.5n.bigd.bign.smallvar$classic.coverage
+int.obs.coverage.v5.1.5n.bign.smallvar[1,4,2] <- int.v5.ns20.1.5n.bigd.bign.smallvar$welch.coverage
 int.obs.coverage.v5.1.5n.bign.smallvar[2,1,1] <- int.v5.ns50.1.5n.nullT.bign.smallvar$classic.coverage
 int.obs.coverage.v5.1.5n.bign.smallvar[2,1,2] <- int.v5.ns50.1.5n.nullT.bign.smallvar$welch.coverage
-int.obs.coverage.v5.1.5n.bign.smallvar[2,2,1] <- int.v5.ns50.1.5n.midd.bign.smallvar$classic.coverage
-int.obs.coverage.v5.1.5n.bign.smallvar[2,2,2] <- int.v5.ns50.1.5n.midd.bign.smallvar$welch.coverage
+int.obs.coverage.v5.1.5n.bign.smallvar[2,2,1] <- int.v5.ns50.1.5n.smalld.bign.smallvar$classic.coverage
+int.obs.coverage.v5.1.5n.bign.smallvar[2,2,2] <- int.v5.ns50.1.5n.smalld.bign.smallvar$welch.coverage
+int.obs.coverage.v5.1.5n.bign.smallvar[2,3,1] <- int.v5.ns50.1.5n.midd.bign.smallvar$classic.coverage
+int.obs.coverage.v5.1.5n.bign.smallvar[2,3,2] <- int.v5.ns50.1.5n.midd.bign.smallvar$welch.coverage
+int.obs.coverage.v5.1.5n.bign.smallvar[2,4,1] <- int.v5.ns50.1.5n.bigd.bign.smallvar$classic.coverage
+int.obs.coverage.v5.1.5n.bign.smallvar[2,4,2] <- int.v5.ns50.1.5n.bigd.bign.smallvar$welch.coverage
 int.obs.coverage.v5.1.5n.bign.smallvar[3,1,1] <- int.v5.ns100.1.5n.nullT.bign.smallvar$classic.coverage
 int.obs.coverage.v5.1.5n.bign.smallvar[3,1,2] <- int.v5.ns100.1.5n.nullT.bign.smallvar$welch.coverage
-int.obs.coverage.v5.1.5n.bign.smallvar[3,2,1] <- int.v5.ns100.1.5n.midd.bign.smallvar$classic.coverage
-int.obs.coverage.v5.1.5n.bign.smallvar[3,2,2] <- int.v5.ns100.1.5n.midd.bign.smallvar$welch.coverage
+int.obs.coverage.v5.1.5n.bign.smallvar[3,2,1] <- int.v5.ns100.1.5n.smalld.bign.smallvar$classic.coverage
+int.obs.coverage.v5.1.5n.bign.smallvar[3,2,2] <- int.v5.ns100.1.5n.smalld.bign.smallvar$welch.coverage
+int.obs.coverage.v5.1.5n.bign.smallvar[3,3,1] <- int.v5.ns100.1.5n.midd.bign.smallvar$classic.coverage
+int.obs.coverage.v5.1.5n.bign.smallvar[3,3,2] <- int.v5.ns100.1.5n.midd.bign.smallvar$welch.coverage
+int.obs.coverage.v5.1.5n.bign.smallvar[3,4,1] <- int.v5.ns100.1.5n.bigd.bign.smallvar$classic.coverage
+int.obs.coverage.v5.1.5n.bign.smallvar[3,4,2] <- int.v5.ns100.1.5n.bigd.bign.smallvar$welch.coverage
 
 
 ##### Save tables from 1.Double N, Big N, 5x variances, small variance simulations #####
@@ -3579,6 +4553,16 @@ int.v5.ns50.2n.nullT.bign.smallvar <- t.compare(nsims=10000, Ns=c(100,50,50,50),
 set.seed(2184)
 int.v5.ns100.2n.nullT.bign.smallvar <- t.compare(nsims=10000, Ns=c(200,100,100,100), means=c(6,6,6,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
 
+# Small d
+set.seed(2184)
+int.v5.ns20.2n.smalld.bign.smallvar <- t.compare(nsims=10000, Ns=c(40,20,20,20), means=c(6,6.28,6.28,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns50.2n.smalld.bign.smallvar <- t.compare(nsims=10000, Ns=c(100,50,50,50), means=c(6,6.28,6.28,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns100.2n.smalld.bign.smallvar <- t.compare(nsims=10000, Ns=c(200,100,100,100), means=c(6,6.28,6.28,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
+
 # Mid d
 set.seed(2184)
 int.v5.ns20.2n.midd.bign.smallvar <- t.compare(nsims=10000, Ns=c(40,20,20,20), means=c(6,6.71,6.71,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
@@ -3589,44 +4573,78 @@ int.v5.ns50.2n.midd.bign.smallvar <- t.compare(nsims=10000, Ns=c(100,50,50,50), 
 set.seed(2184)
 int.v5.ns100.2n.midd.bign.smallvar <- t.compare(nsims=10000, Ns=c(200,100,100,100), means=c(6,6.71,6.71,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
 
+# Big d
+set.seed(2184)
+int.v5.ns20.2n.bigd.bign.smallvar <- t.compare(nsims=10000, Ns=c(40,20,20,20), means=c(6,7.13,7.13,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns50.2n.bigd.bign.smallvar <- t.compare(nsims=10000, Ns=c(100,50,50,50), means=c(6,7.13,7.13,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns100.2n.bigd.bign.smallvar <- t.compare(nsims=10000, Ns=c(200,100,100,100), means=c(6,7.13,7.13,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
+
 ##### Double N, Big N, 5x variance, small variance false positives and power #####
 
 ## array to store proportion of rejected null hypotheses
-int.reject.null.v5.2n.bign.smallvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.reject.null.v5.2n.bign.smallvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.reject.null.v5.2n.bign.smallvar[1,1,1] <- int.v5.ns20.2n.nullT.bign.smallvar$classic.reject
 int.reject.null.v5.2n.bign.smallvar[1,1,2] <- int.v5.ns20.2n.nullT.bign.smallvar$welch.reject
-int.reject.null.v5.2n.bign.smallvar[1,2,1] <- int.v5.ns20.2n.midd.bign.smallvar$classic.reject
-int.reject.null.v5.2n.bign.smallvar[1,2,2] <- int.v5.ns20.2n.midd.bign.smallvar$welch.reject
+int.reject.null.v5.2n.bign.smallvar[1,2,1] <- int.v5.ns20.2n.smalld.bign.smallvar$classic.reject
+int.reject.null.v5.2n.bign.smallvar[1,2,2] <- int.v5.ns20.2n.smalld.bign.smallvar$welch.reject
+int.reject.null.v5.2n.bign.smallvar[1,3,1] <- int.v5.ns20.2n.midd.bign.smallvar$classic.reject
+int.reject.null.v5.2n.bign.smallvar[1,3,2] <- int.v5.ns20.2n.midd.bign.smallvar$welch.reject
+int.reject.null.v5.2n.bign.smallvar[1,4,1] <- int.v5.ns20.2n.bigd.bign.smallvar$classic.reject
+int.reject.null.v5.2n.bign.smallvar[1,4,2] <- int.v5.ns20.2n.bigd.bign.smallvar$welch.reject
 int.reject.null.v5.2n.bign.smallvar[2,1,1] <- int.v5.ns50.2n.nullT.bign.smallvar$classic.reject
 int.reject.null.v5.2n.bign.smallvar[2,1,2] <- int.v5.ns50.2n.nullT.bign.smallvar$welch.reject
-int.reject.null.v5.2n.bign.smallvar[2,2,1] <- int.v5.ns50.2n.midd.bign.smallvar$classic.reject
-int.reject.null.v5.2n.bign.smallvar[2,2,2] <- int.v5.ns50.2n.midd.bign.smallvar$welch.reject
+int.reject.null.v5.2n.bign.smallvar[2,2,1] <- int.v5.ns50.2n.smalld.bign.smallvar$classic.reject
+int.reject.null.v5.2n.bign.smallvar[2,2,2] <- int.v5.ns50.2n.smalld.bign.smallvar$welch.reject
+int.reject.null.v5.2n.bign.smallvar[2,3,1] <- int.v5.ns50.2n.midd.bign.smallvar$classic.reject
+int.reject.null.v5.2n.bign.smallvar[2,3,2] <- int.v5.ns50.2n.midd.bign.smallvar$welch.reject
+int.reject.null.v5.2n.bign.smallvar[2,4,1] <- int.v5.ns50.2n.bigd.bign.smallvar$classic.reject
+int.reject.null.v5.2n.bign.smallvar[2,4,2] <- int.v5.ns50.2n.bigd.bign.smallvar$welch.reject
 int.reject.null.v5.2n.bign.smallvar[3,1,1] <- int.v5.ns100.2n.nullT.bign.smallvar$classic.reject
 int.reject.null.v5.2n.bign.smallvar[3,1,2] <- int.v5.ns100.2n.nullT.bign.smallvar$welch.reject
-int.reject.null.v5.2n.bign.smallvar[3,2,1] <- int.v5.ns100.2n.midd.bign.smallvar$classic.reject
-int.reject.null.v5.2n.bign.smallvar[3,2,2] <- int.v5.ns100.2n.midd.bign.smallvar$welch.reject
+int.reject.null.v5.2n.bign.smallvar[3,2,1] <- int.v5.ns100.2n.smalld.bign.smallvar$classic.reject
+int.reject.null.v5.2n.bign.smallvar[3,2,2] <- int.v5.ns100.2n.smalld.bign.smallvar$welch.reject
+int.reject.null.v5.2n.bign.smallvar[3,3,1] <- int.v5.ns100.2n.midd.bign.smallvar$classic.reject
+int.reject.null.v5.2n.bign.smallvar[3,3,2] <- int.v5.ns100.2n.midd.bign.smallvar$welch.reject
+int.reject.null.v5.2n.bign.smallvar[3,4,1] <- int.v5.ns100.2n.bigd.bign.smallvar$classic.reject
+int.reject.null.v5.2n.bign.smallvar[3,4,2] <- int.v5.ns100.2n.bigd.bign.smallvar$welch.reject
 
 
 ##### Double N, Big N, 5x variance, small variance coverage rate #####
 
 ## store observed coverage rates
-int.obs.coverage.v5.2n.bign.smallvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.obs.coverage.v5.2n.bign.smallvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.obs.coverage.v5.2n.bign.smallvar[1,1,1] <- int.v5.ns20.2n.nullT.bign.smallvar$classic.coverage
 int.obs.coverage.v5.2n.bign.smallvar[1,1,2] <- int.v5.ns20.2n.nullT.bign.smallvar$welch.coverage
-int.obs.coverage.v5.2n.bign.smallvar[1,2,1] <- int.v5.ns20.2n.midd.bign.smallvar$classic.coverage
-int.obs.coverage.v5.2n.bign.smallvar[1,2,2] <- int.v5.ns20.2n.midd.bign.smallvar$welch.coverage
+int.obs.coverage.v5.2n.bign.smallvar[1,2,1] <- int.v5.ns20.2n.smalld.bign.smallvar$classic.coverage
+int.obs.coverage.v5.2n.bign.smallvar[1,2,2] <- int.v5.ns20.2n.smalld.bign.smallvar$welch.coverage
+int.obs.coverage.v5.2n.bign.smallvar[1,3,1] <- int.v5.ns20.2n.midd.bign.smallvar$classic.coverage
+int.obs.coverage.v5.2n.bign.smallvar[1,3,2] <- int.v5.ns20.2n.midd.bign.smallvar$welch.coverage
+int.obs.coverage.v5.2n.bign.smallvar[1,4,1] <- int.v5.ns20.2n.bigd.bign.smallvar$classic.coverage
+int.obs.coverage.v5.2n.bign.smallvar[1,4,2] <- int.v5.ns20.2n.bigd.bign.smallvar$welch.coverage
 int.obs.coverage.v5.2n.bign.smallvar[2,1,1] <- int.v5.ns50.2n.nullT.bign.smallvar$classic.coverage
 int.obs.coverage.v5.2n.bign.smallvar[2,1,2] <- int.v5.ns50.2n.nullT.bign.smallvar$welch.coverage
-int.obs.coverage.v5.2n.bign.smallvar[2,2,1] <- int.v5.ns50.2n.midd.bign.smallvar$classic.coverage
-int.obs.coverage.v5.2n.bign.smallvar[2,2,2] <- int.v5.ns50.2n.midd.bign.smallvar$welch.coverage
+int.obs.coverage.v5.2n.bign.smallvar[2,2,1] <- int.v5.ns50.2n.smalld.bign.smallvar$classic.coverage
+int.obs.coverage.v5.2n.bign.smallvar[2,2,2] <- int.v5.ns50.2n.smalld.bign.smallvar$welch.coverage
+int.obs.coverage.v5.2n.bign.smallvar[2,3,1] <- int.v5.ns50.2n.midd.bign.smallvar$classic.coverage
+int.obs.coverage.v5.2n.bign.smallvar[2,3,2] <- int.v5.ns50.2n.midd.bign.smallvar$welch.coverage
+int.obs.coverage.v5.2n.bign.smallvar[2,4,1] <- int.v5.ns50.2n.bigd.bign.smallvar$classic.coverage
+int.obs.coverage.v5.2n.bign.smallvar[2,4,2] <- int.v5.ns50.2n.bigd.bign.smallvar$welch.coverage
 int.obs.coverage.v5.2n.bign.smallvar[3,1,1] <- int.v5.ns100.2n.nullT.bign.smallvar$classic.coverage
 int.obs.coverage.v5.2n.bign.smallvar[3,1,2] <- int.v5.ns100.2n.nullT.bign.smallvar$welch.coverage
-int.obs.coverage.v5.2n.bign.smallvar[3,2,1] <- int.v5.ns100.2n.midd.bign.smallvar$classic.coverage
-int.obs.coverage.v5.2n.bign.smallvar[3,2,2] <- int.v5.ns100.2n.midd.bign.smallvar$welch.coverage
+int.obs.coverage.v5.2n.bign.smallvar[3,2,1] <- int.v5.ns100.2n.smalld.bign.smallvar$classic.coverage
+int.obs.coverage.v5.2n.bign.smallvar[3,2,2] <- int.v5.ns100.2n.smalld.bign.smallvar$welch.coverage
+int.obs.coverage.v5.2n.bign.smallvar[3,3,1] <- int.v5.ns100.2n.midd.bign.smallvar$classic.coverage
+int.obs.coverage.v5.2n.bign.smallvar[3,3,2] <- int.v5.ns100.2n.midd.bign.smallvar$welch.coverage
+int.obs.coverage.v5.2n.bign.smallvar[3,4,1] <- int.v5.ns100.2n.bigd.bign.smallvar$classic.coverage
+int.obs.coverage.v5.2n.bign.smallvar[3,4,2] <- int.v5.ns100.2n.bigd.bign.smallvar$welch.coverage
 
 
 ##### Save tables from Double N, Big N, 5x variance, small variance simulations #####
@@ -3653,6 +4671,16 @@ int.v5.ns50.1.5n.nullT.smalln.smallvar <- t.compare(nsims=10000, Ns=c(50,75,75,7
 set.seed(2184)
 int.v5.ns100.1.5n.nullT.smalln.smallvar <- t.compare(nsims=10000, Ns=c(100,150,150,150), means=c(6,6,6,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
 
+# Small d
+set.seed(2184)
+int.v5.ns20.1.5n.smalld.smalln.smallvar <- t.compare(nsims=10000, Ns=c(20,30,30,30), means=c(6,6.28,6.28,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns50.1.5n.smalld.smalln.smallvar <- t.compare(nsims=10000, Ns=c(50,75,75,75), means=c(6,6.28,6.28,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns100.1.5n.smalld.smalln.smallvar <- t.compare(nsims=10000, Ns=c(100,150,150,150), means=c(6,6.28,6.28,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
+
 # Mid d
 set.seed(2184)
 int.v5.ns20.1.5n.midd.smalln.smallvar <- t.compare(nsims=10000, Ns=c(20,30,30,30), means=c(6,6.71,6.71,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
@@ -3663,44 +4691,78 @@ int.v5.ns50.1.5n.midd.smalln.smallvar <- t.compare(nsims=10000, Ns=c(50,75,75,75
 set.seed(2184)
 int.v5.ns100.1.5n.midd.smalln.smallvar <- t.compare(nsims=10000, Ns=c(100,150,150,150), means=c(6,6.71,6.71,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
 
+# Big d
+set.seed(2184)
+int.v5.ns20.1.5n.bigd.smalln.smallvar <- t.compare(nsims=10000, Ns=c(20,30,30,30), means=c(6,7.13,7.13,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns50.1.5n.bigd.smalln.smallvar <- t.compare(nsims=10000, Ns=c(50,75,75,75), means=c(6,7.13,7.13,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns100.1.5n.bigd.smalln.smallvar <- t.compare(nsims=10000, Ns=c(100,150,150,150), means=c(6,7.13,7.13,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
+
 ##### 1.Double N, Small N, 5x variances, small variance false positives and power #####
 
 ## array to store proportion of rejected null hypotheses
-int.reject.null.v5.1.5n.smalln.smallvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.reject.null.v5.1.5n.smalln.smallvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.reject.null.v5.1.5n.smalln.smallvar[1,1,1] <- int.v5.ns20.1.5n.nullT.smalln.smallvar$classic.reject
 int.reject.null.v5.1.5n.smalln.smallvar[1,1,2] <- int.v5.ns20.1.5n.nullT.smalln.smallvar$welch.reject
-int.reject.null.v5.1.5n.smalln.smallvar[1,2,1] <- int.v5.ns20.1.5n.midd.smalln.smallvar$classic.reject
-int.reject.null.v5.1.5n.smalln.smallvar[1,2,2] <- int.v5.ns20.1.5n.midd.smalln.smallvar$welch.reject
+int.reject.null.v5.1.5n.smalln.smallvar[1,2,1] <- int.v5.ns20.1.5n.smalld.smalln.smallvar$classic.reject
+int.reject.null.v5.1.5n.smalln.smallvar[1,2,2] <- int.v5.ns20.1.5n.smalld.smalln.smallvar$welch.reject
+int.reject.null.v5.1.5n.smalln.smallvar[1,3,1] <- int.v5.ns20.1.5n.midd.smalln.smallvar$classic.reject
+int.reject.null.v5.1.5n.smalln.smallvar[1,3,2] <- int.v5.ns20.1.5n.midd.smalln.smallvar$welch.reject
+int.reject.null.v5.1.5n.smalln.smallvar[1,4,1] <- int.v5.ns20.1.5n.bigd.smalln.smallvar$classic.reject
+int.reject.null.v5.1.5n.smalln.smallvar[1,4,2] <- int.v5.ns20.1.5n.bigd.smalln.smallvar$welch.reject
 int.reject.null.v5.1.5n.smalln.smallvar[2,1,1] <- int.v5.ns50.1.5n.nullT.smalln.smallvar$classic.reject
 int.reject.null.v5.1.5n.smalln.smallvar[2,1,2] <- int.v5.ns50.1.5n.nullT.smalln.smallvar$welch.reject
-int.reject.null.v5.1.5n.smalln.smallvar[2,2,1] <- int.v5.ns50.1.5n.midd.smalln.smallvar$classic.reject
-int.reject.null.v5.1.5n.smalln.smallvar[2,2,2] <- int.v5.ns50.1.5n.midd.smalln.smallvar$welch.reject
+int.reject.null.v5.1.5n.smalln.smallvar[2,2,1] <- int.v5.ns50.1.5n.smalld.smalln.smallvar$classic.reject
+int.reject.null.v5.1.5n.smalln.smallvar[2,2,2] <- int.v5.ns50.1.5n.smalld.smalln.smallvar$welch.reject
+int.reject.null.v5.1.5n.smalln.smallvar[2,3,1] <- int.v5.ns50.1.5n.midd.smalln.smallvar$classic.reject
+int.reject.null.v5.1.5n.smalln.smallvar[2,3,2] <- int.v5.ns50.1.5n.midd.smalln.smallvar$welch.reject
+int.reject.null.v5.1.5n.smalln.smallvar[2,4,1] <- int.v5.ns50.1.5n.bigd.smalln.smallvar$classic.reject
+int.reject.null.v5.1.5n.smalln.smallvar[2,4,2] <- int.v5.ns50.1.5n.bigd.smalln.smallvar$welch.reject
 int.reject.null.v5.1.5n.smalln.smallvar[3,1,1] <- int.v5.ns100.1.5n.nullT.smalln.smallvar$classic.reject
 int.reject.null.v5.1.5n.smalln.smallvar[3,1,2] <- int.v5.ns100.1.5n.nullT.smalln.smallvar$welch.reject
-int.reject.null.v5.1.5n.smalln.smallvar[3,2,1] <- int.v5.ns100.1.5n.midd.smalln.smallvar$classic.reject
-int.reject.null.v5.1.5n.smalln.smallvar[3,2,2] <- int.v5.ns100.1.5n.midd.smalln.smallvar$welch.reject
+int.reject.null.v5.1.5n.smalln.smallvar[3,2,1] <- int.v5.ns100.1.5n.smalld.smalln.smallvar$classic.reject
+int.reject.null.v5.1.5n.smalln.smallvar[3,2,2] <- int.v5.ns100.1.5n.smalld.smalln.smallvar$welch.reject
+int.reject.null.v5.1.5n.smalln.smallvar[3,3,1] <- int.v5.ns100.1.5n.midd.smalln.smallvar$classic.reject
+int.reject.null.v5.1.5n.smalln.smallvar[3,3,2] <- int.v5.ns100.1.5n.midd.smalln.smallvar$welch.reject
+int.reject.null.v5.1.5n.smalln.smallvar[3,4,1] <- int.v5.ns100.1.5n.bigd.smalln.smallvar$classic.reject
+int.reject.null.v5.1.5n.smalln.smallvar[3,4,2] <- int.v5.ns100.1.5n.bigd.smalln.smallvar$welch.reject
 
 
 ##### 1.Double N, Small N, 5x variances, small variance coverage rate #####
 
 ## store observed coverage rates
-int.obs.coverage.v5.1.5n.smalln.smallvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.obs.coverage.v5.1.5n.smalln.smallvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.obs.coverage.v5.1.5n.smalln.smallvar[1,1,1] <- int.v5.ns20.1.5n.nullT.smalln.smallvar$classic.coverage
 int.obs.coverage.v5.1.5n.smalln.smallvar[1,1,2] <- int.v5.ns20.1.5n.nullT.smalln.smallvar$welch.coverage
-int.obs.coverage.v5.1.5n.smalln.smallvar[1,2,1] <- int.v5.ns20.1.5n.midd.smalln.smallvar$classic.coverage
-int.obs.coverage.v5.1.5n.smalln.smallvar[1,2,2] <- int.v5.ns20.1.5n.midd.smalln.smallvar$welch.coverage
+int.obs.coverage.v5.1.5n.smalln.smallvar[1,2,1] <- int.v5.ns20.1.5n.smalld.smalln.smallvar$classic.coverage
+int.obs.coverage.v5.1.5n.smalln.smallvar[1,2,2] <- int.v5.ns20.1.5n.smalld.smalln.smallvar$welch.coverage
+int.obs.coverage.v5.1.5n.smalln.smallvar[1,3,1] <- int.v5.ns20.1.5n.midd.smalln.smallvar$classic.coverage
+int.obs.coverage.v5.1.5n.smalln.smallvar[1,3,2] <- int.v5.ns20.1.5n.midd.smalln.smallvar$welch.coverage
+int.obs.coverage.v5.1.5n.smalln.smallvar[1,4,1] <- int.v5.ns20.1.5n.bigd.smalln.smallvar$classic.coverage
+int.obs.coverage.v5.1.5n.smalln.smallvar[1,4,2] <- int.v5.ns20.1.5n.bigd.smalln.smallvar$welch.coverage
 int.obs.coverage.v5.1.5n.smalln.smallvar[2,1,1] <- int.v5.ns50.1.5n.nullT.smalln.smallvar$classic.coverage
 int.obs.coverage.v5.1.5n.smalln.smallvar[2,1,2] <- int.v5.ns50.1.5n.nullT.smalln.smallvar$welch.coverage
-int.obs.coverage.v5.1.5n.smalln.smallvar[2,2,1] <- int.v5.ns50.1.5n.midd.smalln.smallvar$classic.coverage
-int.obs.coverage.v5.1.5n.smalln.smallvar[2,2,2] <- int.v5.ns50.1.5n.midd.smalln.smallvar$welch.coverage
+int.obs.coverage.v5.1.5n.smalln.smallvar[2,2,1] <- int.v5.ns50.1.5n.smalld.smalln.smallvar$classic.coverage
+int.obs.coverage.v5.1.5n.smalln.smallvar[2,2,2] <- int.v5.ns50.1.5n.smalld.smalln.smallvar$welch.coverage
+int.obs.coverage.v5.1.5n.smalln.smallvar[2,3,1] <- int.v5.ns50.1.5n.midd.smalln.smallvar$classic.coverage
+int.obs.coverage.v5.1.5n.smalln.smallvar[2,3,2] <- int.v5.ns50.1.5n.midd.smalln.smallvar$welch.coverage
+int.obs.coverage.v5.1.5n.smalln.smallvar[2,4,1] <- int.v5.ns50.1.5n.bigd.smalln.smallvar$classic.coverage
+int.obs.coverage.v5.1.5n.smalln.smallvar[2,4,2] <- int.v5.ns50.1.5n.bigd.smalln.smallvar$welch.coverage
 int.obs.coverage.v5.1.5n.smalln.smallvar[3,1,1] <- int.v5.ns100.1.5n.nullT.smalln.smallvar$classic.coverage
 int.obs.coverage.v5.1.5n.smalln.smallvar[3,1,2] <- int.v5.ns100.1.5n.nullT.smalln.smallvar$welch.coverage
-int.obs.coverage.v5.1.5n.smalln.smallvar[3,2,1] <- int.v5.ns100.1.5n.midd.smalln.smallvar$classic.coverage
-int.obs.coverage.v5.1.5n.smalln.smallvar[3,2,2] <- int.v5.ns100.1.5n.midd.smalln.smallvar$welch.coverage
+int.obs.coverage.v5.1.5n.smalln.smallvar[3,2,1] <- int.v5.ns100.1.5n.smalld.smalln.smallvar$classic.coverage
+int.obs.coverage.v5.1.5n.smalln.smallvar[3,2,2] <- int.v5.ns100.1.5n.smalld.smalln.smallvar$welch.coverage
+int.obs.coverage.v5.1.5n.smalln.smallvar[3,3,1] <- int.v5.ns100.1.5n.midd.smalln.smallvar$classic.coverage
+int.obs.coverage.v5.1.5n.smalln.smallvar[3,3,2] <- int.v5.ns100.1.5n.midd.smalln.smallvar$welch.coverage
+int.obs.coverage.v5.1.5n.smalln.smallvar[3,4,1] <- int.v5.ns100.1.5n.bigd.smalln.smallvar$classic.coverage
+int.obs.coverage.v5.1.5n.smalln.smallvar[3,4,2] <- int.v5.ns100.1.5n.bigd.smalln.smallvar$welch.coverage
 
 
 ##### Save tables from 1.Double N, Small N, 5x variances, small variance simulations #####
@@ -3726,6 +4788,16 @@ int.v5.ns50.2n.nullT.smalln.smallvar <- t.compare(nsims=10000, Ns=c(50,100,100,1
 set.seed(2184)
 int.v5.ns100.2n.nullT.smalln.smallvar <- t.compare(nsims=10000, Ns=c(100,200,200,200), means=c(6,6,6,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
 
+# Small d
+set.seed(2184)
+int.v5.ns20.2n.smalld.smalln.smallvar <- t.compare(nsims=10000, Ns=c(20,40,40,40), means=c(6,6.28,6.28,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns50.2n.smalld.smalln.smallvar <- t.compare(nsims=10000, Ns=c(50,100,100,100), means=c(6,6.28,6.28,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns100.2n.smalld.smalln.smallvar <- t.compare(nsims=10000, Ns=c(100,200,200,200), means=c(6,6.28,6.28,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
+
 # Mid d
 set.seed(2184)
 int.v5.ns20.2n.midd.smalln.smallvar <- t.compare(nsims=10000, Ns=c(20,40,40,40), means=c(6,6.71,6.71,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
@@ -3736,44 +4808,78 @@ int.v5.ns50.2n.midd.smalln.smallvar <- t.compare(nsims=10000, Ns=c(50,100,100,10
 set.seed(2184)
 int.v5.ns100.2n.midd.smalln.smallvar <- t.compare(nsims=10000, Ns=c(100,200,200,200), means=c(6,6.71,6.71,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
 
+# Big d
+set.seed(2184)
+int.v5.ns20.2n.bigd.smalln.smallvar <- t.compare(nsims=10000, Ns=c(20,40,40,40), means=c(6,7.13,7.13,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns50.2n.bigd.smalln.smallvar <- t.compare(nsims=10000, Ns=c(50,100,100,100), means=c(6,7.13,7.13,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
+
+set.seed(2184)
+int.v5.ns100.2n.bigd.smalln.smallvar <- t.compare(nsims=10000, Ns=c(100,200,200,200), means=c(6,7.13,7.13,6), vars=c(2,10,10,10), contrast=c(-1,1,1,-1))
+
 ##### Double N, Small N, 5x variances, small variance false positives and power #####
 
 ## array to store proportion of rejected null hypotheses
-int.reject.null.v5.2n.smalln.smallvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.reject.null.v5.2n.smalln.smallvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.reject.null.v5.2n.smalln.smallvar[1,1,1] <- int.v5.ns20.2n.nullT.smalln.smallvar$classic.reject
 int.reject.null.v5.2n.smalln.smallvar[1,1,2] <- int.v5.ns20.2n.nullT.smalln.smallvar$welch.reject
-int.reject.null.v5.2n.smalln.smallvar[1,2,1] <- int.v5.ns20.2n.midd.smalln.smallvar$classic.reject
-int.reject.null.v5.2n.smalln.smallvar[1,2,2] <- int.v5.ns20.2n.midd.smalln.smallvar$welch.reject
+int.reject.null.v5.2n.smalln.smallvar[1,2,1] <- int.v5.ns20.2n.smalld.smalln.smallvar$classic.reject
+int.reject.null.v5.2n.smalln.smallvar[1,2,2] <- int.v5.ns20.2n.smalld.smalln.smallvar$welch.reject
+int.reject.null.v5.2n.smalln.smallvar[1,3,1] <- int.v5.ns20.2n.midd.smalln.smallvar$classic.reject
+int.reject.null.v5.2n.smalln.smallvar[1,3,2] <- int.v5.ns20.2n.midd.smalln.smallvar$welch.reject
+int.reject.null.v5.2n.smalln.smallvar[1,4,1] <- int.v5.ns20.2n.bigd.smalln.smallvar$classic.reject
+int.reject.null.v5.2n.smalln.smallvar[1,4,2] <- int.v5.ns20.2n.bigd.smalln.smallvar$welch.reject
 int.reject.null.v5.2n.smalln.smallvar[2,1,1] <- int.v5.ns50.2n.nullT.smalln.smallvar$classic.reject
 int.reject.null.v5.2n.smalln.smallvar[2,1,2] <- int.v5.ns50.2n.nullT.smalln.smallvar$welch.reject
-int.reject.null.v5.2n.smalln.smallvar[2,2,1] <- int.v5.ns50.2n.midd.smalln.smallvar$classic.reject
-int.reject.null.v5.2n.smalln.smallvar[2,2,2] <- int.v5.ns50.2n.midd.smalln.smallvar$welch.reject
+int.reject.null.v5.2n.smalln.smallvar[2,2,1] <- int.v5.ns50.2n.smalld.smalln.smallvar$classic.reject
+int.reject.null.v5.2n.smalln.smallvar[2,2,2] <- int.v5.ns50.2n.smalld.smalln.smallvar$welch.reject
+int.reject.null.v5.2n.smalln.smallvar[2,3,1] <- int.v5.ns50.2n.midd.smalln.smallvar$classic.reject
+int.reject.null.v5.2n.smalln.smallvar[2,3,2] <- int.v5.ns50.2n.midd.smalln.smallvar$welch.reject
+int.reject.null.v5.2n.smalln.smallvar[2,4,1] <- int.v5.ns50.2n.bigd.smalln.smallvar$classic.reject
+int.reject.null.v5.2n.smalln.smallvar[2,4,2] <- int.v5.ns50.2n.bigd.smalln.smallvar$welch.reject
 int.reject.null.v5.2n.smalln.smallvar[3,1,1] <- int.v5.ns100.2n.nullT.smalln.smallvar$classic.reject
 int.reject.null.v5.2n.smalln.smallvar[3,1,2] <- int.v5.ns100.2n.nullT.smalln.smallvar$welch.reject
-int.reject.null.v5.2n.smalln.smallvar[3,2,1] <- int.v5.ns100.2n.midd.smalln.smallvar$classic.reject
-int.reject.null.v5.2n.smalln.smallvar[3,2,2] <- int.v5.ns100.2n.midd.smalln.smallvar$welch.reject
+int.reject.null.v5.2n.smalln.smallvar[3,2,1] <- int.v5.ns100.2n.smalld.smalln.smallvar$classic.reject
+int.reject.null.v5.2n.smalln.smallvar[3,2,2] <- int.v5.ns100.2n.smalld.smalln.smallvar$welch.reject
+int.reject.null.v5.2n.smalln.smallvar[3,3,1] <- int.v5.ns100.2n.midd.smalln.smallvar$classic.reject
+int.reject.null.v5.2n.smalln.smallvar[3,3,2] <- int.v5.ns100.2n.midd.smalln.smallvar$welch.reject
+int.reject.null.v5.2n.smalln.smallvar[3,4,1] <- int.v5.ns100.2n.bigd.smalln.smallvar$classic.reject
+int.reject.null.v5.2n.smalln.smallvar[3,4,2] <- int.v5.ns100.2n.bigd.smalln.smallvar$welch.reject
 
 
 ##### Double N, Small N, 5x variances, small variance coverage rate #####
 
 ## store observed coverage rates
-int.obs.coverage.v5.2n.smalln.smallvar <- array(dim=c(3,2,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.5"), c("classic", "welch")))
+int.obs.coverage.v5.2n.smalln.smallvar <- array(dim=c(3,4,2), dimnames=list(c("N=20", "N=50", "N=100"), c("d=0", "d=.2", "d=.5", "d=.8"), c("classic", "welch")))
 
 # true null
 int.obs.coverage.v5.2n.smalln.smallvar[1,1,1] <- int.v5.ns20.2n.nullT.smalln.smallvar$classic.coverage
 int.obs.coverage.v5.2n.smalln.smallvar[1,1,2] <- int.v5.ns20.2n.nullT.smalln.smallvar$welch.coverage
-int.obs.coverage.v5.2n.smalln.smallvar[1,2,1] <- int.v5.ns20.2n.midd.smalln.smallvar$classic.coverage
-int.obs.coverage.v5.2n.smalln.smallvar[1,2,2] <- int.v5.ns20.2n.midd.smalln.smallvar$welch.coverage
+int.obs.coverage.v5.2n.smalln.smallvar[1,2,1] <- int.v5.ns20.2n.smalld.smalln.smallvar$classic.coverage
+int.obs.coverage.v5.2n.smalln.smallvar[1,2,2] <- int.v5.ns20.2n.smalld.smalln.smallvar$welch.coverage
+int.obs.coverage.v5.2n.smalln.smallvar[1,3,1] <- int.v5.ns20.2n.midd.smalln.smallvar$classic.coverage
+int.obs.coverage.v5.2n.smalln.smallvar[1,3,2] <- int.v5.ns20.2n.midd.smalln.smallvar$welch.coverage
+int.obs.coverage.v5.2n.smalln.smallvar[1,4,1] <- int.v5.ns20.2n.bigd.smalln.smallvar$classic.coverage
+int.obs.coverage.v5.2n.smalln.smallvar[1,4,2] <- int.v5.ns20.2n.bigd.smalln.smallvar$welch.coverage
 int.obs.coverage.v5.2n.smalln.smallvar[2,1,1] <- int.v5.ns50.2n.nullT.smalln.smallvar$classic.coverage
 int.obs.coverage.v5.2n.smalln.smallvar[2,1,2] <- int.v5.ns50.2n.nullT.smalln.smallvar$welch.coverage
-int.obs.coverage.v5.2n.smalln.smallvar[2,2,1] <- int.v5.ns50.2n.midd.smalln.smallvar$classic.coverage
-int.obs.coverage.v5.2n.smalln.smallvar[2,2,2] <- int.v5.ns50.2n.midd.smalln.smallvar$welch.coverage
+int.obs.coverage.v5.2n.smalln.smallvar[2,2,1] <- int.v5.ns50.2n.smalld.smalln.smallvar$classic.coverage
+int.obs.coverage.v5.2n.smalln.smallvar[2,2,2] <- int.v5.ns50.2n.smalld.smalln.smallvar$welch.coverage
+int.obs.coverage.v5.2n.smalln.smallvar[2,3,1] <- int.v5.ns50.2n.midd.smalln.smallvar$classic.coverage
+int.obs.coverage.v5.2n.smalln.smallvar[2,3,2] <- int.v5.ns50.2n.midd.smalln.smallvar$welch.coverage
+int.obs.coverage.v5.2n.smalln.smallvar[2,4,1] <- int.v5.ns50.2n.bigd.smalln.smallvar$classic.coverage
+int.obs.coverage.v5.2n.smalln.smallvar[2,4,2] <- int.v5.ns50.2n.bigd.smalln.smallvar$welch.coverage
 int.obs.coverage.v5.2n.smalln.smallvar[3,1,1] <- int.v5.ns100.2n.nullT.smalln.smallvar$classic.coverage
 int.obs.coverage.v5.2n.smalln.smallvar[3,1,2] <- int.v5.ns100.2n.nullT.smalln.smallvar$welch.coverage
-int.obs.coverage.v5.2n.smalln.smallvar[3,2,1] <- int.v5.ns100.2n.midd.smalln.smallvar$classic.coverage
-int.obs.coverage.v5.2n.smalln.smallvar[3,2,2] <- int.v5.ns100.2n.midd.smalln.smallvar$welch.coverage
+int.obs.coverage.v5.2n.smalln.smallvar[3,2,1] <- int.v5.ns100.2n.smalld.smalln.smallvar$classic.coverage
+int.obs.coverage.v5.2n.smalln.smallvar[3,2,2] <- int.v5.ns100.2n.smalld.smalln.smallvar$welch.coverage
+int.obs.coverage.v5.2n.smalln.smallvar[3,3,1] <- int.v5.ns100.2n.midd.smalln.smallvar$classic.coverage
+int.obs.coverage.v5.2n.smalln.smallvar[3,3,2] <- int.v5.ns100.2n.midd.smalln.smallvar$welch.coverage
+int.obs.coverage.v5.2n.smalln.smallvar[3,4,1] <- int.v5.ns100.2n.bigd.smalln.smallvar$classic.coverage
+int.obs.coverage.v5.2n.smalln.smallvar[3,4,2] <- int.v5.ns100.2n.bigd.smalln.smallvar$welch.coverage
 
 
 ##### Save tables from Double N, Small N, 5x variances, small variance simulations #####
