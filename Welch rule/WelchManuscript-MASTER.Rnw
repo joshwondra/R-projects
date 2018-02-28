@@ -17,19 +17,18 @@ breaklines=true
 \twoauthors{Joshua D. Wondra}{Richard Gonzalez}
 \twoaffiliations{Facebook}{University of Michigan}
 
-\abstract{When testing whether the means of independent groups are 
-different from each other, researchers typically use Student's t test, which 
-assumes that the population variances of the two groups are equal. If there is 
-reason to believe that the group variances are unequal, then researchers can 
+\abstract{Researchers typically use Student's t test or ANOVA to test whether the means of independent groups are different from each other.  
+These tests assume that the population variances of the groups are equal. If there is 
+reason to believe the variances are unequal, then researchers can 
 use Welch's t test, which does not assume equal variances, as an alternative. 
-We were interested in finding a simple rule that could be used to 
+We were interested in finding a simple rule to 
 decide when to use Student's vs. Welch's t test. We used Monte Carlo 
 simulations to compare the false positive rate, power, and coverage probability 
 of Student's and Welch's t tests across different variance ratios, sample size ratios, sample sizes, 
-and effect sizes. We examined the simple case of a difference in the means of 
-two groups and the more complex case of interactions in a 
+and effect sizes. We examined a simple case---the difference in the means of 
+two groups---and a more complex case---the test of the interaction in a 
 2~$\times$~2 factorial design. We recommend the following rule: 
-For normally distributed data always use Welch's t test to 
+If the data are normally distributed, always use Welch's t test to 
 compare the means of independent groups.}
 \keywords{t test, new statistics, Welch}
 
@@ -177,8 +176,8 @@ cross_int <- bind_rows(
     rejects = Freq
   ) %>% 
   mutate(
-    var.ratio = rep(c(1, 1, 1, 1, 1, 2, 1/2, 5, 1/5, 2, 1/2, 2, 1/2, 2, 1/2, 2, 1/2, 5, 1/5, 5, 1/5, 5, 1/5, 5, 1/5), each = 12),
-    n.ratio = rep(c(1, 1/1.5, 1.5, 1/2, 2, 1, 1, 1, 1, 1.5, 1.5, 1/1.5, 1/1.5, 2, 2, 1/2, 1/2, 1.5, 1.5, 1/1.5, 1/1.5, 2, 2, 1/2, 1/2), each = 12),
+    var.ratio = rep(c(1, 1, 1, 1, 1, 2, 1/2, 5, 1/5, 2, 1/2, 2, 1/2, 2, 1/2, 2, 1/2, 5, 1/5, 5, 1/5, 5, 1/5, 5, 1/5), each = 24),
+    n.ratio = rep(c(1, 1/1.5, 1.5, 1/2, 2, 1, 1, 1, 1, 1.5, 1.5, 1/1.5, 1/1.5, 2, 2, 1/2, 1/2, 1.5, 1.5, 1/1.5, 1/1.5, 2, 2, 1/2, 1/2), each = 24),
     Ns = case_when(
       n.ratio == 1 & small_n == 'N=20' ~ '20, 20, 20, 20',
       n.ratio == 1 & small_n == 'N=50' ~ '50, 50, 50, 50',
@@ -224,15 +223,15 @@ theme_set(theme_bw())
 suitable to the data, and whether there is a more appropriate test. Recent discussions of research practices in psychology 
 \cite<e.g.,>{Fiedler2012, Simmons2011, 
 Wagenmakers2012} highlight the tension between two valued outcomes of these 
-decisions. On the one hand, researchers want to avoid mistakenly 
-claiming there is a true effect where none exists, which involves a 
+decisions. On the one hand, researchers don't want to mistakenly 
+claim there is a true effect where none exists, which involves a 
 concern with false positives. On the other hand, researchers want to find 
 effects where they do exist, which involves a concern with power. In addition,
 there is a growing concern with estimating effect sizes 
 \cite{Bakker2012, Cumming2014, Ioannidis2008}. 
 Researchers must find a way to balance these concerns as they make their decisions. 
 
-The recent push for pre-registration forces researchers to make these decisions prior to data collection by specifying how they plan to test their hypothesis (e.g., a two-sample t test). But they should also address the assumptions of those tests (e.g., equal variances), how they will check if those assumptions are violated (e.g., a significance test of two variances), and what they will do in that case (e.g., use a different test).  Such planning can be good for science, but it can easily become overwhelming to write a long list of conditional statements: ``if I see this, then I'll do that.''  Preregistration can be simplified if the researcher commits to a statistical procedure that is robust to violations of assumptions, and all the better if the procedure doesn't introduce new costs, such as lower power. We propose that when researchers compare the means of independent groups, they should commit to Welch's t test, which is robust when variances are unequal, instead of Student's t test or ANOVAs. 
+The recent push for pre-registration forces researchers to make these decisions prior to data collection by specifying how they plan to test their hypothesis (e.g., a two-sample t test). But they should also address the assumptions of those tests (e.g., equal variances), how they will check if those assumptions are violated (e.g., a significance test of two variances), and what they will do in that case (e.g., use a different test).  Such planning can be good for science, but it can easily become overwhelming to write a long list of conditional statements: ``if I see this, then I'll do that.''  Preregistration can be simplified if the researcher commits to a statistical procedure that is robust to violations of assumptions, and all the better if the procedure doesn't introduce new costs, such as lower power. We propose that when researchers compare the means of independent groups, they should commit to Welch's t test, which is robust when variances are unequal, instead of Student's t test or ANOVA. 
 
 \subsection{The Comparison of Means from Independent Groups}
     One of the first decisions many researchers learn is how to compare 
@@ -241,7 +240,7 @@ comparison involves a choice between the classic Student's t test
 \cite{Student1908} or the alternative Welch-Satterthwaite test \cite{Welch1938, 
 Satterthwaite1946}. When you use Student's t test to compare 
 the means of independent groups, you assume the populations follow a normal distribution,
-observations are independent of each other, and the populations have the same variance. Throughout the paper we assume a null hypothesis of zero for the population mean difference.
+observations are independent of each other, and the populations have the same variance. Throughout the paper we assume that the null hypothesis of for the population mean difference is zero.
     
 The t-value is the 
 difference in group means divided by the standard error of that 
@@ -251,7 +250,7 @@ difference:
     \end{equation}
 The p-value also depends on the degrees of 
 freedom, $df=n_1+n_2-2$. You are more likely to reject the null 
-hypothesis and conclude there is a difference between the means
+hypothesis
 as the t-value and 
 degrees of freedom get larger---when 
 the sample size gets larger (which increases the degrees of freedom and influences the standard error), when the 
@@ -259,14 +258,12 @@ difference in means gets larger (which increases the numerator of t), or
 when the standard error gets smaller (which decreases the denominator of t). 
     
     To compute the usual standard error, you need to find the 
-common variance of the groups, which is 
-equal to the population variance of each group 
-if the equal variances assumption is true. 
-In practice, you rarely know the population variances of the groups, and 
-instead you estimate them from the sample variances. 
-Unfortunately, even if the population variances are equal, the sample 
-variances are rarely equal due to sampling error. Student's t test deals with this 
-problem by pooling the sample variances of the groups into a weighted 
+common variance of the groups. If the the equal variances assumption is true, then the common variance is
+equal to the population variance of either group.
+In practice, you rarely know the population variances of the groups, so you estimate them from the sample variances. 
+But even if the population variances are equal, typically the sample 
+variances are not, due to sampling error. Student's t test deals with this
+problem by pooling the sample variances into a weighted 
 average to estimate the common variance. 
     \begin{equation}
     s_p^2 = \frac{(n_1 - 1)s_1^2 + (n_2 - 1)s_2^2}{n_1 + n_2 - 2}
@@ -276,9 +273,8 @@ average to estimate the common variance.
     \end{equation}
     with $s_1^2$ and $s_2^2$ being the two sample variances.
 In the pooling equation (EQ 2), if the sample sizes are different, the variance of the group 
-with the larger sample size is given more weight. So the standard error is larger when the larger group has the larger 
-variance, and smaller when the larger group has the 
-smaller variance.
+with the larger sample size is given more weight. If the larger group has the larger 
+variance, then the standard error will be larger; if the larger group has the smaller variance, then the standard error will be smaller.
 
     If the data or study design suggests the assumptions of 
 normality, independence, and equal variances do not hold, then Student's t test 
@@ -302,19 +298,16 @@ Additionally, Welch's t test uses a complicated formula to compute the degrees o
 The important thing to know is the formula decreases the degrees of freedom to the extent that the group
 variances differ. It can also produce a degrees of freedom value that is not an integer.
 
-Due to these differences in the standard errors and degrees of freedom, Student's and Welch's t tests can disagree about whether the group means are different. Because Welch's t test decreases the degrees of freedom, it might be more conservative. If Student's t test finds 
-too many false positives when variances are unequal, this could make Welch's t test the better choice. But if Welch's t test is not powerful enough to detect true 
-effects, this could 
-make it the worse choice. 
+Due to these differences in the standard errors and degrees of freedom, Student's and Welch's t tests can disagree about whether the group means are different. Because Welch's t test decreases the degrees of freedom, it might be more conservative. Welch's t test might be the better choice if it finds fewer false positives when the variances are unequal. But it might be the worse choice if it's too conservative and isn't powerful enough to detect true effects. 
         
     However, Welch's t test might not always be more conservative. The power of 
-the two tests is not only based on the degrees of freedom, but also on the 
-standard error, and Welch's t test could be more powerful than 
+the two tests is based on not only the degrees of freedom, but also the 
+standard error.  Welch's t test could be more powerful than 
 Student's when its standard error is smaller.
     
     How do you decide which test to use? The typical approach is to use 
 Student's t test unless you have evidence that the variances are unequal. The challenge is how to find that evidence. 
-Our goal is to find a simple strategy for researchers to decide which test to use. We discuss two decision strategies in the main text---using a statistical test of the equal variances assumption and visually examining the data with boxplots---and one decision strategy in the supplemental materials---comparing the degrees of freedom of the two t tests. Then we use Monte Carlo simulations to empirically determine when each test performs best.
+Our goal is to find a simple strategy to decide which test to use. We discuss two decision strategies in the main text---using a statistical test of the equal variances assumption and visually examining the data with boxplots---and one decision strategy in the supplemental materials---comparing the degrees of freedom of the two tests. Then we use Monte Carlo simulations to empirically determine when each test performs best.
 
     Before we proceed, we note that aside from Welch's t test, there have been Bayesian approaches 
 to comparing groups with equal or unequal variances \cite{Box1973, Kruschke2013}. Our purpose is to inform decisions about how to use 
@@ -327,13 +320,12 @@ is to run another test of the null hypothesis that the group variances
 are equal. If the test retains the null, the variances are equal and you can use Student's t test. If the test rejects the null, the variances are unequal and you should use Welch's t test.
 
 One example of this approach is Levene's test for homogeneity \cite{Levene1960}, which appears in SPSS by default when you run an independent samples t test.
-In its original formulation, the test finds the absolute value of the deviations of each observation from its group mean, then it uses a oneway ANOVA to test whether the average deviations are different between the groups.
-Later formulations use deviations from the group median or the trimmed mean, which work better when the raw data are not normally distributed \cite{Brown1974}.
+In its original formulation, the test finds how far each observation deviates from the mean of its group, then it uses ANOVA to test whether the average deviations are different between the groups (later formulations use deviations from the group median or the trimmed mean, which work better when the raw data are not normally distributed, \citeNP{Brown1974}).
 
 Consider the logic of using Levene's test to decide whether to use Student's or Welch's t 
 test. You use an ANOVA to test 
-whether the mean deviations are different.
-When there are only two groups, this is equivalent to a two sample t test, which means you have to make another choice
+whether the deviations from the group means are different.
+When there are only two groups, this is equivalent to using a t test, which means you have to make another choice
 between Student and Welch, which means you must decide whether the
 group \textit{deviations} have equal variances.
 This doesn't solve the original problem, it just hides it in a different test. 
@@ -341,20 +333,19 @@ This doesn't solve the original problem, it just hides it in a different test.
 Additionally, tests of assumptions,
 like other tests, are sensitive 
 to sample size \cite{Gonzalez2008}. If your sample is too small, you won't have enough power to 
-detect true differences in the variances. If your sample is 
+detect true differences in the variances. If your sample is very 
 large, even minute differences will be statistically significant. 
 
-Overall, using tests of equal variances is an ineffective decision strategy, as confirmed by simulation 
-studies \cite{Zimmerman1996,Zimmerman2004}. 
+Overall, using tests of equal variances is an ineffective decision strategy \cite{Zimmerman1996,Zimmerman2004}. 
 
 \subsection{Visualizing Data with Boxplots} 
 
-    A second way to decide which test to use is to visualize the data using boxplots and make a judgment 
-about whether the variances appear to differ.  With smaller samples, you 
+    A second way to decide which test to use is to visualize the data using boxplots and judge 
+whether the variances appear to differ.  With smaller samples, you 
 can tolerate larger apparent differences and still conclude the variances are equal. You can enhance this strategy by 
 simulating data that have the same sample sizes as the real data, changing whether the variances are equal or not, 
 and checking if the boxplots from the real data look more like the boxplots of 
-simulations with equal variances or of simulations with unequal variances. 
+simulations with equal variances or unequal variances. 
 
     Figure 1 displays sample boxplots where two groups have equal 
 variances (top) and where one group has five times the variance of the other (bottom), and where each group has $n$ = 20 (first rows) or $n$ = 
@@ -368,7 +359,7 @@ sometimes the spread of the groups appears almost equal (as it should),
 and other times it appears to differ. When the population variances are unequal, the group with the larger variance (to the right) is generally more spread out, but sometimes the spread of the groups looks similar.
 
 In contrast, with larger sample sizes there is more 
-consistency in the boxplots Smaller differences in the spread of the groups 
+consistency in the boxplots. Smaller differences in the spread of the groups 
 might be a sign that the population variances differ. Using boxplots
 to decide which test to use
 is a viable strategy, though it requires some subjective judgment,
@@ -564,7 +555,7 @@ it would be better to always use
 Welch's t test. 
 
 To investigate this possibility, we ran simulations of two independent groups 
-with normally distributed data.  But the use of t tests can also be expanded to study designs with more than two groups, where they can be used to test main effects, interactions, or other specific contrasts. So we also examined the more complex case of a 2~$\times$~2 between-subjects design with a crossover action but no main effects.
+with normally distributed data.  But the use of t tests can also be expanded to study designs with more than two groups, where they can be used to test main effects, interactions, or other specific contrasts. So we also examined the more complex case of a 2~$\times$~2 between-subjects design with a crossover interaction but no main effects.
 
 We examined how well each test balances concerns with 
 false positives, power, and effect size estimation under 
@@ -1130,8 +1121,8 @@ cross_int <- bind_rows(
     rejects = Freq
   ) %>% 
   mutate(
-    var.ratio = rep(c(1, 1, 1, 1, 1, 2, 1/2, 5, 1/5, 2, 1/2, 2, 1/2, 2, 1/2, 2, 1/2, 5, 1/5, 5, 1/5, 5, 1/5, 5, 1/5), each = 12),
-    n.ratio = rep(c(1, 1/1.5, 1.5, 1/2, 2, 1, 1, 1, 1, 1.5, 1.5, 1/1.5, 1/1.5, 2, 2, 1/2, 1/2, 1.5, 1.5, 1/1.5, 1/1.5, 2, 2, 1/2, 1/2), each = 12),
+    var.ratio = rep(c(1, 1, 1, 1, 1, 2, 1/2, 5, 1/5, 2, 1/2, 2, 1/2, 2, 1/2, 2, 1/2, 5, 1/5, 5, 1/5, 5, 1/5, 5, 1/5), each = 24),
+    n.ratio = rep(c(1, 1/1.5, 1.5, 1/2, 2, 1, 1, 1, 1, 1.5, 1.5, 1/1.5, 1/1.5, 2, 2, 1/2, 1/2, 1.5, 1.5, 1/1.5, 1/1.5, 2, 2, 1/2, 1/2), each = 24),
     Ns = case_when(
       n.ratio == 1 & small_n == 'N=20' ~ '20, 20, 20, 20',
       n.ratio == 1 & small_n == 'N=50' ~ '50, 50, 50, 50',
@@ -1274,7 +1265,7 @@ cov_int_bign <- ggplot(filter(cross_int, effect == 'd=0', !(n.ratio %in% c(1/1.5
       )
 
 
-# Print false pos plots ----
+# Print coverage plots ----
 plot_coverage <- plot_grid(cov_two, cov_int_smalln, cov_int_bign, nrow = 3)
 plot_coverage
 
@@ -1399,7 +1390,7 @@ it comes to analyzing data.
 
 Our discussion began with the relatively simple case of testing the means from two independent groups with normally distributed data.
 But our simulations demonstrate that the implications generalize to more complex designs, such as interactions in a 2 x 2 factorial design.
-For between-groups contrasts, with two groups or more, we arrived at a simple conclusion: on balance, when considering the false positive rate, power, and effect size estimation, an efficient strategy is to always uses Welch's t test. As the study design becomes more complicated, such as with repeated measures, random effect models, or non-normally distributed data, the story will likely be more complicated. As a field we should move toward analysis strategies that have fewer moving parts so they can be described easily in a scientific report or preregistration plan, and  provide robust estimates.
+For between-groups contrasts, with two groups or more, we arrived at a simple conclusion: on balance, when considering the false positive rate, power, and effect size estimation, an efficient strategy is to always uses Welch's t test.  In the Appendix, we provide the syntax for an R function that uses Welch's t test for any set of between-groups contrasts, including main effects and interactions. As the study design becomes more complicated, such as with repeated measures, random effect models, or non-normally distributed data, the story will likely be more complicated. As a field we should move toward analysis strategies that have fewer moving parts so they can be described easily in a scientific report or preregistration plan, and  provide robust estimates.
 
 
 
@@ -1411,7 +1402,21 @@ For between-groups contrasts, with two groups or more, we arrived at a simple co
 
 In R, you can use the following function to compute group contrasts based on Welch's t test. There is an example of how to use it below.
 
-\subsection{Function}
+\subsection{Arguments}
+\begin{small}
+\begin{singlespace}
+\begin{lstlisting}
+welch_contrast(data = NULL, dv, groups, ...)
+
+data: The dataframe where the dependent variable and groups are stored (optional)
+dv: The dependent variable
+groups: The group variable
+...: Any number of vectors with numeric contrasts, separated by commas, e.g., c(1, -1, 0, 0), c(-1, 0, 1, 0)
+\end{lstlisting}
+\end{singlespace}
+\end{small}
+
+\subsection{Function (run this syntax in R to access the function)}
 
 \begin{small}
 \begin{singlespace}
@@ -1556,20 +1561,6 @@ welch_contrast <- function(..., data = NULL, dv, groups) {
   return(output)
 }
 @
-\end{singlespace}
-\end{small}
-
-\subsection{Arguments}
-\begin{small}
-\begin{singlespace}
-\begin{lstlisting}
-welch_contrast(data = NULL, dv, groups, ...)
-
-data: The dataframe where the dependent variable and groups are stored (optional)
-dv: The dependent variable
-groups: The group variable
-...: Any number of vectors with numeric contrasts, separated by commas, e.g., c(1, -1, 0, 0), c(-1, 0, 1, 0)
-\end{lstlisting}
 \end{singlespace}
 \end{small}
 

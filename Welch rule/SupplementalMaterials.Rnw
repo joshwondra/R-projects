@@ -215,13 +215,13 @@ could provide a heuristic for deciding that
 the group variances are unequal and you should use Welch's t test. 
 To our knowledge, this possibility has never
 been examined. We used the analytical formulas for the  
-degrees of freedom from the two tests to see how the degrees of freedom (df) ratio should change as 
+degrees of freedom from the two tests to see how the degrees of freedom ratio should change as 
 the population variances and the sample sizes of the two groups change (Figure S1).
 
-    The top graph of Figure 1 displays the change in the df ratio as the 
+    The top graph of Figure S1 displays the change in the df ratio as the 
 variance ratio increases when sample sizes are equal. As expected, the ratio 
 decreases as the difference in variances grows larger. When the variances are 
-equal, the df ratio is equal to one. When 
+equal, the degrees of freedom ratio is equal to one. When 
 the variance of one group is double the variance of the other, the ratio drops 
 to .9. A useful heuristic might be to assume that the variances are unequal 
 when the ratio falls below some value, such as  96\%.
@@ -286,23 +286,23 @@ unequal (middle), and when both variances and sample sizes are unequal (bottom).
 
     But now look at what happens when the variances are equal and the sample 
 size ratio changes (middle graph of Figure S1). Even though the variances stay 
-the same, the df ratio decreases as the difference in sample sizes grows 
+the same, the degrees of freedom ratio decreases as the difference in sample sizes grows 
 larger. The 96\% heuristic would lead you astray and you would incorrectly 
 conclude that the variances are unequal when only the sample sizes are unequal.
 
     The picture becomes even more complicated when both the sample sizes and 
 the variances are unequal (bottom of Figure S1). In this case, the effect of 
-different variances on the df ratio depends on whether the larger group has the 
+different variances on the degrees of freedom ratio depends on whether the larger group has the 
 larger variance or the smaller variance. As the variance of the smaller group 
-increases, the immediate drop in the df ratio is quite dramatic before it 
+increases, the immediate drop in the degrees of freedom ratio is quite dramatic before it 
 begins to level off. However, as the variance of the larger group increases, 
 the move from equal to unequal variances actually counteracts the effect of 
-unequal sample sizes at first, and the df ratio approaches one before it drops 
+unequal sample sizes at first, and the degrees of freedom ratio approaches one before it drops 
 again. Due to the difference in sample sizes, a 96\% heuristic could mislead you 
 into concluding that variances are equal when they are actually 2-3 times 
 different from each other.
 
-In short, a heuristic based on the df ratio would only be useful when the sample sizes are equal.
+In short, a heuristic based on the degrees of freedom ratio would only be useful when the sample sizes are equal.
 
 
 \clearpage
@@ -449,7 +449,7 @@ as the variance ratio, sample size ratio, and sample sizes vary.
 <<power medium effect, echo = FALSE>>=
 
 # Power plot (two groups) ----
-power_two <- ggplot(filter(two_groups, effect == 'd=.2'), 
+power_two_smalld <- ggplot(filter(two_groups, effect == 'd=.2'), 
        aes(x = as.factor(var.ratio), y = rejects, ymin = 0, ymax = 1, group = Ns, shape = Ns, linetype = Ns)) + 
     geom_point(size = 4) + 
     scale_shape_manual(name = 'Sample sizes \nGroup 1, 2',
@@ -480,7 +480,7 @@ power_two <- ggplot(filter(two_groups, effect == 'd=.2'),
 
 
 # Power plot (interaction, one group has small n) ----
-power_int_smalln <- ggplot(filter(cross_int, effect == 'd=.2', !(n.ratio %in% c(1.5, 2))), 
+power_int_smalln_smalld <- ggplot(filter(cross_int, effect == 'd=.2', !(n.ratio %in% c(1.5, 2))), 
        aes(x = as.factor(var.ratio), y = rejects, ymin = 0, ymax = 1, group = Ns, shape = Ns, linetype = Ns)) + 
     geom_point(size = 4) + 
     scale_shape_manual(name = 'Sample sizes \nGroup 1, 2, 3, 4',
@@ -523,7 +523,7 @@ power_int_smalln <- ggplot(filter(cross_int, effect == 'd=.2', !(n.ratio %in% c(
       )
 
 # Power plot (interaction, one group has large n) ----
-power_int_bign <- ggplot(filter(cross_int, effect == 'd=.2', !(n.ratio %in% c(1/1.5, 1/2))), 
+power_int_bign_smalld <- ggplot(filter(cross_int, effect == 'd=.2', !(n.ratio %in% c(1/1.5, 1/2))), 
        aes(x = as.factor(var.ratio), y = rejects, ymin = 0, ymax = 1, group = Ns, shape = Ns, linetype = Ns)) + 
     geom_point(size = 4) + 
     scale_shape_manual(name = 'Sample sizes \nGroup 1, 2, 3, 4',
@@ -608,7 +608,7 @@ power_diff_int <- full_join(x = classic_rejects_int, y = welch_rejects_int) %>%
     )
 
 # Power difference plot (two groups) ----
-diff_plot_two <- ggplot(filter(power_diff_two, effect == 'd = .5'), 
+diff_plot_two_smalld <- ggplot(filter(power_diff_two, effect == 'd = .2'), 
        aes(x = as.factor(var.ratio), y = diff_rejects, ymin = -.3, ymax = .3, group = Ns, shape = Ns, linetype = Ns)) + 
     geom_point(size = 4) + 
     scale_shape_manual(name = 'Sample sizes \nGroup 1, 2',
@@ -639,7 +639,7 @@ diff_plot_two <- ggplot(filter(power_diff_two, effect == 'd = .5'),
 
 
 # Power difference plot (interaction, one group has small n) ----
-diff_plot_int_smalln <- ggplot(filter(power_diff_int, effect == 'd = .5', !(n.ratio %in% c(1.5, 2))), 
+diff_plot_int_smalln_smalld <- ggplot(filter(power_diff_int, effect == 'd = .2', !(n.ratio %in% c(1.5, 2))), 
        aes(x = as.factor(var.ratio), y = diff_rejects, ymin = -.3, ymax = .3, group = Ns, shape = Ns, linetype = Ns)) + 
     geom_point(size = 4) + 
     scale_shape_manual(name = 'Sample sizes \nGroup 1, 2, 3, 4',
@@ -684,7 +684,7 @@ diff_plot_int_smalln <- ggplot(filter(power_diff_int, effect == 'd = .5', !(n.ra
 
 
 # Power difference plot (interaction, one group has small n) ----
-diff_plot_int_bign <- ggplot(filter(power_diff_int, effect == 'd = .5', !(n.ratio %in% c(1/1.5, 1/2))), 
+diff_plot_int_bign_smalld <- ggplot(filter(power_diff_int, effect == 'd = .2', !(n.ratio %in% c(1/1.5, 1/2))), 
        aes(x = as.factor(var.ratio), y = diff_rejects, ymin = -.3, ymax = .3, group = Ns, shape = Ns, linetype = Ns)) + 
     geom_point(size = 4) + 
     scale_shape_manual(name = 'Sample sizes \nGroup 1, 2, 3, 4',
@@ -728,26 +728,26 @@ diff_plot_int_bign <- ggplot(filter(power_diff_int, effect == 'd = .5', !(n.rati
 
 # Print power plots ----
 
-power_plots <- plot_grid(
-  power_two + guides(shape = FALSE, linetype = FALSE), 
-  diff_plot_two, 
+power_plots_smalld <- plot_grid(
+  power_two_smalld + guides(shape = FALSE, linetype = FALSE), 
+  diff_plot_two_smalld, 
 
-  power_int_smalln + guides(shape = FALSE, linetype = FALSE), 
-  diff_plot_int_smalln, 
+  power_int_smalln_smalld + guides(shape = FALSE, linetype = FALSE), 
+  diff_plot_int_smalln_smalld, 
 
-  power_int_bign + guides(shape = FALSE, linetype = FALSE), 
-  diff_plot_int_bign, 
+  power_int_bign_smalld + guides(shape = FALSE, linetype = FALSE), 
+  diff_plot_int_bign_smalld, 
   nrow = 3
   )
 @
 
 \begin{figure}[!ht]
 
-<<PowerPlots, echo = FALSE,  collapse = TRUE, fig = TRUE, width = 8, height = 11>>=
-power_plots
+<<PowerPlotsSmalld, echo = FALSE,  collapse = TRUE, fig = TRUE, width = 8, height = 11>>=
+power_plots_smalld
 @
 
-\textit{Figure S4.} Power of Student's and Welch's t tests to detect a medium effect.
+\textit{Figure S3.} Power of Student's and Welch's t tests to detect a medium effect.
 \end{figure}
 
 \clearpage
@@ -755,7 +755,7 @@ power_plots
 <<power medium effect, echo = FALSE>>=
 
 # Power plot (two groups) ----
-power_two <- ggplot(filter(two_groups, effect == 'd=.5'), 
+power_two_midd <- ggplot(filter(two_groups, effect == 'd=.5'), 
        aes(x = as.factor(var.ratio), y = rejects, ymin = 0, ymax = 1, group = Ns, shape = Ns, linetype = Ns)) + 
     geom_point(size = 4) + 
     scale_shape_manual(name = 'Sample sizes \nGroup 1, 2',
@@ -786,7 +786,7 @@ power_two <- ggplot(filter(two_groups, effect == 'd=.5'),
 
 
 # Power plot (interaction, one group has small n) ----
-power_int_smalln <- ggplot(filter(cross_int, effect == 'd=.5', !(n.ratio %in% c(1.5, 2))), 
+power_int_smalln_midd <- ggplot(filter(cross_int, effect == 'd=.5', !(n.ratio %in% c(1.5, 2))), 
        aes(x = as.factor(var.ratio), y = rejects, ymin = 0, ymax = 1, group = Ns, shape = Ns, linetype = Ns)) + 
     geom_point(size = 4) + 
     scale_shape_manual(name = 'Sample sizes \nGroup 1, 2, 3, 4',
@@ -829,7 +829,7 @@ power_int_smalln <- ggplot(filter(cross_int, effect == 'd=.5', !(n.ratio %in% c(
       )
 
 # Power plot (interaction, one group has large n) ----
-power_int_bign <- ggplot(filter(cross_int, effect == 'd=.5', !(n.ratio %in% c(1/1.5, 1/2))), 
+power_int_bign_midd <- ggplot(filter(cross_int, effect == 'd=.5', !(n.ratio %in% c(1/1.5, 1/2))), 
        aes(x = as.factor(var.ratio), y = rejects, ymin = 0, ymax = 1, group = Ns, shape = Ns, linetype = Ns)) + 
     geom_point(size = 4) + 
     scale_shape_manual(name = 'Sample sizes \nGroup 1, 2, 3, 4',
@@ -914,7 +914,7 @@ power_diff_int <- full_join(x = classic_rejects_int, y = welch_rejects_int) %>%
     )
 
 # Power difference plot (two groups) ----
-diff_plot_two <- ggplot(filter(power_diff_two, effect == 'd = .5'), 
+diff_plot_two_midd <- ggplot(filter(power_diff_two, effect == 'd = .5'), 
        aes(x = as.factor(var.ratio), y = diff_rejects, ymin = -.3, ymax = .3, group = Ns, shape = Ns, linetype = Ns)) + 
     geom_point(size = 4) + 
     scale_shape_manual(name = 'Sample sizes \nGroup 1, 2',
@@ -945,7 +945,7 @@ diff_plot_two <- ggplot(filter(power_diff_two, effect == 'd = .5'),
 
 
 # Power difference plot (interaction, one group has small n) ----
-diff_plot_int_smalln <- ggplot(filter(power_diff_int, effect == 'd = .5', !(n.ratio %in% c(1.5, 2))), 
+diff_plot_int_smalln_midd <- ggplot(filter(power_diff_int, effect == 'd = .5', !(n.ratio %in% c(1.5, 2))), 
        aes(x = as.factor(var.ratio), y = diff_rejects, ymin = -.3, ymax = .3, group = Ns, shape = Ns, linetype = Ns)) + 
     geom_point(size = 4) + 
     scale_shape_manual(name = 'Sample sizes \nGroup 1, 2, 3, 4',
@@ -990,7 +990,7 @@ diff_plot_int_smalln <- ggplot(filter(power_diff_int, effect == 'd = .5', !(n.ra
 
 
 # Power difference plot (interaction, one group has small n) ----
-diff_plot_int_bign <- ggplot(filter(power_diff_int, effect == 'd = .5', !(n.ratio %in% c(1/1.5, 1/2))), 
+diff_plot_int_bign_midd <- ggplot(filter(power_diff_int, effect == 'd = .5', !(n.ratio %in% c(1/1.5, 1/2))), 
        aes(x = as.factor(var.ratio), y = diff_rejects, ymin = -.3, ymax = .3, group = Ns, shape = Ns, linetype = Ns)) + 
     geom_point(size = 4) + 
     scale_shape_manual(name = 'Sample sizes \nGroup 1, 2, 3, 4',
@@ -1034,23 +1034,23 @@ diff_plot_int_bign <- ggplot(filter(power_diff_int, effect == 'd = .5', !(n.rati
 
 # Print power plots ----
 
-power_plots <- plot_grid(
-  power_two + guides(shape = FALSE, linetype = FALSE), 
-  diff_plot_two, 
+power_plots_midd <- plot_grid(
+  power_two_midd + guides(shape = FALSE, linetype = FALSE), 
+  diff_plot_two_midd, 
 
-  power_int_smalln + guides(shape = FALSE, linetype = FALSE), 
-  diff_plot_int_smalln, 
+  power_int_smalln_midd + guides(shape = FALSE, linetype = FALSE), 
+  diff_plot_int_smalln_midd, 
 
-  power_int_bign + guides(shape = FALSE, linetype = FALSE), 
-  diff_plot_int_bign, 
+  power_int_bign_midd + guides(shape = FALSE, linetype = FALSE), 
+  diff_plot_int_bign_midd, 
   nrow = 3
   )
 @
 
 \begin{figure}[!ht]
 
-<<PowerPlots, echo = FALSE,  collapse = TRUE, fig = TRUE, width = 8, height = 11>>=
-power_plots
+<<PowerPlotsMidD, echo = FALSE,  collapse = TRUE, fig = TRUE, width = 8, height = 11>>=
+power_plots_midd
 @
 
 \textit{Figure S4.} Power of Student's and Welch's t tests to detect a medium effect.
@@ -1220,7 +1220,7 @@ power_diff_int <- full_join(x = classic_rejects_int, y = welch_rejects_int) %>%
     )
 
 # Power difference plot (two groups) ----
-diff_plot_two <- ggplot(filter(power_diff_two, effect == 'd = .5'), 
+diff_plot_two <- ggplot(filter(power_diff_two, effect == 'd = .8'), 
        aes(x = as.factor(var.ratio), y = diff_rejects, ymin = -.3, ymax = .3, group = Ns, shape = Ns, linetype = Ns)) + 
     geom_point(size = 4) + 
     scale_shape_manual(name = 'Sample sizes \nGroup 1, 2',
@@ -1251,7 +1251,7 @@ diff_plot_two <- ggplot(filter(power_diff_two, effect == 'd = .5'),
 
 
 # Power difference plot (interaction, one group has small n) ----
-diff_plot_int_smalln <- ggplot(filter(power_diff_int, effect == 'd = .5', !(n.ratio %in% c(1.5, 2))), 
+diff_plot_int_smalln <- ggplot(filter(power_diff_int, effect == 'd = .8', !(n.ratio %in% c(1.5, 2))), 
        aes(x = as.factor(var.ratio), y = diff_rejects, ymin = -.3, ymax = .3, group = Ns, shape = Ns, linetype = Ns)) + 
     geom_point(size = 4) + 
     scale_shape_manual(name = 'Sample sizes \nGroup 1, 2, 3, 4',
@@ -1296,7 +1296,7 @@ diff_plot_int_smalln <- ggplot(filter(power_diff_int, effect == 'd = .5', !(n.ra
 
 
 # Power difference plot (interaction, one group has small n) ----
-diff_plot_int_bign <- ggplot(filter(power_diff_int, effect == 'd = .5', !(n.ratio %in% c(1/1.5, 1/2))), 
+diff_plot_int_bign <- ggplot(filter(power_diff_int, effect == 'd = .8', !(n.ratio %in% c(1/1.5, 1/2))), 
        aes(x = as.factor(var.ratio), y = diff_rejects, ymin = -.3, ymax = .3, group = Ns, shape = Ns, linetype = Ns)) + 
     geom_point(size = 4) + 
     scale_shape_manual(name = 'Sample sizes \nGroup 1, 2, 3, 4',
@@ -1355,11 +1355,11 @@ power_plots <- plot_grid(
 
 \begin{figure}[!ht]
 
-<<PowerPlots, echo = FALSE,  collapse = TRUE, fig = TRUE, width = 8, height = 11>>=
+<<PowerPlotsBigD, echo = FALSE,  collapse = TRUE, fig = TRUE, width = 8, height = 11>>=
 power_plots
 @
 
-\textit{Figure S4.} Power of Student's and Welch's t tests to detect a medium effect.
+\textit{Figure S5.} Power of Student's and Welch's t tests to detect a large effect.
 \end{figure}
 
 \clearpage
