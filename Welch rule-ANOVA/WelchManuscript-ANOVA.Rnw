@@ -102,7 +102,7 @@ average
     \end{equation}
      with $s_1^2$ and $s_2^2$ being the two sample group variances. This common variance is used to estimate the population variances of the two groups, and to estimate the standard error of the t test.  
     \begin{equation}
-    s_{\overline{x}_1-\overline{x}_2} = \sqrt{\frac{s_p^2}{n_1}  + \frac{s_p^2}{n_2}} %= s_p\sqrt{\frac{1}{n_1}  + \frac{1}{n_2}} Josh W cut this because it's easier to see how the standard error from Student's and Welch's t tests compare by leaving the pooled variance under the radical
+    s_{Student} = \sqrt{\frac{s_p^2}{n_1}  + \frac{s_p^2}{n_2}} %= s_p\sqrt{\frac{1}{n_1}  + \frac{1}{n_2}} Josh W cut this because it's easier to see how the standard error from Student's and Welch's t tests compare by leaving the pooled variance under the radical
     \end{equation}
    
 In the pooling equation (EQ 3), if the sample sizes are different, the variance of the group 
@@ -111,7 +111,7 @@ variance, then the standard error will be larger; if the larger group has the sm
     
   In contrast Welch's t test does not assume the group variances are equal. The population variances of the groups are estimated with the sample group variances:
     \begin{equation}
-    s_{\overline{x}_1-\overline{x}_2} = \sqrt{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}
+    s_{Welch} = \sqrt{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}
     \end{equation}
 
   Aside from their standard errors, the two tests also differ in how they compute the degrees of 
