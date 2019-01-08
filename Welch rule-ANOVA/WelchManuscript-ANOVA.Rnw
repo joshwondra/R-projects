@@ -75,7 +75,7 @@ Their discussion focused on comparing two groups, but their conclusion can be ex
 In this paper, we compare contrasts based on Welch's t-test to a typical analysis of variance. We show that in designs with more than two groups, Welch's t test does a better job controlling false positives, accurately estimating effect sizes, and simplifying pre-registration, without losing too much power. We illustrate with a 2~$\times$~2 factorial design.
 
 
-\subsection{Similarities and Differences Between Student's and Welch's t tests with Two Groups}
+\subsection{Student's and Welch's t tests with Two Groups}
 
 Both Student's and Welch's t tests assume the populations behind the data follow a normal distribution and that the
 observations are independent of each other. For both tests, the t-value is the 
@@ -87,10 +87,10 @@ difference:
 The standard error is estimated from the group variances, by summing the group variances divided by their sample sizes, and then then taking the square root of the sum.
 
 \begin{equation}
-    \sigma_{\overline{x}_1-\overline{x}_2} = \sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}
+    \hat{\sigma}_{\overline{x}_1-\overline{x}_2} = \sqrt{\frac{\hat{\sigma}_1^2}{n_1} + \frac{\hat{\sigma}_2^2}{n_2}}
 \end{equation}
 
-where $\sigma_1^2$ and $\sigma_2^2$ are the population variances of the two groups. 
+where $\hat{\sigma}_1^2$ and $\hat{\sigma}_2^2$ are the estimated population variances of the two groups. 
 
   But Student's t test and Welch's t tests make different assumptions about how to estimate the group variances. 
   Student's t test assumes the population variances of the groups are equal, so if the sample variances are different, it's due to sampling error. 
@@ -115,33 +115,18 @@ variance, then the standard error will be larger; if the larger group has the sm
     \end{equation}
 
   Aside from their standard errors, the two tests also differ in how they compute the degrees of 
-freedom. Student's t test uses a simple formula to compute the degrees of freedom: $df=n_1+n_2-2$. Welch's t test uses a more complicated formula to compute the degrees of freedom: 
+freedom. Student's t test uses a simple formula to compute the degrees of freedom: $df_{Student}=n_1+n_2-2$. Welch's t test uses a more complicated formula to compute the degrees of freedom: 
     \begin{equation}
-    df = \frac{(\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2})^2}{\frac{(s_1^2)^2}{n_1^2(n_1-1)} + \frac{(s_2^2)^2}{n_2^2(n_2-1)}}
+    df_{Welch} = \frac{(\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2})^2}{\frac{(s_1^2)^2}{n_1^2(n_1-1)} + \frac{(s_2^2)^2}{n_2^2(n_2-1)}}
     \end{equation}
 The important thing to know is the formula decreases the degrees of freedom to the extent that the group
 variances differ. It can also produce a degrees of freedom value that is not an integer.
 
 
-    Data analysis involves decisions about which statistical test answers the research question, whether the test is 
-suitable to the data, and whether there is a more appropriate test. Recent discussions of research practices in psychology 
-\cite<e.g.,>{Fiedler2012, Simmons2011, 
-Wagenmakers2012} highlight the tension between two valued outcomes of these 
-decisions. On the one hand, researchers don't want to mistakenly 
-claim there is a true effect where none exists, which involves a 
-concern with false positives. On the other hand, researchers want to find 
-effects where they do exist, which involves a concern with power. In addition,
-there is a growing concern with estimating effect sizes 
-\cite{Bakker2012, Cumming2014, Ioannidis2008}. 
-Researchers must find a way to balance these concerns as they make their decisions. 
-
-The recent push for pre-registration forces researchers to make these decisions prior to data collection by specifying how they plan to test their hypothesis (e.g., an analysis of variance). But they should also address the assumptions of those tests (e.g., equal variances), how they will check if those assumptions are violated (e.g., a significance test of the group variances), and what they will do in that case (e.g., use a different test).  Such planning can be good for science, but it can easily become overwhelming to write a long list of conditional statements: ``if I see this, then I'll do that.''  Preregistration can be simplified if the researcher commits to a statistical procedure that is robust to violations of assumptions, and all the better if the procedure doesn't introduce new costs, such as lower power. We propose that when researchers compare the means of independent groups, they should commit to Welch's t test, which is robust when variances are unequal, instead of ANOVA. 
-Throughout the paper we assume that the null hypothesis of for the population mean difference is zero.
 
 
 
-
-\citeA{Delacre2017} argued that researchers should use Welch's t test by default because it has better control over the false positive rate when the group variances are unequal, but it doesn't lose much power when the variances are equal. 
+\subsection{Student's and Welch's t tests with More Than Two Groups}
 
 Let's consider the case of a 2~$\times$~2 factorial design with factors A and B. Typically researchers would use a 2~$\times$~2 factorial ANOVA to test for group differences, which would test the main effect of A, the main effect of B, and the interaction of A and B. If the group sample sizes are equal or if Type 3 Sum of Squares is used, then the ANOVA is equivalent to a set of orthogonal contrasts with t tests using the following weights:
 
@@ -168,17 +153,17 @@ To find the t value to test the contrasts, you need to find the standard error o
   t = \frac{\hat{I}}{\hat{\sigma}_{\hat{I}}}
 \end{equation}
 
-When Student's t test is used, the standard error is still estimated from the common variance among the groups, and information from all the groups is used to find the pooled variance. Then the pooled variance is weighted by both the group sample sizes and contrast weights to compute the standard error. 
+When Student's t test is used, the standard error is still estimated from the common variance among the groups, and information from all four groups is used to find the pooled variance. 
 \begin{equation}
     s_p^2 = \frac{\sum (n_{i} - 1)s_{i}^2}{\sum (n_{i} - 1)}
 \end{equation}
 \begin{equation}
-    s_{\hat{I}} = \sqrt{\sum \frac{a_i s_p^2}{n_i}}
+    s_{\hat{I}} = \sqrt{\sum \frac{a_i^2 s_p^2}{n_i}}
 \end{equation}
 
 The degrees of freedom are $df = \sum (n_i - 1)$, and the t value is equal to the square root of the F value from an ANOVA with Type 3 Sum of Squares, or any Type Sum of Squares if the group sample sizes are equal.
 
-However, the benefit of expressing the test as a t test is that you don't \textit{have} to use Student's t test---you can use Welch's t test instead. The value of the contrast is the same, but its standard error is based on separate variances rather than a common variance.
+However, the benefit of using a t test is that you don't \textit{have} to use Student's t test---you can use Welch's t test instead. The value of the contrast is the same, but its standard error is based on separate variances rather than a common variance.
 \begin{equation}
     s_{\hat{I}} = \sqrt{\sum \frac{a_i s_{i}^2}{n_{i}}}
 \end{equation}
@@ -222,12 +207,12 @@ ggplot(display_data, aes(y = y, x = factorA, group = factorB, linetype = factorB
 
 @
 
-\textit{Figure 1.} Means for the simulations when there were no effects, a crossover interaction with no main effects, or main effects and an interaction.
+\textit{Figure 1.} Means for the simulations when there were no effects, a crossover interaction with no main effects, or two main effects and an interaction.
 \end{figure}
 
 \section{Case 1. No effects in a 2 x 2 factorial design}
 
-In the case of no effects in a 2~$\times$~2 factorial design, we will compare the traditional ANOVA approach to Welch's t test on the false positive rate for each comparison (two main effects and one interaction), the joint false positive rate for the three comparisons, and effect size estimation. 
+In the case of no effects in a 2~$\times$~2 factorial design, we will compare the traditional ANOVA/Student's t test approach to Welch's t test on the false positive rate for each comparison (two main effects and one interaction), the joint false positive rate for the three comparisons, and effect size estimation. 
 
 \subsection{False Positive Rates}
 
@@ -312,13 +297,14 @@ current_data %>%
 @
 
 \textit{Figure 2.} False positive rates for ANOVA and Welch's t test
+in a 2~$\times$~2 factorial design (factors A and B)
 as the variance ratio, sample size ratio, and sample sizes vary.
 \end{figure}
 
 \subsection{Joint False Positive Rate}
 
 In addition to looking at each comparison separately, we can look at the joint false positive rate
----the probability that at least one of the three comparisons produces a false positive. 
+---the probability that at least one of the main effects or the interaction produces a false positive. 
 The expected joint false positive rate in a 2~$\times$~2 ANOVA, when the three comparisons are independent, is $\alpha = .14$, 
 though in practice the rate is typically slightly below .14 \cite{Cramer2016}.
 
@@ -490,13 +476,66 @@ current_data %>%
 
 \subsection{Power}
 
-We can compare the power of ANOVA and Welch's t test to detect the interaction effect, but also to detect the two simple effects of factor B at each level of factor A. Figure 5 displays the difference in power between Welch's t test and ANOVA to detect the true effects, with higher values indicating that Welch's is more powerful. As we can see, the power of the two tests to detect the interaction was approximately equal when either the sample sizes or the variances were equal. However, Welch's t test had more power when the small group had the smaller variance. ANOVA had more power when the small group had the larger variance, but this was the same condition when it was more likely to find false positives. 
+We can compare the power of ANOVA and Welch's t test to detect the interaction effect, but also to detect the two simple effects of factor B at each level of factor A. Figure 5 displays the difference in power between Welch's t test and ANOVA to detect the true effects, with higher values indicating that Welch's is more powerful. 
 
-There were some important differences in the patterns for the simple effects. First was the magnitude of the difference, which was up to 11\% for the interaction, but up to 32\% for the simple effects. 
+First, let's consider the interaction effect.
+As we can see, the power of the two tests to detect the interaction was approximately equal when either the sample sizes or the variances were equal. However, when the sample sizes and the variances were different, ANOVA had more power when the small group had the larger variance--the same condition when it inflated the false positive rate. Welch's t test had more power when the small group had the smaller variance, without the risk of inflating the false positive rate. This shows that ANOVA/Student's t test are only more powerful under the same conditions where they pose a higher risk of false positives, but Welch's t test can be more powerful without inflating the risk of false positives.
 
-Second was the effect of unequal variances when the sample sizes were equal. In the previous analyses, when the sample sizes were equal, the two tests were similar, even if the variances were unequal. However, for the simple effects, when the sample sizes were equal, the two tests performed differently when the variances were unequal.
+Next, let's consider the simple effects.
+Similar to the interaction effect, ANOVA and Welch's t test had similar power when the variances were equal. But unlike the interaction effect, having equal sample sizes didn't prevent differences in power when the variances were unequal.
+The reason for this is that the two tests weigh the group variances differently to find the standard error of the contrast. 
+When the sample sizes are equal, we can express the standard error of the contrast with weights on the variance of each group.
+\begin{equation}
+    s = \sqrt{
+    \frac{1}{n}(
+    a_{A1B1}s^2_{A1B1} +
+    a_{A1B2}s^2_{A1B2} +
+    a_{A1B1}s^2_{A2B1} +
+    a_{A2B2}s^2_{A2B2}
+    )
+    }
+    \end{equation}
+    
+For Student's t test, the weights are always equal to 1/2, no matter which groups are involved in the contrast.
 
-Third was the pattern of the difference in power when the group with unequal sample sizes and variances was included vs. excluded from the simple effect. The middle graph displays the contrast that includes the group that had different sample sizes or variances. The pattern was similar to the interaction effect---Welch'st test had more power when the small group had the smaller variance, and ANOVA had more power when the small group had the larger variance. The bottom graph displays the contrast that \textit{excludes} the group that had different sample sizes or variances. In this case, the pattern of the differences was opposite in direction and the difference in magnitude was asymmetrical. The ANOVA had more power to detect an effect when the small group had the smaller variance, but the difference was small-about 4-6\% when one group had 1/5 the variance of the other groups. However, Welch's t test had more power to detect an effect when the small group had the larger variance, and the difference could be quite large, up to 32\%.
+\begin{equation}
+    s_{Student} = \sqrt{
+    \frac{1}{n}(
+    \frac{1}{2}s^2_{A1B1} +
+    \frac{1}{2}s^2_{A1B2} +
+    \frac{1}{2}s^2_{A2B1} +
+    \frac{1}{2}s^2_{A2B2}
+    )
+    }
+    \end{equation}
+    
+But for Welch's t test, the weights are equal to the contrast weights. So for the contrast between groups A1B1 and A1B2, groups A1B1 and A1B2 get weights of 1 and the other groups get weights of 0
+
+\begin{equation}
+    s_{Welch} = \sqrt{
+    \frac{1}{n}(
+    1s^2_{A1B1} +
+    1s^2_{A1B2} +
+    0s^2_{A2B1} +
+    0s^2_{A2B2}
+    )
+    }
+    \end{equation}
+    
+And for the contrast between grouops A2B1 and A2B2, groups A2B1 and A2B2 get weights of 1 and the other groups get weights of 0
+
+\begin{equation}
+    s_{Welch} = \sqrt{
+    \frac{1}{n}(
+    0s^2_{A1B1} +
+    0s^2_{A1B2} +
+    1s^2_{A2B1} +
+    1s^2_{A2B2}
+    )
+    }
+    \end{equation}
+
+Whether Welch's or Student's t test has more power to detect effects depends on which standard error is smaller. Though not shown here, Student's t test is more powerful under the same conditions that it inflates the false positive rate, but Welch's t test is more powerful under other conditions and does not inflate the false positive rate. 
 
 
 
@@ -676,6 +715,22 @@ crossover_sims %>%
 
 
 \section{Discussion}
+
+
+    Data analysis involves decisions about which statistical test answers the research question, whether the test is 
+suitable to the data, and whether there is a more appropriate test. Recent discussions of research practices in psychology 
+\cite<e.g.,>{Fiedler2012, Simmons2011, 
+Wagenmakers2012} highlight the tension between two valued outcomes of these 
+decisions. On the one hand, researchers don't want to mistakenly 
+claim there is a true effect where none exists, which involves a 
+concern with false positives. On the other hand, researchers want to find 
+effects where they do exist, which involves a concern with power. In addition,
+there is a growing concern with estimating effect sizes 
+\cite{Bakker2012, Cumming2014, Ioannidis2008}. 
+Researchers must find a way to balance these concerns as they make their decisions. 
+
+The recent push for pre-registration forces researchers to make these decisions prior to data collection by specifying how they plan to test their hypothesis (e.g., an analysis of variance). But they should also address the assumptions of those tests (e.g., equal variances), how they will check if those assumptions are violated (e.g., a significance test of the group variances), and what they will do in that case (e.g., use a different test).  Such planning can be good for science, but it can easily become overwhelming to write a long list of conditional statements: ``if I see this, then I'll do that.''  Preregistration can be simplified if the researcher commits to a statistical procedure that is robust to violations of assumptions, and all the better if the procedure doesn't introduce new costs, such as lower power. We propose that when researchers compare the means of independent groups, they should commit to Welch's t test, which is robust when variances are unequal, instead of ANOVA. 
+Throughout the paper we assume that the null hypothesis of for the population mean difference is zero.
 
 Due to these differences in the standard errors and degrees of freedom, Student's and Welch's t tests can disagree about whether the group means are different. Because Welch's t test decreases the degrees of freedom, it might be more conservative. Welch's t test might be the better choice if it finds fewer false positives when the variances are unequal. But it might be the worse choice if it's too conservative and isn't powerful enough to detect true effects. 
 
