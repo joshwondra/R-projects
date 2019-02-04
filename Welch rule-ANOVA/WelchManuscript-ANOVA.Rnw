@@ -93,7 +93,7 @@ The standard error is estimated from the group variances, by summing the group v
 where $\hat{\sigma}_1^2$ and $\hat{\sigma}_2^2$ are the estimated population variances of the two groups. 
 
   But Student's t test and Welch's t tests make different assumptions about how to estimate the group variances. 
-  Student's t test assumes the population variances of the groups are equal, so if the sample variances are different, it's due to sampling error. 
+  Student's t test assumes the population variances of the groups are equal ($\hat{\sigma}_1^2 = \hat{\sigma}_2^2$), so if the sample variances are different, it's due to sampling error. 
   To correct for this error, Student's t test estimates a common variance
 by pooling the sample group variances into a weighted 
 average
@@ -161,7 +161,7 @@ When Student's t test is used, the standard error is still estimated from the co
     s_{\hat{I}} = \sqrt{\sum \frac{a_i^2 s_p^2}{n_i}}
 \end{equation}
 
-The degrees of freedom are $df = \sum (n_i - 1)$, and the t value is equal to the square root of the F value from an ANOVA with Type 3 Sum of Squares, or any Type Sum of Squares if the group sample sizes are equal.
+The degrees of freedom are $df = \sum (n_i - 1)$, and the t value is equal to the square root of the F value.
 
 However, the benefit of using a t test is that you don't \textit{have} to use Student's t test---you can use Welch's t test instead. The value of the contrast is the same, but its standard error is based on separate variances rather than a common variance.
 \begin{equation}
@@ -212,7 +212,7 @@ ggplot(display_data, aes(y = y, x = factorA, group = factorB, linetype = factorB
 
 \section{Case 1. No effects in a 2 x 2 factorial design}
 
-In the case of no effects in a 2~$\times$~2 factorial design, we will compare the traditional ANOVA/Student's t test approach to Welch's t test on the false positive rate for each comparison (two main effects and one interaction), the joint false positive rate for the three comparisons, and effect size estimation. 
+With no effects, we can compare the traditional ANOVA/Student's t test approach to Welch's t test on the false positive rate for each comparison (two main effects and one interaction), the joint false positive rate for the three comparisons, and effect size estimation. 
 
 \subsection{False Positive Rates}
 
@@ -315,9 +315,10 @@ when both the variances and sample sizes were unequal (see Figure 3).
 When the larger group(s) had the larger variance, the false positive rate dropped as low as 
 about .07, but when it had the smaller 
 variance, the false positive rate 
-rose as high as .26. The observed joint false positive  
-rate for Welch's t test 
-was more variable than it was for the individual comparisons, but it remained closer to the expected rate. Welch's 
+rose as high as .26.
+This means that if a researcher were to run four 2~$\times$~2 experiments in a year that had no true effects, but they analyzed them with ANOVA, we would expect one experiment to show at least one false positve.   
+The observed joint false positive  
+rate for Welch's t test remained closer to the expected rate. Welch's 
 t test behaved closer to expectations when it came to false positives than 
 ANOVA.
 
@@ -391,6 +392,99 @@ current_data %>%
 \textit{Figure 3.} Joint false positive rates for ANOVA and Welch's t test
 as the variance ratio, sample size ratio, and sample sizes vary.
 \end{figure}
+
+\subsection{Coverage Probability}
+We used 95\% confidence intervals constructed using Student's and Welch's t 
+tests to find their relative coverage probability, the proportion of confidence intervals 
+that contain the population value of the estimated parameter, which in this case is the 
+difference in group means (which is 0 when there are no effects). By 
+definition,  the expected coverage probability of 95\% confidence intervals  is .95.
+Additionally, when the null hypothesis is true and $\alpha = .05$, the coverage 
+probability of 95\% confidence intervals has a simple relationship with the 
+false positive rate---it's the complement of the false positive rate. 
+
+Figure 4 displays the coverage probabilities of the two t tests. 
+The coverage probability for Student's t test varies dramatically, just as the 
+false positive rate did.  When Student's t test is the most 
+powerful, it is also the least accurate at estimating the difference in means, and what you would believe is a 95\% 
+confidence interval drops to as low as an 87\% confidence interval in reality. 
+In contrast, Welch's t test performs as expected and the confidence interval 
+contains the true effect 95\% of the time regardless of the variance and sample 
+size ratios. 
+
+\begin{figure}[!ht]
+<<no_effects_joint_false_positives, echo = FALSE, collapse = TRUE, fig = TRUE, width = 8, height = 4>>=
+
+# subset data
+current_data <- no_effects %>% 
+  ungroup() %>% 
+  select(-joint_reject_student, -joint_reject_welch, -reject_student, -reject_welch) %>% 
+  gather(key = test, value = coverage_rate, coverage_student, coverage_welch) %>% 
+  mutate(
+    test = case_when(
+      test == 'coverage_student' ~ "ANOVA",
+      test == 'coverage_welch' ~ "Welch's t test"
+    ),
+    contrast_names = factor(contrast_names, levels = c('ME (1 & 2 vs 3 & 4)', 'ME (1 & 3 vs 2 & 4)', 'Interaction'), labels = c('Main Effect of A', 'Main Effect of B', 'Interaction')),
+    ns = paste(min_sample, min_sample * sample_ratio, min_sample * sample_ratio, min_sample * sample_ratio, sep = ', ') %>% factor(levels = c('50, 50, 50, 50', '50, 75, 75, 75', '50, 100, 100, 100')),
+    var_ratio = factor(var_ratio),
+    sample_ratio = factor(sample_ratio)
+  ) %>% 
+  filter(
+    min_sample == 50,
+    str_detect(contrast_names, 'Interaction')
+  )
+
+# get min/max coverage rates
+min_max_rates <- current_data %>% 
+  group_by(contrast_names, test) %>% 
+  summarize(
+    min_coverage = min(coverage_rate),
+    max_coverage = max(coverage_rate)
+  )
+
+# false positives (per test)
+current_data %>% 
+  ggplot(aes(y = coverage_rate, x = var_ratio, group = ns, linetype = ns, shape = ns)) +
+  geom_line(size = .5) +
+  geom_point(size = 4) + 
+  facet_grid(contrast_names ~ test) +
+  scale_x_discrete(labels = factor(c('1/5', '1/2', '1', '2', '5'))) +
+  scale_y_continuous(breaks = seq(.8, 1, .01)) +
+  labs(
+    x = bquote(frac(sigma[A1/B1]^2,{sigma[A1/B2]^2 == sigma[A2/B1]^2} == sigma[A2/B2]^2)),
+    y = 'Coverage Probability'
+  ) +
+  theme_classic() +
+  theme(
+    panel.grid = element_blank(),
+    panel.grid.major.y = element_line(color = 'gray80')
+  ) +
+  scale_shape_manual(name = 'Sample sizes \nGroup A1/B1, A1/B2, A2/B1, A2/B2',
+                     labels = c(
+                       '50, 50, 50, 50',
+                       '50, 75, 75, 75',
+                       '50, 100, 100, 100'
+                     ),
+                     values = rep(c(15, 16, 17), times = 3)
+  ) +
+  scale_linetype_manual(name = 'Sample sizes \nGroup A1/B1, A1/B2, A2/B1, A2/B2',
+                        labels = c(
+                          '50, 50, 50, 50',
+                          '50, 75, 75, 75',
+                          '50, 100, 100, 100'
+                        ),
+                        values = rep('solid', each = 9)
+  ) 
+@
+
+\textit{Figure 4.} Coverage probability for ANOVA and Welch's t test
+as the variance ratio, sample size ratio, and sample sizes vary.
+\end{figure}
+
+
+
+
 
 \section{Case 2. No main effects, crossover interaction}
 
@@ -522,7 +616,7 @@ But for Welch's t test, the weights are equal to the contrast weights. So for th
     }
     \end{equation}
     
-And for the contrast between grouops A2B1 and A2B2, groups A2B1 and A2B2 get weights of 1 and the other groups get weights of 0
+And for the contrast between groups A2B1 and A2B2, groups A2B1 and A2B2 get weights of 1 and the other groups get weights of 0
 
 \begin{equation}
     s_{Welch} = \sqrt{
@@ -602,15 +696,10 @@ current_data %>%
 \textit{Figure 5.} Difference in power between Welch's t test and ANOVA to detect true effects with a crossover interaction.
 \end{figure}
 
-    Is Welch's t test underpowered compared to Student's t test? Figure 3 
-displays the power of the two tests to detect a medium (d = .5) effect
-under the different conditions, as well as the difference in power, with higher numbers meaning that Student's t test is more poweful (results for small and large effect sizes are available in the supplemental materials). For both tests, power decreased as variances 
-became unequal because we increased one or more groups' variances; however, 
-it decreased at different rates depending on the sample size and 
-variance ratios. When the sample sizes or variances were equal, power was approximately equal. However, when both the sample sizes and 
+    Is Welch's t test underpowered compared to Student's t test? When the sample sizes or variances were equal, power was approximately equal. However, when both the sample sizes and 
 variances were unequal, there were differences. Student's t 
 test was more powerful when the large sample(s) had the smaller variance, whereas 
-Welch's t test was more powerful when the small sample(s) had the smaller variance. 
+Welch's t test was more powerful when the small sample(s) had the smaller variance. (NOTE: add an exception for contrasts)
     
     Student's t test had the greatest power over 
 Welch's when one sample size was twice the other and the large 
