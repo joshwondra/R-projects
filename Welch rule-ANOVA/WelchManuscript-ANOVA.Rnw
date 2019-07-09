@@ -265,6 +265,84 @@ rn_me_int_int_welch <- rn_plot(rn_data, sim = 'Main effects & interaction', whic
 plot_legend <- (rn_no_effects_meA_anova + guides(shape = 'legend', linetype = 'legend')) %>% 
   get_legend()
 
+
+
+# Reject Null - Joint False Positives ----
+joint_reject_data <- no_effects %>% 
+  ungroup() %>% 
+  filter(min_sample == 50) %>% 
+  distinct(sample_ratio, min_sample, effect, var_ratio, joint_reject_student, joint_reject_welch) %>% 
+  mutate(
+    ns = paste(min_sample, min_sample * sample_ratio, min_sample * sample_ratio, min_sample * sample_ratio, sep = ', ') %>% factor(levels = c('50, 50, 50, 50', '50, 75, 75, 75', '50, 100, 100, 100')),
+    var_ratio = factor(var_ratio),
+    sample_ratio = factor(sample_ratio)
+  )
+
+joint_reject_student <- joint_reject_data %>% 
+  mutate(test = 'ANOVA') %>% 
+  ggplot(aes(y = joint_reject_student, x = var_ratio, group = ns, linetype = ns, shape = ns)) +
+    geom_line(size = .5) +
+    geom_point(size = 3) + 
+    scale_x_discrete(labels = factor(c('1/5', '1/2', '1', '2', '5'))) +
+    scale_y_continuous(limits = c(0, .30), breaks = seq(0, .30, .05), labels = seq(0, 30, 5) %>% paste0('%')) +
+    labs(y = NULL, x = NULL) +
+    theme_classic() +
+    theme(
+      panel.grid = element_blank(),
+      panel.grid.major.y = element_line(color = 'gray80')
+    ) + 
+    scale_shape_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
+                     labels = c(
+                       '50, 50, 50, 50',
+                       '50, 75, 75, 75',
+                       '50, 100, 100, 100'
+                     ),
+                     values = rep(c(15, 16, 17), times = 3)
+  ) +
+    scale_linetype_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
+                        labels = c(
+                          '50, 50, 50, 50',
+                          '50, 75, 75, 75',
+                          '50, 100, 100, 100'
+                        ),
+                        values = c('solid', 'twodash', 'dotted')
+  ) +
+  facet_grid(test ~ .) +
+    guides(linetype = FALSE, shape = FALSE) +
+    theme(strip.text.x = element_blank(), strip.background = element_blank())
+
+joint_reject_welch <- joint_reject_data %>% 
+  mutate(test = "Welch's") %>% 
+  ggplot(aes(y = joint_reject_welch, x = var_ratio, group = ns, linetype = ns, shape = ns)) +
+    geom_line(size = .5) +
+    geom_point(size = 3) + 
+    scale_x_discrete(labels = factor(c('1/5', '1/2', '1', '2', '5'))) +
+    scale_y_continuous(limits = c(0, .30), breaks = seq(0, .30, .05), labels = seq(0, 30, 5) %>% paste0('%')) +
+    labs(y = NULL, x = NULL) +
+    theme_classic() +
+    theme(
+      panel.grid = element_blank(),
+      panel.grid.major.y = element_line(color = 'gray80')
+    ) + 
+    scale_shape_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
+                     labels = c(
+                       '50, 50, 50, 50',
+                       '50, 75, 75, 75',
+                       '50, 100, 100, 100'
+                     ),
+                     values = rep(c(15, 16, 17), times = 3)
+  ) +
+    scale_linetype_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
+                        labels = c(
+                          '50, 50, 50, 50',
+                          '50, 75, 75, 75',
+                          '50, 100, 100, 100'
+                        ),
+                        values = c('solid', 'twodash', 'dotted')
+  ) +
+  facet_grid(test ~ .) +
+    guides(linetype = FALSE, shape = FALSE) +
+    theme(strip.text.x = element_blank(), strip.background = element_blank())
 @
 
     When psychologists compare the means of two groups, they typically use Student's t test \cite{Student1908}, which assumes the group variances are equal. If there is reason to believe variances are unequal, they can use Welch's t test instead \cite{Welch1938, 
@@ -479,7 +557,7 @@ add_sub(
   ggdraw()
 @
 
-\textit{Figure 1.} False positives for the simulations when there were no effects or a crossover interaction with no main effects.
+\textit{Figure 2.} False positives for the simulations when there were no effects or a crossover interaction with no main effects.
 \end{figure}
 
 For each comparison, the expected false positive rate is $\alpha = .05$. The observed false positive
@@ -487,196 +565,68 @@ rate for ANOVA remained close to the expected rate when either
 the population variances or sample sizes were equal, but it varied widely 
 when both the variances and sample sizes were unequal (see Figure 2). 
 When the larger group(s) had the larger variance, the false positive rate dropped as low as 
-about .02, but when it had the smaller 
+about 2\%, but when it had the smaller 
 variance, the false positive rate 
-rose as high as .13, more than double the expected rate. 
+rose as high as 13\%, more than double the expected rate. 
 In contrast, the observed false positive rate for Welch's t test 
 remained close to the expected rate across all conditions. Overall, Welch's 
 t test consistently behaved as expected when it came to false positives, whether there were no effects or a significant interaction but no main effects. 
 ANOVA did not.
 
-
-\section{Case 1. No effects in a 2 x 2 factorial design}
-
-With no effects, we can compare the traditional ANOVA/Student's t test approach to Welch's t test on the false positive rate for each comparison (two main effects and one interaction), the joint false positive rate for the three comparisons, and effect size estimation. 
-
-\subsection{False Positive Rates}
-
-For each comparison, the expected false positive rate is $\alpha = .05$. The observed false positive
-rate for ANOVA remained close to the expected rate when either 
-the population variances or sample sizes were equal, but it varied widely 
-when both the variances and sample sizes were unequal (see Figure 2). 
-When the larger group(s) had the larger variance, the false positive rate dropped as low as 
-about .02, but when it had the smaller 
-variance, the false positive rate 
-rose as high as .13, more than double the expected rate. 
-In contrast, the observed false positive rate for Welch's t test 
-remained close to the expected rate across all conditions. Overall, Welch's 
-t test consistently behaved as expected when it came to false positives. 
-ANOVA did not.
-
-\begin{figure}[!ht]  
-
-<<no_effects_false_positives, echo = FALSE, collapse = TRUE, fig = TRUE, width = 6, height = 5>>=
-
-# subset data
-current_data <- no_effects %>% 
-  ungroup() %>% 
-  select(-coverage_student, -coverage_welch, -joint_reject_student, -joint_reject_welch) %>% 
-  gather(key = test, value = reject_rate, reject_student, reject_welch) %>% 
-  mutate(
-    test = case_when(
-      test == 'reject_student' ~ "ANOVA",
-      test == 'reject_welch' ~ "Welch's t test"
-    ),
-    contrast_names = factor(contrast_names, levels = c('ME (1 & 2 vs 3 & 4)', 'ME (1 & 3 vs 2 & 4)', 'Interaction'), labels = c('Main Effect of A', 'Main Effect of B', 'Interaction')),
-    ns = paste(min_sample, min_sample * sample_ratio, min_sample * sample_ratio, min_sample * sample_ratio, sep = ', ') %>% factor(levels = c('50, 50, 50, 50', '50, 75, 75, 75', '50, 100, 100, 100')),
-    var_ratio = factor(var_ratio),
-    sample_ratio = factor(sample_ratio)
-  ) %>% 
-  filter(
-    min_sample == 50,
-    str_detect(contrast_names, 'Main|Interaction')
-  )
-
-# get min/max reject rates
-min_max_rates <- current_data %>% 
-  group_by(contrast_names, test) %>% 
-  summarize(
-    min_reject = min(reject_rate),
-    max_reject = max(reject_rate)
-  )
-
-# false positives (per test)
-current_data %>% 
-  ggplot(aes(y = reject_rate, x = var_ratio, group = ns, linetype = ns, shape = ns)) +
-  geom_line(size = .5) +
-  geom_point(size = 4) + 
-  facet_grid(contrast_names ~ test) +
-  scale_x_discrete(labels = factor(c('1/5', '1/2', '1', '2', '5'))) +
-  scale_y_continuous(breaks = c(0, .05, .10), minor_breaks = seq(0, .13, .01), limits = c(0, .14)) +
-  labs(
-    x = bquote(frac(sigma[A[1]*B[1]]^2,{sigma[A[1]*B[2]]^2 == sigma[A[2]*B[1]]^2} == sigma[A[2]*B[2]]^2)),
-    y = 'False Positive Rate'
-  ) +
-  theme_classic() +
-  theme(
-    panel.grid = element_blank(),
-    panel.grid.major.y = element_line(color = 'gray80')
-  ) +
-  scale_shape_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
-                     labels = c(
-                       '50, 50, 50, 50',
-                       '50, 75, 75, 75',
-                       '50, 100, 100, 100'
-                     ),
-                     values = rep(c(15, 16, 17), times = 3)
-  ) +
-  scale_linetype_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
-                        labels = c(
-                          '50, 50, 50, 50',
-                          '50, 75, 75, 75',
-                          '50, 100, 100, 100'
-                        ),
-                        values = rep('solid', each = 9)
-  ) 
-@
-
-\textit{Figure 2.} False positive rates for ANOVA and Welch's t test
-in a 2~$\times$~2 factorial design (factors A and B)
-as the variance ratio, sample size ratio, and sample sizes vary.
-\end{figure}
-
 \subsection{Joint False Positive Rate}
 
 In addition to looking at each comparison separately, we can look at the joint false positive rate
----the probability that at least one of the main effects or the interaction produces a false positive. 
+---the probability that at least one of the effects produces a false positive.
+We focus on the case where there are no true effects, so the joint false positive rate is the probability that at least one main effect or the interaction produces a false positive. 
 The expected joint false positive rate in a 2~$\times$~2 ANOVA, when the three comparisons are independent, is $\alpha = .14$, 
 though in practice the rate is typically slightly below .14 \cite{Cramer2016}.
+
+
+\begin{figure}[!ht]  
+
+<<no_effects_joint_false_positives, echo = FALSE, collapse = TRUE, fig = TRUE, width = 8, height = 4>>=
+
+plot_grid(
+  plot_grid(
+    joint_reject_student, joint_reject_welch,
+    ncol = 1
+  ),
+  plot_grid(plot_legend),
+  ncol = 2,
+  rel_widths = c(2, 2),
+  labels = list()
+) %>% 
+add_sub(
+  bquote(
+    frac(
+      sigma[A[1]*B[1]]^2,
+      {sigma[A[1]*B[2]]^2 == sigma[A[2]*B[1]]^2} == sigma[A[2]*B[2]]^2
+      )
+    ), 
+  vpadding=grid::unit(0,"lines"),
+  y=.1, 
+  x=0.25, 
+  vjust=0
+  ) %>% 
+  ggdraw()
+@
+
+\textit{Figure 3.} Rates of at least one false positive (at least one main effect or the interaction) for the simulations when there were no effects.
+\end{figure}
 
 As with the separate tests of the main effects and interaction, the observed false positive
 rate for ANOVA remained close to the expected rate when either 
 the population variances or sample sizes were equal, but it varied widely 
 when both the variances and sample sizes were unequal (see Figure 3). 
 When the larger group(s) had the larger variance, the false positive rate dropped as low as 
-about .07, but when it had the smaller 
+about 7\%, but when it had the smaller 
 variance, the false positive rate 
-rose as high as .26.
+rose as high as 26\%.
 The observed joint false positive  
 rate for Welch's t test remained closer to the expected rate. Welch's 
 t test behaved closer to expectations when it came to false positives than 
 ANOVA.
 
-\begin{figure}[!ht]  
-
-<<no_effects_joint_false_positives, echo = FALSE, collapse = TRUE, fig = TRUE, width = 8, height = 4>>=
-
-# subset data
-current_data <- no_effects %>% 
-  ungroup() %>% 
-  select(-coverage_student, -coverage_welch, -reject_student, -reject_welch) %>% 
-  gather(key = test, value = reject_rate, joint_reject_student, joint_reject_welch) %>% 
-  mutate(
-    test = case_when(
-      test == 'joint_reject_student' ~ "ANOVA",
-      test == 'joint_reject_welch' ~ "Welch's t test"
-    ),
-    contrast_names = factor(contrast_names, levels = c('ME (1 & 2 vs 3 & 4)', 'ME (1 & 3 vs 2 & 4)', 'Interaction'), labels = c('Main Effect of A', 'Main Effect of B', 'Interaction')),
-    ns = paste(min_sample, min_sample * sample_ratio, min_sample * sample_ratio, min_sample * sample_ratio, sep = ', ') %>% factor(levels = c('50, 50, 50, 50', '50, 75, 75, 75', '50, 100, 100, 100')),
-    var_ratio = factor(var_ratio),
-    sample_ratio = factor(sample_ratio)
-  ) %>% 
-  filter(
-    min_sample == 50,
-    str_detect(contrast_names, 'Interaction')
-  )
-
-# get min/max reject rates
-min_max_rates <- current_data %>% 
-  group_by(contrast_names, test) %>% 
-  summarize(
-    min_reject = min(reject_rate),
-    max_reject = max(reject_rate)
-  )
-
-# false positives (per test)
-current_data %>% 
-  ggplot(aes(y = reject_rate, x = var_ratio, group = ns, linetype = ns, shape = ns)) +
-  geom_line(size = .5) +
-  geom_point(size = 4) + 
-  facet_grid(contrast_names ~ test) +
-  scale_x_discrete(labels = factor(c('1/5', '1/2', '1', '2', '5'))) +
-  scale_y_continuous(breaks = seq(0, .30, .05)) +
-  labs(
-    x = bquote(frac(sigma[A[1]*B[1]]^2,{sigma[A[1]*B[2]]^2 == sigma[A[2]*B[1]]^2} == sigma[A[2]*B[2]]^2)),
-    y = 'False Positive Rate'
-  ) +
-  theme_classic() +
-  theme(
-    panel.grid = element_blank(),
-    panel.grid.major.y = element_line(color = 'gray80')
-  ) +
-  scale_shape_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
-                     labels = c(
-                       '50, 50, 50, 50',
-                       '50, 75, 75, 75',
-                       '50, 100, 100, 100'
-                     ),
-                     values = rep(c(15, 16, 17), times = 3)
-  ) +
-  scale_linetype_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
-                        labels = c(
-                          '50, 50, 50, 50',
-                          '50, 75, 75, 75',
-                          '50, 100, 100, 100'
-                        ),
-                        values = rep('solid', each = 9)
-  ) 
-@
-
-\textit{Figure 3.} Joint false positive rates for ANOVA and Welch's t test
-as the variance ratio, sample size ratio, and sample sizes vary.
-\end{figure}
 
 \subsection{Coverage Probability}
 Next, we looked at how well ANOVA and Welch's t test estimated the true effect. 
@@ -685,7 +635,7 @@ tests to find their relative coverage probability, the proportion of confidence 
 that contain the population value of the estimated parameter, which in this case is the 
 difference in group means. By 
 definition,  the expected coverage probability of 95\% confidence intervals  is .95. 
-Additionally, when the null hypothesis is true and $\alpha = .05$, the coverage 
+Additionally, when the null hypothesis is true and $\alpha = 5\%$, the coverage 
 probability of 95\% confidence intervals has a simple relationship with the 
 false positive rate---it's the complement of the false positive rate. 
 
