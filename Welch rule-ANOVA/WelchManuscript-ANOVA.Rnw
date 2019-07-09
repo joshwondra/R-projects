@@ -343,6 +343,132 @@ joint_reject_welch <- joint_reject_data %>%
   facet_grid(test ~ .) +
     guides(linetype = FALSE, shape = FALSE) +
     theme(strip.text.x = element_blank(), strip.background = element_blank())
+
+
+# Coverage Probability ----
+# coverage probability (per test)
+cov_plot <- function(data, sim, which_contrast, which_test) {
+  
+  ylims <- c(.85, 1)
+  
+  ybreaks <- seq(0, 1, .05)
+  
+  ylabs <- paste0(ybreaks * 100, '%')
+  
+  data %>% 
+    filter(
+      which_sim == sim,
+      contrast_names == which_contrast,
+      test == which_test
+      ) %>% 
+    ggplot(aes(y = coverage_rate, x = var_ratio, group = ns, linetype = ns, shape = ns)) +
+    geom_line(size = .5) +
+    geom_point(size = 3) + 
+    facet_grid(test ~ contrast_names) +
+    scale_x_discrete(labels = factor(c('1/5', '1/2', '1', '2', '5'))) +
+    scale_y_continuous(limits = ylims, breaks = ybreaks, labels = ylabs) +
+    labs(y = NULL, x = NULL) +
+    theme_classic() +
+    theme(
+      panel.grid = element_blank(),
+      panel.grid.major.y = element_line(color = 'gray80')
+    ) + 
+    scale_shape_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
+                     labels = c(
+                       '50, 50, 50, 50',
+                       '50, 75, 75, 75',
+                       '50, 100, 100, 100'
+                     ),
+                     values = rep(c(15, 16, 17), times = 3)
+  ) +
+    scale_linetype_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
+                        labels = c(
+                          '50, 50, 50, 50',
+                          '50, 75, 75, 75',
+                          '50, 100, 100, 100'
+                        ),
+                        values = c('solid', 'twodash', 'dotted')
+  ) +
+    guides(linetype = FALSE, shape = FALSE)
+} 
+
+
+# subset data
+cov_data <- mutate(no_effects, which_sim = 'No effects') %>% 
+  bind_rows(mutate(crossover_sims, which_sim = 'Crossover interaction')) %>% 
+  bind_rows(mutate(me_int_sims, which_sim = 'Main effects & interaction')) %>% 
+  ungroup() %>% 
+  select(-reject_student, -reject_welch, -joint_reject_student, -joint_reject_welch) %>% 
+  gather(key = test, value = coverage_rate, coverage_student, coverage_welch) %>% 
+  mutate(
+    test = case_when(
+      test == 'coverage_student' ~ "ANOVA",
+      test == 'coverage_welch' ~ "Welch's t test"
+    ),
+    contrast_names = case_when(
+      contrast_names == 'ME (1 & 2 vs 3 & 4)' ~ 'Main Effect of A',
+      contrast_names == 'ME (1 & 3 vs 2 & 4)' ~ 'Main Effect of B',
+      contrast_names == 'Interaction' ~ 'Interaction'
+    ) %>% 
+      factor(levels = c('Main Effect of A', 'Main Effect of B', 'Interaction')),
+    ns = paste(min_sample, min_sample * sample_ratio, min_sample * sample_ratio, min_sample * sample_ratio, sep = ', ') %>% factor(levels = c('50, 50, 50, 50', '50, 75, 75, 75', '50, 100, 100, 100')),
+    var_ratio = factor(var_ratio),
+    sample_ratio = factor(sample_ratio)
+  ) %>% 
+  filter(
+    min_sample == 50,
+    str_detect(contrast_names, 'Main|Interaction')
+  )
+
+# get min/max reject rates
+min_max_rates <- cov_data %>% 
+  group_by(contrast_names, test) %>% 
+  summarize(
+    min_reject = min(coverage_rate),
+    max_reject = max(coverage_rate)
+  )
+
+# Blank plot
+blank_plot_cov <- cov_data %>% 
+  filter(
+    which_sim == 'No effects',
+    contrast_names == 'Main Effect of A',
+    test == 'ANOVA'
+  ) %>% 
+  ggplot(aes(y = coverage_rate, x = var_ratio)) +
+  geom_blank() +
+  scale_y_continuous (limits = c(0, .15)) +
+  labs(x = NULL, y = NULL) +
+  theme(
+    rect = element_blank(),
+    line = element_blank()
+  )
+
+
+# Main effect of A
+cov_no_effects_meA_anova <- cov_plot(cov_data, sim = 'No effects', which_contrast = 'Main Effect of A', which_test = 'ANOVA')
+cov_crossover_meA_anova <- cov_plot(cov_data, sim = 'Crossover interaction', which_contrast = 'Main Effect of A', which_test = 'ANOVA')
+cov_me_int_meA_anova <- cov_plot(cov_data, sim = 'Main effects & interaction', which_contrast = 'Main Effect of A', which_test = 'ANOVA')
+cov_no_effects_meA_welch <- cov_plot(cov_data, sim = 'No effects', which_contrast = 'Main Effect of A', which_test = "Welch's t test")
+cov_crossover_meA_welch <- cov_plot(cov_data, sim = 'Crossover interaction', which_contrast = 'Main Effect of A', which_test = "Welch's t test")
+cov_me_int_meA_welch <- cov_plot(cov_data, sim = 'Main effects & interaction', which_contrast = 'Main Effect of A', which_test = "Welch's t test")
+
+# Main effect of B
+cov_no_effects_meB_anova <- cov_plot(cov_data, sim = 'No effects', which_contrast = 'Main Effect of B', which_test = 'ANOVA')
+cov_crossover_meB_anova <- cov_plot(cov_data, sim = 'Crossover interaction', which_contrast = 'Main Effect of B', which_test = 'ANOVA')
+cov_me_int_meB_anova <- cov_plot(cov_data, sim = 'Main effects & interaction', which_contrast = 'Main Effect of B', which_test = 'ANOVA')
+cov_no_effects_meB_welch <- cov_plot(cov_data, sim = 'No effects', which_contrast = 'Main Effect of B', which_test = "Welch's t test")
+cov_crossover_meB_welch <- cov_plot(cov_data, sim = 'Crossover interaction', which_contrast = 'Main Effect of B', which_test = "Welch's t test")
+cov_me_int_meB_welch <- cov_plot(cov_data, sim = 'Main effects & interaction', which_contrast = 'Main Effect of B', which_test = "Welch's t test")
+
+
+# Interaction
+cov_no_effects_int_anova <- cov_plot(cov_data, sim = 'No effects', which_contrast = 'Interaction', which_test = 'ANOVA')
+cov_crossover_int_anova <- cov_plot(cov_data, sim = 'Crossover interaction', which_contrast = 'Interaction', which_test = 'ANOVA')
+cov_me_int_int_anova <- cov_plot(cov_data, sim = 'Main effects & interaction', which_contrast = 'Interaction', which_test = 'ANOVA')
+cov_no_effects_int_welch <- cov_plot(cov_data, sim = 'No effects', which_contrast = 'Interaction', which_test = "Welch's t test")
+cov_crossover_int_welch <- cov_plot(cov_data, sim = 'Crossover interaction', which_contrast = 'Interaction', which_test = "Welch's t test")
+cov_me_int_int_welch <- cov_plot(cov_data, sim = 'Main effects & interaction', which_contrast = 'Interaction', which_test = "Welch's t test")
 @
 
     When psychologists compare the means of two groups, they typically use Student's t test \cite{Student1908}, which assumes the group variances are equal. If there is reason to believe variances are unequal, they can use Welch's t test instead \cite{Welch1938, 
@@ -647,69 +773,77 @@ contains the true effect 95\% of the time regardless of the variance and sample
 size ratios. 
 
 \begin{figure}[!ht]
-<<no_effects_coverage_probability, echo = FALSE, collapse = TRUE, fig = TRUE, width = 8, height = 4>>=
+<<coverage_probability, echo = FALSE, collapse = TRUE, fig = TRUE, width = 12, height = 8>>=
 
-# subset data
-current_data <- no_effects %>% 
-  ungroup() %>% 
-  select(-joint_reject_student, -joint_reject_welch, -reject_student, -reject_welch) %>% 
-  gather(key = test, value = coverage_rate, coverage_student, coverage_welch) %>% 
-  mutate(
-    test = case_when(
-      test == 'coverage_student' ~ "ANOVA",
-      test == 'coverage_welch' ~ "Welch's t test"
-    ),
-    contrast_names = factor(contrast_names, levels = c('ME (1 & 2 vs 3 & 4)', 'ME (1 & 3 vs 2 & 4)', 'Interaction'), labels = c('Main Effect of A', 'Main Effect of B', 'Interaction')),
-    ns = paste(min_sample, min_sample * sample_ratio, min_sample * sample_ratio, min_sample * sample_ratio, sep = ', ') %>% factor(levels = c('50, 50, 50, 50', '50, 75, 75, 75', '50, 100, 100, 100')),
-    var_ratio = factor(var_ratio),
-    sample_ratio = factor(sample_ratio)
+no_effects_cov <- plot_grid(
+  
+  # first row
+  cov_no_effects_meA_anova + theme(strip.text.y = element_blank(), strip.background = element_blank()), 
+  cov_no_effects_meB_anova + theme(strip.text.y = element_blank(), strip.background = element_blank()), 
+  cov_no_effects_int_anova + theme(strip.background = element_blank()),
+  
+  # second row
+  cov_no_effects_meA_welch + theme(strip.text.x = element_blank(), strip.text.y = element_blank(), strip.background = element_blank()), 
+  cov_no_effects_meB_welch + theme(strip.text.x = element_blank(), strip.text.y = element_blank(), strip.background = element_blank()), 
+  cov_no_effects_int_welch + theme(strip.text.x = element_blank(), strip.background = element_blank()), 
+  ncol = 3
+)
+
+crossover_cov <- plot_grid(
+  
+  # first row
+  cov_crossover_meA_anova + theme(strip.text.y = element_blank(), strip.background = element_blank()), 
+  cov_crossover_meB_anova + theme(strip.text.y = element_blank(), strip.background = element_blank()), 
+  cov_crossover_int_anova + theme(strip.background = element_blank()), 
+  
+  # second row
+  cov_crossover_meA_welch + theme(strip.text.x = element_blank(), strip.text.y = element_blank(), strip.background = element_blank()),
+  cov_crossover_meB_welch + theme(strip.text.y = element_blank(), strip.background = element_blank()), 
+  cov_crossover_int_welch + theme(strip.background = element_blank()), 
+  
+  ncol = 3
+)
+
+me_int_cov <- plot_grid(
+  
+  # first row
+  cov_me_int_meA_anova + theme(strip.text.y = element_blank(), strip.background = element_blank()), 
+  cov_me_int_meB_anova + theme(strip.text.y = element_blank(), strip.background = element_blank()), 
+  cov_me_int_int_anova + theme(strip.background = element_blank()), 
+  
+  # second row
+  cov_me_int_meA_welch + theme(strip.text.x = element_blank(), strip.text.y = element_blank(), strip.background = element_blank()),
+  cov_me_int_meB_welch + theme(strip.text.y = element_blank(), strip.background = element_blank()), 
+  cov_me_int_int_welch + theme(strip.background = element_blank()), 
+  
+  ncol = 3
+)
+
+plot_grid(
+  plot_grid(
+    tf_no_effects, no_effects_cov,
+    tf_crossover, crossover_cov,
+    tf_me_int, me_int_cov,
+    ncol = 2, rel_widths = c(.25, .75)
+  ),
+  plot_grid(plot_legend),
+  ncol = 2,
+  rel_widths = c(10, 3),
+  labels = list()
+) %>% 
+add_sub(
+  bquote(
+    frac(
+      sigma[A[1]*B[1]]^2,
+      {sigma[A[1]*B[2]]^2 == sigma[A[2]*B[1]]^2} == sigma[A[2]*B[2]]^2
+      )
+    ), 
+  vpadding=grid::unit(0,"lines"),
+  y=.1, 
+  x=0.5, 
+  vjust=0
   ) %>% 
-  filter(
-    min_sample == 50,
-    str_detect(contrast_names, 'Interaction')
-  )
-
-# get min/max coverage rates
-min_max_rates <- current_data %>% 
-  group_by(contrast_names, test) %>% 
-  summarize(
-    min_coverage = min(coverage_rate),
-    max_coverage = max(coverage_rate)
-  )
-
-# false positives (per test)
-current_data %>% 
-  ggplot(aes(y = coverage_rate, x = var_ratio, group = ns, linetype = ns, shape = ns)) +
-  geom_line(size = .5) +
-  geom_point(size = 4) + 
-  facet_grid(contrast_names ~ test) +
-  scale_x_discrete(labels = factor(c('1/5', '1/2', '1', '2', '5'))) +
-  scale_y_continuous(breaks = seq(.8, 1, .01)) +
-  labs(
-    x = bquote(frac(sigma[A[1]*B[1]]^2,{sigma[A[1]*B[2]]^2 == sigma[A[2]*B[1]]^2} == sigma[A[2]*B[2]]^2)),
-    y = 'Coverage Probability'
-  ) +
-  theme_classic() +
-  theme(
-    panel.grid = element_blank(),
-    panel.grid.major.y = element_line(color = 'gray80')
-  ) +
-  scale_shape_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
-                     labels = c(
-                       '50, 50, 50, 50',
-                       '50, 75, 75, 75',
-                       '50, 100, 100, 100'
-                     ),
-                     values = rep(c(15, 16, 17), times = 3)
-  ) +
-  scale_linetype_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
-                        labels = c(
-                          '50, 50, 50, 50',
-                          '50, 75, 75, 75',
-                          '50, 100, 100, 100'
-                        ),
-                        values = rep('solid', each = 9)
-  ) 
+  ggdraw()
 @
 
 \textit{Figure 4.} Coverage probability for ANOVA and Welch's t test
