@@ -51,6 +51,7 @@ Contact: jdwondra@umich.edu}
 <<setup, echo=FALSE>>=
 
 # Load packages ----
+library(formattable)
 library(tidyverse)
 library(cowplot)
 
@@ -58,10 +59,211 @@ library(cowplot)
 # Import simulation results ----
 load('no_effects.R')
 load('crossover_sims.R')
+load('me_int_sims.R')
 
 
 # Set ggplot theme ----
 theme_set(theme_bw())
+
+@
+
+
+<<create_plots, echo = FALSE>>=
+# Create plots ----
+
+# True effects ====
+tf_data <- data.frame(
+  effect = factor(rep(c('No effects', 'Crossover interaction', 'Main effects & interaction'), each = 4), levels = c('No effects', 'Crossover interaction', 'Main effects & interaction')),
+  y = c(
+    6, 6, 6, 6, # no effect
+    6.71, 6, 6, 6.71, # crossover
+    6.71, 6, 6.28, 6 # main effect + interaction
+    ),
+  factorA = rep(c('A1', 'A2', 'A1', 'A2'), times = 3),
+  factorB = rep(c('B1', 'B1', 'B2', 'B2'), times = 3)
+) %>% 
+  mutate(
+    factorB_label_position = case_when(
+      factorA == 'A2' ~ as.numeric(NA),
+      factorB == 'B1' ~ y + .1,
+      factorB == 'B2' ~ y - .1
+      )
+  )
+
+tf_plot <- function(data, which_effect) {
+
+  data %>% 
+    filter(effect == which_effect) %>% 
+    ggplot(aes(y = y, x = factorA, group = factorB, linetype = factorB)) +
+    geom_line(show.legend = FALSE) +
+    geom_text(
+      data = data %>% filter(effect == which_effect, !is.na(factorB_label_position)),
+      aes(y = factorB_label_position, label = factorB)
+    ) +
+    labs(x = 'Factor A', y = NULL) +
+    facet_wrap(~ effect) +
+    theme_classic() +
+    theme(
+      panel.grid = element_blank()
+    ) +
+    coord_cartesian(ylim = c(5.6, 7.4))
+}
+
+tf_no_effects <- tf_plot(tf_data, 'No effects')
+tf_crossover <- tf_plot(tf_data, 'Crossover interaction')
+tf_me_int <- tf_plot(tf_data, 'Main effects & interaction')
+
+
+
+# Reject Null - False Positives ====
+# false positives (per test)
+rn_plot <- function(data, sim, which_contrast, which_test) {
+  
+  ylims <- if (sim == 'No effects') {
+    c(0, .15)
+    } else if (sim == 'Crossover interaction' & str_detect(which_contrast, 'Main')) {
+      c(0, .15)
+    } else if (sim == 'Crossover interaction' & str_detect(which_contrast, 'Int')) {
+      c(0, .15)
+    } else if (sim == 'Main effects & interaction') {
+      c(0, 1)
+    }
+  
+  ybreaks <- if (sim == 'No effects') {
+    seq(0, 1, .05)
+    } else if (sim == 'Crossover interaction' & str_detect(which_contrast, 'Main')) {
+      seq(0, 1, .05)
+    } else if (sim == 'Crossover interaction' & str_detect(which_contrast, 'Int')) {
+      seq(0, 1, .05)
+    } else if (sim == 'Main effects & interaction') {
+      seq(0, 1, .1)
+    }
+  
+  ylabs <- paste0(ybreaks * 100, '%')
+  
+  data %>% 
+    filter(
+      which_sim == sim,
+      contrast_names == which_contrast,
+      test == which_test
+      ) %>% 
+    ggplot(aes(y = reject_rate, x = var_ratio, group = ns, linetype = ns, shape = ns)) +
+    geom_line(size = .5) +
+    geom_point(size = 3) + 
+    facet_grid(test ~ contrast_names) +
+    scale_x_discrete(labels = factor(c('1/5', '1/2', '1', '2', '5'))) +
+    #scale_y_continuous(breaks = c(0, .05, .10), minor_breaks = seq(0, .13, .01), limits = c(0, .14)) +
+    # labs(
+    #   x = bquote(frac(sigma[A[1]*B[1]]^2,{sigma[A[1]*B[2]]^2 == sigma[A[2]*B[1]]^2} == sigma[A[2]*B[2]]^2)),
+    #   y = 'False Positive Rate'
+    # ) +
+    scale_y_continuous(limits = ylims, breaks = ybreaks, labels = ylabs) +
+    labs(y = NULL, x = NULL) +
+    theme_classic() +
+    theme(
+      panel.grid = element_blank(),
+      panel.grid.major.y = element_line(color = 'gray80')
+    ) + 
+    scale_shape_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
+                     labels = c(
+                       '50, 50, 50, 50',
+                       '50, 75, 75, 75',
+                       '50, 100, 100, 100'
+                     ),
+                     values = rep(c(15, 16, 17), times = 3)
+  ) +
+    scale_linetype_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
+                        labels = c(
+                          '50, 50, 50, 50',
+                          '50, 75, 75, 75',
+                          '50, 100, 100, 100'
+                        ),
+                        values = c('solid', 'twodash', 'dotted')
+  ) +
+    guides(linetype = FALSE, shape = FALSE)
+} 
+
+
+# subset data
+rn_data <- mutate(no_effects, which_sim = 'No effects') %>% 
+  bind_rows(mutate(crossover_sims, which_sim = 'Crossover interaction')) %>% 
+  bind_rows(mutate(me_int_sims, which_sim = 'Main effects & interaction')) %>% 
+  ungroup() %>% 
+  select(-coverage_student, -coverage_welch, -joint_reject_student, -joint_reject_welch) %>% 
+  gather(key = test, value = reject_rate, reject_student, reject_welch) %>% 
+  mutate(
+    test = case_when(
+      test == 'reject_student' ~ "ANOVA",
+      test == 'reject_welch' ~ "Welch's t test"
+    ),
+    contrast_names = case_when(
+      contrast_names == 'ME (1 & 2 vs 3 & 4)' ~ 'Main Effect of A',
+      contrast_names == 'ME (1 & 3 vs 2 & 4)' ~ 'Main Effect of B',
+      contrast_names == 'Interaction' ~ 'Interaction'
+    ) %>% 
+      factor(levels = c('Main Effect of A', 'Main Effect of B', 'Interaction')),
+    ns = paste(min_sample, min_sample * sample_ratio, min_sample * sample_ratio, min_sample * sample_ratio, sep = ', ') %>% factor(levels = c('50, 50, 50, 50', '50, 75, 75, 75', '50, 100, 100, 100')),
+    var_ratio = factor(var_ratio),
+    sample_ratio = factor(sample_ratio)
+  ) %>% 
+  filter(
+    min_sample == 50,
+    str_detect(contrast_names, 'Main|Interaction')
+  )
+
+# get min/max reject rates
+min_max_rates <- rn_data %>% 
+  group_by(contrast_names, test) %>% 
+  summarize(
+    min_reject = min(reject_rate),
+    max_reject = max(reject_rate)
+  )
+
+# Blank plot
+blank_plot <- rn_data %>% 
+  filter(
+    which_sim == 'No effects',
+    contrast_names == 'Main Effect of A',
+    test == 'ANOVA'
+  ) %>% 
+  ggplot(aes(y = reject_rate, x = var_ratio)) +
+  geom_blank() +
+  scale_y_continuous (limits = c(0, .15)) +
+  labs(x = NULL, y = NULL) +
+  theme(
+    rect = element_blank(),
+    line = element_blank()
+  )
+
+
+# Main effect of A
+rn_no_effects_meA_anova <- rn_plot(rn_data, sim = 'No effects', which_contrast = 'Main Effect of A', which_test = 'ANOVA')
+rn_crossover_meA_anova <- rn_plot(rn_data, sim = 'Crossover interaction', which_contrast = 'Main Effect of A', which_test = 'ANOVA')
+rn_me_int_meA_anova <- rn_plot(rn_data, sim = 'Main effects & interaction', which_contrast = 'Main Effect of A', which_test = 'ANOVA')
+rn_no_effects_meA_welch <- rn_plot(rn_data, sim = 'No effects', which_contrast = 'Main Effect of A', which_test = "Welch's t test")
+rn_crossover_meA_welch <- rn_plot(rn_data, sim = 'Crossover interaction', which_contrast = 'Main Effect of A', which_test = "Welch's t test")
+rn_me_int_meA_welch <- rn_plot(rn_data, sim = 'Main effects & interaction', which_contrast = 'Main Effect of A', which_test = "Welch's t test")
+
+# Main effect of B
+rn_no_effects_meB_anova <- rn_plot(rn_data, sim = 'No effects', which_contrast = 'Main Effect of B', which_test = 'ANOVA')
+rn_crossover_meB_anova <- rn_plot(rn_data, sim = 'Crossover interaction', which_contrast = 'Main Effect of B', which_test = 'ANOVA')
+rn_me_int_meB_anova <- rn_plot(rn_data, sim = 'Main effects & interaction', which_contrast = 'Main Effect of B', which_test = 'ANOVA')
+rn_no_effects_meB_welch <- rn_plot(rn_data, sim = 'No effects', which_contrast = 'Main Effect of B', which_test = "Welch's t test")
+rn_crossover_meB_welch <- rn_plot(rn_data, sim = 'Crossover interaction', which_contrast = 'Main Effect of B', which_test = "Welch's t test")
+rn_me_int_meB_welch <- rn_plot(rn_data, sim = 'Main effects & interaction', which_contrast = 'Main Effect of B', which_test = "Welch's t test")
+
+
+# Interaction
+rn_no_effects_int_anova <- rn_plot(rn_data, sim = 'No effects', which_contrast = 'Interaction', which_test = 'ANOVA')
+rn_crossover_int_anova <- rn_plot(rn_data, sim = 'Crossover interaction', which_contrast = 'Interaction', which_test = 'ANOVA')
+rn_me_int_int_anova <- rn_plot(rn_data, sim = 'Main effects & interaction', which_contrast = 'Interaction', which_test = 'ANOVA')
+rn_no_effects_int_welch <- rn_plot(rn_data, sim = 'No effects', which_contrast = 'Interaction', which_test = "Welch's t test")
+rn_crossover_int_welch <- rn_plot(rn_data, sim = 'Crossover interaction', which_contrast = 'Interaction', which_test = "Welch's t test")
+rn_me_int_int_welch <- rn_plot(rn_data, sim = 'Main effects & interaction', which_contrast = 'Interaction', which_test = "Welch's t test")
+
+
+plot_legend <- (rn_no_effects_meA_anova + guides(shape = 'legend', linetype = 'legend')) %>% 
+  get_legend()
 
 @
 
@@ -92,13 +294,13 @@ The standard error is estimated from the group variances, by summing the group v
 
 where $\hat{\sigma}_1^2$ and $\hat{\sigma}_2^2$ are the estimated population variances of the two groups. 
 
-  But Student's t test and Welch's t tests make different assumptions about how to estimate the group variances. 
+  But Student's t test and Welch's t tests make different assumptions about how to estimate the population variances of the groups. 
   Student's t test assumes the population variances of the groups are equal ($\hat{\sigma}_1^2 = \hat{\sigma}_2^2$), so if the sample variances are different, it's due to sampling error. 
   To correct for this error, Student's t test estimates a common variance
 by pooling the sample group variances into a weighted 
 average
     \begin{equation}
-    s_p^2 = \frac{(n_1 - 1)s_1^2 + (n_2 - 1)s_2^2}{n_1 + n_2 - 2}
+    s_p^2 = \frac{(n_1 - 1)s_1^2 + (n_2 - 1)s_2^2}{(n_1 - 1) + (n_2 - 1)}
     \end{equation}
      with $s_1^2$ and $s_2^2$ being the two sample group variances. This common variance is used to estimate the population variances of the two groups, and to estimate the standard error of the t test.  
     \begin{equation}
@@ -143,7 +345,7 @@ Interaction & 1 & -1 & -1 & 1 \\
 \end{tabular}
 \end{table}
 
-Each contrast is the sum of the weights multiplied by their respective group means.
+Each contrast is the sum of the weights, \textit{a}, multiplied by their respective group means.
 \begin{equation}
   \hat{I} = \sum a_i \overline{x}_i
 \end{equation}
@@ -153,24 +355,29 @@ To find the t value to test the contrasts, you need to find the standard error o
   t = \frac{\hat{I}}{\hat{\sigma}_{\hat{I}}}
 \end{equation}
 
-When Student's t test is used, the standard error is still estimated from the common variance among the groups, and information from all four groups is used to find the pooled variance. 
+When Student's t test is used, the group variances are still estimated from a common pooled variance, and information from all four groups is used to find the pooled variance. 
+
 \begin{equation}
     s_p^2 = \frac{\sum (n_{i} - 1)s_{i}^2}{\sum (n_{i} - 1)}
 \end{equation}
+
+To compute the standard error, you take each group's squared contrast weight multiplied by its estimated variance and divided by its sample size, sum them, and find the square root of the sum. For each group the estimated variance is the pooled variance because we assume variances are equal. 
+
 \begin{equation}
-    s_{\hat{I}} = \sqrt{\sum \frac{a_i^2 s_p^2}{n_i}}
+    s_{\hat{I}_{Student}} = \sqrt{\sum \frac{a_i^2 s_p^2}{n_i}}
 \end{equation}
 
-The degrees of freedom are $df = \sum (n_i - 1)$, and the t value is equal to the square root of the F value.
+The degrees of freedom are $df = \sum (n_i - 1)$, and the t value is equal to the square root of the F value if ANOVA had been used instead.
 
-However, the benefit of using a t test is that you don't \textit{have} to use Student's t test---you can use Welch's t test instead. The value of the contrast is the same, but its standard error is based on separate variances rather than a common variance.
+However, the benefit of using a t test is that you don't \textit{have} to use Student's t test---you can use Welch's t test instead. The value of the contrast is the same, but its standard error is based on separate variances rather than a common variance. Just like Student's t test, you take each group's squared contrast weight multiplied by its estimated variance and divided by its sample size, sum them, and find the square root of the sum. But unlike Student's t test, for each group the estimated variance is that group's sample variance because we do not assume variances are equal. 
+
 \begin{equation}
-    s_{\hat{I}} = \sqrt{\sum \frac{a_i s_{i}^2}{n_{i}}}
+    s_{\hat{I}_{Welch}} = \sqrt{\sum \frac{a_i s_{i}^2}{n_{i}}}
 \end{equation}
 
 The degrees of freedom also generalize to use information from all the groups.
 \begin{equation}
-    df = \frac{(\sum \frac{s_i^2}{n_i})^2}{\sum \frac{(s_i^2)^2}{n_i^2(n_i-1)}}
+    df_{Welch} = \frac{(\sum \frac{s_i^2}{n_i})^2}{\sum \frac{(s_i^2)^2}{n_i^2(n_i-1)}}
 \end{equation}
 
 Just as Welch's t test controls false positives better than Student's t test without serious downsides, it also controls false positives better than ANOVA, is sometimes more powerful than ANOVA to detect true effects, and does a better job estimating the true effect size. 
@@ -180,35 +387,114 @@ false positives, power, and effect size estimation under
 different variance ratios, sample sizes, sample size ratios, and effect sizes. 
 We examined cases where the variances were equal or where the variance of just one group differed from the others.
 
-\begin{figure}[!ht]  
+<<variable_tables, echo = FALSE>>=
+n_table <- tribble(
+  ~`n ratio`, ~A1B1, ~A1B2, ~A2B1, ~A2B2,
+  '1', 50, 50, 50, 50,
+  '2/3', 50, 75, 75, 75,
+  '1/2', 50, 100, 100, 100
+) %>% 
+  formattable(
+    format = 'latex',
+    align = c('l', 'r', 'r', 'r', 'r')
+  )
 
-<<display_effects, echo = FALSE, collapse = TRUE, fig = TRUE, width = 6, height = 2>>=
+var_table <- tribble(
+  ~`Variance ratio`,  ~A1B1, ~A1B2, ~A2B1, ~A2B2,
+  '1/5', 2, 10, 10, 10,
+  '1/2', 2, 4, 4, 4,
+  '1', 2, 2, 2, 2,
+  '1/5', 4, 2, 2, 2,
+  '1/5', 10, 2, 2, 2
+) %>% 
+  formattable(
+    align = c('l', 'r', 'r', 'r', 'r')
+  )
 
-display_data <- data.frame(
-  effect = factor(rep(c('No effects', 'Crossover interaction', 'Main effects & interaction'), each = 4), levels = c('No effects', 'Crossover interaction', 'Main effects & interaction')),
-  y = c(
-    6, 6, 6, 6, # no effect
-    6, 6.71, 6.71, 6, # crossover
-    6.71, 6, 6.28, 6 # main effect + interaction
-    ),
-  factorA = rep(c('A1', 'A2', 'A1', 'A2'), times = 3),
-  factorB = rep(c('B1', 'B1', 'B2', 'B2'), times = 3)
-)
-
-ggplot(display_data, aes(y = y, x = factorA, group = factorB, linetype = factorB)) +
-  geom_line() +
-  labs(x = 'Factor A', group = 'Factor B', linetype = 'Factor B', y = NULL) +
-  facet_wrap(~ effect) +
-  theme_classic() +
-  theme(
-    panel.grid = element_blank()
-  ) +
-  coord_cartesian(ylim = c(5.6, 7.4))
-
+mean_plot <- plot_grid(
+    tf_no_effects,
+    tf_crossover,
+    tf_me_int,
+    ncol = 1
+  )
 @
 
-\textit{Figure 1.} Means for the simulations when there were no effects, a crossover interaction with no main effects, or two main effects and an interaction.
+
+\section{False Positive Rates}
+
+\begin{figure}[!ht]  
+<<false_positives, echo = FALSE, collapse = TRUE, fig = TRUE, width = 12, height = 5>>=
+no_effects_fp <- plot_grid(
+  
+  # first row
+  rn_no_effects_meA_anova + theme(strip.text.y = element_blank(), strip.background = element_blank()), 
+  rn_no_effects_meB_anova + theme(strip.text.y = element_blank(), strip.background = element_blank()), 
+  rn_no_effects_int_anova + theme(strip.background = element_blank()),
+  
+  # second row
+  rn_no_effects_meA_welch + theme(strip.text.x = element_blank(), strip.text.y = element_blank(), strip.background = element_blank()), 
+  rn_no_effects_meB_welch + theme(strip.text.x = element_blank(), strip.text.y = element_blank(), strip.background = element_blank()), 
+  rn_no_effects_int_welch + theme(strip.text.x = element_blank(), strip.background = element_blank()), 
+  ncol = 3
+)
+
+crossover_fp <- plot_grid(
+  
+  # first row
+  rn_crossover_meA_anova + theme(strip.text.y = element_blank(), strip.background = element_blank()), 
+  rn_crossover_meB_anova + theme(strip.background = element_blank()), 
+  blank_plot,
+  
+  # second row
+  rn_crossover_meA_welch + theme(strip.text.x = element_blank(), strip.text.y = element_blank(), strip.background = element_blank()),
+  rn_crossover_meB_welch + theme(strip.text.x = element_blank(), strip.background = element_blank()),
+  blank_plot,
+  
+  ncol = 3
+)
+
+plot_grid(
+  plot_grid(
+    tf_no_effects, no_effects_fp,
+    tf_crossover, crossover_fp,
+    ncol = 2, rel_widths = c(.25, .75)
+  ),
+  plot_grid(plot_legend),
+  ncol = 2,
+  rel_widths = c(10, 3),
+  labels = list()
+) %>% 
+add_sub(
+  bquote(
+    frac(
+      sigma[A[1]*B[1]]^2,
+      {sigma[A[1]*B[2]]^2 == sigma[A[2]*B[1]]^2} == sigma[A[2]*B[2]]^2
+      )
+    ), 
+  vpadding=grid::unit(0,"lines"),
+  y=.1, 
+  x=0.5, 
+  vjust=0
+  ) %>% 
+  ggdraw()
+@
+
+\textit{Figure 1.} False positives for the simulations when there were no effects or a crossover interaction with no main effects.
 \end{figure}
+
+For each comparison, the expected false positive rate is $\alpha = .05$. The observed false positive
+rate for ANOVA remained close to the expected rate when either 
+the population variances or sample sizes were equal, but it varied widely 
+when both the variances and sample sizes were unequal (see Figure 2). 
+When the larger group(s) had the larger variance, the false positive rate dropped as low as 
+about .02, but when it had the smaller 
+variance, the false positive rate 
+rose as high as .13, more than double the expected rate. 
+In contrast, the observed false positive rate for Welch's t test 
+remained close to the expected rate across all conditions. Overall, Welch's 
+t test consistently behaved as expected when it came to false positives, whether there were no effects or a significant interaction but no main effects. 
+ANOVA did not.
+
 
 \section{Case 1. No effects in a 2 x 2 factorial design}
 
@@ -270,7 +556,7 @@ current_data %>%
   scale_x_discrete(labels = factor(c('1/5', '1/2', '1', '2', '5'))) +
   scale_y_continuous(breaks = c(0, .05, .10), minor_breaks = seq(0, .13, .01), limits = c(0, .14)) +
   labs(
-    x = bquote(frac(sigma[A1/B1]^2,{sigma[A1/B2]^2 == sigma[A2/B1]^2} == sigma[A2/B2]^2)),
+    x = bquote(frac(sigma[A[1]*B[1]]^2,{sigma[A[1]*B[2]]^2 == sigma[A[2]*B[1]]^2} == sigma[A[2]*B[2]]^2)),
     y = 'False Positive Rate'
   ) +
   theme_classic() +
@@ -278,7 +564,7 @@ current_data %>%
     panel.grid = element_blank(),
     panel.grid.major.y = element_line(color = 'gray80')
   ) +
-  scale_shape_manual(name = 'Sample sizes \nGroup A1/B1, A1/B2, A2/B1, A2/B2',
+  scale_shape_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
                      labels = c(
                        '50, 50, 50, 50',
                        '50, 75, 75, 75',
@@ -286,7 +572,7 @@ current_data %>%
                      ),
                      values = rep(c(15, 16, 17), times = 3)
   ) +
-  scale_linetype_manual(name = 'Sample sizes \nGroup A1/B1, A1/B2, A2/B1, A2/B2',
+  scale_linetype_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
                         labels = c(
                           '50, 50, 50, 50',
                           '50, 75, 75, 75',
@@ -316,7 +602,6 @@ When the larger group(s) had the larger variance, the false positive rate droppe
 about .07, but when it had the smaller 
 variance, the false positive rate 
 rose as high as .26.
-This means that if a researcher were to run four 2~$\times$~2 experiments in a year that had no true effects, but they analyzed them with ANOVA, we would expect one experiment to show at least one false positve.   
 The observed joint false positive  
 rate for Welch's t test remained closer to the expected rate. Welch's 
 t test behaved closer to expectations when it came to false positives than 
@@ -363,7 +648,7 @@ current_data %>%
   scale_x_discrete(labels = factor(c('1/5', '1/2', '1', '2', '5'))) +
   scale_y_continuous(breaks = seq(0, .30, .05)) +
   labs(
-    x = bquote(frac(sigma[A1/B1]^2,{sigma[A1/B2]^2 == sigma[A2/B1]^2} == sigma[A2/B2]^2)),
+    x = bquote(frac(sigma[A[1]*B[1]]^2,{sigma[A[1]*B[2]]^2 == sigma[A[2]*B[1]]^2} == sigma[A[2]*B[2]]^2)),
     y = 'False Positive Rate'
   ) +
   theme_classic() +
@@ -371,7 +656,7 @@ current_data %>%
     panel.grid = element_blank(),
     panel.grid.major.y = element_line(color = 'gray80')
   ) +
-  scale_shape_manual(name = 'Sample sizes \nGroup A1/B1, A1/B2, A2/B1, A2/B2',
+  scale_shape_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
                      labels = c(
                        '50, 50, 50, 50',
                        '50, 75, 75, 75',
@@ -379,7 +664,7 @@ current_data %>%
                      ),
                      values = rep(c(15, 16, 17), times = 3)
   ) +
-  scale_linetype_manual(name = 'Sample sizes \nGroup A1/B1, A1/B2, A2/B1, A2/B2',
+  scale_linetype_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
                         labels = c(
                           '50, 50, 50, 50',
                           '50, 75, 75, 75',
@@ -394,26 +679,25 @@ as the variance ratio, sample size ratio, and sample sizes vary.
 \end{figure}
 
 \subsection{Coverage Probability}
+Next, we looked at how well ANOVA and Welch's t test estimated the true effect. 
 We used 95\% confidence intervals constructed using Student's and Welch's t 
 tests to find their relative coverage probability, the proportion of confidence intervals 
 that contain the population value of the estimated parameter, which in this case is the 
-difference in group means (which is 0 when there are no effects). By 
-definition,  the expected coverage probability of 95\% confidence intervals  is .95.
+difference in group means. By 
+definition,  the expected coverage probability of 95\% confidence intervals  is .95. 
 Additionally, when the null hypothesis is true and $\alpha = .05$, the coverage 
 probability of 95\% confidence intervals has a simple relationship with the 
 false positive rate---it's the complement of the false positive rate. 
 
 Figure 4 displays the coverage probabilities of the two t tests. 
 The coverage probability for Student's t test varies dramatically, just as the 
-false positive rate did.  When Student's t test is the most 
-powerful, it is also the least accurate at estimating the difference in means, and what you would believe is a 95\% 
-confidence interval drops to as low as an 87\% confidence interval in reality. 
-In contrast, Welch's t test performs as expected and the confidence interval 
+false positive rate did, ranging from about 87-98\% when either the sample sizes or variances were unequal. 
+In contrast, Welch's t test performed as expected and the confidence interval 
 contains the true effect 95\% of the time regardless of the variance and sample 
 size ratios. 
 
 \begin{figure}[!ht]
-<<no_effects_joint_false_positives, echo = FALSE, collapse = TRUE, fig = TRUE, width = 8, height = 4>>=
+<<no_effects_coverage_probability, echo = FALSE, collapse = TRUE, fig = TRUE, width = 8, height = 4>>=
 
 # subset data
 current_data <- no_effects %>% 
@@ -452,7 +736,7 @@ current_data %>%
   scale_x_discrete(labels = factor(c('1/5', '1/2', '1', '2', '5'))) +
   scale_y_continuous(breaks = seq(.8, 1, .01)) +
   labs(
-    x = bquote(frac(sigma[A1/B1]^2,{sigma[A1/B2]^2 == sigma[A2/B1]^2} == sigma[A2/B2]^2)),
+    x = bquote(frac(sigma[A[1]*B[1]]^2,{sigma[A[1]*B[2]]^2 == sigma[A[2]*B[1]]^2} == sigma[A[2]*B[2]]^2)),
     y = 'Coverage Probability'
   ) +
   theme_classic() +
@@ -460,7 +744,7 @@ current_data %>%
     panel.grid = element_blank(),
     panel.grid.major.y = element_line(color = 'gray80')
   ) +
-  scale_shape_manual(name = 'Sample sizes \nGroup A1/B1, A1/B2, A2/B1, A2/B2',
+  scale_shape_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
                      labels = c(
                        '50, 50, 50, 50',
                        '50, 75, 75, 75',
@@ -468,7 +752,7 @@ current_data %>%
                      ),
                      values = rep(c(15, 16, 17), times = 3)
   ) +
-  scale_linetype_manual(name = 'Sample sizes \nGroup A1/B1, A1/B2, A2/B1, A2/B2',
+  scale_linetype_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
                         labels = c(
                           '50, 50, 50, 50',
                           '50, 75, 75, 75',
@@ -539,7 +823,7 @@ current_data %>%
   scale_x_discrete(labels = factor(c('1/5', '1/2', '1', '2', '5'))) +
   scale_y_continuous(breaks = c(0, .05, .10), minor_breaks = seq(0, .13, .01)) +
   labs(
-    x = bquote(frac(sigma[A1/B1]^2,{sigma[A1/B2]^2 == sigma[A2/B1]^2} == sigma[A2/B2]^2)),
+    x = bquote(frac(sigma[A[1]*B[1]]^2,{sigma[A[1]*B[2]]^2 == sigma[A[2]*B[1]]^2} == sigma[A[2]*B[2]]^2)),
     y = 'False Positive Rate'
   ) +
   theme_classic() +
@@ -547,7 +831,7 @@ current_data %>%
     panel.grid = element_blank(),
     panel.grid.major.y = element_line(color = 'gray80')
   ) +
-  scale_shape_manual(name = 'Sample sizes \nGroup A1/B1, A1/B2, A2/B1, A2/B2',
+  scale_shape_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
                      labels = c(
                        '50, 50, 50, 50',
                        '50, 75, 75, 75',
@@ -555,7 +839,7 @@ current_data %>%
                      ),
                      values = rep(c(15, 16, 17), times = 3)
   ) +
-  scale_linetype_manual(name = 'Sample sizes \nGroup A1/B1, A1/B2, A2/B1, A2/B2',
+  scale_linetype_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
                         labels = c(
                           '50, 50, 50, 50',
                           '50, 75, 75, 75',
@@ -657,7 +941,7 @@ current_data <- crossover_sims %>%
     !str_detect(contrast_names, 'ME')
   ) %>% 
   mutate( 
-    contrast_names = factor(contrast_names, levels = c('Interaction', 'SE (1 vs 2)', 'SE (3 vs 4)'), labels = c('Interaction', 'Simple Effect (A1/B1 vs. A1/B2)', 'Simple Effect (A2/B1 vs. A2/B2)'))
+    contrast_names = factor(contrast_names, levels = c('Interaction', 'SE (1 vs 2)', 'SE (3 vs 4)'), labels = c('Interaction', 'Simple Effect (A[1]*B[1] vs. A[1]*B[2])', 'Simple Effect (A[2]*B[1] vs. A[2]*B[2])'))
     )
 
 current_data %>% 
@@ -668,14 +952,14 @@ current_data %>%
   geom_hline(aes(yintercept = 0), color = 'gray80') +
   scale_x_discrete(labels = factor(c('1/5', '1/2', '1', '2', '5'))) +
   labs(
-    x = bquote(frac(sigma[A1/B1]^2,{sigma[A1/B2]^2 == sigma[A2/B1]^2} == sigma[A2/B2]^2)),
+    x = bquote(frac(sigma[A[1]*B[1]]^2,{sigma[A[1]*B[2]]^2 == sigma[A[2]*B[1]]^2} == sigma[A[2]*B[2]]^2)),
     y = 'Power'
   ) +
   theme_classic() +
   theme(
     panel.grid = element_blank()
   ) +
-  scale_shape_manual(name = 'Sample sizes \nGroup A1/B1, A1/B2, A2/B1, A2/B2',
+  scale_shape_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
                      labels = c(
                        '50, 50, 50, 50',
                        '50, 75, 75, 75',
@@ -683,7 +967,7 @@ current_data %>%
                      ),
                      values = rep(c(15, 16, 17), times = 3)
   ) +
-  scale_linetype_manual(name = 'Sample sizes \nGroup A1/B1, A1/B2, A2/B1, A2/B2',
+  scale_linetype_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
                         labels = c(
                           '50, 50, 50, 50',
                           '50, 75, 75, 75',
@@ -714,6 +998,7 @@ you don't have to worry about sacrificing concerns with false positives.
 
 
 \subsubsection{Coverage Probability}
+Next, we looked at how well ANOVA and Welch's t test estimated the true effect. 
 We used 95\% confidence intervals constructed using Student's and Welch's t 
 tests to find their relative coverage probability, the proportion of confidence intervals 
 that contain the population value of the estimated parameter, which in this case is the 
@@ -736,7 +1021,7 @@ contains the true effect 95\% of the time regardless of the variance and sample
 size ratios. 
 
 <<ClassicCoverage, echo=FALSE>>=
-rnorm(50)
+#rnorm(50)
 @
 
 \begin{figure}[!ht]
