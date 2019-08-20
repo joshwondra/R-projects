@@ -1,0 +1,312 @@
+\documentclass[man,noextraspace,apacite]{apa6}
+\usepackage{apacite}
+
+\title{Use Welch's \textit{t} Test to Compare the Means of Independent Groups: Supplemental Materials}
+\author{Joshua D. Wondra and Richard Gonzalez}
+\affiliation{Facebook, University of Michigan}
+\SweaveOpts{concordance=TRUE}
+
+<<setup, echo=FALSE>>=
+
+# Load packages ----
+library(lemon)
+library(tidyverse)
+library(cowplot)
+
+
+# Import simulation results ----
+
+# two groups
+load('veNeSeed2184Tables.Rdata')
+load('v2NeSeed2184Tables.Rdata')
+load('v5NeSeed2184Tables.Rdata')
+load('ve1andhalfnSeed2184Tables.Rdata')
+load('ve2nSeed2184Tables.Rdata')
+load('v21andhalfnSSVSeed2184Tables.Rdata')
+load('v51andhalfnSSVSeed2184Tables.Rdata')
+load('v22nSSVSeed2184Tables.Rdata')
+load('v52nSSVSeed2184Tables.Rdata')
+load('v21andhalfnBSVSeed2184Tables.Rdata')
+load('v51andhalfnBSVSeed2184Tables.Rdata')
+load('v22nBSVSeed2184Tables.Rdata')
+load('v52nBSVSeed2184Tables.Rdata')
+
+## 2 x 2 interaction 
+load('interaction2x2-veNeSeed2184Tables.Rdata')
+load('interaction2x2-v2bigvarNeSeed2184Tables.Rdata')
+load('interaction2x2-v5bigvarNeSeed2184Tables.Rdata')
+load('interaction2x2-v2smallvarNeSeed2184Tables.Rdata')
+load('interaction2x2-v5smallvarNeSeed2184Tables.Rdata')
+load('interaction2x2-vebign1.5nSeed2184Tables.Rdata')
+load('interaction2x2-vebign2nSeed2184Tables.Rdata')
+load('interaction2x2-vesmalln1.5nSeed2184Tables.Rdata')
+load('interaction2x2-vesmalln2nSeed2184Tables.Rdata')
+load('interaction2x2-v2bigvarbign1.5nSeed2184Tables.Rdata')
+load('interaction2x2-v2bigvarbign2nSeed2184Tables.Rdata')
+load('interaction2x2-v2bigvarsmalln1.5nSeed2184Tables.Rdata')
+load('interaction2x2-v2bigvarsmalln2nSeed2184Tables.Rdata')
+load('interaction2x2-v5bigvarbign1.5nSeed2184Tables.Rdata')
+load('interaction2x2-v5bigvarbign2nSeed2184Tables.Rdata')
+load('interaction2x2-v5bigvarsmalln1.5nSeed2184Tables.Rdata')
+load('interaction2x2-v5bigvarsmalln2nSeed2184Tables.Rdata')
+load('interaction2x2-v2smallvarbign1.5nSeed2184Tables.Rdata')
+load('interaction2x2-v2smallvarbign2nSeed2184Tables.Rdata')
+load('interaction2x2-v2smallvarsmalln1.5nSeed2184Tables.Rdata')
+load('interaction2x2-v2smallvarsmalln2nSeed2184Tables.Rdata')
+load('interaction2x2-v5smallvarbign1.5nSeed2184Tables.Rdata')
+load('interaction2x2-v5smallvarbign2nSeed2184Tables.Rdata')
+load('interaction2x2-v5smallvarsmalln1.5nSeed2184Tables.Rdata')
+load('interaction2x2-v5smallvarsmalln2nSeed2184Tables.Rdata')
+
+
+
+
+# Prep data (two groups) ----
+two_groups <- bind_rows(
+  as.data.frame.table(reject.null.ve.ne),
+  as.data.frame.table(reject.null.v2.ne),
+  as.data.frame.table(reject.null.v2.ne), # duplicate symmetric conditions
+  as.data.frame.table(reject.null.v5.ne),
+  as.data.frame.table(reject.null.v5.ne), # duplicate symmetric conditions
+  as.data.frame.table(reject.null.ve.1.5n),
+  as.data.frame.table(reject.null.ve.2n),
+  as.data.frame.table(reject.null.v2.1.5n.ssv),
+  as.data.frame.table(reject.null.v2.1.5n.bsv),
+  as.data.frame.table(reject.null.v2.2n.ssv),
+  as.data.frame.table(reject.null.v2.2n.bsv),
+  as.data.frame.table(reject.null.v5.1.5n.ssv),
+  as.data.frame.table(reject.null.v5.1.5n.bsv),
+  as.data.frame.table(reject.null.v5.2n.ssv),
+  as.data.frame.table(reject.null.v5.2n.bsv)
+) %>% 
+  mutate(
+    var.ratio = rep(c(1, 2, 1/2, 5, 1/5, 1, 1, 1/2, 2, 1/2, 2, 1/5, 5, 1/5, 5), each = 24),
+    n.ratio = rep(c(1, 1, 1, 1, 1, 1.5, 2, 1.5, 1.5, 2, 2, 1.5, 1.5, 2, 2), each = 24),
+    case = 'Two groups'
+  ) %>% 
+  rename(
+    small_n = Var1,
+    effect = Var2,
+    test = Var3,
+    rejects = Freq
+  ) %>% 
+  mutate(
+    Ns = map_chr(small_n, ~ str_extract_all(., '[0-9]+', simplify = TRUE) %>% 
+               paste(collapse = ', ') %>% 
+               ifelse(str_detect(., ','), ., paste(., ., sep = ', '))
+             ) %>% 
+      factor(levels = c('20, 20', '20, 30', '20, 40', '50, 50', '50, 75', '50, 100', '100, 100', '100, 150', '100, 200')),
+    small_ns = str_extract(Ns, '[0-9]+'),
+    test = recode(test, classic = "Student's t test", welch = "Welch's t test")
+  )
+
+## Set up data - interaction
+
+cross_int <- bind_rows(
+  as.data.frame.table(int.reject.null.ve.ne),
+  as.data.frame.table(int.reject.null.ve.1.5n.smalln),
+  as.data.frame.table(int.reject.null.ve.1.5n.bign),
+  as.data.frame.table(int.reject.null.ve.2n.smalln),
+  as.data.frame.table(int.reject.null.ve.2n.bign),
+  as.data.frame.table(int.reject.null.v2.ne.bigvar),
+  as.data.frame.table(int.reject.null.v2.ne.smallvar),
+  as.data.frame.table(int.reject.null.v5.ne.bigvar),
+  as.data.frame.table(int.reject.null.v5.ne.smallvar),
+  as.data.frame.table(int.reject.null.v2.1.5n.bign.bigvar),
+  as.data.frame.table(int.reject.null.v2.1.5n.bign.smallvar),
+  as.data.frame.table(int.reject.null.v2.1.5n.smalln.bigvar),
+  as.data.frame.table(int.reject.null.v2.1.5n.smalln.smallvar),
+  as.data.frame.table(int.reject.null.v2.2n.bign.bigvar),
+  as.data.frame.table(int.reject.null.v2.2n.bign.smallvar),
+  as.data.frame.table(int.reject.null.v2.2n.smalln.bigvar),
+  as.data.frame.table(int.reject.null.v2.2n.smalln.smallvar),
+  as.data.frame.table(int.reject.null.v5.1.5n.bign.bigvar),
+  as.data.frame.table(int.reject.null.v5.1.5n.bign.smallvar),
+  as.data.frame.table(int.reject.null.v5.1.5n.smalln.bigvar),
+  as.data.frame.table(int.reject.null.v5.1.5n.smalln.smallvar),
+  as.data.frame.table(int.reject.null.v5.2n.bign.bigvar),
+  as.data.frame.table(int.reject.null.v5.2n.bign.smallvar),
+  as.data.frame.table(int.reject.null.v5.2n.smalln.bigvar),
+  as.data.frame.table(int.reject.null.v5.2n.smalln.smallvar)
+) %>% 
+  rename(
+    small_n = Var1,
+    effect = Var2,
+    test = Var3,
+    rejects = Freq
+  ) %>% 
+  mutate(
+    var.ratio = rep(c(1, 1, 1, 1, 1, 2, 1/2, 5, 1/5, 2, 1/2, 2, 1/2, 2, 1/2, 2, 1/2, 5, 1/5, 5, 1/5, 5, 1/5, 5, 1/5), each = 12),
+    n.ratio = rep(c(1, 1/1.5, 1.5, 1/2, 2, 1, 1, 1, 1, 1.5, 1.5, 1/1.5, 1/1.5, 2, 2, 1/2, 1/2, 1.5, 1.5, 1/1.5, 1/1.5, 2, 2, 1/2, 1/2), each = 12),
+    Ns = case_when(
+      n.ratio == 1 & small_n == 'N=20' ~ '20, 20, 20, 20',
+      n.ratio == 1 & small_n == 'N=50' ~ '50, 50, 50, 50',
+      n.ratio == 1 & small_n == 'N=100' ~ '100, 100, 100, 100',
+      n.ratio == 1.5 & small_n == 'N=20' ~ '30, 20, 20, 20',
+      n.ratio == 1.5 & small_n == 'N=50' ~ '75, 50, 50, 50',
+      n.ratio == 1.5 & small_n == 'N=100' ~ '150, 100, 100, 100',
+      n.ratio == 1/1.5 & small_n == 'N=20' ~ '20, 30, 30, 30',
+      n.ratio == 1/1.5 & small_n == 'N=50' ~ '50, 75, 75, 75',
+      n.ratio == 1/1.5 & small_n == 'N=100' ~ '100, 150, 150, 150',
+      n.ratio == 2 & small_n == 'N=20' ~ '40, 20, 20, 20',
+      n.ratio == 2 & small_n == 'N=50' ~ '100, 50, 50, 50',
+      n.ratio == 2 & small_n == 'N=100' ~ '200, 100, 100, 100',
+      n.ratio == 1/2 & small_n == 'N=20' ~ '20, 40, 40, 40',
+      n.ratio == 1/2 & small_n == 'N=50' ~ '50, 100, 100, 100',
+      n.ratio == 1/2 & small_n == 'N=100' ~ '100, 200, 200, 200'
+    ) %>% 
+      factor(levels = c('20, 20, 20, 20',
+                        '30, 20, 20, 20',
+                        '40, 20, 20, 20',
+                        '20, 30, 30, 30',
+                        '20, 40, 40, 40',
+                        '50, 50, 50, 50',
+                        '75, 50, 50, 50',
+                        '100, 50, 50, 50',
+                        '50, 75, 75, 75',
+                        '50, 100, 100, 100',
+                        '100, 100, 100, 100',
+                        '150, 100, 100, 100',
+                        '200, 100, 100, 100',
+                        '100, 150, 150, 150',
+                        '100, 200, 200, 200')),
+    case = 'Crossover interaction',
+    small_ns = str_extract(Ns, '[0-9]+'),
+    test = recode(test, classic = "Student's t test", welch = "Welch's t test")
+  )
+
+# Set ggplot theme ----
+theme_set(theme_bw())
+
+@
+
+\section{False Positives: All Conditions}
+<<false positive plots, echo = FALSE>>=
+
+# False pos plot (two groups) ----
+falsepos_two <- ggplot(filter(two_groups, effect == 'd=0'), 
+       aes(x = as.factor(var.ratio), y = rejects, ymin=0, ymax=.13, group = Ns, shape = Ns, linetype = Ns)) + 
+    geom_point(size = 4) + 
+    scale_shape_manual(name = 'Sample sizes \nGroup 1, 2',
+                       labels = c('20, 20', '20, 30', '20, 40',
+                                     '50, 50', '50, 75', '50, 100',
+                                     '100, 100', '100, 150', '100, 200'),
+                       values = rep(c(1, 2, 0), times = 3)) +
+    geom_line(size = .5) + 
+    scale_linetype_manual(name = 'Sample sizes \nGroup 1, 2',
+                          labels = c('20, 20', '20, 30', '20, 40',
+                                     '50, 50', '50, 75', '50, 100',
+                                     '100, 100', '100, 150', '100, 200'),
+                          values=rep(c('dotted', 'dashed', 'solid'), each = 3)
+                          ) +
+    scale_x_discrete(labels = factor(c('1/5', '1/2', '1', '2', '5'))) +
+    scale_y_continuous(breaks = c(0, .05, .10), minor_breaks = seq(0, .13, .01)) +
+    labs(
+      x = bquote(frac(sigma[1]^2, sigma[2]^2)),
+      y = 'False Positive Rate',
+      title = 'Two groups'
+      ) +
+    facet_grid(. ~ test) +
+    theme(
+      panel.grid = element_blank(),
+#      panel.grid.minor.y = element_line(color = 'gray90'),
+      panel.grid.major.y = element_line(color = 'gray80')
+      )
+
+
+# False pos plot (interaction, one group has small n) ----
+falsepos_int_smalln <- ggplot(filter(cross_int, effect == 'd=0', !(n.ratio %in% c(1.5, 2))), 
+       aes(x = as.factor(var.ratio), y = rejects, ymin=0, ymax=.13, group = Ns, shape = Ns, linetype = Ns)) + 
+    geom_point(size = 4) + 
+    scale_shape_manual(name = 'Sample sizes \nGroup 1, 2, 3, 4',
+                       labels = c('20, 20, 20, 20',
+                                  '20, 30, 30, 30',
+                                  '20, 40, 40, 40',
+                                  '50, 50, 50, 50',
+                                  '50, 75, 75, 75',
+                                  '50, 100, 100, 100',
+                                  '100, 100, 100, 100',
+                                  '100, 150, 150, 150',
+                                  '100, 200, 200, 200'),
+                       values = rep(c(1, 0, 5), times = 3)
+                       ) +
+    geom_line(size = .5) + 
+    scale_linetype_manual(name = 'Sample sizes \nGroup 1, 2, 3, 4',
+                          labels = c('20, 20, 20, 20',
+                                  '20, 30, 30, 30',
+                                  '20, 40, 40, 40',
+                                  '50, 50, 50, 50',
+                                  '50, 75, 75, 75',
+                                  '50, 100, 100, 100',
+                                  '100, 100, 100, 100',
+                                  '100, 150, 150, 150',
+                                  '100, 200, 200, 200'),
+                          values = rep(c('dotted', 'dashed', 'solid'), each = 3)
+                          ) +
+    scale_x_discrete(labels = factor(c('1/5', '1/2', '1', '2', '5'))) +
+    scale_y_continuous(breaks = c(0, .05, .10), minor_breaks = seq(0, .13, .01)) +
+    labs(
+      x = bquote(frac(sigma[1]^2,{sigma[2]^2 == sigma[3]^2} == sigma[4]^2)),
+      y = 'False Positive Rate',
+      title = 'Crossover interaction - Group 1 has small sample'
+      ) +
+    facet_grid(. ~ test) +
+    theme(
+      panel.grid = element_blank(),
+#      panel.grid.minor.y = element_line(color = 'gray90'),
+      panel.grid.major.y = element_line(color = 'gray80')
+      )
+
+# False pos plot (interaction, one group has large n) ----
+falsepos_int_bign <- ggplot(filter(cross_int, effect == 'd=0', !(n.ratio %in% c(1/1.5, 1/2))), 
+       aes(x = as.factor(var.ratio), y = rejects, ymin=0, ymax=.13, group = Ns, shape = Ns, linetype = Ns)) + 
+    geom_point(size = 4) + 
+    scale_shape_manual(name = 'Sample sizes \nGroup 1, 2, 3, 4',
+                       labels = c('20, 20, 20, 20',
+                                  '30, 20, 20, 20',
+                                  '40, 20, 20, 20',
+                                  '50, 50, 50, 50',
+                                  '75, 50, 50, 50',
+                                  '100, 50, 50, 50',
+                                  '100, 100, 100, 100',
+                                  '150, 100, 100, 100',
+                                  '200, 100, 100, 100'),
+                       values = rep(c(1, 16, 18), times = 3)
+                       ) +
+    geom_line(size = .5) + 
+    scale_linetype_manual(name = 'Sample sizes \nGroup 1, 2, 3, 4',
+                          labels = c('20, 20, 20, 20',
+                                  '30, 20, 20, 20',
+                                  '40, 20, 20, 20',
+                                  '50, 50, 50, 50',
+                                  '75, 50, 50, 50',
+                                  '100, 50, 50, 50',
+                                  '100, 100, 100, 100',
+                                  '150, 100, 100, 100',
+                                  '200, 100, 100, 100'),
+                          values = rep(c('dotted', 'dashed', 'solid'), each = 3)
+                          ) +
+    scale_x_discrete(labels = factor(c('1/5', '1/2', '1', '2', '5'))) +
+    scale_y_continuous(breaks = c(0, .05, .10), minor_breaks = seq(0, .13, .01)) +
+    labs(
+      x = bquote(frac(sigma[1]^2,{sigma[2]^2 == sigma[3]^2} == sigma[4]^2)),
+      y = 'False Positive Rate',
+      title = 'Crossover interaction - Group 1 has large sample'
+      ) +
+    facet_grid(. ~ test) +
+    theme(
+      panel.grid = element_blank(),
+#      panel.grid.minor.y = element_line(color = 'gray90'),
+      panel.grid.major.y = element_line(color = 'gray80')
+      )
+
+
+# Print false pos plots ----
+plottype1 <- plot_grid(falsepos_two, falsepos_int_smalln, falsepos_int_bign, nrow = 3)
+
+
+@
+
+
+
+\end{document}

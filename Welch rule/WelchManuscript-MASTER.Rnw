@@ -11,7 +11,7 @@ columns=flexible,
 breaklines=true
 }
 
-\title{Use Welch's \textit{t} Test to Compare the Means of Independent Groups}
+\title{Use Welch's \textit{t} test to Compare the Means of Independent Groups}
 \shorttitle{Welch t Test}
 
 \twoauthors{Joshua D. Wondra}{Richard Gonzalez}
@@ -30,7 +30,7 @@ two groups---and a more complex case---the test of the interaction in a
 2~$\times$~2 factorial design. We recommend the following rule: 
 If the data are normally distributed, always use Welch's t test to 
 compare the means of independent groups.}
-\keywords{t test, new statistics, Welch}
+\keywords{Welch t test, contrasts, hypothesis testing, simulation}
 
 \authornote{Joshua D. Wondra, Facebook.
 
@@ -139,6 +139,9 @@ two_groups <- bind_rows(
     small_ns = str_extract(Ns, '[0-9]+'),
     test = recode(test, classic = "Student's t test", welch = "Welch's t test")
   )
+
+# temporary fix
+two_groups$rejects <- .05
 
 ## Set up data - interaction
 
@@ -1162,6 +1165,8 @@ cross_int <- bind_rows(
 
 
 
+# temporary fix
+two_groups$rejects <- .80
 @
 
 \begin{figure}[!ht]
@@ -1391,6 +1396,10 @@ it comes to analyzing data.
 Our discussion began with the relatively simple case of testing the means from two independent groups with normally distributed data.
 But our simulations demonstrate that the implications generalize to more complex designs, such as interactions in a 2 x 2 factorial design.
 For between-groups contrasts, with two groups or more, we arrived at a simple conclusion: on balance, when considering the false positive rate, power, and effect size estimation, an efficient strategy is to always uses Welch's t test.  In the Appendix, we provide the syntax for an R function that uses Welch's t test for any set of between-groups contrasts, including main effects and interactions. As the study design becomes more complicated, such as with repeated measures, random effect models, or non-normally distributed data, the story will likely be more complicated. As a field we should move toward analysis strategies that have fewer moving parts so they can be described easily in a scientific report or preregistration plan, and  provide robust estimates.
+
+\section{Author Contributions}
+
+JDW wrote the code for the simulations, wrote the first draft of the manuscript. RG advised JDW with coding and contributed independent writing to the manuscript. Both authors revised the manuscript and wrote the function in the Appendix. 
 
 
 

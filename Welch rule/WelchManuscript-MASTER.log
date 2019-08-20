@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  27 APR 2016 10:22
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  6 JAN 2019 16:37
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -225,7 +225,43 @@ nd (jdm)
 \c@postfigure=\count101
 \efloat@postfff=\write4
 \@ef@fffopen=\count102
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count103
+\float@exts=\toks16
+\float@box=\box28
+\@float@everytoks=\toks17
+\@floatcapt=\box29
 ))
+(/usr/local/texlive/2015/texmf-dist/tex/latex/setspace/setspace.sty
+Package: setspace 2011/12/19 v6.7a set line spacing
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/listings/listings.sty
+\lst@mode=\count104
+\lst@gtempboxa=\box30
+\lst@token=\toks18
+\lst@length=\count105
+\lst@currlwidth=\dimen133
+\lst@column=\count106
+\lst@pos=\count107
+\lst@lostspace=\dimen134
+\lst@width=\dimen135
+\lst@newlines=\count108
+\lst@lineno=\count109
+\lst@maxwidth=\dimen136
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2014/09/06 1.5e (Carsten Heinz)
+\c@lstnumber=\count110
+\lst@skipnumbers=\count111
+\lst@framebox=\box31
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/listings/listings.cfg
+File: listings.cfg 2014/09/06 1.5e listings configuration
+))
+Package: listings 2014/09/06 1.5e (Carsten Heinz)
+
 (/Library/Frameworks/R.framework/Resources/share/texmf/tex/latex/Sweave.sty
 Package: Sweave 
 
@@ -237,11 +273,11 @@ Package: fancyvrb 2008/02/07
 
 Style option: `fancyvrb' v2.7a, with DG/SPQR fixes, and firstline=lastline fix 
 <2008/02/07> (tvz)
-\FV@CodeLineNo=\count103
+\FV@CodeLineNo=\count112
 \FV@InFile=\read1
-\FV@TabBox=\box28
-\c@FancyVerbLine=\count104
-\FV@StepNumber=\count105
+\FV@TabBox=\box32
+\c@FancyVerbLine=\count113
+\FV@StepNumber=\count114
 \FV@OutFile=\write5
 )
 (/usr/local/texlive/2015/texmf-dist/tex/latex/base/textcomp.sty
@@ -351,26 +387,26 @@ File: t1aer.fd 1997/11/16 Font definitions for T1/aer.
 (./WelchManuscript-MASTER.aux)
 \openout1 = `WelchManuscript-MASTER.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 35.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 35.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 48.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 48.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 35.
-\c@maskedRefs=\count106
+LaTeX Font Info:    ... okay on input line 48.
+\c@maskedRefs=\count115
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/apacite/english.apc
 File: english.apc 2013/07/21 v6.03 apacite language file
@@ -381,16 +417,16 @@ LaTeX Info: Redefining \BHBI on input line 130.
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
 * driver: pdftex
-* paper: a4paper
+* paper: <default>
 * layout: <same size as paper>
 * layoutoffset:(h,v)=(0.0pt,0.0pt)
 * modes: twoside 
-* h-part:(L,W,R)=(72.26999pt, 452.9679pt, 72.26999pt)
-* v-part:(T,H,B)=(72.26999pt, 700.50687pt, 72.26999pt)
-* \paperwidth=597.50787pt
-* \paperheight=845.04684pt
-* \textwidth=452.9679pt
-* \textheight=700.50687pt
+* h-part:(L,W,R)=(72.26999pt, 469.75502pt, 72.26999pt)
+* v-part:(T,H,B)=(72.26999pt, 650.43001pt, 72.26999pt)
+* \paperwidth=614.295pt
+* \paperheight=794.96999pt
+* \textwidth=469.75502pt
+* \textheight=650.43001pt
 * \oddsidemargin=0.0pt
 * \evensidemargin=0.0pt
 * \topmargin=-37.0pt
@@ -413,17 +449,17 @@ LaTeX Info: Redefining \BHBI on input line 130.
 
 (/usr/local/texlive/2015/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count107
-\scratchdimen=\dimen133
-\scratchbox=\box29
-\nofMPsegments=\count108
-\nofMParguments=\count109
-\everyMPshowfont=\toks16
-\MPscratchCnt=\count110
-\MPscratchDim=\dimen134
-\MPnumerator=\count111
-\makeMPintoPDFobject=\count112
-\everyMPtoPDFconversion=\toks17
+\scratchcounter=\count116
+\scratchdimen=\dimen137
+\scratchbox=\box33
+\nofMPsegments=\count117
+\nofMParguments=\count118
+\everyMPshowfont=\toks19
+\MPscratchCnt=\count119
+\MPscratchDim=\dimen138
+\MPnumerator=\count120
+\makeMPintoPDFobject=\count121
+\everyMPtoPDFconversion=\toks20
 ) (/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
 )
@@ -472,192 +508,156 @@ e
 File: APAamerican.txt 2012/02/23 v1.25 apa6 configuration for American English
 )
 Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: float package is loaded.
+Package caption Info: listings package is loaded.
 Package caption Info: End \AtBeginDocument code.
+\c@lstlisting=\count122
 
 (./WelchManuscript-MASTER-concordance.tex) [1{/usr/local/texlive/2015/texmf-var
 /fonts/map/pdftex/updmap/pdftex.map}
 
-] [2]
-Underfull \vbox (badness 3895) has occurred while \output is active []
-
- [3]
-LaTeX Font Info:    Try loading font information for OT1+lmr on input line 74.
+]
+LaTeX Font Info:    Try loading font information for OT1+lmr on input line 50.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OML+lmm on input line 74.
+LaTeX Font Info:    Try loading font information for OML+lmm on input line 50.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 74.
+LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 50.
 
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMX+lmex on input line 74.
+LaTeX Font Info:    Try loading font information for OMX+lmex on input line 50.
 
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 74.
+(Font)              <12> on input line 50.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 74.
+(Font)              <8> on input line 50.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 74.
+(Font)              <6> on input line 50.
+ [2] [3]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
  [4]
-LaTeX Font Info:    Try loading font information for T1+aett on input line 125.
+LaTeX Font Info:    Try loading font information for T1+aett on input line 114.
 
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/ae/t1aett.fd
 File: t1aett.fd 1997/11/16 Font definitions for T1/aett.
-) [5] [6] [7]
-\openout4 = `WelchManuscript-MASTER.fff'.
+)
+Underfull \vbox (badness 1048) has occurred while \output is active []
 
+ [5]
+[6] [7] <WelchManuscript-MASTER-boxplots.pdf, id=38, 433.62pt x 578.16pt>
+File: WelchManuscript-MASTER-boxplots.pdf Graphic file (type pdf)
 
-(WelchManuscript-MASTER.fff)
+<use WelchManuscript-MASTER-boxplots.pdf>
+Package pdftex.def Info: WelchManuscript-MASTER-boxplots.pdf used on input line
+ 199.
+(pdftex.def)             Requested size: 375.80544pt x 501.0984pt.
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [8]
-Underfull \vbox (badness 2005) has occurred while \output is active []
+ [8 <./WelchManuscript-MASTER-boxplots.pdf>] [9]
+<WelchManuscript-MASTER-FalsePositivePlots.pdf, id=52, 578.16pt x 794.97pt>
+File: WelchManuscript-MASTER-FalsePositivePlots.pdf Graphic file (type pdf)
 
- [9]
-[10]
-Underfull \vbox (badness 6775) has occurred while \output is active []
+<use WelchManuscript-MASTER-FalsePositivePlots.pdf>
+Package pdftex.def Info: WelchManuscript-MASTER-FalsePositivePlots.pdf used on 
+input line 253.
+(pdftex.def)             Requested size: 375.80544pt x 516.72438pt.
 
- [11]
-Underfull \vbox (badness 6944) has occurred while \output is active []
+<WelchManuscript-MASTER-PowerPlots.pdf, id=53, 578.16pt x 794.97pt>
+File: WelchManuscript-MASTER-PowerPlots.pdf Graphic file (type pdf)
 
- [12]
-Underfull \vbox (badness 3895) has occurred while \output is active []
+<use WelchManuscript-MASTER-PowerPlots.pdf>
+Package pdftex.def Info: WelchManuscript-MASTER-PowerPlots.pdf used on input li
+ne 265.
+(pdftex.def)             Requested size: 375.80544pt x 516.72438pt.
 
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [10]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [11 <./WelchManuscript-MASTER-FalsePositivePlots.pdf>]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [12 <./WelchManuscript-MASTER-PowerPlots.pdf>]
+<WelchManuscript-MASTER-CoveragePlots.pdf, id=75, 578.16pt x 794.97pt>
+File: WelchManuscript-MASTER-CoveragePlots.pdf Graphic file (type pdf)
+
+<use WelchManuscript-MASTER-CoveragePlots.pdf>
+Package pdftex.def Info: WelchManuscript-MASTER-CoveragePlots.pdf used on input
+ line 316.
+(pdftex.def)             Requested size: 375.80544pt x 516.72438pt.
  [13]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [14]
+ [14 <./WelchManuscript-MASTER-CoveragePlots.pdf>]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [15]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [16]
-(./WelchManuscript-MASTER.bbl [17]
-Underfull \vbox (badness 3895) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [18
+ [17]
+(./WelchManuscript-MASTER.bbl [18]
+Underfull \vbox (badness 2990) has occurred while \output is active []
+
+ [19
 
 ]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [19])
+ [20])
 
-Class apa6 Warning: \bibliographystyle command ignored on input line 724.
+Class apa6 Warning: \bibliographystyle command ignored on input line 446.
 
-AED endfloat: Processing end Figures and Tables [20]
-(./WelchManuscript-MASTER.fff
-<WelchManuscript-MASTER-dfratiosDiffvars.pdf, id=79, 433.62pt x 722.7pt>
-File: WelchManuscript-MASTER-dfratiosDiffvars.pdf Graphic file (type pdf)
+[21] [22
 
-<use WelchManuscript-MASTER-dfratiosDiffvars.pdf>
-Package pdftex.def Info: WelchManuscript-MASTER-dfratiosDiffvars.pdf used on in
-put line 4.
-(pdftex.def)             Requested size: 362.37569pt x 603.98718pt.
- [21
-
-
- <./WelchManuscript-MASTER-dfratiosDiffvars.pdf>]
-<WelchManuscript-MASTER-varEqualBoxplots.pdf, id=90, 433.62pt x 722.7pt>
-File: WelchManuscript-MASTER-varEqualBoxplots.pdf Graphic file (type pdf)
-
-<use WelchManuscript-MASTER-varEqualBoxplots.pdf>
-Package pdftex.def Info: WelchManuscript-MASTER-varEqualBoxplots.pdf used on in
-put line 15.
-(pdftex.def)             Requested size: 362.37569pt x 603.98718pt.
- [22
-
- <./WelchManuscript-MASTER-varEqualBoxplots.pdf>]
-<WelchManuscript-MASTER-Type1ClassicPlot.pdf, id=99, 433.62pt x 722.7pt>
-File: WelchManuscript-MASTER-Type1ClassicPlot.pdf Graphic file (type pdf)
-
-<use WelchManuscript-MASTER-Type1ClassicPlot.pdf>
-Package pdftex.def Info: WelchManuscript-MASTER-Type1ClassicPlot.pdf used on in
-put line 26.
-(pdftex.def)             Requested size: 362.37569pt x 603.98718pt.
- [23
-
- <./WelchManuscript-MASTER-Type1ClassicPlot.pdf>]
-<WelchManuscript-MASTER-plotPower.pdf, id=110, 867.24pt x 1156.32pt>
-File: WelchManuscript-MASTER-plotPower.pdf Graphic file (type pdf)
-
-<use WelchManuscript-MASTER-plotPower.pdf>
-Package pdftex.def Info: WelchManuscript-MASTER-plotPower.pdf used on input lin
-e 36.
-(pdftex.def)             Requested size: 362.37569pt x 483.16328pt.
- [24
-
- <./WelchManuscript-MASTER-plotPower.pdf>]
-<WelchManuscript-MASTER-plotPowerDiff.pdf, id=121, 867.24pt x 1156.32pt>
-File: WelchManuscript-MASTER-plotPowerDiff.pdf Graphic file (type pdf)
-
-<use WelchManuscript-MASTER-plotPowerDiff.pdf>
-Package pdftex.def Info: WelchManuscript-MASTER-plotPowerDiff.pdf used on input
- line 45.
-(pdftex.def)             Requested size: 362.37569pt x 483.16328pt.
- [25
-
- <./WelchManuscript-MASTER-plotPowerDiff.pdf>]
-<WelchManuscript-MASTER-CoveragePlots.pdf, id=133, 433.62pt x 433.62pt>
-File: WelchManuscript-MASTER-CoveragePlots.pdf Graphic file (type pdf)
-
-<use WelchManuscript-MASTER-CoveragePlots.pdf>
-Package pdftex.def Info: WelchManuscript-MASTER-CoveragePlots.pdf used on input
- line 55.
-(pdftex.def)             Requested size: 362.37569pt x 362.39232pt.
- [26
-
- <./WelchManuscript-MASTER-CoveragePlots.pdf>]
-<WelchManuscript-MASTER-tdist.pdf, id=144, 433.62pt x 433.62pt>
-File: WelchManuscript-MASTER-tdist.pdf Graphic file (type pdf)
-
-<use WelchManuscript-MASTER-tdist.pdf>
-Package pdftex.def Info: WelchManuscript-MASTER-tdist.pdf used on input line 64
-.
-(pdftex.def)             Requested size: 362.37569pt x 362.39232pt.
- [27
-
- <./WelchManuscript-MASTER-tdist.pdf>]) (./WelchManuscript-MASTER.aux) ) 
+] [23] AED endfloat: Processing end Figures and Tables [24]
+(./WelchManuscript-MASTER.aux) ) 
 Here is how much of TeX's memory you used:
- 5701 strings out of 493089
- 86689 string characters out of 6134842
- 151358 words of memory out of 5000000
- 9044 multiletter control sequences out of 15000+600000
- 35407 words of font info for 51 fonts, out of 8000000 for 9000
+ 6919 strings out of 493089
+ 104271 string characters out of 6134842
+ 271312 words of memory out of 5000000
+ 10244 multiletter control sequences out of 15000+600000
+ 37749 words of font info for 55 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 43i,11n,47p,580b,350s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/l
-ocal/texlive/2015/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/local/texli
-ve/2015/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/local/texlive/2015/te
-xmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/texlive/2015/texmf-dist/fonts
-/enc/dvips/lm/lm-mathit.enc}</usr/local/texlive/2015/texmf-dist/fonts/type1/pub
-lic/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/publ
-ic/amsfonts/cm/cmr12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public
-/amsfonts/cm/cmti12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/
-amsfonts/cm/cmtt12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/l
-m/lmex10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/lm/lmmi12.p
-fb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></usr/lo
-cal/texlive/2015/texmf-dist/fonts/type1/public/lm/lmr12.pfb></usr/local/texlive
-/2015/texmf-dist/fonts/type1/public/lm/lmr6.pfb></usr/local/texlive/2015/texmf-
-dist/fonts/type1/public/lm/lmr8.pfb></usr/local/texlive/2015/texmf-dist/fonts/t
-ype1/public/lm/lmsy10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/publi
-c/lm/lmsy8.pfb>
-Output written on WelchManuscript-MASTER.pdf (27 pages, 250420 bytes).
+ 43i,11n,47p,1043b,1642s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2015/texmf-dist/fonts/enc/d
+vips/lm/lm-mathex.enc}{/usr/local/texlive/2015/texmf-dist/fonts/enc/dvips/lm/lm
+-mathsy.enc}{/usr/local/texlive/2015/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/
+usr/local/texlive/2015/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}</usr/local/
+texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/t
+exlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/tex
+live/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texl
+ive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texli
+ve/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texliv
+e/2015/texmf-dist/fonts/type1/public/lm/lmex10.pfb></usr/local/texlive/2015/tex
+mf-dist/fonts/type1/public/lm/lmmi12.pfb></usr/local/texlive/2015/texmf-dist/fo
+nts/type1/public/lm/lmmi8.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/p
+ublic/lm/lmr12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/lm/lm
+r6.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/lm/lmr8.pfb></usr
+/local/texlive/2015/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/tex
+live/2015/texmf-dist/fonts/type1/public/lm/lmsy8.pfb>
+Output written on WelchManuscript-MASTER.pdf (24 pages, 231997 bytes).
 PDF statistics:
- 197 PDF objects out of 1000 (max. 8388607)
- 139 compressed objects within 2 object streams
+ 168 PDF objects out of 1000 (max. 8388607)
+ 118 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 40 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 25 words of extra memory for PDF output out of 10000 (max. 10000000)
 

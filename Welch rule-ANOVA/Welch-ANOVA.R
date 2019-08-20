@@ -446,9 +446,9 @@ crossover_sims <- tibble(
     ns = map2(min_sample, sample_ratio, ~ c(min_sample, min_sample * sample_ratio, min_sample * sample_ratio, min_sample * sample_ratio)),
     means = map(effect, ~ case_when(
       effect == 0 ~ c(6, 6, 6, 6),
-      effect == .2 ~ c(6, 6.28, 6.28, 6),
-      effect == .5 ~ c(6, 6.71, 6.71, 6),
-      effect == .8 ~ c(6, 7.13, 7.13, 6)
+      effect == .2 ~ c(6.28, 6, 6, 6.28),
+      effect == .5 ~ c(6.71, 6, 6, 6.71),
+      effect == .8 ~ c(7.13, 6, 6, 7.13)
     )
     ),
     vars = map(var_ratio, ~ case_when(
@@ -480,6 +480,7 @@ crossover_sims <- tibble(
           groups = rep(c(1, 2, 3, 4), times = .$ns),
           true_means = .$means,
           contrast_names = c('ME (1 & 2 vs 3 & 4)', 'ME (1 & 3 vs 2 & 4)', 'Interaction', 'SE (1 vs 2)', 'SE (3 vs 4)'),
+          joint_contrasts = c('ME (1 & 2 vs 3 & 4)', 'ME (1 & 3 vs 2 & 4)'),
           c(-1, -1, 1, 1), # main effect 1
           c(-1, 1, -1, 1), # main effect 2
           c(-1, 1, 1, -1), # interaction effect
@@ -494,15 +495,10 @@ crossover_sims <- tibble(
   select(-data) %>% # remove the data so we can unnest
   unnest() %>% 
   
-  group_by(sample_ratio, min_sample, effect, var_ratio) %>% # group by conditions and summarize the results
-  mutate(
-    joint_reject_student = sum(reject_student < .05),
-    joint_reject_welch = sum(reject_welch < .05)
-  ) %>% 
-  group_by(sample_ratio, min_sample, effect, var_ratio, contrast_name) %>% 
+  group_by(sample_ratio, min_sample, effect, var_ratio, contrast_names) %>% # group by conditions and summarize the results
   summarize(
-    joint_reject_student = mean(joint_reject_student > 1),
-    joint_reject_welch = mean(joint_reject_welch > 1),
+    joint_reject_student = mean(joint_rejects_student > 1),
+    joint_reject_welch = mean(joint_rejects_welch > 1),
     reject_student = mean(p_student < .05),
     reject_welch = mean(p_welch < .05),
     coverage_student = mean(coverage_student),
@@ -749,15 +745,10 @@ me_int_sims <- tibble(
   select(-data) %>% # remove the data so we can unnest
   unnest() %>% 
   
-  group_by(sample_ratio, min_sample, effect, var_ratio) %>% # group by conditions and summarize the results
-  mutate(
-    joint_reject_student = sum(reject_student < .05),
-    joint_reject_welch = sum(reject_welch < .05)
-  ) %>% 
-  group_by(sample_ratio, min_sample, effect, var_ratio, contrast_name) %>% 
+  group_by(sample_ratio, min_sample, effect, var_ratio, contrast_names) %>% # group by conditions and summarize the results
   summarize(
-    joint_reject_student = mean(joint_reject_student > 1),
-    joint_reject_welch = mean(joint_reject_welch > 1),
+    joint_reject_student = mean(joint_rejects_student > 1),
+    joint_reject_welch = mean(joint_rejects_welch > 1),
     reject_student = mean(p_student < .05),
     reject_welch = mean(p_welch < .05),
     coverage_student = mean(coverage_student),
@@ -860,7 +851,7 @@ me_int_sims %>%
 nsims <- 10000
 set.seed(2184)
 
-me_int_sims <- tibble(
+me_int_sims_test <- tibble(
   
   # specify all the conditions you want 
   # these need to be the same length so it's okay if there are some duplicates within a variable as long as there aren't duplicate combinations of all variables
@@ -935,11 +926,11 @@ me_int_sims <- tibble(
     coverage_welch = mean(coverage_welch)
   )
 
-save(me_int_sims, file = 'me_int_sims_test.R')
+save(me_int_sims_test, file = 'me_int_sims_test.R')
 
 
 # power of tests
-me_int_sims %>% 
+me_int_sims_test %>% 
   ungroup() %>% 
   select(-coverage_student, -coverage_welch) %>% 
   mutate(diff = reject_welch - reject_student) %>% 
@@ -967,7 +958,7 @@ me_int_sims %>%
 
 
 # difference in power
-me_int_sims %>% 
+me_int_sims_test %>% 
   ungroup() %>% 
   select(-coverage_student, -coverage_welch) %>% 
   mutate(diff = reject_welch - reject_student) %>% 
@@ -994,7 +985,7 @@ me_int_sims %>%
   geom_hline(aes(yintercept = 0), color = 'gray80')
 
 # coverage
-me_int_sims %>% 
+me_int_sims_test %>% 
   ungroup() %>% 
   select(-reject_student, -reject_welch) %>% 
   mutate(diff = coverage_welch - coverage_student) %>% 

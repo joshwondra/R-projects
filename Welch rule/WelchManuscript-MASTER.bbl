@@ -243,12 +243,12 @@ Gonzalez, R.%
 \end{APACrefauthors}%
 \unskip\
 \newblock
-\APACrefYearMonthDay{2008}{}{}.
+\APACrefYear{2008}.
 \newblock
-{\BBOQ}\APACrefatitle {Data analysis for experimental design} {Data analysis
-  for experimental design}.{\BBCQ}
+\APACrefbtitle {Data analysis for experimental design} {Data analysis for
+  experimental design}.
 \newblock
-
+\APACaddressPublisher{New York, NY}{Guilford Press}.
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
@@ -304,32 +304,6 @@ Ioannidis, J\BPBI P\BPBI A.%
 \APACjournalVolNumPages{Epidemiology}{19}{}{640--648}.
 \newblock
 \begin{APACrefDOI} \doi{http://dx.doi.org/10.1097/EDE.ObO} \end{APACrefDOI}
-\PrintBackRefs{\CurrentBib}
-
-\bibitem [\protect \citeauthoryear {%
-Ioannidis%
-}{%
-Ioannidis%
-}{%
-{\protect \APACyear {2012}}%
-}]{%
-Ioannidis2012}
-\APACinsertmetastar {%
-Ioannidis2012}%
-\begin{APACrefauthors}%
-Ioannidis, J\BPBI P\BPBI A.%
-\end{APACrefauthors}%
-\unskip\
-\newblock
-\APACrefYearMonthDay{2012}{}{}.
-\newblock
-{\BBOQ}\APACrefatitle {Why science is not necessarily self-correcting} {Why
-  science is not necessarily self-correcting}.{\BBCQ}
-\newblock
-\APACjournalVolNumPages{Perspectives on Psychological Science}{7}{}{645--654}.
-\newblock
-\begin{APACrefDOI} \doi{http://dx.doi.org/10.1177/1745691612464056}
-  \end{APACrefDOI}
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
@@ -491,38 +465,6 @@ Neuh{\"a}user, M.%
 \APACjournalVolNumPages{Animal Behaviour}{63}{}{823--825}.
 \newblock
 \begin{APACrefDOI} \doi{http://dx.doi.org/10.1006/anbe.2002.1993}
-  \end{APACrefDOI}
-\PrintBackRefs{\CurrentBib}
-
-\bibitem [\protect \citeauthoryear {%
-Nosek%
-, Spies%
-\BCBL {}\ \BBA {} Motyl%
-}{%
-Nosek%
-\ \protect \BOthers {.}}{%
-{\protect \APACyear {2012}}%
-}]{%
-Nosek2012}
-\APACinsertmetastar {%
-Nosek2012}%
-\begin{APACrefauthors}%
-Nosek, B\BPBI A.%
-, Spies, J\BPBI R.%
-\BCBL {}\ \BBA {} Motyl, M.%
-\end{APACrefauthors}%
-\unskip\
-\newblock
-\APACrefYearMonthDay{2012}{}{}.
-\newblock
-{\BBOQ}\APACrefatitle {Scientific utopia: {II. Restructuring} incentives and
-  practices to promote truth over publishability} {Scientific utopia: {II.
-  Restructuring} incentives and practices to promote truth over
-  publishability}.{\BBCQ}
-\newblock
-\APACjournalVolNumPages{Perspectives on Psychological Science}{7}{}{615--631}.
-\newblock
-\begin{APACrefDOI} \doi{http://dx.doi.org/10.1177/1745691612459058}
   \end{APACrefDOI}
 \PrintBackRefs{\CurrentBib}
 

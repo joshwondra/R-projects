@@ -1,69 +1,23 @@
-\begin{figure*}[hbt]
-\ifnextchar[{\eatarg}{}
+\begin{figure*}
 
-\includegraphics{WelchManuscript-MASTER-dfratiosDiffvars}
+\includegraphics{WelchManuscript-MASTER-FalsePositivePlots}
 
-\textit{Figure 1.} Degrees of freedom ratio when sample sizes are unequal and
-variances are equal (top), when variances are equal and sample sizes are
-unequal (middle), and when both variances and sample sizes are unequal (bottom).
-\end{figure*}
-\efloatseparator
- 
-\begin{figure*}[hbt]
-\ifnextchar[{\eatarg}{}
-
-\includegraphics{WelchManuscript-MASTER-varEqualBoxplots}
-
-\textit{Figure 1.} Boxplots for groups with equal variances (top) and unequal
-variances (bottom). For each set of boxplots, the first row displays groups
-with $n$=20 and the second row displays groups with $n$=100.
-\end{figure*}
-\efloatseparator
- 
-\begin{figure*}[hbt]
-\ifnextchar[{\eatarg}{}
-
-\includegraphics{WelchManuscript-MASTER-Type1ClassicPlot}
-
-\textit{Figure 3.} Type I error rates for Student's t test and Welch's t test
+\textit{Figure 3.} False positive rates for Student's t test and Welch's t test
 as the variance ratio, sample size ratio, and sample sizes vary.
 \end{figure*}
 \efloatseparator
  
-\begin{figure*}[hbt]
-\ifnextchar[{\eatarg}{}
+\begin{figure*}
+\includegraphics{WelchManuscript-MASTER-PowerPlots}
 
-\includegraphics{WelchManuscript-MASTER-plotPower}
-
-\textit{Figure 4.} Power of Student's and Welch's t tests.
+\textit{Figure 4.} Power of Student's and Welch's t tests to detect a medium effect.
 \end{figure*}
 \efloatseparator
  
-\begin{figure*}[hbt]
-\ifnextchar[{\eatarg}{}
-
-\includegraphics{WelchManuscript-MASTER-plotPowerDiff}
-
-\textit{Figure 5.} Difference in the Power of Student's and Welch's t tests
-(Student-Welch).
-\end{figure*}
-\efloatseparator
- 
-\begin{figure*}[hbt]
-\ifnextchar[{\eatarg}{}
-
+\begin{figure*}
 \includegraphics{WelchManuscript-MASTER-CoveragePlots}
 
 \textit{Figure 6.} Coverage probabilities for Student's and Welch's t tests.
-\end{figure*}
-\efloatseparator
- 
-\begin{figure*}[hbt]
-\ifnextchar[{\eatarg}{}
-
-\includegraphics{WelchManuscript-MASTER-tdist}
-
-\textit{Figure 7. Two t distributions with different degrees of freedom.}
 \end{figure*}
 \efloatseparator
  

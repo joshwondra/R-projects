@@ -10,7 +10,7 @@ columns=flexible,
 breaklines=true
 }
 
-\title{Use Welch's \textit{t} Test to Compare the Means of Independent Groups: Supplemental Materials}
+\title{Use Welch's \textit{t} test to Compare the Means of Independent Groups: Supplemental Materials}
 \shorttitle{Welch Supplemental Materials}
 \twoauthors{Joshua D. Wondra}{Richard Gonzalez}
 \twoaffiliations{Facebook}{University of Michigan}
