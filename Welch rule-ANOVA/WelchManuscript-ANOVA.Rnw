@@ -366,8 +366,8 @@ powdiff_plot <- function(data, sim, which_contrast) {
       ) %>% 
     spread(key = test, value = reject_rate) %>% 
     mutate(
-      power_diff = ANOVA - `Welch's t test`,
-      test = "ANOVA - Welch's"
+      power_diff = `Welch's t test` - ANOVA,
+      test = "Welch's - ANOVA"
       ) %>% 
     ggplot(aes(y = power_diff, x = var_ratio, group = ns, linetype = ns, shape = ns)) +
     geom_line(size = .5) +
@@ -696,6 +696,8 @@ mean_plot <- plot_grid(
 
 \section{False Positive Rates}
 
+For false positive rates, we looked at the main effects when there were no effects or only a crossover interaction, and at the interaction effect when there were no effects. 
+
 \begin{figure}[!ht]  
 <<false_positives, echo = FALSE, collapse = TRUE, fig = TRUE, width = 12, height = 5>>=
 no_effects_fp <- plot_grid(
@@ -825,6 +827,8 @@ ANOVA.
 
 
 \subsection{Power}
+To compare the power of ANOVA vs. Welch's t test to detect true effects, we looked at the main effects when there were main effects and an interaction, and at the interaction effect when there was an interaction with or without true main effects. Additionally, in the cases where there is an interaction effect, we can compare the power of Student's t test vs. Welch's t test to detect the simple effects of factor B at each level of factor A.
+
 \begin{figure}[!ht]
 <<power_plots, echo = FALSE, collapse = TRUE, fig = TRUE, width = 12, height = 8>>=
 
@@ -836,14 +840,14 @@ crossover_pow <- plot_grid(
   rn_crossover_int_anova + theme(strip.background = element_blank()), 
 
   # second row
-  blank_plot,
-  blank_plot,
-  rn_crossover_int_welch + theme(strip.background = element_blank()),
+  blank_plot + theme(strip.text.x = element_blank()),
+  blank_plot + theme(strip.text.x = element_blank()),
+  rn_crossover_int_welch + theme(strip.background = element_blank(), strip.text.x = element_blank()),
   
   # third row
-  blank_plot,
-  blank_plot,
-  powdiff_crossover_int + theme(strip.background = element_blank()),
+  blank_plot + theme(strip.text.x = element_blank()),
+  blank_plot + theme(strip.text.x = element_blank()),
+  powdiff_crossover_int + theme(strip.background = element_blank(), strip.text.x = element_blank()),
   
   ncol = 3
 )
@@ -856,14 +860,14 @@ me_int_pow <- plot_grid(
   rn_me_int_int_anova + theme(strip.background = element_blank()), 
 
   # second row
-  rn_me_int_meA_welch + theme(strip.background = element_blank(), strip.text.y = element_blank()), 
-  rn_me_int_meB_welch + theme(strip.background = element_blank(), strip.text.y = element_blank()),
-  rn_me_int_int_welch + theme(strip.background = element_blank()),
+  rn_me_int_meA_welch + theme(strip.background = element_blank(), strip.text.y = element_blank(), strip.text.x = element_blank()), 
+  rn_me_int_meB_welch + theme(strip.background = element_blank(), strip.text.y = element_blank(), strip.text.x = element_blank()),
+  rn_me_int_int_welch + theme(strip.background = element_blank(), strip.text.x = element_blank()),
   
   # third row
-  powdiff_me_int_meA + theme(strip.background = element_blank(), strip.text.y = element_blank()), 
-  powdiff_me_int_meB + theme(strip.background = element_blank(), strip.text.y = element_blank()),
-  powdiff_me_int_int + theme(strip.background = element_blank()),
+  powdiff_me_int_meA + theme(strip.background = element_blank(), strip.text.y = element_blank(), strip.text.x = element_blank()), 
+  powdiff_me_int_meB + theme(strip.background = element_blank(), strip.text.y = element_blank(), strip.text.x = element_blank()),
+  powdiff_me_int_int + theme(strip.background = element_blank(), strip.text.x = element_blank()),
   
   ncol = 3
 )
@@ -895,10 +899,10 @@ add_sub(
 @
 
 
-\textit{Figure 4.}Power for the simulations when there was a crossover interaction or two main effects and an interaction.
+\textit{Figure 4.} Power for the simulations when there was a crossover interaction or two main effects and an interaction. The third row shows the difference in power between ANOVA and Welch's t test, where higher values mean Welch's t test is more powerful than ANOVA.
 \end{figure}
 
-We can compare the power of ANOVA and Welch's t test to detect the main effects and the interaction effect, and in the case of a significant interaction effect, we can compare their power to detect the simple effects of factor B at each level of factor A. 
+Figure 4 displays the power of ANOVA and Welch's t test to detect true effects, as well as the difference in power between the two tests, where higher values mean Welch's t test is more powerful than ANOVA. As we can see, the power of the two tests to detect the interaction is approximately equal when either the sample sizes or the variances are equal. However, when the sample sizes and the variances are different, the power of the two tests is different. ANOVA has more power when the larger group has the smaller variance--the same condition where it inflates the false positive rate. In contrast, Welch's t test has more power when the larger group has the larger variance, without the risk of inflating the false positive rate. The differences in power are primarily driven by the fact that when the larger group has the smaller variance, ANOVA underestimates the standard error and tends to reject the null hypothesis, regardless of whether or not there is a true effect. So the main benefit of ANOVA is undermined by a higher risk of false positives.
 
 \subsection{Coverage Probability}
 Next, we looked at how well ANOVA and Welch's t test estimated the true effect. 
