@@ -6,6 +6,7 @@
 \usepackage{setspace}
 \usepackage{listings}
 \usepackage{amsmath}
+\usepackage[retainorgcmds]{IEEEtrantools}
 \lstset{
 basicstyle=\small\ttfamily,
 columns=flexible,
@@ -119,23 +120,33 @@ tf_me_int <- tf_plot(tf_data, 'Main effects & interaction')
 # false positives (per test)
 rn_plot <- function(data, sim, which_contrast, which_test) {
   
-  ylims <- if (sim == 'No effects') {
-    c(0, .15)
-    } else if (sim == 'Crossover interaction' & str_detect(which_contrast, 'Main')) {
-      c(0, .15)
-    } else if (sim == 'Crossover interaction' & str_detect(which_contrast, 'Int')) {
+  ylims <- if (
+    sim == 'No effects' | 
+    sim == 'Crossover interaction' & str_detect(which_contrast, 'Main') |
+    sim == 'Main effects & interaction' & which_contrast == 'Simple Effect of B at A2'
+    ) {
+    c(0, .2)
+    } else if (
+      sim == 'Crossover interaction' & str_detect(which_contrast, 'Int') |
+      sim == 'Main effects & interaction'
+      ) {
       c(0, 1)
-    } else if (sim == 'Main effects & interaction') {
-      c(0, 1)
+    } else {
+      c(0, .5)
     }
   
-  ybreaks <- if (sim == 'No effects') {
+  ybreaks <- if (
+    sim == 'No effects' | 
+    sim == 'Crossover interaction' & str_detect(which_contrast, 'Main') |
+    sim == 'Main effects & interaction' & which_contrast == 'Simple Effect of B at A2'
+    ) {
     seq(0, 1, .05)
-    } else if (sim == 'Crossover interaction' & str_detect(which_contrast, 'Main')) {
-      seq(0, 1, .05)
-    } else if (sim == 'Crossover interaction' & str_detect(which_contrast, 'Int')) {
+    } else if (
+      sim == 'Crossover interaction' & str_detect(which_contrast, 'Int') |
+      sim == 'Main effects & interaction'
+      ) {
       seq(0, 1, .1)
-    } else if (sim == 'Main effects & interaction') {
+    } else {
       seq(0, 1, .1)
     }
   
@@ -166,23 +177,22 @@ rn_plot <- function(data, sim, which_contrast, which_test) {
     ) + 
     scale_shape_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
                      labels = c(
-                       '50, 50, 50, 50',
-                       '50, 75, 75, 75',
-                       '50, 100, 100, 100'
+                       '30, 30, 30, 30',
+                       '30, 45, 45, 45',
+                       '30, 60, 60, 60'
                      ),
                      values = rep(c(15, 16, 17), times = 3)
   ) +
     scale_linetype_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
                         labels = c(
-                          '50, 50, 50, 50',
-                          '50, 75, 75, 75',
-                          '50, 100, 100, 100'
+                          '30, 30, 30, 30',
+                          '30, 45, 45, 45',
+                          '30, 60, 60, 60'
                         ),
                         values = c('solid', 'twodash', 'dotted')
   ) +
     guides(linetype = FALSE, shape = FALSE)
 } 
-
 
 # subset data
 rn_data <- mutate(no_effects, which_sim = 'No effects') %>% 
@@ -199,16 +209,19 @@ rn_data <- mutate(no_effects, which_sim = 'No effects') %>%
     contrast_names = case_when(
       contrast_names == 'ME (1 & 2 vs 3 & 4)' ~ 'Main Effect of A',
       contrast_names == 'ME (1 & 3 vs 2 & 4)' ~ 'Main Effect of B',
-      contrast_names == 'Interaction' ~ 'Interaction'
+      contrast_names == 'Interaction' ~ 'Interaction',
+      contrast_names == 'SE (1 vs 2)' ~ 'Simple Effect of A at B1',
+      contrast_names == 'SE (3 vs 4)' ~ 'Simple Effect of A at B2',
+      contrast_names == 'SE (1 vs 3)' ~ 'Simple Effect of B at A1',
+      contrast_names == 'SE (2 vs 4)' ~ 'Simple Effect of B at A2'
     ) %>% 
-      factor(levels = c('Main Effect of A', 'Main Effect of B', 'Interaction')),
-    ns = paste(min_sample, min_sample * sample_ratio, min_sample * sample_ratio, min_sample * sample_ratio, sep = ', ') %>% factor(levels = c('50, 50, 50, 50', '50, 75, 75, 75', '50, 100, 100, 100')),
+      factor(levels = c('Main Effect of A', 'Main Effect of B', 'Interaction', 'Simple Effect of B at A1', 'Simple Effect of B at A2', 'Simple Effect of A at B1', 'Simple Effect of A at B2')),
+    ns = paste(min_sample, min_sample * sample_ratio, min_sample * sample_ratio, min_sample * sample_ratio, sep = ', ') %>% factor(levels = c('30, 30, 30, 30', '30, 45, 45, 45', '30, 60, 60, 60')),
     var_ratio = factor(var_ratio),
     sample_ratio = factor(sample_ratio)
   ) %>% 
   filter(
-    min_sample == 50,
-    str_detect(contrast_names, 'Main|Interaction')
+    min_sample == 30
   )
 
 # get min/max reject rates
@@ -239,30 +252,77 @@ blank_plot <- rn_data %>%
 
 
 # Main effect of A
+## ANOVA
 rn_no_effects_meA_anova <- rn_plot(rn_data, sim = 'No effects', which_contrast = 'Main Effect of A', which_test = 'ANOVA')
 rn_crossover_meA_anova <- rn_plot(rn_data, sim = 'Crossover interaction', which_contrast = 'Main Effect of A', which_test = 'ANOVA')
 rn_me_int_meA_anova <- rn_plot(rn_data, sim = 'Main effects & interaction', which_contrast = 'Main Effect of A', which_test = 'ANOVA')
+## Welch
 rn_no_effects_meA_welch <- rn_plot(rn_data, sim = 'No effects', which_contrast = 'Main Effect of A', which_test = "Welch's t test")
 rn_crossover_meA_welch <- rn_plot(rn_data, sim = 'Crossover interaction', which_contrast = 'Main Effect of A', which_test = "Welch's t test")
 rn_me_int_meA_welch <- rn_plot(rn_data, sim = 'Main effects & interaction', which_contrast = 'Main Effect of A', which_test = "Welch's t test")
 
 # Main effect of B
+## ANOVA
 rn_no_effects_meB_anova <- rn_plot(rn_data, sim = 'No effects', which_contrast = 'Main Effect of B', which_test = 'ANOVA')
 rn_crossover_meB_anova <- rn_plot(rn_data, sim = 'Crossover interaction', which_contrast = 'Main Effect of B', which_test = 'ANOVA')
 rn_me_int_meB_anova <- rn_plot(rn_data, sim = 'Main effects & interaction', which_contrast = 'Main Effect of B', which_test = 'ANOVA')
+## Welch
 rn_no_effects_meB_welch <- rn_plot(rn_data, sim = 'No effects', which_contrast = 'Main Effect of B', which_test = "Welch's t test")
 rn_crossover_meB_welch <- rn_plot(rn_data, sim = 'Crossover interaction', which_contrast = 'Main Effect of B', which_test = "Welch's t test")
 rn_me_int_meB_welch <- rn_plot(rn_data, sim = 'Main effects & interaction', which_contrast = 'Main Effect of B', which_test = "Welch's t test")
 
 
 # Interaction
+## ANOVA
 rn_no_effects_int_anova <- rn_plot(rn_data, sim = 'No effects', which_contrast = 'Interaction', which_test = 'ANOVA')
 rn_crossover_int_anova <- rn_plot(rn_data, sim = 'Crossover interaction', which_contrast = 'Interaction', which_test = 'ANOVA')
 rn_me_int_int_anova <- rn_plot(rn_data, sim = 'Main effects & interaction', which_contrast = 'Interaction', which_test = 'ANOVA')
+## Welch
 rn_no_effects_int_welch <- rn_plot(rn_data, sim = 'No effects', which_contrast = 'Interaction', which_test = "Welch's t test")
 rn_crossover_int_welch <- rn_plot(rn_data, sim = 'Crossover interaction', which_contrast = 'Interaction', which_test = "Welch's t test")
 rn_me_int_int_welch <- rn_plot(rn_data, sim = 'Main effects & interaction', which_contrast = 'Interaction', which_test = "Welch's t test")
 
+
+# Simple Effects
+## ANOVA
+
+### no effects
+rn_no_effects_A1cont_anova <- rn_plot(rn_data, sim = 'No effects', which_contrast = 'Simple Effect of B at A1', which_test = "ANOVA")
+rn_no_effects_A2cont_anova <- rn_plot(rn_data, sim = 'No effects', which_contrast = 'Simple Effect of B at A2', which_test = "ANOVA")
+rn_no_effects_B1cont_anova <- rn_plot(rn_data, sim = 'No effects', which_contrast = 'Simple Effect of A at B1', which_test = "ANOVA")
+rn_no_effects_B2cont_anova <- rn_plot(rn_data, sim = 'No effects', which_contrast = 'Simple Effect of A at B2', which_test = "ANOVA")
+
+### crossover
+rn_crossover_A1cont_anova <- rn_plot(rn_data, sim = 'Crossover interaction', which_contrast = 'Simple Effect of B at A1', which_test = "ANOVA")
+rn_crossover_A2cont_anova <- rn_plot(rn_data, sim = 'Crossover interaction', which_contrast = 'Simple Effect of B at A2', which_test = "ANOVA")
+rn_crossover_B1cont_anova <- rn_plot(rn_data, sim = 'Crossover interaction', which_contrast = 'Simple Effect of A at B1', which_test = "ANOVA")
+rn_crossover_B2cont_anova <- rn_plot(rn_data, sim = 'Crossover interaction', which_contrast = 'Simple Effect of A at B2', which_test = "ANOVA")
+
+### no effects
+rn_me_int_A1cont_anova <- rn_plot(rn_data, sim = 'Main effects & interaction', which_contrast = 'Simple Effect of B at A1', which_test = "ANOVA")
+rn_me_int_A2cont_anova <- rn_plot(rn_data, sim = 'Main effects & interaction', which_contrast = 'Simple Effect of B at A2', which_test = "ANOVA")
+rn_me_int_B1cont_anova <- rn_plot(rn_data, sim = 'Main effects & interaction', which_contrast = 'Simple Effect of A at B1', which_test = "ANOVA")
+rn_me_int_B2cont_anova <- rn_plot(rn_data, sim = 'Main effects & interaction', which_contrast = 'Simple Effect of A at B2', which_test = "ANOVA")
+
+## Welch
+
+### no effects
+rn_no_effects_A1cont_welch <- rn_plot(rn_data, sim = 'No effects', which_contrast = 'Simple Effect of B at A1', which_test = "Welch's t test")
+rn_no_effects_A2cont_welch <- rn_plot(rn_data, sim = 'No effects', which_contrast = 'Simple Effect of B at A2', which_test = "Welch's t test")
+rn_no_effects_B1cont_welch <- rn_plot(rn_data, sim = 'No effects', which_contrast = 'Simple Effect of A at B1', which_test = "Welch's t test")
+rn_no_effects_B2cont_welch <- rn_plot(rn_data, sim = 'No effects', which_contrast = 'Simple Effect of A at B2', which_test = "Welch's t test")
+
+### crossover
+rn_crossover_A1cont_welch <- rn_plot(rn_data, sim = 'Crossover interaction', which_contrast = 'Simple Effect of B at A1', which_test = "Welch's t test")
+rn_crossover_A2cont_welch <- rn_plot(rn_data, sim = 'Crossover interaction', which_contrast = 'Simple Effect of B at A2', which_test = "Welch's t test")
+rn_crossover_B1cont_welch <- rn_plot(rn_data, sim = 'Crossover interaction', which_contrast = 'Simple Effect of A at B1', which_test = "Welch's t test")
+rn_crossover_B2cont_welch <- rn_plot(rn_data, sim = 'Crossover interaction', which_contrast = 'Simple Effect of A at B2', which_test = "Welch's t test")
+
+### no effects
+rn_me_int_A1cont_welch <- rn_plot(rn_data, sim = 'Main effects & interaction', which_contrast = 'Simple Effect of B at A1', which_test = "Welch's t test")
+rn_me_int_A2cont_welch <- rn_plot(rn_data, sim = 'Main effects & interaction', which_contrast = 'Simple Effect of B at A2', which_test = "Welch's t test")
+rn_me_int_B1cont_welch <- rn_plot(rn_data, sim = 'Main effects & interaction', which_contrast = 'Simple Effect of A at B1', which_test = "Welch's t test")
+rn_me_int_B2cont_welch <- rn_plot(rn_data, sim = 'Main effects & interaction', which_contrast = 'Simple Effect of A at B2', which_test = "Welch's t test")
 
 plot_legend <- (rn_no_effects_meA_anova + guides(shape = 'legend', linetype = 'legend')) %>% 
   get_legend()
@@ -272,10 +332,10 @@ plot_legend <- (rn_no_effects_meA_anova + guides(shape = 'legend', linetype = 'l
 # Reject Null - Joint False Positives ----
 joint_reject_data <- no_effects %>% 
   ungroup() %>% 
-  filter(min_sample == 50) %>% 
+  filter(min_sample == 30) %>% 
   distinct(sample_ratio, min_sample, effect, var_ratio, joint_reject_student, joint_reject_welch) %>% 
   mutate(
-    ns = paste(min_sample, min_sample * sample_ratio, min_sample * sample_ratio, min_sample * sample_ratio, sep = ', ') %>% factor(levels = c('50, 50, 50, 50', '50, 75, 75, 75', '50, 100, 100, 100')),
+    ns = paste(min_sample, min_sample * sample_ratio, min_sample * sample_ratio, min_sample * sample_ratio, sep = ', ') %>% factor(levels = c('30, 30, 30, 30', '30, 45, 45, 45', '30, 60, 60, 60')),
     var_ratio = factor(var_ratio),
     sample_ratio = factor(sample_ratio)
   )
@@ -295,17 +355,17 @@ joint_reject_student <- joint_reject_data %>%
     ) + 
     scale_shape_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
                      labels = c(
-                       '50, 50, 50, 50',
-                       '50, 75, 75, 75',
-                       '50, 100, 100, 100'
+                       '30, 30, 30, 30', 
+                       '30, 45, 45, 45', 
+                       '30, 60, 60, 60'
                      ),
                      values = rep(c(15, 16, 17), times = 3)
   ) +
     scale_linetype_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
                         labels = c(
-                          '50, 50, 50, 50',
-                          '50, 75, 75, 75',
-                          '50, 100, 100, 100'
+                          '30, 30, 30, 30', 
+                          '30, 45, 45, 45', 
+                          '30, 60, 60, 60'
                         ),
                         values = c('solid', 'twodash', 'dotted')
   ) +
@@ -328,17 +388,17 @@ joint_reject_welch <- joint_reject_data %>%
     ) + 
     scale_shape_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
                      labels = c(
-                       '50, 50, 50, 50',
-                       '50, 75, 75, 75',
-                       '50, 100, 100, 100'
+                       '30, 30, 30, 30', 
+                       '30, 45, 45, 45', 
+                       '30, 60, 60, 60'
                      ),
                      values = rep(c(15, 16, 17), times = 3)
   ) +
     scale_linetype_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
                         labels = c(
-                          '50, 50, 50, 50',
-                          '50, 75, 75, 75',
-                          '50, 100, 100, 100'
+                          '30, 30, 30, 30', 
+                          '30, 45, 45, 45', 
+                          '30, 60, 60, 60'
                         ),
                         values = c('solid', 'twodash', 'dotted')
   ) +
@@ -383,17 +443,17 @@ powdiff_plot <- function(data, sim, which_contrast) {
     ) + 
     scale_shape_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
                      labels = c(
-                       '50, 50, 50, 50',
-                       '50, 75, 75, 75',
-                       '50, 100, 100, 100'
+                       '30, 30, 30, 30', 
+                       '30, 45, 45, 45', 
+                       '30, 60, 60, 60'
                      ),
                      values = rep(c(15, 16, 17), times = 3)
   ) +
     scale_linetype_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
                         labels = c(
-                          '50, 50, 50, 50',
-                          '50, 75, 75, 75',
-                          '50, 100, 100, 100'
+                          '30, 30, 30, 30', 
+                          '30, 45, 45, 45', 
+                          '30, 60, 60, 60'
                         ),
                         values = c('solid', 'twodash', 'dotted')
   ) +
@@ -409,6 +469,16 @@ powdiff_me_int_meB <- powdiff_plot(rn_data, sim = 'Main effects & interaction', 
 # Interaction
 powdiff_crossover_int <- powdiff_plot(rn_data, sim = 'Crossover interaction', which_contrast = 'Interaction')
 powdiff_me_int_int <- powdiff_plot(rn_data, sim = 'Main effects & interaction', which_contrast = 'Interaction')
+
+# Simple Effects
+powdiff_crossover_B1cont <- powdiff_plot(rn_data, sim = 'Crossover interaction', which_contrast = 'Simple Effect of A at B1')
+powdiff_crossover_B2cont <- powdiff_plot(rn_data, sim = 'Crossover interaction', which_contrast = 'Simple Effect of A at B2')
+powdiff_crossover_A1cont <- powdiff_plot(rn_data, sim = 'Crossover interaction', which_contrast = 'Simple Effect of B at A1')
+powdiff_crossover_A2cont <- powdiff_plot(rn_data, sim = 'Crossover interaction', which_contrast = 'Simple Effect of B at A2')
+powdiff_me_int_B1cont <- powdiff_plot(rn_data, sim = 'Main effects & interaction', which_contrast = 'Simple Effect of A at B1')
+powdiff_me_int_B2cont <- powdiff_plot(rn_data, sim = 'Main effects & interaction', which_contrast = 'Simple Effect of A at B2')
+powdiff_me_int_A1cont <- powdiff_plot(rn_data, sim = 'Main effects & interaction', which_contrast = 'Simple Effect of B at A1')
+powdiff_me_int_A2cont <- powdiff_plot(rn_data, sim = 'Main effects & interaction', which_contrast = 'Simple Effect of B at A2')
 
 
 
@@ -445,17 +515,17 @@ cov_plot <- function(data, sim, which_contrast, which_test) {
     ) + 
     scale_shape_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
                      labels = c(
-                       '50, 50, 50, 50',
-                       '50, 75, 75, 75',
-                       '50, 100, 100, 100'
+                       '30, 30, 30, 30', 
+                       '30, 45, 45, 45', 
+                       '30, 60, 60, 60'
                      ),
                      values = rep(c(15, 16, 17), times = 3)
   ) +
     scale_linetype_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
                         labels = c(
-                          '50, 50, 50, 50',
-                          '50, 75, 75, 75',
-                          '50, 100, 100, 100'
+                          '30, 30, 30, 30',
+                          '30, 45, 45, 45', 
+                          '30, 60, 60, 60'
                         ),
                         values = c('solid', 'twodash', 'dotted')
   ) +
@@ -481,12 +551,12 @@ cov_data <- mutate(no_effects, which_sim = 'No effects') %>%
       contrast_names == 'Interaction' ~ 'Interaction'
     ) %>% 
       factor(levels = c('Main Effect of A', 'Main Effect of B', 'Interaction')),
-    ns = paste(min_sample, min_sample * sample_ratio, min_sample * sample_ratio, min_sample * sample_ratio, sep = ', ') %>% factor(levels = c('50, 50, 50, 50', '50, 75, 75, 75', '50, 100, 100, 100')),
+    ns = paste(min_sample, min_sample * sample_ratio, min_sample * sample_ratio, min_sample * sample_ratio, sep = ', ') %>% factor(levels = c('30, 30, 30, 30', '30, 45, 45, 45', '30, 60, 60, 60')),
     var_ratio = factor(var_ratio),
     sample_ratio = factor(sample_ratio)
   ) %>% 
   filter(
-    min_sample == 50,
+    min_sample == 30,
     str_detect(contrast_names, 'Main|Interaction')
   )
 
@@ -629,13 +699,19 @@ To find the t value to test the contrasts, you need to find the standard error o
   t = \frac{\hat{I}}{\hat{\sigma}_{\hat{I}}}
 \end{equation}
 
-When Student's t test is used, the group variances are still estimated from a common pooled variance, and information from all four groups is used to find the pooled variance. 
+To find the estimated standard error of the contrast, you take the sum of each group's estimated variance multiplied by its squared contrast weight and divided by its sample size, then find the square root of the sum. 
+
+\begin{equation}
+    \hat{\sigma}_{\hat{I}} = \sqrt{\sum \frac{a_i^2\hat{\sigma_i}^2}{n_i}}
+\end{equation}
+
+When Student's t test is used, we assume that the group variances are equal, so we still estimate a common pooled variance by using information from all groups.
 
 \begin{equation}
     s_p^2 = \frac{\sum (n_{i} - 1)s_{i}^2}{\sum (n_{i} - 1)}
 \end{equation}
 
-To compute the standard error, you take each group's squared contrast weight multiplied by its estimated variance and divided by its sample size, sum them, and find the square root of the sum. For each group the estimated variance is the pooled variance because we assume variances are equal. 
+This same pooled variance is used for every estimated group variance in Equation 9. 
 
 \begin{equation}
     s_{\hat{I}_{Student}} = \sqrt{\sum \frac{a_i^2 s_p^2}{n_i}}
@@ -643,7 +719,7 @@ To compute the standard error, you take each group's squared contrast weight mul
 
 The degrees of freedom are $df = \sum (n_i - 1)$, and the t value is equal to the square root of the F value if ANOVA had been used instead.
 
-However, the benefit of using a t test is that you don't \textit{have} to use Student's t test---you can use Welch's t test instead. The value of the contrast is the same, but its standard error is based on separate variances rather than a common variance. Just like Student's t test, you take each group's squared contrast weight multiplied by its estimated variance and divided by its sample size, sum them, and find the square root of the sum. But unlike Student's t test, for each group the estimated variance is that group's sample variance because we do not assume variances are equal. 
+However, the benefit of using a t test is that you don't \textit{have} to use Student's t test---you can use Welch's t test instead. When using Welch's t test, instead of finding a common pooled variance, the estimated variance for each group is that group's sample variance because we do not assume variances are equal. 
 
 \begin{equation}
     s_{\hat{I}_{Welch}} = \sqrt{\sum \frac{a_i s_{i}^2}{n_{i}}}
@@ -664,9 +740,9 @@ We examined cases where the variances were equal or where the variance of just o
 <<variable_tables, echo = FALSE>>=
 n_table <- tribble(
   ~`n ratio`, ~A1B1, ~A1B2, ~A2B1, ~A2B2,
-  '1', 50, 50, 50, 50,
-  '2/3', 50, 75, 75, 75,
-  '1/2', 50, 100, 100, 100
+  '1', 30, 30, 30, 30,
+  '2/3', 30, 45, 45, 45,
+  '1/2', 30, 60, 60, 60
 ) %>% 
   formattable(
     format = 'latex',
@@ -903,6 +979,357 @@ add_sub(
 \end{figure}
 
 Figure 4 displays the power of ANOVA and Welch's t test to detect true effects, as well as the difference in power between the two tests, where higher values mean Welch's t test is more powerful than ANOVA. As we can see, the power of the two tests to detect the interaction is approximately equal when either the sample sizes or the variances are equal. However, when the sample sizes and the variances are different, the power of the two tests is different. ANOVA has more power when the larger group has the smaller variance--the same condition where it inflates the false positive rate. In contrast, Welch's t test has more power when the larger group has the larger variance, without the risk of inflating the false positive rate. The differences in power are primarily driven by the fact that when the larger group has the smaller variance, ANOVA underestimates the standard error and tends to reject the null hypothesis, regardless of whether or not there is a true effect. So the main benefit of ANOVA is undermined by a higher risk of false positives.
+
+\section{Simple Effects}
+In addition to looking at main effects and interactions, we can consider the simple effects of A at each level of B, and the simple effects of B at each level of A. 
+The contrast weights are:
+
+\begin{table}[ht]
+\begin{tabular}{l c c c c}
+\hline
+ & \multicolumn{4}{c}{Condition} \\
+ & A1, B1 & A1, B2 & A2, B1 & A2, B2 \\
+\hline
+Simple Effect of A at B1 & 1 & 0 & -1 & 0 \\
+Simple Effect of A at B2 & 0 & 1 & 0 & -1 \\
+Simple Effect of B at A1 & 1 & -1 & 0 & 0 \\
+Simple Effect of B at A2 & 0 & 0 & 1 & -1 \\
+\hline
+\end{tabular}
+\end{table}
+
+The t tests are constructed using the same formulas as those that we use for main effects and interactions, and the only difference is the contrast weights.
+
+\subsection{False Positives}
+
+\begin{figure}[!ht]
+<<se_false_positives, echo = FALSE, collapse = TRUE, fig = TRUE, width = 12, height = 8>>=
+
+no_effects_fp_se <- plot_grid(
+  
+  # first row
+  rn_no_effects_B1cont_anova + theme(strip.text.y = element_blank(), strip.background = element_blank()),
+  rn_no_effects_A1cont_anova + theme(strip.text.y = element_blank(), strip.background = element_blank()), 
+  rn_no_effects_B2cont_anova + theme(strip.text.y = element_blank(), strip.background = element_blank()),
+  rn_no_effects_A2cont_anova + theme(strip.background = element_blank()),
+
+  # second row
+  rn_no_effects_B1cont_welch + theme(strip.background = element_blank(), strip.text.y = element_blank(), strip.text.x = element_blank()),
+  rn_no_effects_A1cont_welch + theme(strip.background = element_blank(), strip.text.y = element_blank(), strip.text.x = element_blank()), 
+  rn_no_effects_B2cont_welch + theme(strip.background = element_blank(), strip.text.y = element_blank(), strip.text.x = element_blank()),
+  rn_no_effects_A2cont_welch + theme(strip.background = element_blank(), strip.text.x = element_blank()), 
+  
+  ncol = 4
+)
+
+me_int_fp_se <- plot_grid(
+  
+  # first row
+  blank_plot, 
+  blank_plot, 
+  blank_plot, 
+  rn_me_int_A2cont_anova + theme(strip.background = element_blank()),
+
+  # second row
+  blank_plot, 
+  blank_plot, 
+  blank_plot, 
+  rn_me_int_A2cont_welch + theme(strip.background = element_blank(), strip.text.x = element_blank()), 
+  
+  ncol = 4
+)
+
+
+plot_grid(
+  plot_grid(
+    tf_no_effects, no_effects_fp_se,
+    tf_me_int, me_int_fp_se,
+    ncol = 2, rel_widths = c(.25, .75)
+  ),
+  plot_grid(plot_legend),
+  ncol = 2,
+  rel_widths = c(10, 3),
+  labels = list()
+) %>%
+add_sub(
+  bquote(
+    frac(
+      sigma[A[1]*B[1]]^2,
+      {sigma[A[1]*B[2]]^2 == sigma[A[2]*B[1]]^2} == sigma[A[2]*B[2]]^2
+      )
+    ),
+  vpadding=grid::unit(0,"lines"),
+  y=.1,
+  x=0.5,
+  vjust=0
+  ) %>%
+  ggdraw()
+@
+
+\textit{Figure 5.} False positives for the simple effects.
+\end{figure}
+
+As with the main effects and interactions, both ANOVA and Welch's t test were near the expected 5\% false positive rate when both variances and sample sizes were equal. But unlike the main effects and interactions, for the simple effects, when the variance of one group was different from the other groups, having equal sample sizes didn't keep the false positive rate at the expected 5\% rate for Student's t test.
+
+The group with the variance that was different from the other groups is A1B1, which was included in the contrasts testing the simple effect of A at B1 and the simple effect of B at A1 (i.e., had a non-zero weight), and was excluded from the contrasts testing the simple effect of A at B2 and the simple effect of B at A2 (i.e., had a zero weight). When the group with the variance that was different from the other groups was included in the contrasts, Student's t test was too conservative when its variance was smaller, and was too liberal when its variance was larger. But even when the group with the variance that was different from the other groups was excluded from the contrasts, Student's t test was too liberal when its variance was smaller, and was too conservative when its variance was larger, which was the opposite pattern to when it was included in the contrast, though the size of the effect was smaller.
+
+Why, for the simple effects, did Student's t test depart from the expected 5\% rate? And why was the pattern opposite when the group with the different variance was included or excluded from the contrast? With four groups that have equal sample sizes, the pooled variance becomes
+
+\begin{equation}
+    s_p^2 = \frac{\sum (n - 1)s_{i}^2}{\sum (n - 1)} = \frac{(n - 1)(s_{1}^2 + s_{2}^2 + s_{3}^2 + s_{4}^2)}{4(n - 1)} = \frac{1}{4}(s_{1}^2 + s_{2}^2 + s_{3}^2 + s_{4}^2)
+\end{equation}
+
+When we plug the above into Equation 11, we find that the standard error is the same for any two-group contrast, whether it includes the standard error from the group with unequal variances or not.
+
+\begin{equation}
+\begin{split}
+s_{Student_{A_1-A_2|B_1}} & = s_{Student_{A_1-A_2|B_2}} \\
+& = \sqrt{(1^2\frac{s_p^2}{n} + 0^2\frac{s_p^2}{n} + -1^2\frac{s_p^2}{n} + 0^2\frac{s_p^2}{n})} \\
+& = \sqrt{(0^2\frac{s_p^2}{n} + 1^2\frac{s_p^2}{n} + 0^2\frac{s_p^2}{n} + -1^2\frac{s_p^2}{n})} \\
+& = \sqrt{2\frac{s_p^2}{n}} \\
+& = \sqrt{2\frac{(s_{1}^2 + s_{2}^2 + s_{3}^2 + s_{4}^2)}{4n}}\\
+& = \sqrt{\frac{1}{2n}(s_{1}^2 + s_{2}^2 + s_{3}^2 + s_{4}^2)}
+\end{split}
+\end{equation}
+
+So when Student's t test is used and the sample sizes are equal, each group's variance is weighted equally to estimate the standard error of the contrast, even if that group is excluded from the contrast. However, Welch's t test estimates the standard error from only the groups that are \textit{included} in the contrast.
+
+\begin{equation}
+\begin{split}
+s_{Welch_{A_1-A_2|B_1}} & = \sqrt{(1^2\frac{s_1^2}{n} + 0^2\frac{s_2^2}{n} + -1^2\frac{s_3^2}{n} + 0^2\frac{s_4^2}{n})} \\
+& = \sqrt{\frac{1}{n}(s_1^2 + s_3^2)} \\
+& \neq \sqrt{(0^2\frac{s_1^2}{n} + 1^2\frac{s_2^2}{n} + 0^2\frac{s_3^2}{n} + -1^2\frac{s_4^2}{n})} \\
+& = \sqrt{\frac{1}{n}(s_2^2 + s_4^2)}
+\end{split}
+\end{equation}
+
+Note that if all variances are equal, Equations 15 and 16 are equal. It's easiest to interpret the pattern of results from Student's t test by assuming that Welch's t test has the correct standard error, which is implied from the fact that it retains the expected 5\% false positive rate. The difference in the two standard errors is that, under the square root sign, Student's t test weighs each group's variance equally, whether its included or excluded from the specific contrast, whereas Welch's t test weighs the groups that are included in the contrast twice as much as Student's t test, and gives no weight to the groups that are excluded from the contrast. This means that Student's t test is giving too much weight to the variances from groups that are excluded from the contrast--if those groups have higher variance, then Student's t test will be too conservative, and if those groups have lower variance, then Student's t test will be too liberal. So when the group with the different variance is excluded from the contrast, its variance will be over-weighted, causing a lower false positive rate when it has a higher variance and a higher false positive rate when it has the lower variance; when the group is included in the contrast, its variance will be under-wighted, causing a higher false positive rate when it has a higher variance and a lower false positive rate when it has the higher variance.
+
+\subsection{Power}
+
+The power of ANOVA and Welch's t test to detect the simple effects is parallel to the false positive rates. When the variances are equal, the two tests are about equally powerful to detect true effects. But when the variances are unequal, the power of the two tests is different, even when all groups have the same sample size. When the group with the different variance is included in the contrast, Welch's t test is more powerful when the one group has the smaller variance, and Student's t test is more powerful when the one group has the larger variance; but when the group with the different variance is excluded from the contrast, the pattern is reversed (see the explanation for this in the preceding false positive section). Just as with main effects and interactions, Student's t test is more powerful under the same conditions that it inflates the false positive rate, but Welch's t test is more powerful under other conditions while retaining the expected 5\% false positive rate.
+
+\begin{figure}[!ht]
+<<se_power_plots, echo = FALSE, collapse = TRUE, fig = TRUE, width = 12, height = 8>>=
+
+crossover_pow_se <- plot_grid(
+
+  # first row
+  rn_crossover_B1cont_anova + theme(strip.background = element_blank(), strip.text.y = element_blank()) + scale_y_continuous(limits = c(0, 1)),
+  rn_crossover_A1cont_anova + theme(strip.background = element_blank(), strip.text.y = element_blank()) + scale_y_continuous(limits = c(0, 1)),
+  rn_crossover_B2cont_anova + theme(strip.background = element_blank(), strip.text.y = element_blank()) + scale_y_continuous(limits = c(0, 1)),
+  rn_crossover_A2cont_anova + theme(strip.background = element_blank()) + scale_y_continuous(limits = c(0, 1)),
+
+  # second row
+  rn_crossover_B1cont_welch + theme(strip.background = element_blank(), strip.text.y = element_blank(), strip.text.x = element_blank()) + scale_y_continuous(limits = c(0, 1)),
+  rn_crossover_A1cont_welch + theme(strip.background = element_blank(), strip.text.y = element_blank(), strip.text.x = element_blank()) + scale_y_continuous(limits = c(0, 1)),
+  rn_crossover_B2cont_welch + theme(strip.background = element_blank(), strip.text.y = element_blank(), strip.text.x = element_blank()) + scale_y_continuous(limits = c(0, 1)),
+  rn_crossover_A2cont_welch + theme(strip.background = element_blank(), strip.text.x = element_blank()) + scale_y_continuous(limits = c(0, 1)),
+
+  # third row
+  powdiff_crossover_B1cont + theme(strip.text.x = element_blank(), strip.text.y = element_blank()) + scale_y_continuous(limits = c(-.25, .25)),
+  powdiff_crossover_A1cont + theme(strip.text.x = element_blank(), strip.text.y = element_blank()) + scale_y_continuous(limits = c(-.25, .25)),
+  powdiff_crossover_B2cont + theme(strip.text.x = element_blank(), strip.text.y = element_blank()) + scale_y_continuous(limits = c(-.25, .25)),
+  powdiff_crossover_A2cont + theme(strip.background = element_blank(), strip.text.x = element_blank()) + scale_y_continuous(limits = c(-.25, .25)),
+
+  ncol = 4
+)
+
+me_int_pow_se <- plot_grid(
+
+  # first row
+  rn_me_int_B1cont_anova + theme(strip.background = element_blank(), strip.text.y = element_blank()) + scale_y_continuous(limits = c(0, 1)),
+  rn_me_int_A1cont_anova + theme(strip.background = element_blank(), strip.text.y = element_blank()) + scale_y_continuous(limits = c(0, 1)),
+  rn_me_int_B2cont_anova + theme(strip.background = element_blank()) + scale_y_continuous(limits = c(0, 1)),
+  blank_plot,
+
+  # second row
+  rn_me_int_B1cont_welch + theme(strip.background = element_blank(), strip.text.y = element_blank(), strip.text.x = element_blank()) + scale_y_continuous(limits = c(0, 1)),
+  rn_me_int_A1cont_welch + theme(strip.background = element_blank(), strip.text.y = element_blank(), strip.text.x = element_blank()) + scale_y_continuous(limits = c(0, 1)),
+  rn_me_int_B2cont_welch + theme(strip.background = element_blank(), strip.text.x = element_blank()) + scale_y_continuous(limits = c(0, 1)),
+  blank_plot,
+
+  # third row
+  powdiff_me_int_B1cont + theme(strip.text.x = element_blank(), strip.text.y = element_blank()) + scale_y_continuous(limits = c(-.4, .4)),
+  powdiff_me_int_A1cont + theme(strip.text.x = element_blank(), strip.text.y = element_blank()) + scale_y_continuous(limits = c(-.4, .4)),
+  powdiff_me_int_B2cont + theme(strip.background = element_blank(), strip.text.x = element_blank()) + scale_y_continuous(limits = c(-.4, .4)),
+  blank_plot,
+
+  ncol = 4
+)
+
+plot_grid(
+  plot_grid(
+    tf_crossover, crossover_pow_se,
+    tf_me_int, me_int_pow_se,
+    ncol = 2, rel_widths = c(.25, .75)
+  ),
+  plot_grid(plot_legend),
+  ncol = 2,
+  rel_widths = c(10, 3),
+  labels = list()
+) %>%
+add_sub(
+  bquote(
+    frac(
+      sigma[A[1]*B[1]]^2,
+      {sigma[A[1]*B[2]]^2 == sigma[A[2]*B[1]]^2} == sigma[A[2]*B[2]]^2
+      )
+    ),
+  vpadding=grid::unit(0,"lines"),
+  y=.1,
+  x=0.5,
+  vjust=0
+  ) %>%
+  ggdraw()
+@
+
+\textit{Figure 5.} Reject rates for the simple effect of B when there was a crossover interaction or two main effects and an interaction. The third row shows the difference in reject rates between ANOVA and Welch's t test, where higher values mean Welch's t test is more powerful than ANOVA.
+\end{figure}
+
+
+NOTE: Old text below
+
+Although such contrasts are commonly run as follow-up tests to an interaction, we support running them first if they are specific tests of the key hypothesis. (NOTE: Let's save this for the discussion)
+
+Next, let's consider the simple effects.
+Similar to the interaction effect, ANOVA and Welch's t test had similar power when the variances were equal. But unlike the interaction effect, having equal sample sizes didn't prevent differences in power when the variances were unequal.
+The reason for this is that the two tests weigh the group variances differently to find the standard error of the contrast. 
+When the sample sizes are equal, we can express the standard error of the contrast with weights on the variance of each group.
+\begin{equation}
+    s = \sqrt{
+    \frac{1}{n}(
+    a_{A1B1}s^2_{A1B1} +
+    a_{A1B2}s^2_{A1B2} +
+    a_{A1B1}s^2_{A2B1} +
+    a_{A2B2}s^2_{A2B2}
+    )
+    }
+    \end{equation}
+    
+For Student's t test, the weights are always equal to 1/2, no matter which groups are involved in the contrast.
+
+\begin{equation}
+    s_{Student} = \sqrt{
+    \frac{1}{n}(
+    \frac{1}{2}s^2_{A1B1} +
+    \frac{1}{2}s^2_{A1B2} +
+    \frac{1}{2}s^2_{A2B1} +
+    \frac{1}{2}s^2_{A2B2}
+    )
+    }
+    \end{equation}
+    
+But for Welch's t test, the weights are equal to the contrast weights. So for the contrast between groups A1B1 and A1B2, groups A1B1 and A1B2 get weights of 1 and the other groups get weights of 0
+
+\begin{equation}
+    s_{Welch} = \sqrt{
+    \frac{1}{n}(
+    1s^2_{A1B1} +
+    1s^2_{A1B2} +
+    0s^2_{A2B1} +
+    0s^2_{A2B2}
+    )
+    }
+    \end{equation}
+    
+And for the contrast between groups A2B1 and A2B2, groups A2B1 and A2B2 get weights of 1 and the other groups get weights of 0
+
+\begin{equation}
+    s_{Welch} = \sqrt{
+    \frac{1}{n}(
+    0s^2_{A1B1} +
+    0s^2_{A1B2} +
+    1s^2_{A2B1} +
+    1s^2_{A2B2}
+    )
+    }
+    \end{equation}
+
+Whether Welch's or Student's t test has more power to detect effects depends on which standard error is smaller. Though not shown here, Student's t test is more powerful under the same conditions that it inflates the false positive rate, but Welch's t test is more powerful under other conditions and does not inflate the false positive rate. 
+
+
+
+\begin{figure}[!ht]
+<<power_crossover_int, echo = FALSE,  collapse = TRUE, fig = TRUE, width = 6, height = 7>>=
+
+current_data <- crossover_sims %>% 
+  ungroup() %>% 
+  select(-coverage_student, -coverage_welch) %>% 
+  mutate(diff = reject_welch - reject_student) %>% 
+  gather(key = test, value = reject_rate, reject_student, reject_welch, diff) %>% 
+  mutate(
+    test = case_when(
+      test == 'reject_student' ~ "Student's t test",
+      test == 'reject_welch' ~ "Welch's t test",
+      test == 'diff' ~ 'Welch - ANOVA'
+    ),
+    ns = paste(min_sample, min_sample * sample_ratio, min_sample * sample_ratio, min_sample * sample_ratio, sep = ', ') %>% factor(),
+    var_ratio = factor(var_ratio),
+    sample_ratio = factor(sample_ratio)
+  ) %>% 
+  filter(
+    test == 'Welch - ANOVA',
+    min_sample == 30,
+    !str_detect(contrast_names, 'ME')
+  ) %>% 
+  mutate( 
+    contrast_names = factor(contrast_names, levels = c('Interaction', 'SE (1 vs 2)', 'SE (3 vs 4)'), labels = c('Interaction', 'Simple Effect (A[1]*B[1] vs. A[1]*B[2])', 'Simple Effect (A[2]*B[1] vs. A[2]*B[2])'))
+    )
+
+current_data %>% 
+  ggplot(aes(y = reject_rate, x = var_ratio, group = ns, linetype = ns, shape = ns)) +
+  geom_line(size = .5) +
+  geom_point(size = 4) +
+  facet_grid(contrast_names ~ test) +
+  geom_hline(aes(yintercept = 0), color = 'gray80') +
+  scale_x_discrete(labels = factor(c('1/5', '1/2', '1', '2', '5'))) +
+  labs(
+    x = bquote(frac(sigma[A[1]*B[1]]^2,{sigma[A[1]*B[2]]^2 == sigma[A[2]*B[1]]^2} == sigma[A[2]*B[2]]^2)),
+    y = 'Power'
+  ) +
+  theme_classic() +
+  theme(
+    panel.grid = element_blank()
+  ) +
+  scale_shape_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
+                     labels = c(
+                       '30, 30, 30, 30', 
+                       '30, 45, 45, 45', 
+                       '30, 60, 60, 60'
+                     ),
+                     values = rep(c(15, 16, 17), times = 3)
+  ) +
+  scale_linetype_manual(name = 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]',
+                        labels = c(
+                          '30, 30, 30, 30', 
+                          '30, 45, 45, 45', 
+                          '30, 60, 60, 60'
+                        ),
+                        values = rep('solid', each = 9)
+  ) 
+@
+
+\textit{Figure 5.} Difference in power between Welch's t test and ANOVA to detect true effects with a crossover interaction.
+\end{figure}
+
+    Is Welch's t test underpowered compared to Student's t test? When the sample sizes or variances were equal, power was approximately equal. However, when both the sample sizes and 
+variances were unequal, there were differences. Student's t 
+test was more powerful when the large sample(s) had the smaller variance, whereas 
+Welch's t test was more powerful when the small sample(s) had the smaller variance. (NOTE: add an exception for contrasts)
+    
+    Student's t test had the greatest power over 
+Welch's when one sample size was twice the other and the large 
+group(s) had the small variance. These are the same conditions where Student's t 
+test more than doubled the expected false positive rate. So the advantage of Student's t test
+in power is undermined by its inflated false 
+positive rate. In contrast, Welch's t test was more 
+powerful when the small group had the smaller variance, but it never inflated the false positive rate. 
+These joint results, on the false positive rate and power, support the decision to always use Welch's t test. By using 
+Welch's t test, you sometimes have greater power to detect true effects, but 
+you don't have to worry about sacrificing concerns with false positives.  
+
+
 
 \subsection{Coverage Probability}
 Next, we looked at how well ANOVA and Welch's t test estimated the true effect. 

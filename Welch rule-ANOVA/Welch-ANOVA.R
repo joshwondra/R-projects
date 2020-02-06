@@ -126,7 +126,7 @@ two_groups_sims <- tibble(
 t.multicontrast <- function(dv, groups, true_means, contrast_names, joint_contrasts, ...) {
   
   contrast <- matrix(c(...), nrow = length(list(...)), byrow = TRUE)
-  
+
   means <- by(dv, groups, mean)
   vars <- by(dv, groups, var)
   Ns <- by(dv, groups, length)
@@ -148,7 +148,7 @@ t.multicontrast <- function(dv, groups, true_means, contrast_names, joint_contra
   # coverage probability
   true_ihat <- contrast %*% true_means
   
-  t_crit_student <- qt(.025, df = df_student)        
+  t_crit_student <- qt(.025, df = df_student)      
   lb_student <- ihat - t_crit_student * se_student
   ub_student <- ihat + t_crit_student * se_student
   coverage_student <- (ub_student - true_ihat) * (true_ihat - lb_student) > 0
@@ -161,7 +161,16 @@ t.multicontrast <- function(dv, groups, true_means, contrast_names, joint_contra
   joint_rejects_student = sum(p_student[which(contrast_names %in% joint_contrasts)] < .05) %>% rep(length(list(...))) # rep() just makes other coding convenient by making the the same length as the other outputs but it isn't necessary
   joint_rejects_welch = sum(p_welch[which(contrast_names %in% joint_contrasts)] < .05) %>% rep(length(list(...))) # rep() just makes other coding convenient by making the the same length as the other outputs but it isn't necessary
   
-  result <- list(contrast_names = contrast_names, p_student = p_student, p_welch = p_welch, coverage_student = coverage_student, coverage_welch = coverage_welch, joint_rejects_student = joint_rejects_student, joint_rejects_welch = joint_rejects_welch)
+  result <- list(
+    contrast_names = contrast_names, 
+    p_student = p_student, p_welch = p_welch, 
+    coverage_student = coverage_student, coverage_welch = coverage_welch, 
+    joint_rejects_student = joint_rejects_student, joint_rejects_welch = joint_rejects_welch
+    # ihat = ihat, true_ihat = true_ihat, 
+    # se_student = se_student, 
+    # df_student = df_student
+    )
+
   return(result)
 }
 
@@ -169,7 +178,7 @@ t.multicontrast <- function(dv, groups, true_means, contrast_names, joint_contra
 
 
 # No effects ====
-nsims <- 10000
+nsims <- 200
 set.seed(2184)
 
 no_effects <- tibble(
@@ -178,7 +187,7 @@ no_effects <- tibble(
   # these need to be the same length so it's okay if there are some duplicates within a variable as long as there aren't duplicate combinations of all variables
   # don't worry about matching conditions for now
   sample_ratio = c(1, 3/2, 2, 2, 2),
-  min_sample = c(20, 50, 100, 100, 100),
+  min_sample = c(20, 30, 50, 100, 100),
   effect = c(0),
   var_ratio = c(.2, .5, 1, 2, 5)
 ) %>% 
@@ -200,7 +209,7 @@ no_effects <- tibble(
     vars = map(var_ratio, ~ case_when(
       var_ratio == .2 ~ c(2, 10, 10, 10),
       var_ratio == .5 ~ c(2, 4, 4, 4),
-      var_ratio == 1 ~ c(1, 1, 1, 1),
+      var_ratio == 1 ~ c(2, 2, 2, 2),
       var_ratio == 2 ~ c(4, 2, 2, 2),
       var_ratio == 5 ~ c(10, 2, 2, 2)
     ))
@@ -225,13 +234,23 @@ no_effects <- tibble(
                                     ),
                                     groups = rep(c(1, 2, 3, 4), times = .$ns),
                                     true_means = .$means,
-                                    contrast_names = c('ME (1 & 2 vs 3 & 4)', 'ME (1 & 3 vs 2 & 4)', 'Interaction', 'SE (1 vs 2)', 'SE (3 vs 4)'),
+                                    contrast_names = c(
+                                      'ME (1 & 2 vs 3 & 4)', 
+                                      'ME (1 & 3 vs 2 & 4)', 
+                                      'Interaction', 
+                                      'SE (1 vs 2)', 
+                                      'SE (3 vs 4)', 
+                                      'SE (1 vs 3)', 
+                                      'SE (2 vs 4)'
+                                      ),
                                     joint_contrasts = c('ME (1 & 2 vs 3 & 4)', 'ME (1 & 3 vs 2 & 4)', 'Interaction'),
                                     c(-1, -1, 1, 1), # main effect 1
                                     c(-1, 1, -1, 1), # main effect 2
                                     c(-1, 1, 1, -1), # interaction effect
-                                    c(-1, 1, 0, 0), # simple effect 1
-                                    c(0, 0, -1, 1) # simple effect 2
+                                    c(-1, 1, 0, 0), # simple effect 1 vs 2
+                                    c(0, 0, -1, 1), # simple effect 3 vs 4
+                                    c(-1, 0, 1, 0), # simple effect 1 vs 3
+                                    c(0, -1, 0, 1) # simple effect 2 vs 4
                                   )) %>% 
                         t() %>% 
                         as.tibble() %>% 
@@ -253,7 +272,7 @@ no_effects <- tibble(
   )
 
 # save simulations
-save(no_effects, file = '~/R-projects/Welch rule-ANOVA/no_effects.R')
+save(no_effects, file = '~/R-projects/Welch rule-ANOVA/no_effects_v2.R')
 
 
 
@@ -432,7 +451,7 @@ crossover_sims <- tibble(
   # these need to be the same length so it's okay if there are some duplicates within a variable as long as there aren't duplicate combinations of all variables
   # don't worry about matching conditions for now
   sample_ratio = c(1, 3/2, 2, 2, 2),
-  min_sample = c(20, 50, 100, 100, 100),
+  min_sample = c(20, 30, 50, 100, 100),
   effect = c(.5),
   var_ratio = c(.2, .5, 1, 2, 5)
 ) %>% 
@@ -454,7 +473,7 @@ crossover_sims <- tibble(
     vars = map(var_ratio, ~ case_when(
       var_ratio == .2 ~ c(2, 10, 10, 10),
       var_ratio == .5 ~ c(2, 4, 4, 4),
-      var_ratio == 1 ~ c(1, 1, 1, 1),
+      var_ratio == 1 ~ c(2, 2, 2, 2),
       var_ratio == 2 ~ c(4, 2, 2, 2),
       var_ratio == 5 ~ c(10, 2, 2, 2)
     ))
@@ -479,14 +498,16 @@ crossover_sims <- tibble(
             ),
           groups = rep(c(1, 2, 3, 4), times = .$ns),
           true_means = .$means,
-          contrast_names = c('ME (1 & 2 vs 3 & 4)', 'ME (1 & 3 vs 2 & 4)', 'Interaction', 'SE (1 vs 2)', 'SE (3 vs 4)'),
+          contrast_names = c('ME (1 & 2 vs 3 & 4)', 'ME (1 & 3 vs 2 & 4)', 'Interaction', 'SE (1 vs 2)', 'SE (3 vs 4)', 'SE (1 vs 3)', 'SE (2 vs 4)'),
           joint_contrasts = c('ME (1 & 2 vs 3 & 4)', 'ME (1 & 3 vs 2 & 4)'),
           c(-1, -1, 1, 1), # main effect 1
           c(-1, 1, -1, 1), # main effect 2
           c(-1, 1, 1, -1), # interaction effect
-          c(-1, 1, 0, 0), # simple effect 1
-          c(0, 0, -1, 1) # simple effect 2
-          )) %>% 
+          c(-1, 1, 0, 0), # simple effect 1 vs 2
+          c(0, 0, -1, 1), # simple effect 3 vs 4
+          c(-1, 0, 1, 0), # simple effect 1 vs 3
+          c(0, -1, 0, 1) # simple effect 2 vs 4
+        )) %>%
         t() %>% 
         as.tibble() %>% 
         unnest()
@@ -685,7 +706,7 @@ me_int_sims <- tibble(
   # these need to be the same length so it's okay if there are some duplicates within a variable as long as there aren't duplicate combinations of all variables
   # don't worry about matching conditions for now
   sample_ratio = c(1, 3/2, 2, 2, 2),
-  min_sample = c(20, 50, 100, 100, 100),
+  min_sample = c(20, 30, 50, 100, 100),
   effect = c(.5),
   var_ratio = c(.2, .5, 1, 2, 5)
 ) %>% 
@@ -704,7 +725,7 @@ me_int_sims <- tibble(
     vars = map(var_ratio, ~ case_when(
       var_ratio == .2 ~ c(2, 10, 10, 10),
       var_ratio == .5 ~ c(2, 4, 4, 4),
-      var_ratio == 1 ~ c(1, 1, 1, 1),
+      var_ratio == 1 ~ c(2, 2, 2, 2),
       var_ratio == 2 ~ c(4, 2, 2, 2),
       var_ratio == 5 ~ c(10, 2, 2, 2)
     ))
@@ -729,14 +750,16 @@ me_int_sims <- tibble(
                                     ),
                                     groups = rep(c(1, 2, 3, 4), times = .$ns),
                                     true_means = .$means,
-                                    contrast_names = c('ME (1 & 2 vs 3 & 4)', 'ME (1 & 3 vs 2 & 4)', 'Interaction', 'SE (1 vs 2)', 'SE (3 vs 4)'),
+                                    contrast_names = c('ME (1 & 2 vs 3 & 4)', 'ME (1 & 3 vs 2 & 4)', 'Interaction', 'SE (1 vs 2)', 'SE (3 vs 4)', 'SE (1 vs 3)', 'SE (2 vs 4)'),
                                     joint_contrasts = c('ME (1 & 2 vs 3 & 4)', 'ME (1 & 3 vs 2 & 4)', 'Interaction'),
                                     c(-1, -1, 1, 1), # main effect 1
                                     c(-1, 1, -1, 1), # main effect 2
                                     c(-1, 1, 1, -1), # interaction effect
-                                    c(-1, 1, 0, 0), # simple effect 1
-                                    c(0, 0, -1, 1) # simple effect 2
-                                  )) %>% 
+                                    c(-1, 1, 0, 0), # simple effect 1 vs 2
+                                    c(0, 0, -1, 1), # simple effect 3 vs 4
+                                    c(-1, 0, 1, 0), # simple effect 1 vs 3
+                                    c(0, -1, 0, 1) # simple effect 2 vs 4
+                                  )) %>%
                         t() %>% 
                         as.tibble() %>% 
                         unnest()
@@ -755,7 +778,7 @@ me_int_sims <- tibble(
     coverage_welch = mean(coverage_welch)
   )
 
-save(me_int_sims, file = 'me_int_sims.R')
+save(me_int_sims, file = '~/R-projects/Welch rule-ANOVA/me_int_sims.R')
 
 
 # power of tests
@@ -857,7 +880,7 @@ me_int_sims_test <- tibble(
   # these need to be the same length so it's okay if there are some duplicates within a variable as long as there aren't duplicate combinations of all variables
   # don't worry about matching conditions for now
   sample_ratio = c(1, 3/2, 2, 2, 2),
-  min_sample = c(20, 50, 100, 100, 100),
+  min_sample = c(20, 30, 50, 100, 100),
   effect = c(.5),
   var_ratio = c(.2, .5, 1, 2, 5)
 ) %>% 
@@ -901,14 +924,16 @@ me_int_sims_test <- tibble(
                                     ),
                                     groups = rep(c(1, 2, 3, 4), times = .$ns),
                                     true_means = .$means,
-                                    contrast_names = c('ME (1 & 2 vs 3 & 4)', 'ME (1 & 3 vs 2 & 4)', 'Interaction', 'SE (1 vs 2)', 'SE (3 vs 4)'),
+                                    contrast_names = c('ME (1 & 2 vs 3 & 4)', 'ME (1 & 3 vs 2 & 4)', 'Interaction', 'SE (1 vs 2)', 'SE (3 vs 4)', 'SE (1 vs 3)', 'SE (2 vs 4)'),
                                     joint_contrasts = c('ME (1 & 2 vs 3 & 4)', 'ME (1 & 3 vs 2 & 4)', 'Interaction'),
                                     c(-1, -1, 1, 1), # main effect 1
                                     c(-1, 1, -1, 1), # main effect 2
                                     c(-1, 1, 1, -1), # interaction effect
-                                    c(-1, 1, 0, 0), # simple effect 1
-                                    c(0, 0, -1, 1) # simple effect 2
-                                  )) %>% 
+                                    c(-1, 1, 0, 0), # simple effect 1 vs 2
+                                    c(0, 0, -1, 1), # simple effect 3 vs 4
+                                    c(-1, 0, 1, 0), # simple effect 1 vs 3
+                                    c(0, -1, 0, 1) # simple effect 2 vs 4
+                                  )) %>%
                         t() %>% 
                         as.tibble() %>% 
                         unnest()
@@ -926,7 +951,7 @@ me_int_sims_test <- tibble(
     coverage_welch = mean(coverage_welch)
   )
 
-save(me_int_sims_test, file = 'me_int_sims_test.R')
+save(me_int_sims_test, file = '~/R-projects/Welch rule-ANOVA/me_int_sims_test.R')
 
 
 # power of tests
@@ -1049,17 +1074,238 @@ sqrt(vars2[1]/(2*50) + sum(vars2[2:4])/(2*50))
 sqrt(vars2[3]/50 + vars2[4]/50)
 
 
-Similarly, the results for the contrasts show that Welchs t test is sometimes more powerful than Students, depending on different conditions. However, the contrast break some of the other patterns for the following reasons.
+# Similarly, the results for the contrasts show that Welchs t test is sometimes more powerful than Students, depending on different conditions. However, the contrast break some of the other patterns for the following reasons.
+# 
+# 1) Welchs and Students t tests use different groups to find the standard error. Students t test uses the variance from all four groups to estimate the common pooled variance, which is then used to estimate the standard error. Welchs t test doesn't estimate a pooled variance, and it only uses the groups included in the contrast to estimate the standard error. So Students t test can be affected by unequal variances even when the variances of the focal groups in the contrast are equal.
+# 
+# 2) Sample sizes are weighted differently. When there are more than two groups, Students t test weighs each group based on its sample size to estimate the pooled variance, then weighs only the groups involved the contrast based on their sample size to estimate the standard error. Welchs t test only weights the sample sizes of the groups involved in the contrast. 
+# 
+# In contrasts between two groups, Students t test computes the standard error by first using the variances from all four groups to find the pooled variance. The standard error will be smaller if one group has a smaller variance than the others, and it will be larger if one group has a larger variance than the others. 
+# 
+# from all four groups is used to find the standard error, but 
+# 
+# takes into account the variances from all of the groups, 
 
-1) Welchs and Students t tests use different groups to find the standard error. Students t test uses the variance from all four groups to estimate the common pooled variance, which is then used to estimate the standard error. Welchs t test doesn't estimate a pooled variance, and it only uses the groups included in the contrast to estimate the standard error. So Students t test can be affected by unequal variances even when the variances of the focal groups in the contrast are equal.
-
-2) Sample sizes are weighted differently. When there are more than two groups, Students t test weighs each group based on its sample size to estimate the pooled variance, then weighs only the groups involved the contrast based on their sample size to estimate the standard error. Welchs t test only weights the sample sizes of the groups involved in the contrast. 
-
-In contrasts between two groups, Students t test computes the standard error by first using the variances from all four groups to find the pooled variance. The standard error will be smaller if one group has a smaller variance than the others, and it will be larger if one group has a larger variance than the others. 
-
-from all four groups is used to find the standard error, but 
-
-takes into account the variances from all of the groups, 
 
 
+
+
+
+
+
+
+
+# No effects test ==== 
+nsims <- 500
+set.seed(2184)
+
+no_effects <- tibble(
+
+# specify all the conditions you want 
+# these need to be the same length so it's okay if there are some duplicates within a variable as long as there aren't duplicate combinations of all variables
+# don't worry about matching conditions for now
+sample_ratio = c(1),
+min_sample = c(30),
+effect = c(0),
+var_ratio = c(.2)
+) %>% 
+  
+  # complete() will create all possible combinations of the conditions, which is why you don't have to worry about matching above
+  complete(sample_ratio, min_sample, effect, var_ratio) %>% 
+  
+  # now we'll compute the sample sizes, means, and variances for each combination of conditions
+  rowwise() %>% 
+  mutate(
+    ns = map2(min_sample, sample_ratio, ~ c(min_sample, min_sample * sample_ratio, min_sample * sample_ratio, min_sample * sample_ratio)),
+    means = map(effect, ~ case_when(
+      effect == 0 ~ c(6, 6, 6, 6),
+      effect == .2 ~ c(6, 6.28, 6.28, 6),
+      effect == .5 ~ c(6, 6.71, 6.71, 6),
+      effect == .8 ~ c(6, 7.13, 7.13, 6)
+    )
+    ),
+    vars = map(var_ratio, ~ case_when(
+      var_ratio == .2 ~ c(2, 10, 10, 10),
+      var_ratio == .5 ~ c(2, 4, 4, 4),
+      var_ratio == 1 ~ c(2, 2, 2, 2),
+      var_ratio == 2 ~ c(4, 2, 2, 2),
+      var_ratio == 5 ~ c(10, 2, 2, 2)
+    ))
+  ) %>% 
+  unnest() %>% 
+  
+  # group by the conditions and then nest the ns, means and vars
+  # this makes it convenient to run the simulations
+  group_by(sample_ratio, min_sample, effect, var_ratio) %>% 
+  nest() 
+
+mydata <- no_effects %>% 
+  select(data) %>% 
+  unnest()
+
+for(i in 1:length(mydata$vars)) {
+  temp = rnorm(
+    n = mydata$ns[i],
+    mean = mydata$means[i],
+    sd = sqrt(mydata$vars[i])
+  )
+  if (i == 1){
+    dv = temp
+  } else {
+    dv = c(dv, temp)
+  }
+}
+groups <- rep(c(1, 2, 3, 4), times = mydata$ns)
+true_means <- mydata$means
+contrast_names = c(
+  'SE (1 vs 3)', 
+  'SE (2 vs 4)'
+)
+joint_contrasts = c('')
+
+t.multicontrast(dv, groups, true_means, contrast_names, joint_contrasts, c(1, -1, 0, 0), c(0, 0, 1, -1), c(1, -1, 1, -1))
+
+
+
+
+%>% 
+  
+  # run the simulations
+  mutate(
+    sim_results = map(data, ~ 
+                        replicate(nsims, 
+                                  t.multicontrast(
+                                    dv = c(
+                                      rnorm(n = .$ns[1], mean = .$means[1], sd = sqrt(.$vars[1])), 
+                                      rnorm(n = .$ns[2], mean = .$means[2], sd = sqrt(.$vars[2])),
+                                      rnorm(n = .$ns[3], mean = .$means[3], sd = sqrt(.$vars[3])),
+                                      rnorm(n = .$ns[4], mean = .$means[4], sd = sqrt(.$vars[4]))
+                                    ),
+                                    groups = rep(c(1, 2, 3, 4), times = .$ns),
+                                    true_means = .$means,
+                                    contrast_names = c(
+                                      'SE (1 vs 3)', 
+                                      'SE (2 vs 4)'
+                                    ),
+                                    joint_contrasts = c(''),
+                                    c(-1, 0, 1, 0), # simple effect 1 vs 3
+                                    c(0, -1, 0, 1) # simple effect 2 vs 4
+                                  )) %>% 
+                        t() %>% 
+                        as.tibble() %>% 
+                        unnest()
+    )) %>% 
+  select(-data) %>% # remove the data so we can unnest
+  unnest()
+
+no_effects %>% 
+  group_by(contrast_names) %>% 
+  summarize(
+    mean(ihat),
+    median(ihat),
+    max(ihat),
+    mean(true_ihat),
+    median(true_ihat),
+    max(true_ihat),
+    mean(se_student),
+    median(se_student)
+  )
+
+no_effects %>% 
+  group_by(contrast_names) %>% 
+  summarize(r = cor(ihat, se_student))
+  
+  
+nsims <- 500
+set.seed(2184)
+no_effects <- tibble(
+  
+  # specify all the conditions you want 
+  # these need to be the same length so it's okay if there are some duplicates within a variable as long as there aren't duplicate combinations of all variables
+  # don't worry about matching conditions for now
+  sample_ratio = c(1),
+  min_sample = c(30),
+  effect = c(0),
+  var_ratio = c(.2)
+) %>% 
+  
+  # complete() will create all possible combinations of the conditions, which is why you don't have to worry about matching above
+  complete(sample_ratio, min_sample, effect, var_ratio) %>% 
+  
+  # now we'll compute the sample sizes, means, and variances for each combination of conditions
+  rowwise() %>% 
+  mutate(
+    ns = map2(min_sample, sample_ratio, ~ c(min_sample, min_sample * sample_ratio, min_sample * sample_ratio, min_sample * sample_ratio)),
+    means = map(effect, ~ case_when(
+      effect == 0 ~ c(6, 6, 6, 6),
+      effect == .2 ~ c(6, 6.28, 6.28, 6),
+      effect == .5 ~ c(6, 6.71, 6.71, 6),
+      effect == .8 ~ c(6, 7.13, 7.13, 6)
+    )
+    ),
+    vars = map(var_ratio, ~ case_when(
+      var_ratio == .2 ~ c(2, 10, 10, 10),
+      var_ratio == .5 ~ c(2, 4, 4, 4),
+      var_ratio == 1 ~ c(2, 2, 2, 2),
+      var_ratio == 2 ~ c(4, 2, 2, 2),
+      var_ratio == 5 ~ c(10, 2, 2, 2)
+    ))
+  ) %>% 
+  unnest() %>% 
+  
+  # group by the conditions and then nest the ns, means and vars
+  # this makes it convenient to run the simulations
+  group_by(sample_ratio, min_sample, effect, var_ratio) %>% 
+  nest() %>% 
+  
+  # run the simulations
+  mutate(
+    sim_results = map(data, ~ 
+                        replicate(nsims, 
+                                  t.multicontrast(
+                                    dv = c(
+                                      rnorm(n = .$ns[1], mean = .$means[1], sd = sqrt(.$vars[1])), 
+                                      rnorm(n = .$ns[2], mean = .$means[2], sd = sqrt(.$vars[2])),
+                                      rnorm(n = .$ns[3], mean = .$means[3], sd = sqrt(.$vars[3])),
+                                      rnorm(n = .$ns[4], mean = .$means[4], sd = sqrt(.$vars[4]))
+                                    ),
+                                    groups = rep(c(1, 2, 3, 4), times = .$ns),
+                                    true_means = .$means,
+                                    contrast_names = c(
+                                      'SE (1 vs 3)', 
+                                      'SE (2 vs 4)'
+                                    ),
+                                    joint_contrasts = c(
+                                      'SE (1 vs 3)', 
+                                      'SE (2 vs 4)'
+                                    ),
+                                    c(-1, 0, 1, 0), # simple effect 1 vs 3
+                                    c(0, -1, 0, 1) # simple effect 2 vs 4
+                                  )) %>% 
+                        t() %>% 
+                        as.tibble() %>% 
+                        unnest()
+    )) %>% 
+  select(-data) %>% # remove the data so we can unnest
+  unnest() %>% 
+  
+  group_by(sample_ratio, min_sample, effect, var_ratio) %>% # group by conditions and summarize the results
+  group_by(sample_ratio, min_sample, effect, var_ratio, contrast_names) %>% 
+  summarize(
+    joint_reject_student = mean(joint_rejects_student > 0),
+    joint_reject_welch = mean(joint_rejects_welch > 0),
+    reject_student = mean(p_student < .05),
+    reject_welch = mean(p_welch < .05),
+    coverage_student = mean(coverage_student),
+    coverage_welch = mean(coverage_welch)
+  )
+
+# save simulations
+save(no_effects, file = '~/R-projects/Welch rule-ANOVA/no_effects.R')
+
+sqrt(1/60 * sum(2, 10, 10, 10))
+sqrt(1/60 * sum(2, 4, 4, 4))
+sqrt(1/60 * sum(2, 2, 2, 2))
+sqrt(1/60 * sum(4, 2, 2, 2))
+sqrt(1/60 * sum(10, 2, 2, 2))
 
