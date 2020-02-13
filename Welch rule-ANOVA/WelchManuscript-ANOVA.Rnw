@@ -980,6 +980,111 @@ add_sub(
 
 Figure 4 displays the power of ANOVA and Welch's t test to detect true effects, as well as the difference in power between the two tests, where higher values mean Welch's t test is more powerful than ANOVA. As we can see, the power of the two tests to detect the interaction is approximately equal when either the sample sizes or the variances are equal. However, when the sample sizes and the variances are different, the power of the two tests is different. ANOVA has more power when the larger group has the smaller variance--the same condition where it inflates the false positive rate. In contrast, Welch's t test has more power when the larger group has the larger variance, without the risk of inflating the false positive rate. The differences in power are primarily driven by the fact that when the larger group has the smaller variance, ANOVA underestimates the standard error and tends to reject the null hypothesis, regardless of whether or not there is a true effect. So the main benefit of ANOVA is undermined by a higher risk of false positives.
 
+
+\subsection{Coverage Probability}
+Next, we looked at how well ANOVA and Welch's t test estimated the true effect. 
+We used 95\% confidence intervals constructed using Student's and Welch's t 
+tests to find their relative coverage probability, the proportion of confidence intervals 
+that contain the population value of the estimated parameter, which in this case is the 
+difference in group means. By 
+definition,  the expected coverage probability of 95\% confidence intervals  is .95. 
+Additionally, when the null hypothesis is true and $\alpha = 5\%$, the coverage 
+probability of 95\% confidence intervals has a simple relationship with the 
+false positive rate---it's the complement of the false positive rate. 
+
+Figure 5 displays the coverage probabilities of the two t tests. 
+The coverage probability for ANOVA varies, just as the 
+false positive rate did, ranging from about 87-98\% when either the sample sizes or variances were unequal. 
+Importantly, under the same conditions where Student's t test had the most power to detect true effects, the confidence intervals were least likely to include the true effect size.   
+In contrast, Welch's t test performed as expected and the confidence interval 
+contains the true effect 95\% of the time regardless of the variance and sample 
+size ratios. 
+
+\begin{figure}[!ht]
+<<coverage_probability, echo = FALSE, collapse = TRUE, fig = TRUE, width = 12, height = 8>>=
+
+no_effects_cov <- plot_grid(
+  
+  # first row
+  cov_no_effects_meA_anova + theme(strip.text.y = element_blank(), strip.background = element_blank()), 
+  cov_no_effects_meB_anova + theme(strip.text.y = element_blank(), strip.background = element_blank()), 
+  cov_no_effects_int_anova + theme(strip.background = element_blank()),
+  
+  # second row
+  cov_no_effects_meA_welch + theme(strip.text.x = element_blank(), strip.text.y = element_blank(), strip.background = element_blank()), 
+  cov_no_effects_meB_welch + theme(strip.text.x = element_blank(), strip.text.y = element_blank(), strip.background = element_blank()), 
+  cov_no_effects_int_welch + theme(strip.text.x = element_blank(), strip.background = element_blank()), 
+  ncol = 3
+)
+
+crossover_cov <- plot_grid(
+  
+  # first row
+  cov_crossover_meA_anova + theme(strip.text.y = element_blank(), strip.background = element_blank()), 
+  cov_crossover_meB_anova + theme(strip.text.y = element_blank(), strip.background = element_blank()), 
+  cov_crossover_int_anova + theme(strip.background = element_blank()), 
+  
+  # second row
+  cov_crossover_meA_welch + theme(strip.text.x = element_blank(), strip.text.y = element_blank(), strip.background = element_blank()),
+  cov_crossover_meB_welch + theme(strip.text.y = element_blank(), strip.background = element_blank()), 
+  cov_crossover_int_welch + theme(strip.background = element_blank()), 
+  
+  ncol = 3
+)
+
+me_int_cov <- plot_grid(
+  
+  # first row
+  cov_me_int_meA_anova + theme(strip.text.y = element_blank(), strip.background = element_blank()), 
+  cov_me_int_meB_anova + theme(strip.text.y = element_blank(), strip.background = element_blank()), 
+  cov_me_int_int_anova + theme(strip.background = element_blank()), 
+  
+  # second row
+  cov_me_int_meA_welch + theme(strip.text.x = element_blank(), strip.text.y = element_blank(), strip.background = element_blank()),
+  cov_me_int_meB_welch + theme(strip.text.y = element_blank(), strip.background = element_blank()), 
+  cov_me_int_int_welch + theme(strip.background = element_blank()), 
+  
+  ncol = 3
+)
+
+plot_grid(
+  plot_grid(
+    tf_no_effects, no_effects_cov,
+    tf_crossover, crossover_cov,
+    tf_me_int, me_int_cov,
+    ncol = 2, rel_widths = c(.25, .75)
+  ),
+  plot_grid(plot_legend),
+  ncol = 2,
+  rel_widths = c(10, 3),
+  labels = list()
+) %>% 
+add_sub(
+  bquote(
+    frac(
+      sigma[A[1]*B[1]]^2,
+      {sigma[A[1]*B[2]]^2 == sigma[A[2]*B[1]]^2} == sigma[A[2]*B[2]]^2
+      )
+    ), 
+  vpadding=grid::unit(0,"lines"),
+  y=.1, 
+  x=0.5, 
+  vjust=0
+  ) %>% 
+  ggdraw()
+@
+
+\textit{Figure 5.} Coverage probability for ANOVA and Welch's t test
+as the variance ratio, sample size ratio, and sample sizes vary.
+\end{figure}
+
+\subsection{Summary}
+For the tests of main effects and interactions, there are clear benefits to using contrasts based on Welch's t test instead of ANOVA. When the variances are equal, Welch's t test performs about the same as ANOVA, and when the variances are unequal, Welch's t test retains the expected 5\% false positive rate, and its 95\% confidence intervals really do include the true effect size 95\% of the time.
+
+Additionally, there are clear downsides to ANOVA/Student's t test.  When the variances and sample sizes are unequal, it can inflate the false positive rate, and its alleged 95\% confidence intervals can miss the true effect size more often than they should. The only benefit to ANOVA is that it is more powerful than Welch's t test under some conditions, but this benefit is undermined because under those same conditions it inflates the false positive rate and incorrectly estimates the effect size. 
+
+But we still have another topic to cover, which is contrasts that test the simple effects of each factor. These are often run as follow-up tests to a significant interaction, though we support running them first if they are specific tests of the key hypothesis. 
+
 \section{Simple Effects}
 In addition to looking at main effects and interactions, we can consider the simple effects of A at each level of B, and the simple effects of B at each level of A. 
 The contrast weights are:
@@ -991,14 +1096,16 @@ The contrast weights are:
  & A1, B1 & A1, B2 & A2, B1 & A2, B2 \\
 \hline
 Simple Effect of A at B1 & 1 & 0 & -1 & 0 \\
-Simple Effect of A at B2 & 0 & 1 & 0 & -1 \\
 Simple Effect of B at A1 & 1 & -1 & 0 & 0 \\
+Simple Effect of A at B2 & 0 & 1 & 0 & -1 \\
 Simple Effect of B at A2 & 0 & 0 & 1 & -1 \\
 \hline
 \end{tabular}
 \end{table}
 
-The t tests are constructed using the same formulas as those that we use for main effects and interactions, and the only difference is the contrast weights.
+In our current simulations, where only group A1/B1 has a variance or sample size that's different from the other groups, what's particularly different from the main effects and interaction is that in some contrasts, that group is excluded, and the groups that are being directly compared have equal sample sizes and variances even though the excluded group doesn't.  
+
+The t tests for the simple effects are constructed using the same formulas as those that we use for main effects and interactions, and the only difference is the contrast weights.
 
 \subsection{False Positives}
 
@@ -1190,8 +1297,6 @@ add_sub(
 
 NOTE: Old text below
 
-Although such contrasts are commonly run as follow-up tests to an interaction, we support running them first if they are specific tests of the key hypothesis. (NOTE: Let's save this for the discussion)
-
 Next, let's consider the simple effects.
 Similar to the interaction effect, ANOVA and Welch's t test had similar power when the variances were equal. But unlike the interaction effect, having equal sample sizes didn't prevent differences in power when the variances were unequal.
 The reason for this is that the two tests weigh the group variances differently to find the standard error of the contrast. 
@@ -1331,101 +1436,6 @@ you don't have to worry about sacrificing concerns with false positives.
 
 
 
-\subsection{Coverage Probability}
-Next, we looked at how well ANOVA and Welch's t test estimated the true effect. 
-We used 95\% confidence intervals constructed using Student's and Welch's t 
-tests to find their relative coverage probability, the proportion of confidence intervals 
-that contain the population value of the estimated parameter, which in this case is the 
-difference in group means. By 
-definition,  the expected coverage probability of 95\% confidence intervals  is .95. 
-Additionally, when the null hypothesis is true and $\alpha = 5\%$, the coverage 
-probability of 95\% confidence intervals has a simple relationship with the 
-false positive rate---it's the complement of the false positive rate. 
-
-Figure 4 displays the coverage probabilities of the two t tests. 
-The coverage probability for Student's t test varies dramatically, just as the 
-false positive rate did, ranging from about 87-98\% when either the sample sizes or variances were unequal. 
-In contrast, Welch's t test performed as expected and the confidence interval 
-contains the true effect 95\% of the time regardless of the variance and sample 
-size ratios. 
-
-\begin{figure}[!ht]
-<<coverage_probability, echo = FALSE, collapse = TRUE, fig = TRUE, width = 12, height = 8>>=
-
-no_effects_cov <- plot_grid(
-  
-  # first row
-  cov_no_effects_meA_anova + theme(strip.text.y = element_blank(), strip.background = element_blank()), 
-  cov_no_effects_meB_anova + theme(strip.text.y = element_blank(), strip.background = element_blank()), 
-  cov_no_effects_int_anova + theme(strip.background = element_blank()),
-  
-  # second row
-  cov_no_effects_meA_welch + theme(strip.text.x = element_blank(), strip.text.y = element_blank(), strip.background = element_blank()), 
-  cov_no_effects_meB_welch + theme(strip.text.x = element_blank(), strip.text.y = element_blank(), strip.background = element_blank()), 
-  cov_no_effects_int_welch + theme(strip.text.x = element_blank(), strip.background = element_blank()), 
-  ncol = 3
-)
-
-crossover_cov <- plot_grid(
-  
-  # first row
-  cov_crossover_meA_anova + theme(strip.text.y = element_blank(), strip.background = element_blank()), 
-  cov_crossover_meB_anova + theme(strip.text.y = element_blank(), strip.background = element_blank()), 
-  cov_crossover_int_anova + theme(strip.background = element_blank()), 
-  
-  # second row
-  cov_crossover_meA_welch + theme(strip.text.x = element_blank(), strip.text.y = element_blank(), strip.background = element_blank()),
-  cov_crossover_meB_welch + theme(strip.text.y = element_blank(), strip.background = element_blank()), 
-  cov_crossover_int_welch + theme(strip.background = element_blank()), 
-  
-  ncol = 3
-)
-
-me_int_cov <- plot_grid(
-  
-  # first row
-  cov_me_int_meA_anova + theme(strip.text.y = element_blank(), strip.background = element_blank()), 
-  cov_me_int_meB_anova + theme(strip.text.y = element_blank(), strip.background = element_blank()), 
-  cov_me_int_int_anova + theme(strip.background = element_blank()), 
-  
-  # second row
-  cov_me_int_meA_welch + theme(strip.text.x = element_blank(), strip.text.y = element_blank(), strip.background = element_blank()),
-  cov_me_int_meB_welch + theme(strip.text.y = element_blank(), strip.background = element_blank()), 
-  cov_me_int_int_welch + theme(strip.background = element_blank()), 
-  
-  ncol = 3
-)
-
-plot_grid(
-  plot_grid(
-    tf_no_effects, no_effects_cov,
-    tf_crossover, crossover_cov,
-    tf_me_int, me_int_cov,
-    ncol = 2, rel_widths = c(.25, .75)
-  ),
-  plot_grid(plot_legend),
-  ncol = 2,
-  rel_widths = c(10, 3),
-  labels = list()
-) %>% 
-add_sub(
-  bquote(
-    frac(
-      sigma[A[1]*B[1]]^2,
-      {sigma[A[1]*B[2]]^2 == sigma[A[2]*B[1]]^2} == sigma[A[2]*B[2]]^2
-      )
-    ), 
-  vpadding=grid::unit(0,"lines"),
-  y=.1, 
-  x=0.5, 
-  vjust=0
-  ) %>% 
-  ggdraw()
-@
-
-\textit{Figure 5.} Coverage probability for ANOVA and Welch's t test
-as the variance ratio, sample size ratio, and sample sizes vary.
-\end{figure}
 
 
 
@@ -1753,6 +1763,8 @@ crossover_sims %>%
 
 
 \section{Discussion}
+
+- add that a benefit of using Welch-based contrasts is also that you can go straight to the specific contrasts of interest instead of starting with main effects and interactions, especially in more complex designs
 
 
     Data analysis involves decisions about which statistical test answers the research question, whether the test is 
