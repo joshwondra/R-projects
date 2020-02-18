@@ -20,14 +20,13 @@ breaklines=true
 These tests assume that the population variances of the groups are equal. If there is 
 reason to believe the variances are unequal, then researchers can 
 use Welch's t test, which does not assume equal variances, as an alternative. 
-We were interested in finding a simple rule to 
-decide when to use Student's vs. Welch's t test. We used Monte Carlo 
+Recently, some researchers have recommended that psychologists should use Welch's t test as the default.
+While these recommendations have focused on the case of two groups or a one-way ANOVA, we demonstrate that Welch's t test can generalize to any between-groups design, and illustrate with the case of a 2~$\times$~2 factorial design. 
+We used Monte Carlo 
 simulations to compare the false positive rate, power, and coverage probability 
-of Student's and Welch's t tests across different variance ratios, sample size ratios, sample sizes, 
-and effect sizes. We examined a simple case---the difference in the means of 
-two groups---and a more complex case---the test of the interaction in a 
-2~$\times$~2 factorial design. We recommend the following rule: 
-If the data are normally distributed, always use Welch's t test to 
+of classic ANOVA and Welch's t tests across different variance ratios, sample size ratios, sample sizes, 
+and effects. We recommend that
+if the data are normally distributed, always use Welch's t test to 
 compare the means of independent groups.}
 \keywords{Welch t test, contrasts, hypothesis testing, simulation}
 
@@ -279,7 +278,7 @@ Satterthwaite1946}, which does not assume the variances are equal.
 because it does a better job controlling false positives when group variances are unequal, 
 and it doesn't lose much power when variances are equal.
 Their discussion focused on comparing two groups, but their conclusion can be expanded to cases when there are more than two groups.
-In this paper, we compare contrasts based on Welch's t-test to a typical analysis of variance. We show that in designs with more than two groups, Welch's t test does a better job controlling false positives, accurately estimating effect sizes, and simplifying pre-registration, without losing too much power. We illustrate with a 2~$\times$~2 factorial design.
+In this paper, we compare contrasts based on Welch's t-test to a typical analysis of variance (ANOVA). We show that in designs with more than two groups, Welch's t test does a better job controlling false positives, accurately estimating effect sizes, and simplifying pre-registration, without losing too much power. We illustrate with a 2~$\times$~2 factorial design.
 
 
 \subsection{Student's and Welch's t tests with Two Groups}
@@ -291,23 +290,21 @@ difference:
     \begin{equation}
     t = \frac{\hat{\mu}_1-\hat{\mu}_2}{\hat{\sigma}_{\mu_1-\mu_2}}
     \end{equation}
-The standard error is estimated from the group variances, by summing the group variances divided by their sample sizes, and then then taking the square root of the sum.
+The standard error is estimated from the group variances, by dividing each group's estimated population variance ($\hat{\sigma}_1^2$, $\hat{\sigma}_2^2$) by its sample size ($n_1$, $n_2$), summing them, and then then taking the square root of the sum.
 
 \begin{equation}
-    \hat{\sigma}_{\overline{x}_1-\overline{x}_2} = \sqrt{\frac{\hat{\sigma}_1^2}{n_1} + \frac{\hat{\sigma}_2^2}{n_2}}
+    \hat{\sigma}_{\mu_1-\mu_2} = \sqrt{\frac{\hat{\sigma}_1^2}{n_1} + \frac{\hat{\sigma}_2^2}{n_2}}
 \end{equation}
 
-where $\hat{\sigma}_1^2$ and $\hat{\sigma}_2^2$ are the estimated population variances of the two groups. 
-
-  But Student's t test and Welch's t tests make different assumptions about how to estimate the population variances of the groups. 
-  Student's t test assumes the population variances of the groups are equal ($\hat{\sigma}_1^2 = \hat{\sigma}_2^2$), so if the sample variances are different, it's due to sampling error. 
+  But Student's t test and Welch's t tests make different assumptions about how to find each group's estimated population variance. 
+  Student's t test assumes the population variances of the groups are equal ($\hat{\sigma}_1^2 = \hat{\sigma}_2^2$), so if the sample variances are different ($s_1^2 \neq s_2^2$), it's due to sampling error. 
   To correct for this error, Student's t test estimates a common variance
-by pooling the sample group variances into a weighted 
+by pooling the sample variances into a weighted 
 average
     \begin{equation}
     s_p^2 = \frac{(n_1 - 1)s_1^2 + (n_2 - 1)s_2^2}{(n_1 - 1) + (n_2 - 1)}
     \end{equation}
-     with $s_1^2$ and $s_2^2$ being the two sample group variances. This common variance is used to estimate the population variances of the two groups, and to estimate the standard error of the t test.  
+This common variance is used to estimate the population variances of the two groups, which can then be used to estimate the standard error of the t test.  
     \begin{equation}
     s_{Student} = \sqrt{\frac{s_p^2}{n_1}  + \frac{s_p^2}{n_2}} %= s_p\sqrt{\frac{1}{n_1}  + \frac{1}{n_2}} Josh W cut this because it's easier to see how the standard error from Student's and Welch's t tests compare by leaving the pooled variance under the radical
     \end{equation}
@@ -316,12 +313,12 @@ In the pooling equation (EQ 3), if the sample sizes are different, the variance 
 with the larger sample size is given more weight. If the larger group has the larger 
 variance, then the standard error will be larger; if the larger group has the smaller variance, then the standard error will be smaller.
     
-  In contrast Welch's t test does not assume the group variances are equal. The population variances of the groups are estimated with the sample group variances:
+  In contrast Welch's t test does not assume the group variances are equal. The sample variances of the groups are used to estimates their population variances, and they are used directly to estimate the standard error fo the t test:
     \begin{equation}
     s_{Welch} = \sqrt{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}
     \end{equation}
 
-  Aside from their standard errors, the two tests also differ in how they compute the degrees of 
+  In addition to their standard errors, the two tests also differ in how they compute the degrees of 
 freedom. Student's t test uses a simple formula to compute the degrees of freedom: $df_{Student}=n_1+n_2-2$. Welch's t test uses a more complicated formula to compute the degrees of freedom: 
     \begin{equation}
     df_{Welch} = \frac{(\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2})^2}{\frac{(s_1^2)^2}{n_1^2(n_1-1)} + \frac{(s_2^2)^2}{n_2^2(n_2-1)}}
@@ -335,7 +332,9 @@ variances differ. It can also produce a degrees of freedom value that is not an 
 
 \subsection{Student's and Welch's t tests with More Than Two Groups}
 
-Let's consider the case of a 2~$\times$~2 factorial design with factors A and B. Typically researchers would use a 2~$\times$~2 factorial ANOVA to test for group differences, which would test the main effect of A, the main effect of B, and the interaction of A and B. If the group sample sizes are equal or if Type 3 Sum of Squares is used, then the ANOVA is equivalent to a set of orthogonal contrasts with t tests using the following weights:
+Our opening discussion focused on the case of two groups, but Welch's t test can generalize to any between-groups design (for a discussion in the context of one-way ANOVA, see Delacre et al., 2019)
+
+Let's consider the case of a 2~$\times$~2 factorial design with factors A and B. Typically researchers would use a 2~$\times$~2 factorial ANOVA to test for group differences, which would test the main effect of A, the main effect of B, and the interaction of A and B. If the group sample sizes are equal or if Type 3 Sum of Squares is used, then the ANOVA is equivalent to a set of orthogonal contrasts with Student's t test using the following weights:
 
 \begin{table}[ht]
 \begin{tabular}{l c c c c}
@@ -360,30 +359,32 @@ To find the t value to test the contrasts, you need to find the standard error o
   t = \frac{\hat{I}}{\hat{\sigma}_{\hat{I}}}
 \end{equation}
 
-To find the estimated standard error of the contrast, you take the sum of each group's estimated variance multiplied by its squared contrast weight and divided by its sample size, then find the square root of the sum. 
+To find the estimated standard error of the contrast, you follow a procedure that generalizes EQ2. You divide each group's estimated population variance by its sample size, multiply them by their squared contrast weights, sum them, and then take the square root of the sum. 
 
 \begin{equation}
-    \hat{\sigma}_{\hat{I}} = \sqrt{\sum \frac{a_i^2\hat{\sigma_i}^2}{n_i}}
+    \hat{\sigma}_{\hat{I}} = \sqrt{\sum a_i^2\frac{\hat{\sigma_i}^2}{n_i}}
 \end{equation}
 
-When Student's t test is used, we assume that the group variances are equal, so we still estimate a common pooled variance by using information from all groups.
+In the case of two groups in EQ2, the contrast weights are always 1 and -1.
+
+When Student's t test is used, we assume that the group variances are equal, so we generalize the pooling equation (EQ3) to estimate a common pooled variance by using information from all groups.
 
 \begin{equation}
     s_p^2 = \frac{\sum (n_{i} - 1)s_{i}^2}{\sum (n_{i} - 1)}
 \end{equation}
 
-This same pooled variance is used for every estimated group variance in Equation 9. 
+This same pooled variance is used for every estimated group variance, and these are used to find the standard error of the t test.  
 
 \begin{equation}
     s_{\hat{I}_{Student}} = \sqrt{\sum \frac{a_i^2 s_p^2}{n_i}}
 \end{equation}
 
-The degrees of freedom are $df = \sum (n_i - 1)$, and the t value is equal to the square root of the F value if ANOVA had been used instead.
+The degrees of freedom are $df = \sum (n_i - 1)$, and the t value is equal to the square root of the F value if ANOVA had been used instead. Due to this equivalence and the emphasis on cases where researchers would typically run ANOVA, when use the term ANOVA through the rest of the paper, it refers to both ANOVA and Student's t test.  
 
 However, the benefit of using a t test is that you don't \textit{have} to use Student's t test---you can use Welch's t test instead. When using Welch's t test, instead of finding a common pooled variance, the estimated variance for each group is that group's sample variance because we do not assume variances are equal. 
 
 \begin{equation}
-    s_{\hat{I}_{Welch}} = \sqrt{\sum \frac{a_i s_{i}^2}{n_{i}}}
+    s_{\hat{I}_{Welch}} = \sqrt{\sum a_i\frac{s_{i}^2}{n_{i}}}
 \end{equation}
 
 The degrees of freedom also generalize to use information from all the groups.
@@ -391,44 +392,44 @@ The degrees of freedom also generalize to use information from all the groups.
     df_{Welch} = \frac{(\sum \frac{s_i^2}{n_i})^2}{\sum \frac{(s_i^2)^2}{n_i^2(n_i-1)}}
 \end{equation}
 
-Just as Welch's t test controls false positives better than Student's t test without serious downsides, it also controls false positives better than ANOVA, is sometimes more powerful than ANOVA to detect true effects, and does a better job estimating the true effect size. 
+Just as Welch's t test controls false positives better than Student's t test without serious downsides when there are two groups, it also controls false positives better than ANOVA when there are more than two groups, is sometimes more powerful to detect true effects, and does a better job estimating the true effect size.
 
-We'll illustrate with three examples. First, we'll consider the case where there are no effects. Second, we'll consider a case of a crossover interaction with no main effects. And third, we'll consider a case with two main effects and an interaction. In each case, we ran 10,000 simulations of four independent groups with normally distributed data. We compared how well ANOVAs vs. Welch's t test balances concerns with 
+We'll illustrate with three examples. First, we'll consider the case where there are no effects. Second, we'll consider the case of a crossover interaction with no main effects. And third, we'll consider the case with two main effects and an interaction. In each case, we ran 10,000 simulations of four independent groups with normally distributed data. We compared how well ANOVA vs. Welch's t test balances concerns with 
 false positives, power, and effect size estimation under 
-different variance ratios, sample sizes, sample size ratios, and effect sizes. 
-We examined cases where the variances were equal or where the variance of just one group differed from the others.
+different variance ratios and sample size ratios (FOOTNOTE: We also looked at different effect sizes and sample sizes, but they had no impact on the relative effects of ANOVA and Welch's t test, so we do not show them here).
+We examined cases where the variances and sample sizes were equal or where the variance or sample size of just one group differed from the others.
 
 \section{False Positive Rates}
 
 For false positive rates, we looked at the main effects when there were no effects or only a crossover interaction, and at the interaction effect when there were no effects. 
 
 \begin{figure}[!ht]  
-<<false_positives, echo = FALSE, collapse = TRUE, fig = TRUE, width = 12, height = 5>>=
+<<false_positives, echo = FALSE, fig = TRUE, width = 14, height = 7>>=
 
 no_effects_false_positives <- plot_grid(
   
   # first row
-  rn_no_effects_meA_anova + first_row(), 
-  rn_no_effects_meB_anova + first_row(), 
+  rn_no_effects_meA_anova %>% first_row(), 
+  rn_no_effects_meB_anova %>% first_row(), 
   rn_no_effects_int_anova,
   
   # second row
-  rn_no_effects_meA_welch + low_row(), 
-  rn_no_effects_meB_welch + low_row(), 
-  rn_no_effects_int_welch + low_row_end(), 
+  rn_no_effects_meA_welch %>% low_row(), 
+  rn_no_effects_meB_welch %>% low_row(), 
+  rn_no_effects_int_welch %>% low_row_end(), 
   ncol = 3
 )
 
 crossover_false_positives <- plot_grid(
   
   # first row
-  rn_crossover_meA_anova + first_row(), 
+  rn_crossover_meA_anova %>% first_row(), 
   rn_crossover_meB_anova, 
   blank_plot,
   
   # second row
-  rn_crossover_meA_welch + low_row(),
-  rn_crossover_meB_welch + low_row_end(),
+  rn_crossover_meA_welch %>% low_row(),
+  rn_crossover_meB_welch %>% low_row_end(),
   blank_plot,
   
   ncol = 3
@@ -449,29 +450,29 @@ plot_grid(
   add_x_lab(plot_x_lab)
 @
 
-\textit{Figure 2.} False positives for the simulations when there were no effects or a crossover interaction with no main effects.
+\textit{Figure 1.} False positives for the simulations when there were no effects or a crossover interaction with no main effects.
 \end{figure}
 
-For each comparison, the expected false positive rate is $\alpha = .05$. The observed false positive
-rate for ANOVA remained close to the expected rate when either 
+For each comparison, the expected false positive rate is $\alpha = 5\%$. For ANOVA, the observed false positive
+rate was close to the expected rate when either 
 the population variances or sample sizes were equal, but it varied widely 
-when both the variances and sample sizes were unequal (see Figure 2). 
-When the larger group(s) had the larger variance, the false positive rate dropped as low as 
-about 2\%, but when it had the smaller 
+when both the variances and sample sizes were unequal (see Figure 1). 
+When the one smaller group had the smaller variance, the false positive rate dropped as low as
+about 2\%, but when it had the larger 
 variance, the false positive rate 
 rose as high as 13\%, more than double the expected rate. 
-In contrast, the observed false positive rate for Welch's t test 
-remained close to the expected rate across all conditions. Overall, Welch's 
+In contrast, for Welch's t test, the observed false positive rate
+was close to the expected rate across all conditions. Overall, Welch's 
 t test consistently behaved as expected when it came to false positives, whether there were no effects or a significant interaction but no main effects. 
 ANOVA did not.
 
 \subsection{Joint False Positive Rate}
 
-In addition to looking at each comparison separately, we can look at the joint false positive rate
----the probability that at least one of the effects produces a false positive.
-We focus on the case where there are no true effects, so the joint false positive rate is the probability that at least one main effect or the interaction produces a false positive. 
-The expected joint false positive rate in a 2~$\times$~2 ANOVA, when the three comparisons are independent, is $\alpha = .14$, 
-though in practice the rate is typically slightly below .14 \cite{Cramer2016}.
+In addition to looking at each test separately, we can look at the joint false positive rate
+---the probability that at least one of the tests gives a false positive.
+We focus on the case where there are no true effects, so the joint false positive rate is the probability that the test of at least one main effect or the interaction gives a false positive. 
+The expected joint false positive rate in a 2~$\times$~2 ANOVA when the three comparisons are independent is $\alpha = 14\%$, 
+though in practice the rate is typically slightly below 14\% \cite{Cramer2016}.
 
 
 \begin{figure}[!ht]  
@@ -490,25 +491,25 @@ plot_grid(
 add_x_lab(plot_x_lab)
 @
 
-\textit{Figure 3.} Rates of at least one false positive (at least one main effect or the interaction) for the simulations when there were no effects.
+\textit{Figure 2.} Rates of at least one false positive (at least one main effect or the interaction) for the simulations when there were no effects.
 \end{figure}
 
-As with the separate tests of the main effects and interaction, the observed false positive
-rate for ANOVA remained close to the expected rate when either 
+As with the separate tests of the main effects and interaction, for ANOVA, the observed false positive
+rate was close to the expected rate when either 
 the population variances or sample sizes were equal, but it varied widely 
-when both the variances and sample sizes were unequal (see Figure 3). 
-When the larger group(s) had the larger variance, the false positive rate dropped as low as 
-about 7\%, but when it had the smaller 
+when both the variances and sample sizes were unequal (see Figure 2). 
+When the one smaller group had the smaller variance, the false positive rate dropped as low as 
+about 7\%, but when it had the larger 
 variance, the false positive rate 
 rose as high as 26\%.
-The observed joint false positive  
-rate for Welch's t test remained closer to the expected rate. Welch's 
+For Welch's t test, the observed joint false positive  
+rate remained closer to the expected rate. Welch's 
 t test behaved closer to expectations when it came to false positives than 
 ANOVA.
 
 
 \subsection{Power}
-To compare the power of ANOVA vs. Welch's t test to detect true effects, we looked at the main effects when there were main effects and an interaction, and at the interaction effect when there was an interaction with or without true main effects. Additionally, in the cases where there is an interaction effect, we can compare the power of Student's t test vs. Welch's t test to detect the simple effects of factor B at each level of factor A.
+To compare the power of ANOVA vs. Welch's t test to detect true effects, we looked at the main effects when there were main effects and an interaction, and at the interaction effect when there was an interaction with or without true main effects. 
 
 \begin{figure}[!ht]
 <<power_plots, echo = FALSE, collapse = TRUE, fig = TRUE, width = 12, height = 8>>=
@@ -518,17 +519,17 @@ crossover_power <- plot_grid(
   # first row
   blank_plot, 
   blank_plot,
-  rn_crossover_int_anova + first_row(), 
+  rn_crossover_int_anova %>% first_row(), 
 
   # second row
   blank_plot,
   blank_plot,
-  rn_crossover_int_welch + low_row_end(),
+  rn_crossover_int_welch %>% low_row_end(),
   
   # third row
   blank_plot,
   blank_plot,
-  rd_crossover_int + low_row_end(),
+  rd_crossover_int %>% low_row_end(),
   
   ncol = 3
 )
@@ -536,19 +537,19 @@ crossover_power <- plot_grid(
 me_int_power <- plot_grid(
   
   # first row
-  rn_me_int_meA_anova + first_row(), 
-  rn_me_int_meB_anova + first_row(),
+  rn_me_int_meA_anova %>% first_row(), 
+  rn_me_int_meB_anova %>% first_row(),
   rn_me_int_int_anova, 
 
   # second row
-  rn_me_int_meA_welch + low_row(), 
-  rn_me_int_meB_welch + low_row(),
-  rn_me_int_int_welch + low_row_end(),
+  rn_me_int_meA_welch %>% low_row(), 
+  rn_me_int_meB_welch %>% low_row(),
+  rn_me_int_int_welch %>% low_row_end(),
   
   # third row
-  rd_me_int_meA + low_row(), 
-  rd_me_int_meB + low_row(),
-  rd_me_int_int + low_row_end(),
+  rd_me_int_meA %>% low_row(), 
+  rd_me_int_meB %>% low_row(),
+  rd_me_int_int %>% low_row_end(),
   
   ncol = 3
 )
@@ -568,29 +569,29 @@ plot_grid(
 @
 
 
-\textit{Figure 4.} Power for the simulations when there was a crossover interaction or two main effects and an interaction. The third row shows the difference in power between ANOVA and Welch's t test, where higher values mean Welch's t test is more powerful than ANOVA.
+\textit{Figure 3.} Power for the simulations when there was a crossover interaction or two main effects and an interaction. The third row shows the difference in power between ANOVA and Welch's t test, where higher values mean Welch's t test is more powerful than ANOVA.
 \end{figure}
 
-Figure 4 displays the power of ANOVA and Welch's t test to detect true effects, as well as the difference in power between the two tests, where higher values mean Welch's t test is more powerful than ANOVA. As we can see, the power of the two tests to detect the interaction is approximately equal when either the sample sizes or the variances are equal. However, when the sample sizes and the variances are different, the power of the two tests is different. ANOVA has more power when the larger group has the smaller variance--the same condition where it inflates the false positive rate. In contrast, Welch's t test has more power when the larger group has the larger variance, without the risk of inflating the false positive rate. The differences in power are primarily driven by the fact that when the larger group has the smaller variance, ANOVA underestimates the standard error and tends to reject the null hypothesis, regardless of whether or not there is a true effect. So the main benefit of ANOVA is undermined by a higher risk of false positives.
+Figure 3 displays the power of ANOVA and Welch's t test to detect true effects, as well as the difference in power between the two tests, where higher values mean Welch's t test is more powerful than ANOVA. As we can see, the power of the two tests to detect the interaction is approximately equal when either the sample sizes or the variances are equal. However, when the sample sizes and the variances are different, the power of the two tests is different. ANOVA has more power when the smaller group has the larger variance--the same condition where it inflates the false positive rate. In contrast, Welch's t test has more power when the smaller group has the smaller variance, without the risk of inflating the false positive rate. The differences in power are primarily driven by the fact that when the smaller group has the larger variance, ANOVA underestimates the standard error and tends to reject the null hypothesis, regardless of whether or not there is a true effect. So the main benefit of ANOVA is undermined by a higher risk of false positives.
 
 
 \subsection{Coverage Probability}
 Next, we looked at how well ANOVA and Welch's t test estimated the true effect. 
 We used 95\% confidence intervals constructed using Student's and Welch's t 
-tests to find their relative coverage probability, the proportion of confidence intervals 
+tests to find their relative coverage probability, the percentage of confidence intervals 
 that contain the population value of the estimated parameter, which in this case is the 
 difference in group means. By 
-definition,  the expected coverage probability of 95\% confidence intervals  is .95. 
+definition,  the expected coverage probability of 95\% confidence intervals  is 95\%. 
 Additionally, when the null hypothesis is true and $\alpha = 5\%$, the coverage 
 probability of 95\% confidence intervals has a simple relationship with the 
 false positive rate---it's the complement of the false positive rate. 
 
-Figure 5 displays the coverage probabilities of the two t tests. 
-The coverage probability for ANOVA varies, just as the 
-false positive rate did, ranging from about 87-98\% when either the sample sizes or variances were unequal. 
-Importantly, under the same conditions where Student's t test had the most power to detect true effects, the confidence intervals were least likely to include the true effect size.   
+Figure 4 displays the coverage probabilities of the two t tests. 
+The coverage probability for ANOVA varied, just as the 
+false positive rate did, ranging from about 87-98\% when either the sample sizes and variances were unequal. 
+Importantly, under the same conditions where Student's t test had the most power to detect true effects, the probability that it correctly estimated the true effect size was the lowest.   
 In contrast, Welch's t test performed as expected and the confidence interval 
-contains the true effect 95\% of the time regardless of the variance and sample 
+contained the true effect 95\% of the time regardless of the variance and sample 
 size ratios. 
 
 \begin{figure}[!ht]
@@ -599,28 +600,28 @@ size ratios.
 no_effects_coverage <- plot_grid(
 
   # first row
-  cov_no_effects_meA_anova + first_row(),
-  cov_no_effects_meB_anova + first_row(),
+  cov_no_effects_meA_anova %>% first_row(),
+  cov_no_effects_meB_anova %>% first_row(),
   cov_no_effects_int_anova,
 
   # second row
-  cov_no_effects_meA_welch + low_row(),
-  cov_no_effects_meB_welch + low_row(),
-  cov_no_effects_int_welch + low_row_end(),
+  cov_no_effects_meA_welch %>% low_row(),
+  cov_no_effects_meB_welch %>% low_row(),
+  cov_no_effects_int_welch %>% low_row_end(),
   ncol = 3
 )
 
 crossover_coverage <- plot_grid(
 
   # first row
-  cov_crossover_meA_anova + first_row(),
-  cov_crossover_meB_anova + first_row(),
+  cov_crossover_meA_anova %>% first_row(),
+  cov_crossover_meB_anova %>% first_row(),
   cov_crossover_int_anova,
 
   # second row
-  cov_crossover_meA_welch + low_row(),
-  cov_crossover_meB_welch + low_row(),
-  cov_crossover_int_welch + low_row_end(),
+  cov_crossover_meA_welch %>% low_row(),
+  cov_crossover_meB_welch %>% low_row(),
+  cov_crossover_int_welch %>% low_row_end(),
 
   ncol = 3
 )
@@ -628,14 +629,14 @@ crossover_coverage <- plot_grid(
 me_int_coverage <- plot_grid(
 
   # first row
-  cov_me_int_meA_anova + first_row(),
-  cov_me_int_meB_anova + first_row(),
+  cov_me_int_meA_anova %>% first_row(),
+  cov_me_int_meB_anova %>% first_row(),
   cov_me_int_int_anova,
 
   # second row
-  cov_me_int_meA_welch + low_row(),
-  cov_me_int_meB_welch + low_row(),
-  cov_me_int_int_welch + low_row_end(),
+  cov_me_int_meA_welch %>% low_row(),
+  cov_me_int_meB_welch %>% low_row(),
+  cov_me_int_int_welch %>% low_row_end(),
 
   ncol = 3
 )
@@ -655,14 +656,14 @@ plot_grid(
 add_x_lab(plot_x_lab)
 @
 
-\textit{Figure 5.} Coverage probability for ANOVA and Welch's t test
+\textit{Figure 4.} Coverage probability for ANOVA and Welch's t test
 as the variance ratio, sample size ratio, and sample sizes vary.
 \end{figure}
 
 \subsection{Summary}
 For the tests of main effects and interactions, there are clear benefits to using contrasts based on Welch's t test instead of ANOVA. When the variances are equal, Welch's t test performs about the same as ANOVA, and when the variances are unequal, Welch's t test retains the expected 5\% false positive rate, and its 95\% confidence intervals really do include the true effect size 95\% of the time.
 
-Additionally, there are clear downsides to ANOVA/Student's t test.  When the variances and sample sizes are unequal, it can inflate the false positive rate, and its alleged 95\% confidence intervals can miss the true effect size more often than they should. The only benefit to ANOVA is that it is more powerful than Welch's t test under some conditions, but this benefit is undermined because under those same conditions it inflates the false positive rate and incorrectly estimates the effect size. 
+Additionally, there are clear downsides to ANOVA.  When the variances and sample sizes are unequal, it can inflate the false positive rate, and its alleged 95\% confidence intervals can miss the true effect size more often than they should. The only benefit to ANOVA is that it is more powerful than Welch's t test under some conditions, but this benefit is undermined because under those same conditions it inflates the false positive rate and incorrectly estimates the effect size. 
 
 But we still have another topic to cover, which is contrasts that test the simple effects of each factor. These are often run as follow-up tests to a significant interaction, though we support running them first if they are specific tests of the key hypothesis. 
 
@@ -696,16 +697,16 @@ The t tests for the simple effects are constructed using the same formulas as th
 no_effects_false_positives_simple_effects <- plot_grid(
   
   # first row
-  rn_no_effects_B1cont_anova + first_row(),
-  rn_no_effects_A1cont_anova + first_row(), 
-  rn_no_effects_B2cont_anova + first_row(),
+  rn_no_effects_B1cont_anova %>% first_row(),
+  rn_no_effects_A1cont_anova %>% first_row(), 
+  rn_no_effects_B2cont_anova %>% first_row(),
   rn_no_effects_A2cont_anova,
 
   # second row
-  rn_no_effects_B1cont_welch + low_row(),
-  rn_no_effects_A1cont_welch + low_row(), 
-  rn_no_effects_B2cont_welch + low_row(),
-  rn_no_effects_A2cont_welch + low_row_end(), 
+  rn_no_effects_B1cont_welch %>% low_row(),
+  rn_no_effects_A1cont_welch %>% low_row(), 
+  rn_no_effects_B2cont_welch %>% low_row(),
+  rn_no_effects_A2cont_welch %>% low_row_end(), 
   
   ncol = 4
 )
@@ -722,7 +723,7 @@ me_int_false_positives_simple_effects <- plot_grid(
   blank_plot, 
   blank_plot, 
   blank_plot, 
-  rn_me_int_A2cont_welch + low_row_end(), 
+  rn_me_int_A2cont_welch %>% low_row_end(), 
   
   ncol = 4
 )
@@ -791,22 +792,22 @@ The power of ANOVA and Welch's t test to detect the simple effects is parallel t
 crossover_pow_simple_effects <- plot_grid(
 
   # first row
-  rn_crossover_B1cont_anova + first_row(),
-  rn_crossover_A1cont_anova + first_row(),
-  rn_crossover_B2cont_anova + first_row(),
+  rn_crossover_B1cont_anova %>% first_row(),
+  rn_crossover_A1cont_anova %>% first_row(),
+  rn_crossover_B2cont_anova %>% first_row(),
   rn_crossover_A2cont_anova,
 
   # second row
-  rn_crossover_B1cont_welch + low_row(),
-  rn_crossover_A1cont_welch + low_row(),
-  rn_crossover_B2cont_welch + low_row(),
-  rn_crossover_A2cont_welch + low_row_end(),
+  rn_crossover_B1cont_welch %>% low_row(),
+  rn_crossover_A1cont_welch %>% low_row(),
+  rn_crossover_B2cont_welch %>% low_row(),
+  rn_crossover_A2cont_welch %>% low_row_end(),
 
   # third row
-  rd_crossover_B1cont + low_row(),
-  rd_crossover_A1cont + low_row(),
-  rd_crossover_B2cont + low_row(),
-  rd_crossover_A2cont + low_row_end(),
+  rd_crossover_B1cont %>% low_row(),
+  rd_crossover_A1cont %>% low_row(),
+  rd_crossover_B2cont %>% low_row(),
+  rd_crossover_A2cont %>% low_row_end(),
 
   ncol = 4
 )
@@ -814,21 +815,21 @@ crossover_pow_simple_effects <- plot_grid(
 me_int_pow_simple_effects <- plot_grid(
 
   # first row
-  rn_me_int_B1cont_anova + first_row(),
-  rn_me_int_A1cont_anova + first_row(),
+  rn_me_int_B1cont_anova %>% first_row(),
+  rn_me_int_A1cont_anova %>% first_row(),
   rn_me_int_B2cont_anova,
   blank_plot,
 
   # second row
-  rn_me_int_B1cont_welch + low_row(),
-  rn_me_int_A1cont_welch + low_row(),
-  rn_me_int_B2cont_welch + low_row_end(),
+  rn_me_int_B1cont_welch %>% low_row(),
+  rn_me_int_A1cont_welch %>% low_row(),
+  rn_me_int_B2cont_welch %>% low_row_end(),
   blank_plot,
 
   # third row
-  rd_me_int_B1cont + low_row(),
-  rd_me_int_A1cont + low_row(),
-  rd_me_int_B2cont + low_row_end(),
+  rd_me_int_B1cont %>% low_row(),
+  rd_me_int_A1cont %>% low_row(),
+  rd_me_int_B2cont %>% low_row_end(),
   blank_plot,
 
   ncol = 4
@@ -869,48 +870,48 @@ size ratios.
 no_effects_cov_simple_effects <- plot_grid(
 
   # first row
-  cov_no_effects_B1cont_anova + first_row(),
-  cov_no_effects_A1cont_anova + first_row(),
-  cov_no_effects_B2cont_anova + first_row(),
+  cov_no_effects_B1cont_anova %>% first_row(),
+  cov_no_effects_A1cont_anova %>% first_row(),
+  cov_no_effects_B2cont_anova %>% first_row(),
   cov_no_effects_A2cont_anova,
 
   # second row
-  cov_no_effects_B1cont_welch + low_row(),
-  cov_no_effects_A1cont_welch + low_row(),
-  cov_no_effects_B2cont_welch + low_row(),
-  cov_no_effects_A2cont_welch + low_row_end(),
+  cov_no_effects_B1cont_welch %>% low_row(),
+  cov_no_effects_A1cont_welch %>% low_row(),
+  cov_no_effects_B2cont_welch %>% low_row(),
+  cov_no_effects_A2cont_welch %>% low_row_end(),
   ncol = 4
 )
 
 crossover_cov_simple_effects <- plot_grid(
 
   # first row
-  cov_crossover_B1cont_anova + first_row(),
-  cov_crossover_A1cont_anova + first_row(),
-  cov_crossover_B2cont_anova + first_row(),
+  cov_crossover_B1cont_anova %>% first_row(),
+  cov_crossover_A1cont_anova %>% first_row(),
+  cov_crossover_B2cont_anova %>% first_row(),
   cov_crossover_A2cont_anova,
 
   # second row
-  cov_crossover_B1cont_welch + low_row(),
-  cov_crossover_A1cont_welch + low_row(),
-  cov_crossover_B2cont_welch + low_row(),
-  cov_crossover_A2cont_welch + low_row_end(),
+  cov_crossover_B1cont_welch %>% low_row(),
+  cov_crossover_A1cont_welch %>% low_row(),
+  cov_crossover_B2cont_welch %>% low_row(),
+  cov_crossover_A2cont_welch %>% low_row_end(),
   ncol = 4
 )
 
 me_int_cov_simple_effects <- plot_grid(
 
   # first row
-  cov_me_int_B1cont_anova + first_row(),
-  cov_me_int_A1cont_anova + first_row(),
-  cov_me_int_B2cont_anova + first_row(),
+  cov_me_int_B1cont_anova %>% first_row(),
+  cov_me_int_A1cont_anova %>% first_row(),
+  cov_me_int_B2cont_anova %>% first_row(),
   cov_me_int_A2cont_anova,
 
   # second row
-  cov_me_int_B1cont_welch + low_row(),
-  cov_me_int_A1cont_welch + low_row(),
-  cov_me_int_B2cont_welch + low_row(),
-  cov_me_int_A2cont_welch + low_row_end(),
+  cov_me_int_B1cont_welch %>% low_row(),
+  cov_me_int_A1cont_welch %>% low_row(),
+  cov_me_int_B2cont_welch %>% low_row(),
+  cov_me_int_A2cont_welch %>% low_row_end(),
   ncol = 4
 )
 

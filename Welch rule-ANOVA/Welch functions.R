@@ -1,5 +1,24 @@
 # legend name ----
-legend_name <- 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]'
+legend_name <- expression(paste(
+  n[A[1]*B[1]], 
+  ', ',
+  n[A[1]*B[2]],
+  ', ',
+  n[A[2]*B[1]],
+  ', ',
+  n[A[2]*B[2]]
+  ))
+  
+  # paste0('Sample sizes\nGroup ', expression(a[1]b[1]), 
+  # ', ',
+  # expression(a[1]b[2]), 
+  # ', ', 
+  # expression(a[2]b[1]), 
+  # ', ', 
+  # expression(a[2]b[2])
+  # )
+  # 
+  # 'Sample sizes \nGroup A[1]*B[1], A[1]*B[2], A[2]*B[1], A[2]*B[2]'
 
 # Functions for Rnw - Welch Manuscript - ANOVA
 
@@ -72,7 +91,6 @@ format_plot <- function(plot, ylims, ybreaks, ylabs){
     geom_point(size = 9, stroke = 1, color = 'white', shape = 16) + # background color
     geom_point(size = 5, stroke = 1) +
     scale_y_continuous(limits = ylims, breaks = ybreaks, labels = ylabs) +
-    facet_grid(test ~ contrast_names) +
     scale_shape_manual(
       name = legend_name,
       labels = sample_sizes,
@@ -249,19 +267,28 @@ generate_plots <- function(data, which_plot) {
 
 
 # Customization for plot_grid
-first_row <- function() {
+first_row <- function(plot) {
+  plot +
   theme(
-    strip.text.y = element_blank()
+    strip.text.y = element_blank(),
+    panel.grid = element_blank(),
+    panel.grid.major.y = element_line(color = 'gray80', linetype = 'longdash')
   )
 }
-low_row <- function() {
+low_row <- function(plot) {
+  plot +
   theme(
-    strip.text = element_blank()
+    strip.text = element_blank(),
+    panel.grid = element_blank(),
+    panel.grid.major.y = element_line(color = 'gray80', linetype = 'longdash')
   )
 }
-low_row_end <- function() {
+low_row_end <- function(plot) {
+  plot +
   theme(
-    strip.text.x = element_blank()
+    strip.text.x = element_blank(),
+    panel.grid = element_blank(),
+    panel.grid.major.y = element_line(color = 'gray80', linetype = 'longdash')
   )
 }
 
