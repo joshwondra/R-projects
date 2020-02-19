@@ -340,7 +340,7 @@ Let's consider the case of a 2~$\times$~2 factorial design with factors A and B.
 \begin{tabular}{l c c c c}
 \hline
  & \multicolumn{4}{c}{Condition} \\
- & A1, B1 & A1, B2 & A2, B1 & A2, B2 \\
+ & $A_1 B_1$ & $A_1 B_2$ & $A_2 B_1$ & $A_2 B_2$ \\
 \hline
 Main Effect of A & 1 & 1 & -1 & -1 \\
 Main Effect of B & 1 & -1 & 1 & -1 \\
@@ -376,7 +376,7 @@ When Student's t test is used, we assume that the group variances are equal, so 
 This same pooled variance is used for every estimated group variance, and these are used to find the standard error of the t test.  
 
 \begin{equation}
-    s_{\hat{I}_{Student}} = \sqrt{\sum \frac{a_i^2 s_p^2}{n_i}}
+    s_{\hat{I}_{Student}} = \sqrt{\sum a_i^2 \frac{s_p^2}{n_i}}
 \end{equation}
 
 The degrees of freedom are $df = \sum (n_i - 1)$, and the t value is equal to the square root of the F value if ANOVA had been used instead. Due to this equivalence and the emphasis on cases where researchers would typically run ANOVA, when use the term ANOVA through the rest of the paper, it refers to both ANOVA and Student's t test.  
@@ -388,6 +388,9 @@ However, the benefit of using a t test is that you don't \textit{have} to use St
 \end{equation}
 
 The degrees of freedom also generalize to use information from all the groups.
+
+
+NOTE: Need to correct this here and in the simulations - forgot to add the contrast weights, which will have a small impact on the simple effects
 \begin{equation}
     df_{Welch} = \frac{(\sum \frac{s_i^2}{n_i})^2}{\sum \frac{(s_i^2)^2}{n_i^2(n_i-1)}}
 \end{equation}
@@ -576,7 +579,7 @@ Figure 3 displays the power of ANOVA and Welch's t test to detect true effects, 
 
 
 \subsection{Coverage Probability}
-Next, we looked at how well ANOVA and Welch's t test estimated the true effect. 
+Next, we looked at how well ANOVA and Welch's t test estimated the true effects. 
 We used 95\% confidence intervals constructed using Student's and Welch's t 
 tests to find their relative coverage probability, the percentage of confidence intervals 
 that contain the population value of the estimated parameter, which in this case is the 
@@ -663,19 +666,19 @@ as the variance ratio, sample size ratio, and sample sizes vary.
 \subsection{Summary}
 For the tests of main effects and interactions, there are clear benefits to using contrasts based on Welch's t test instead of ANOVA. When the variances are equal, Welch's t test performs about the same as ANOVA, and when the variances are unequal, Welch's t test retains the expected 5\% false positive rate, and its 95\% confidence intervals really do include the true effect size 95\% of the time.
 
-Additionally, there are clear downsides to ANOVA.  When the variances and sample sizes are unequal, it can inflate the false positive rate, and its alleged 95\% confidence intervals can miss the true effect size more often than they should. The only benefit to ANOVA is that it is more powerful than Welch's t test under some conditions, but this benefit is undermined because under those same conditions it inflates the false positive rate and incorrectly estimates the effect size. 
+Additionally, there are clear downsides to ANOVA.  When the variances and sample sizes are unequal, it can inflate the false positive rate, and its alleged 95\% confidence intervals can miss the true effect size more often than they should. The only benefit to ANOVA is that it is more powerful than Welch's t test under some conditions, but this benefit is undermined because ANOVA inflates the false positive rate and incorrectly estimates the effect size under those same conditions. 
 
-But we still have another topic to cover, which is contrasts that test the simple effects of each factor. These are often run as follow-up tests to a significant interaction, though we support running them first if they are specific tests of the key hypothesis. 
+But we still have another topic to cover, which is contrasts that test the simple effects of each factor. These are often run as follow-up tests to a significant interaction, though we support running them first if they are specific tests of the key hypotheses. 
 
 \section{Simple Effects}
 In addition to looking at main effects and interactions, we can consider the simple effects of A at each level of B, and the simple effects of B at each level of A. 
 The contrast weights are:
 
-\begin{table}[ht]
+\begin{table}[!ht]
 \begin{tabular}{l c c c c}
 \hline
  & \multicolumn{4}{c}{Condition} \\
- & A1, B1 & A1, B2 & A2, B1 & A2, B2 \\
+ & $A_1 B_1$ & $A_1 B_2$ & $A_2 B_1$ & $A_2 B_2$ \\
 \hline
 Simple Effect of A at B1 & 1 & 0 & -1 & 0 \\
 Simple Effect of B at A1 & 1 & -1 & 0 & 0 \\
@@ -685,7 +688,9 @@ Simple Effect of B at A2 & 0 & 0 & 1 & -1 \\
 \end{tabular}
 \end{table}
 
-In our current simulations, where only group A1/B1 has a variance or sample size that's different from the other groups, what's particularly different from the main effects and interaction is that in some contrasts, that group is excluded, and the groups that are being directly compared have equal sample sizes and variances even though the excluded group doesn't.  
+In our current simulations, only group $A_1 B_1$ has a variance or sample size that's different from the other groups under some conditions. 
+This group is included in the contrasts testing the simple effect of A at B1 and the simple effect of B at A1, and it is excluded from the contrasts testing the simple effect of A at B2 and the simple effect of B at A2. 
+When group $A_1 B_1$ is excluded from the contrast, then even when it has a variance or sample size that's different from the other groups, the groups that are being directly compared always have equal variances and sample sizes. 
 
 The t tests for the simple effects are constructed using the same formulas as those that we use for main effects and interactions, and the only difference is the contrast weights.
 
@@ -746,45 +751,54 @@ add_x_lab(plot_x_lab)
 \textit{Figure 5.} False positives for the simple effects.
 \end{figure}
 
-As with the main effects and interactions, both ANOVA and Welch's t test were near the expected 5\% false positive rate when both variances and sample sizes were equal. But unlike the main effects and interactions, for the simple effects, when the variance of one group was different from the other groups, having equal sample sizes didn't keep the false positive rate at the expected 5\% rate for Student's t test.
+As with the main effects and interactions, both ANOVA and Welch's t test were near the expected 5\% false positive rate when both the variances and sample sizes were equal. 
+But unlike the main effects and interactions, the false positive rate for ANOVA varied whenever the variance of one group was different from the other groups, even when the sample sizes were equal.
 
-The group with the variance that was different from the other groups is A1B1, which was included in the contrasts testing the simple effect of A at B1 and the simple effect of B at A1 (i.e., had a non-zero weight), and was excluded from the contrasts testing the simple effect of A at B2 and the simple effect of B at A2 (i.e., had a zero weight). When the group with the variance that was different from the other groups was included in the contrasts, Student's t test was too conservative when its variance was smaller, and was too liberal when its variance was larger. But even when the group with the variance that was different from the other groups was excluded from the contrasts, Student's t test was too liberal when its variance was smaller, and was too conservative when its variance was larger, which was the opposite pattern to when it was included in the contrast, though the size of the effect was smaller.
+The only group that had a variance that was different from the other groups under some conditions was group $A_1 B_1$. 
+When this group was included in the contrasts, ANOVA was too conservative when its variance was smaller than the other groups, and was too liberal when its variance was larger. 
+But when the group was excluded from the contrasts, the pattern was opposite (though the size of the effect was smaller)--ANOVA was too liberal when its variance was smaller, and was too conservative when its variance was larger. 
+Why, for the simple effects, did ANOVA depart from the expected 5\% rate when the sample sizes were equal? 
+And why was the pattern opposite when the group with the different variance was included or excluded from the contrast? 
 
-Why, for the simple effects, did Student's t test depart from the expected 5\% rate? And why was the pattern opposite when the group with the different variance was included or excluded from the contrast? With four groups that have equal sample sizes, the pooled variance becomes
+With four groups that have equal sample sizes, the pooled variance becomes
 
 \begin{equation}
-    s_p^2 = \frac{\sum (n - 1)s_{i}^2}{\sum (n - 1)} = \frac{(n - 1)(s_{1}^2 + s_{2}^2 + s_{3}^2 + s_{4}^2)}{4(n - 1)} = \frac{1}{4}(s_{1}^2 + s_{2}^2 + s_{3}^2 + s_{4}^2)
+    s_p^2 = \frac{\sum (n - 1)s_{i}^2}{\sum (n - 1)} = \frac{(n - 1)(s_{A_1 B_1}^2 + s_{A_1 B_2}^2 + s_{A_2 B_1}^2 + s_{A_2 B_2}^2)}{4(n - 1)} = \frac{1}{4}(s_{A_1 B_1}^2 + s_{A_1 B_2}^2 + s_{A_2 B_1}^2 + s_{A_2 B_2}^2)
 \end{equation}
 
-When we plug the above into Equation 11, we find that the standard error is the same for any two-group contrast, whether it includes the standard error from the group with unequal variances or not.
+When we plug the above into Equation 11, we find that the standard error is the same for any two-group contrast, whether the group with unequal variances is included or excluded.
 
 \begin{equation}
 \begin{split}
-s_{Student_{A_1-A_2|B_1}} & = s_{Student_{A_1-A_2|B_2}} \\
-& = \sqrt{(1^2\frac{s_p^2}{n} + 0^2\frac{s_p^2}{n} + -1^2\frac{s_p^2}{n} + 0^2\frac{s_p^2}{n})} \\
+s_{Student_{A_1-A_2|B_1}} & = \sqrt{(1^2\frac{s_p^2}{n} + 0^2\frac{s_p^2}{n} + -1^2\frac{s_p^2}{n} + 0^2\frac{s_p^2}{n})} \\
+& = s_{Student_{A_1-A_2|B_2}} \\
 & = \sqrt{(0^2\frac{s_p^2}{n} + 1^2\frac{s_p^2}{n} + 0^2\frac{s_p^2}{n} + -1^2\frac{s_p^2}{n})} \\
 & = \sqrt{2\frac{s_p^2}{n}} \\
-& = \sqrt{2\frac{(s_{1}^2 + s_{2}^2 + s_{3}^2 + s_{4}^2)}{4n}}\\
-& = \sqrt{\frac{1}{2n}(s_{1}^2 + s_{2}^2 + s_{3}^2 + s_{4}^2)}
+& = \sqrt{2\frac{(s_{A_1 B_1}^2 + s_{A_1 B_2}^2 + s_{A_2 B_1}^2 + s_{A_2 B_2}^2)}{4n}}\\
+& = \sqrt{\frac{1}{2n}(s_{A_1 B_1}^2 + s_{A_1 B_2}^2 + s_{A_2 B_1}^2 + s_{A_2 B_2}^2)}
 \end{split}
 \end{equation}
 
-So when Student's t test is used and the sample sizes are equal, each group's variance is weighted equally to estimate the standard error of the contrast, even if that group is excluded from the contrast. However, Welch's t test estimates the standard error from only the groups that are \textit{included} in the contrast.
+So when ANOVA is used, when the sample sizes are equal, then even if a group is excluded from the contrast, its variance is weighted just as much as the other groups to estimate the standard error. However, when Welch's t test is used, and when the sample sizes are equal, then only the groups that are \textit{included} in the contrast are used to estimate the standard error.
 
 \begin{equation}
 \begin{split}
-s_{Welch_{A_1-A_2|B_1}} & = \sqrt{(1^2\frac{s_1^2}{n} + 0^2\frac{s_2^2}{n} + -1^2\frac{s_3^2}{n} + 0^2\frac{s_4^2}{n})} \\
-& = \sqrt{\frac{1}{n}(s_1^2 + s_3^2)} \\
-& \neq \sqrt{(0^2\frac{s_1^2}{n} + 1^2\frac{s_2^2}{n} + 0^2\frac{s_3^2}{n} + -1^2\frac{s_4^2}{n})} \\
-& = \sqrt{\frac{1}{n}(s_2^2 + s_4^2)}
+s_{Welch_{A_1-A_2|B_1}} & = \sqrt{(1^2\frac{s_{A_1 B_1}^2}{n} + 0^2\frac{s_{A_1 B_2}^2}{n} + -1^2\frac{s_{A_2 B_1}^2}{n} + 0^2\frac{s_{A_2 B_2}^2}{n})} \\
+& = \sqrt{\frac{1}{n}(s_{A_1 B_1}^2 + s_{A_2 B_1}^2)} \\
+& \neq s_{Welch_{A_1-A_2|B_2}} \\
+& = \sqrt{(0^2\frac{s_{A_1 B_1}^2}{n} + 1^2\frac{s_{A_1 B_2}^2}{n} + 0^2\frac{s_{A_2 B_1}^2}{n} + -1^2\frac{s_{A_2 B_2}^2}{n})} \\
+& = \sqrt{\frac{1}{n}(s_{A_1 B_2}^2 + s_{A_2 B_2}^2)}
 \end{split}
 \end{equation}
 
-Note that if all variances are equal, Equations 15 and 16 are equal. It's easiest to interpret the pattern of results from Student's t test by assuming that Welch's t test has the correct standard error, which is implied from the fact that it retains the expected 5\% false positive rate. The difference in the two standard errors is that, under the square root sign, Student's t test weighs each group's variance equally, whether it's included or excluded from the specific contrast, whereas Welch's t test weighs the groups that are included in the contrast twice as much as Student's t test, and gives no weight to the groups that are excluded from the contrast. This means that Student's t test is giving too much weight to the variances from groups that are excluded from the contrast--if those groups have higher variance, then Student's t test will be too conservative, and if those groups have lower variance, then Student's t test will be too liberal. So when the group with the different variance is excluded from the contrast, its variance will be over-weighted, causing a lower false positive rate when it has a higher variance and a higher false positive rate when it has the lower variance; when the group is included in the contrast, its variance will be under-wighted, causing a higher false positive rate when it has a higher variance and a lower false positive rate when it has the lower variance.
+Note that if all variances are equal, Equations 15 and 16 are equal.
+Comparing equations 15 and 16, we can see that even though the sample sizes are equal, Student's t test is giving too much weight to the variances from groups that are excluded from the contrasts, and not enough weight to the variances from the groups that are included in the contrasts.
+So when the groups that are excluded from the contrast have the smaller variance, the standard error from Student's t test is too small, which will inflate the false positive rate, and when they have the larger variance, the standard error from Student's t test is too large, which will decrease the false positive rate. 
 
 \subsection{Power}
 
-The power of ANOVA and Welch's t test to detect the simple effects is parallel to the false positive rates. When the variances are equal, the two tests are about equally powerful to detect true effects. But when the variances are unequal, the power of the two tests is different, even when all groups have the same sample size. When the group with the different variance is included in the contrast, Welch's t test is more powerful when the one group has the smaller variance, and Student's t test is more powerful when the one group has the larger variance; but when the group with the different variance is excluded from the contrast, the pattern is reversed (see the explanation for this in the preceding false positive section). Just as with main effects and interactions, Student's t test is more powerful under the same conditions that it inflates the false positive rate, but Welch's t test is more powerful under other conditions while retaining the expected 5\% false positive rate.
+The power of ANOVA and Welch's t test to detect the simple effects is parallel to the false positive rates. When the variances are equal, the power of the two tests is about equal. But when the variances are unequal, the power of each test is different, even when all groups have the same sample size. When the groups that are excluded from the contrast have the smaller variance, the standard error from Student's t test is too small, which makes it more powerful than Welch's t test, and when they have the larger variance, the standard error from Student's t test is too small, which makes it less powerful than Welch's t test. 
+Just as with main effects and interactions, Student's t test is more powerful under the same conditions that it inflates the false positive rate, but Welch's t test is more powerful under other conditions while keeping the expected 5\% false positive rate.
 
 \begin{figure}[!ht]
 <<se_power_plots, echo = FALSE, collapse = TRUE, fig = TRUE, width = 12, height = 8>>=
@@ -849,12 +863,12 @@ plot_grid(
 add_x_lab(plot_x_lab)
 @
 
-\textit{Figure 5.} Reject rates for the simple effect of B when there was a crossover interaction or two main effects and an interaction. The third row shows the difference in reject rates between ANOVA and Welch's t test, where higher values mean Welch's t test is more powerful than ANOVA.
+\textit{Figure 6.} Power to detect the simple effects of A and B when there was a crossover interaction or two main effects and an interaction. The third row shows the difference in reject rates between ANOVA and Welch's t test, where higher values mean Welch's t test is more powerful than ANOVA.
 \end{figure}
 
 
 \subsection{Coverage Probability}
-Figure 6 displays the coverage probabilities of the two t tests. 
+Figure 7 displays the coverage probabilities of ANOVA and Welch's t test to detect the true simple effects. 
 The coverage probability for ANOVA varies, just as the 
 false positive rate did, ranging from just under 80\% to over 100\% when the variances were unequal, even if the sample sizes were equal. 
 When the group with unequal variances was included in the contrast, when its variance was 5x larger than the other groups and its sample size was half the size of the other groups, 
@@ -935,6 +949,8 @@ as the variance ratio, sample size ratio, and sample sizes vary.
 \end{figure}
 
 
+\section{Discussion}
+
 [NOTE: Old text below]
     Is Welch's t test underpowered compared to Student's t test? When the sample sizes or variances were equal, power was approximately equal. However, when both the sample sizes and 
 variances were unequal, there were differences. Student's t 
@@ -951,11 +967,6 @@ powerful when the small group had the smaller variance, but it never inflated th
 These joint results, on the false positive rate and power, support the decision to always use Welch's t test. By using 
 Welch's t test, you sometimes have greater power to detect true effects, but 
 you don't have to worry about sacrificing concerns with false positives.  
-
-
-
-
-\section{Discussion}
 
 - add that a benefit of using Welch-based contrasts is also that you can go straight to the specific contrasts of interest instead of starting with main effects and interactions, especially in more complex designs
 
