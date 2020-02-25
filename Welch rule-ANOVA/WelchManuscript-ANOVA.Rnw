@@ -951,72 +951,32 @@ as the variance ratio, sample size ratio, and sample sizes vary.
 
 \section{Discussion}
 
-[NOTE: Old text below]
-    Is Welch's t test underpowered compared to Student's t test? When the sample sizes or variances were equal, power was approximately equal. However, when both the sample sizes and 
-variances were unequal, there were differences. Student's t 
-test was more powerful when the large sample(s) had the smaller variance, whereas 
-Welch's t test was more powerful when the small sample(s) had the smaller variance. (NOTE: add an exception for contrasts)
-    
-    Student's t test had the greatest power over 
-Welch's when one sample size was twice the other and the large 
-group(s) had the small variance. These are the same conditions where Student's t 
-test more than doubled the expected false positive rate. So the advantage of Student's t test
-in power is undermined by its inflated false 
-positive rate. In contrast, Welch's t test was more 
-powerful when the small group had the smaller variance, but it never inflated the false positive rate. 
-These joint results, on the false positive rate and power, support the decision to always use Welch's t test. By using 
-Welch's t test, you sometimes have greater power to detect true effects, but 
-you don't have to worry about sacrificing concerns with false positives.  
+In our simulations we show that Welch's t test can be generalized to any research designs with two or more groups. 
+When the variances of the groups are equal, Welch's t test gives almost the same results as ANOVA. 
+But when the variances of the groups are unequal, Welch's t test maintains the expected false positive rate, is sometimes more powerful to detect true effects, and is better at correctly estimating the effect size. 
+The only advantage to ANOVA is that it has more power to detect true effects when the standard error over-weights groups with small variances,
+but under those same conditions it inflates the false positive rate and is worse at estimating the true effect size. 
 
-- add that a benefit of using Welch-based contrasts is also that you can go straight to the specific contrasts of interest instead of starting with main effects and interactions, especially in more complex designs
+Beyond these statistical outcomes, using Welch's t test can simplify pre-registration of analyses. The recent push for pre-registration forces researchers to make decisions prior to data collection about how they plan to test their hypothesis (e.g., an analysis of variance). But they should also address the assumptions of those tests (e.g., equal variances), how they will check if those assumptions are violated (e.g., a significance test of the group variances), and what they will do in that case (e.g., use a different test).  Such planning can be good for science, but it can easily become overwhelming to write a long list of conditional statements: ``if I see this, then I'll do that.''  Preregistration can be simplified if the researcher commits to a statistical procedure that is robust to violations of assumptions, and all the better if the procedure doesn't introduce new costs, such as lower power. We propose that when researchers compare the means of independent groups, they should commit to Welch's t test, which is robust when variances are unequal, instead of ANOVA.
 
+One might argue that there are minimal benefits of Welch's t test for researchers who run experiments. The reason for this is that when the sample sizes are equal, then even when the variances are wildly different, ANOVA performs just as well as Welch's t test in the tests of main effects and interactions. However, our simulations highlight that equal sample sizes don't always save ANOVA. Researchers frequently use planned contrasts on a subset of the groups to test their focal hypotheses--if the variances are different, then ANOVA can inflate the false positive rate and get the wrong effect size, even with equal sample sizes. 
 
-    Data analysis involves decisions about which statistical test answers the research question, whether the test is 
-suitable to the data, and whether there is a more appropriate test. Recent discussions of research practices in psychology 
-\cite<e.g.,>{Fiedler2012, Simmons2011, 
-Wagenmakers2012} highlight the tension between two valued outcomes of these 
-decisions. On the one hand, researchers don't want to mistakenly 
-claim there is a true effect where none exists, which involves a 
-concern with false positives. On the other hand, researchers want to find 
-effects where they do exist, which involves a concern with power. In addition,
-there is a growing concern with estimating effect sizes 
-\cite{Bakker2012, Cumming2014, Ioannidis2008}. 
-Researchers must find a way to balance these concerns as they make their decisions. 
+Our simulations were based on a 2~$\times$~2 factorial design when only one group had a different sample size and variance from the other groups. But from these results, we can generalize the cases where we'd expect ANOVA and Welch's t test to be different under other designs. When the standard error from ANOVA is smaller than the standard error from Welch's t test, then ANOVA will inflate the false positive rate, be more powerful, and miss the true effect size more than expected. This will happen when ANOVA over-weights groups with small variances, either because they have a larger sample size, or because they're being used in a contrast that they should be excluded from. These principles should generalize to designs with more or fewer groups, with different sample size and variance ratios, and with different numbers of groups that differ in their sample sizes or variances.
 
-The recent push for pre-registration forces researchers to make these decisions prior to data collection by specifying how they plan to test their hypothesis (e.g., an analysis of variance). But they should also address the assumptions of those tests (e.g., equal variances), how they will check if those assumptions are violated (e.g., a significance test of the group variances), and what they will do in that case (e.g., use a different test).  Such planning can be good for science, but it can easily become overwhelming to write a long list of conditional statements: ``if I see this, then I'll do that.''  Preregistration can be simplified if the researcher commits to a statistical procedure that is robust to violations of assumptions, and all the better if the procedure doesn't introduce new costs, such as lower power. We propose that when researchers compare the means of independent groups, they should commit to Welch's t test, which is robust when variances are unequal, instead of ANOVA. 
-Throughout the paper we assume that the null hypothesis of for the population mean difference is zero.
-
-Due to these differences in the standard errors and degrees of freedom, Student's and Welch's t tests can disagree about whether the group means are different. Because Welch's t test decreases the degrees of freedom, it might be more conservative. Welch's t test might be the better choice if it finds fewer false positives when the variances are unequal. But it might be the worse choice if it's too conservative and isn't powerful enough to detect true effects. 
-
-
-        
-    However, Welch's t test might not always be more conservative. The power of 
-the two tests is based on not only the degrees of freedom, but also the 
-standard error.  Welch's t test could be more powerful than 
-Student's when its standard error is smaller.
-    
-    How do you decide which test to use? The typical approach is to use 
-Student's t test unless you have evidence that the variances are unequal. The challenge is how to find that evidence. 
-Our goal is to find a simple strategy to decide which test to use. We discuss two decision strategies in the main text---using a statistical test of the equal variances assumption and visually examining the data with boxplots---and one decision strategy in the supplemental materials---comparing the degrees of freedom of the two tests. Then we use Monte Carlo simulations to empirically determine when each test performs best.
-
-    Before we proceed, we note that aside from Welch's t test, there have been Bayesian approaches 
-to comparing groups with equal or unequal variances \cite{Box1973, Kruschke2013}. Our purpose is to inform decisions about how to use 
-frequentist approaches, so we do not discuss
-Bayesian approaches further.
-
-\subsection{Testing Assumptions with Another Test}
-    One way to decide which test to use
+We echo others' recommendations to always use 
+Welch's t test by default \cite{Zimmerman1996,Moser1992,Moser1989}, and expand this recommendation to designs with more than two groups.
+For researchers who 
+insist on using ANOVA by default, they must come up with a decision rule for when they will switch to Welch's t test, or some other test that doesn't assume variances are equal. One way to decide which test to use
 is to run another test of the null hypothesis that the group variances 
-are equal. If the test retains the null, the variances are equal and you can use Student's t test. If the test rejects the null, the variances are unequal and you should use Welch's t test.
+are equal. If the test retains the null, the variances are equal and you can use ANOVA test. If the test rejects the null, the variances are unequal and you should use Welch's t test.
 
-One example of this approach is Levene's test for homogeneity \cite{Levene1960}, which appears in SPSS by default when you run an independent samples t test.
+Perhaps the most popular example of this approach is Levene's test for homogeneity \cite{Levene1960}, which appears in SPSS by default when you run an independent samples t test or ANOVA.
 In its original formulation, the test finds how far each observation deviates from the mean of its group, then it uses ANOVA to test whether the average deviations are different between the groups (later formulations use deviations from the group median or the trimmed mean, which work better when the raw data are not normally distributed, \citeNP{Brown1974}).
 
-Consider the logic of using Levene's test to decide whether to use Student's or Welch's t 
-test. You use an ANOVA to test 
-whether the deviations from the group means are different.
-When there are only two groups, this is equivalent to using a t test, which means you have to make another choice
-between Student and Welch, which means you must decide whether the
+Consider the logic of using Levene's test to decide whether to use ANOVA or Welch's t 
+test. Before you use an ANOVA to test whether the group means are different, you use an ANOVA to test 
+whether the \textit{deviations} from the group means are different, which means you have to make another choice
+between ANOVA and Welch, which means you must decide whether the
 group \textit{deviations} have equal variances.
 This doesn't solve the original problem, it just hides it in a different test. 
 
@@ -1025,19 +985,16 @@ like other tests, are sensitive
 to sample size \cite{Gonzalez2008}. If your sample is too small, you won't have enough power to 
 detect true differences in the variances. If your sample is very 
 large, even minute differences will be statistically significant. 
-
 Overall, using tests of equal variances is an ineffective decision strategy \cite{Zimmerman1996,Zimmerman2004}. 
 
-\subsection{Visualizing Data with Boxplots} 
-
-    A second way to decide which test to use is to visualize the data using boxplots and judge 
+    A better way to decide to use Welch's t test instead of ANOVA is is to visualize the data using boxplots and judge 
 whether the variances appear to differ.  With smaller samples, you 
 can tolerate larger apparent differences and still conclude the variances are equal. You can enhance this strategy by 
 simulating data that have the same sample sizes as the real data, changing whether the variances are equal or not, 
 and checking if the boxplots from the real data look more like the boxplots of 
 simulations with equal variances or unequal variances. 
 
-    Figure 1 displays sample boxplots where two groups have equal 
+    Figure 7 displays sample boxplots where two groups have equal 
 variances (top) and where one group has five times the variance of the other (bottom), and where each group has $n$ = 20 (first rows) or $n$ = 
 100 (second rows). 
 
@@ -1053,7 +1010,11 @@ consistency in the boxplots. Smaller differences in the spread of the groups
 might be a sign that the population variances differ. Using boxplots
 to decide which test to use
 is a viable strategy, though it requires some subjective judgment,
-especially when sample sizes are small.
+especially when sample sizes are small. 
+Though making judgments from boxplots is a reasonable strategy, we believe researchers prefer simple decision rules, 
+and so we echo others' recommendations to always use 
+Welch's t test \cite{Zimmerman1996,Moser1992,Moser1989}. 
+Our simulations suggest there's no harm in doing so.
 
    
 \begin{figure}[!ht]
@@ -1230,75 +1191,18 @@ full_bplots <- plot_grid(ve_distributions, ve_bplots, vun_distributions, vun_bpl
 full_bplots
 @
 
-\textit{Figure 1.} Boxplots from simulations of groups with equal variances (top) and unequal 
+\textit{Figure 7.} Boxplots from simulations of groups with equal variances (top) and unequal 
 variances (bottom).
 \end{figure}
 
 
 
-Some prior research has examined the 
-false positive rate \cite{Boneau1960, Zimmerman1993, 
-Zimmerman2004, Zimmerman1996, Zimmerman2009} and
-power of the two tests when comparing two groups \cite{Neuhauser2002, 
-Zimmerman1993}, though not with the complete configuration of 
-conditions that we examined. Nevertheless, it will be informative to display 
-the false positives and power of the two tests here. We also discuss 
-implications for estimating effect sizes, which follows from the false positive
-results but has not, to our knowledge, been discussed explicitly in past 
-research.
 
-
-    We set out to find a simple rule to help researchers decide when to use 
-Student's t or Welch's t test. We believe the simplest 
-rule is to always use Welch's t test to compare the means of independent groups, whether there are two groups or more.
-    
-    The simulations demonstrated that when the population 
-variances or sample sizes were equal, using Welch's t test instead of Student's 
-didn't hurt. Though the degrees of freedom from Welch's t test can 
-drop substantially below Student's when only the variances 
-or only the sample sizes are unequal (see Figure S1), the simulated false positive rates, 
-power, and coverage probabilities were almost identical under 
-these conditions. The difference in the degrees of freedom had a 
-negligible effect on the outcomes. 
-    
-    More important was the standard error, which 
-affects the t-value. When either the variances or sample sizes are 
-equal, the pooled standard error of Student's t test and the separate variances 
-standard error of Welch's t test are identical, and the two tests will 
-generally agree with each other. However, when both the variances and the 
-sample sizes are unequal, the pooled standard error of Student's t test gives 
-more weight to the larger group \cite<e.g.,>{Coombs1996,Zimmerman2009}; if that group has the larger 
-variance, Student's t test becomes more conservative, but if it
-has the smaller variance, Student's t test becomes more liberal. This is why the false positive 
-rate and coverage probability varied widely for Student's t test. In 
-contrast, Welch's t test was more stable, regardless of which group had the 
-larger variance. 
-    
-    The biggest benefit of Student's t test was that it had more power when the larger sample had the smaller 
-variance---yet under these same conditions, it had an inflated false positive
-rate and the lowest coverage probability. Far from being underpowered, Welch's 
-t test was more powerful when the larger sample had the 
-larger variance, but it retained the expected false positive
-rate and coverage probability. Overall, Welch's t test did a better job 
-of balancing concerns with false positives, power, and estimation.
-    
-    We believe researchers prefer simple decision rules, 
-and so we echo others' recommendations to always use 
-Welch's t test \cite{Zimmerman1996,Moser1992,Moser1989}. For researchers who 
-insist on using Student's t test, there is some 
-good news. If they run experiments, subjects are usually assigned evenly to 
-conditions, and when sample sizes are equal the two tests perform equally well. 
-However, if their research compares pre-existing groups, it 
-might not be possible to have equal sample sizes. Welch's t test is likely to 
-outperform Student's unless the variances are 
-equal. One could use boxplots to 
-determine whether it is reasonable to assume equal variances, which will be easier if the sample sizes are large. 
-Nevertheless, researchers should rest assured that they won't suffer from choosing 
-Welch's t test as the default.
+- add that a benefit of using Welch-based contrasts is also that you can go straight to the specific contrasts of interest instead of starting with main effects and interactions, especially in more complex designs
     
     Prior simulations that compared Student's and Welch's t tests 
 focused on null hypothesis significance testing by emphasizing false positives
-and power \cite{Boneau1960, Neuhauser2002, Zimmerman1993, Zimmerman2004, 
+and power \cite{Boneau1960, Delacre2017, Neuhauser2002, Zimmerman1993, Zimmerman2004, 
 Zimmerman1996, Zimmerman2009}, but there are important implications of this work
 for effect size estimation. Some have called for researchers to report 
 effect sizes and confidence intervals to address limitations of 
