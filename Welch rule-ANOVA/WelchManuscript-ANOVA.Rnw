@@ -16,18 +16,13 @@ breaklines=true
 \twoauthors{Joshua D. Wondra}{Richard Gonzalez}
 \twoaffiliations{Facebook}{University of Michigan}
 
-\abstract{Researchers typically use Student's t test or ANOVA to test whether the means of independent groups are different from each other.  
-These tests assume that the population variances of the groups are equal. If there is 
-reason to believe the variances are unequal, then researchers can 
-use Welch's t test, which does not assume equal variances, as an alternative. 
-Recently, some researchers have recommended that psychologists should use Welch's t test as the default.
-While these recommendations have focused on the case of two groups or a one-way ANOVA, we demonstrate that Welch's t test can generalize to any between-groups design, and illustrate with the case of a 2~$\times$~2 factorial design. 
-We used Monte Carlo 
-simulations to compare the false positive rate, power, and coverage probability 
-of classic ANOVA and Welch's t tests across different variance ratios, sample size ratios, sample sizes, 
-and effects. We recommend that
-if the data are normally distributed, always use Welch's t test to 
-compare the means of independent groups.}
+\abstract{Recently, Delacre, Lakens, and Leys (2017) recommended that psychologists should use Welch's t test instead of Student's t test as the default when comparing means between groups.
+We agree with this conclusion, but see a need to expand on the evidence to justify it, which we do through Monte Carlo simulations. 
+First, past research has focused on research designs with two groups; we show how Welch's t test can be used to test any two degrees of freedom contrast in designs with more than two groups.
+Second, the justification for using Welch's t test rests heavily on emphasizing control of false positives and minimizing concerns with loss of power; we show that this is unnecessary, because Welch's t test is more powerful than Student's in common situations with no serious downsides.
+Third, no attention has been paid to estimates of effect size; we show that 
+Welch's t test does a better job estimating effect sizes regardless of the false positive rates or power of the two tests. 
+}
 \keywords{Welch t test, contrasts, hypothesis testing, simulation}
 
 \authornote{Joshua D. Wondra, Facebook.
@@ -313,7 +308,7 @@ In the pooling equation (EQ 3), if the sample sizes are different, the variance 
 with the larger sample size is given more weight. If the larger group has the larger 
 variance, then the standard error will be larger; if the larger group has the smaller variance, then the standard error will be smaller.
     
-  In contrast Welch's t test does not assume the group variances are equal. The sample variances of the groups are used to estimates their population variances, and they are used directly to estimate the standard error of the t test:
+  In contrast Welch's t test does not assume the group variances are equal. The sample variances of the groups are used to estimates their population variances, and they are used directly to estimate the standard error fo the t test:
     \begin{equation}
     s_{Welch} = \sqrt{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}
     \end{equation}
@@ -381,12 +376,11 @@ This same pooled variance is used for every estimated group variance, and these 
 
 The degrees of freedom are $df = \sum (n_i - 1)$, and the t value is equal to the square root of the F value if ANOVA had been used instead. Due to this equivalence and the emphasis on cases where researchers would typically run ANOVA, when use the term ANOVA through the rest of the paper, it refers to both ANOVA and Student's t test.  
 
-However, the benefit of using a t test when testing means is that you don't \textit{have} to use Student's t test---you can use Welch's t test instead. When using Welch's t test, instead of finding a common pooled variance, the estimated variance for each group is that group's sample variance because we do not assume variances are equal. 
+However, the benefit of using a t test is that you don't \textit{have} to use Student's t test---you can use Welch's t test instead. When using Welch's t test, instead of finding a common pooled variance, the estimated variance for each group is that group's sample variance because we do not assume variances are equal. 
 
 \begin{equation}
     s_{\hat{I}_{Welch}} = \sqrt{\sum a_i\frac{s_{i}^2}{n_{i}}}
 \end{equation}
-(NOTE: square $a_1$)
 
 The degrees of freedom also generalize to use information from all the groups.
 
@@ -400,14 +394,13 @@ Just as Welch's t test controls false positives better than Student's t test wit
 
 We'll illustrate with three examples. First, we'll consider the case where there are no effects. Second, we'll consider the case of a crossover interaction with no main effects. And third, we'll consider the case with two main effects and an interaction. In each case, we ran 10,000 simulations of four independent groups with normally distributed data. We compared how well ANOVA vs. Welch's t test balances concerns with 
 false positives, power, and effect size estimation under 
-different variance ratios and sample size ratios (FOOTNOTE: We also looked at different population effect sizes and other choices for sample sizes, but they had no impact on the relative effects of ANOVA and Welch's t test, so we do not show them here (NOTE: should give some sense of the ranges of the effect sizes and sample sizes examined)).
+different variance ratios and sample size ratios (FOOTNOTE: We also looked at different effect sizes and sample sizes, but they had no impact on the relative effects of ANOVA and Welch's t test, so we do not show them here).
 We examined cases where the variances and sample sizes were equal or where the variance or sample size of just one group differed from the others.
 
 \section{False Positive Rates}
 
 For false positive rates, we looked at the main effects when there were no effects or only a crossover interaction, and at the interaction effect when there were no effects. 
 
-(NOTE: fig 1 needs to label the standard and welch plots)
 \begin{figure}[!ht]  
 <<false_positives, echo = FALSE, fig = TRUE, width = 14, height = 7>>=
 
@@ -479,7 +472,7 @@ We focus on the case where there are no true effects, so the joint false positiv
 The expected joint false positive rate in a 2~$\times$~2 ANOVA when the three comparisons are independent is $\alpha = 14\%$, 
 though in practice the rate is typically slightly below 14\% \cite{Cramer2016}.
 
-(NOTE Fig 2 can have narrower rangeo on the y axis to highlight the patterns, like 5\% to 20\%)
+
 \begin{figure}[!ht]  
 
 <<no_effects_joint_false_positives, echo = FALSE, collapse = TRUE, fig = TRUE, width = 8, height = 4>>=
