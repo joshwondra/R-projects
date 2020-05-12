@@ -19,7 +19,10 @@ t.contrast <- function(dv, groups, contrast, true_means) {
   p_student <- 2 * (1 - pt(abs(t_student), df_student))
   
   # welch's t test
-  df_welch <- (sum(vars / Ns))^2 / sum((vars^2 / (Ns^2 * (Ns - 1))))
+  df_num_welch <- (contrast^2 %*% (vars/Ns))^2
+  df_den_welch <- contrast^4 %*% ((vars/Ns)^2/(Ns - 1))
+  df_welch <- df_num_welch / df_den_welch
+  #df_welch <- (sum(vars / Ns))^2 / sum((vars^2 / (Ns^2 * (Ns - 1))))
   se_welch <- sqrt(contrast^2 %*% (vars / Ns))
   t_welch <- ihat / se_welch
   p_welch <- 2 * (1 - pt(abs(t_welch), df_welch))
@@ -27,12 +30,12 @@ t.contrast <- function(dv, groups, contrast, true_means) {
   # coverage probability
   true_ihat <- contrast %*% true_means
   
-  t_crit_student <- qt(.025, df = df_student)        
+  t_crit_student <- abs(qt(.025, df = df_student))
   lb_student <- ihat - t_crit_student * se_student
   ub_student <- ihat + t_crit_student * se_student
   coverage_student <- (ub_student - true_ihat) * (true_ihat - lb_student) > 0
   
-  t_crit_welch <- qt(.025, df = df_welch)        
+  t_crit_welch <- abs(qt(.025, df = df_welch))      
   lb_welch <- ihat - t_crit_welch * se_welch
   ub_welch <- ihat + t_crit_welch * se_welch
   coverage_welch <- (ub_welch - true_ihat) * (true_ihat - lb_welch) > 0
@@ -40,6 +43,13 @@ t.contrast <- function(dv, groups, contrast, true_means) {
   result <- list(p_student = p_student, p_welch = p_welch, coverage_student = coverage_student, coverage_welch = coverage_welch)
   return(result)
 }
+
+set.seed(20200504)
+# test data
+dv <- c(rnorm(n = 60, m = 6, sd = 1), rnorm(n = 30, m = 20, sd = 5))
+groups <- rep(c(1, 2), times = c(60, 30))
+t.test(dv ~ groups, var.equal = FALSE)
+t.contrast(dv, groups, contrast = c(1, -1), true_means = c(6, 20))
 
 
 # Two groups sims ----
@@ -140,7 +150,9 @@ t.multicontrast <- function(dv, groups, true_means, contrast_names, joint_contra
   p_student <- 2 * (1 - pt(abs(t_student), df_student))
   
   # welch's t test
-  df_welch <- (sum(vars / Ns))^2 / sum((vars^2 / (Ns^2 * (Ns - 1))))
+  df_num_welch <- (contrast^2 %*% (vars/Ns))^2
+  df_den_welch <- contrast^4 %*% ((vars/Ns)^2/(Ns - 1))
+  df_welch <- df_num_welch / df_den_welch
   se_welch <- sqrt(contrast^2 %*% (vars / Ns))
   t_welch <- ihat / se_welch
   p_welch <- 2 * (1 - pt(abs(t_welch), df_welch))
@@ -148,12 +160,12 @@ t.multicontrast <- function(dv, groups, true_means, contrast_names, joint_contra
   # coverage probability
   true_ihat <- contrast %*% true_means
   
-  t_crit_student <- qt(.025, df = df_student)      
+  t_crit_student <- abs(qt(.025, df = df_student))      
   lb_student <- ihat - t_crit_student * se_student
   ub_student <- ihat + t_crit_student * se_student
   coverage_student <- (ub_student - true_ihat) * (true_ihat - lb_student) > 0
   
-  t_crit_welch <- qt(.025, df = df_welch)        
+  t_crit_welch <- abs(qt(.025, df = df_welch))        
   lb_welch <- ihat - t_crit_welch * se_welch
   ub_welch <- ihat + t_crit_welch * se_welch
   coverage_welch <- (ub_welch - true_ihat) * (true_ihat - lb_welch) > 0
@@ -174,11 +186,17 @@ t.multicontrast <- function(dv, groups, true_means, contrast_names, joint_contra
   return(result)
 }
 
+set.seed(20200504)
+# test data
+dv <- c(rnorm(n = 60, m = 6, sd = 1), rnorm(n = 30, m = 6.2, sd = 5))
+groups <- rep(c(1, 2), times = c(60, 30))
+t.test(dv ~ groups, var.equal = FALSE)
+t.multicontrast(dv, groups, true_means = c(6, 6.2), contrast_names = 'Test', joint_contrasts = 'Test', c(1, -1))
 
 
 
 # No effects ====
-nsims <- 200
+nsims <- 10000
 set.seed(2184)
 
 no_effects <- tibble(

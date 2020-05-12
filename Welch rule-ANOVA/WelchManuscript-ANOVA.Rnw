@@ -202,7 +202,7 @@ for(i in 1:length(which_test)) {
     mutate(
       contrast_names = 'Both Main Effects & Interaction'
     ) %>% 
-    ggplot(aes(y = get(plot_name), x = var_ratio, group = ns, linetype = ns, shape = ns)) +
+    ggplot(aes(y = !!sym(plot_name), x = var_ratio, group = ns, linetype = ns, shape = ns)) +
     facet_grid(rows = vars(test))
   
   this_plot = format_plot(this_plot, ylims, ybreaks, ylabs)
@@ -314,7 +314,7 @@ In the pooling equation (EQ 3), if the sample sizes are different, the variance 
 with the larger sample size is given more weight. If the larger group has the larger 
 variance, then the standard error will be larger; if the larger group has the smaller variance, then the standard error will be smaller.
     
-  In contrast Welch's t test does not assume the group variances are equal. The sample variances of the groups are used to estimates their population variances, and they are used directly to estimate the standard error fo the t test:
+  In contrast Welch's t test does not assume the group variances are equal. The sample variances of the groups are used to estimates their population variances, and they are used directly to estimate the standard error of the t test:
     \begin{equation}
     s_{Welch} = \sqrt{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}
     \end{equation}
@@ -322,7 +322,7 @@ variance, then the standard error will be larger; if the larger group has the sm
   In addition to their standard errors, the two tests also differ in how they compute the degrees of 
 freedom. Student's t test uses a simple formula to compute the degrees of freedom: $df_{Student}=n_1+n_2-2$. Welch's t test uses a more complicated formula to compute the degrees of freedom: 
     \begin{equation}
-    df_{Welch} = \frac{(\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2})^2}{\frac{(s_1^2)^2}{n_1^2(n_1-1)} + \frac{(s_2^2)^2}{n_2^2(n_2-1)}}
+    df_{Welch} = \frac{(\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2})^2}{\frac{(\frac{s_1^2}{n_1})^2}{n_1-1} + \frac{(\frac{s_2^2}{n_2})^2}{n_2-1}}
     \end{equation}
 The important thing to know is the formula decreases the degrees of freedom to the extent that the group
 variances differ. It can also produce a degrees of freedom value that is not an integer.
@@ -333,7 +333,7 @@ variances differ. It can also produce a degrees of freedom value that is not an 
 
 \subsection{Student's and Welch's t tests with More Than Two Groups}
 
-Our opening discussion focused on the case of two groups, but Welch's t test can generalize to any between-groups design (for a discussion in the context of one-way ANOVA, see Delacre et al., 2019)
+Our opening discussion focused on the case of two groups, but Welch's t test can generalize to any between-groups design \cite<for a discussion of omnibus tests in the context of one-way ANOVA, see>{Delacre2019}.
 
 Let's consider the case of a 2~$\times$~2 factorial design with factors A and B. Typically researchers would use a 2~$\times$~2 factorial ANOVA to test for group differences, which would test the main effect of A, the main effect of B, and the interaction of A and B. If the group sample sizes are equal or if Type 3 Sum of Squares is used, then the ANOVA is equivalent to a set of orthogonal contrasts with Student's t test using the following weights:
 
@@ -385,15 +385,13 @@ The degrees of freedom are $df = \sum (n_i - 1)$, and the t value is equal to th
 However, the benefit of using a t test is that you don't \textit{have} to use Student's t test---you can use Welch's t test instead. When using Welch's t test, instead of finding a common pooled variance, the estimated variance for each group is that group's sample variance because we do not assume variances are equal. 
 
 \begin{equation}
-    s_{\hat{I}_{Welch}} = \sqrt{\sum a_i\frac{s_{i}^2}{n_{i}}}
+    s_{\hat{I}_{Welch}} = \sqrt{\sum a_i^2\frac{s_{i}^2}{n_{i}}}
 \end{equation}
 
 The degrees of freedom also generalize to use information from all the groups.
 
-
-NOTE: Need to correct this here and in the simulations - forgot to add the contrast weights, which will have a small impact on the simple effects
 \begin{equation}
-    df_{Welch} = \frac{(\sum \frac{s_i^2}{n_i})^2}{\sum \frac{(s_i^2)^2}{n_i^2(n_i-1)}}
+    df_{Welch} = \frac{(\sum a_i^2 \frac{s_i^2}{n_i})^2}{\sum \frac{(a_i^2\frac{s_i^2}{n_i})^2}{n_i-1}}
 \end{equation}
 
 Just as Welch's t test controls false positives better than Student's t test without serious downsides when there are two groups, it also controls false positives better than ANOVA when there are more than two groups, is sometimes more powerful to detect true effects, and does a better job estimating the true effect size.
@@ -965,34 +963,24 @@ One might argue that there are minimal benefits of Welch's t test for researcher
 Our simulations were based on a 2~$\times$~2 factorial design when only one group had a different sample size and variance from the other groups. But from these results, we can generalize the cases where we'd expect ANOVA and Welch's t test to be different under other designs. When the standard error from ANOVA is smaller than the standard error from Welch's t test, then ANOVA will inflate the false positive rate, be more powerful, and miss the true effect size more than expected. This will happen when ANOVA over-weights groups with small variances, either because they have a larger sample size, or because they're being used in a contrast that they should be excluded from. These principles should generalize to designs with more or fewer groups, with different sample size and variance ratios, and with different numbers of groups that differ in their sample sizes or variances.
 
 We echo others' recommendations to always use 
-Welch's t test by default \cite{Zimmerman1996,Moser1992,Moser1989}, and expand this recommendation to designs with more than two groups.
-For researchers who 
-insist on using ANOVA by default, they must come up with a decision rule for when they will switch to Welch's t test, or some other test that doesn't assume variances are equal. One way to decide which test to use
-is to run another test of the null hypothesis that the group variances 
-are equal. If the test retains the null, the variances are equal and you can use ANOVA test. If the test rejects the null, the variances are unequal and you should use Welch's t test.
-
+Welch's t test by default \cite{Zimmerman1996,Moser1992,Moser1989,Delacre2017}, and expand this recommendation to designs with more than two groups.
+We also agree that the common approach of using tests of equal variances to decide when to use Welch's t test doesn't work \cite{Delacre2017, Zimmerman1996,Zimmerman2004}.
 Perhaps the most popular example of this approach is Levene's test for homogeneity \cite{Levene1960}, which appears in SPSS by default when you run an independent samples t test or ANOVA.
-In its original formulation, the test finds how far each observation deviates from the mean of its group, then it uses ANOVA to test whether the average deviations are different between the groups (later formulations use deviations from the group median or the trimmed mean, which work better when the raw data are not normally distributed, \citeNP{Brown1974}).
+Beyond the points that others have raised (e.g., tests of assumptions are sensitive to sample size), Levene's test hides the equal variances problem in another test.
 
+In its original formulation, the test finds how far each observation deviates from the mean of its group, then it uses ANOVA to test whether the average deviations are different between the groups (later formulations use deviations from the group median or the trimmed mean, which work better when the raw data are not normally distributed, \citeNP{Brown1974}).
 Consider the logic of using Levene's test to decide whether to use ANOVA or Welch's t 
 test. Before you use an ANOVA to test whether the group means are different, you use an ANOVA to test 
 whether the \textit{deviations} from the group means are different, which means you have to make another choice
 between ANOVA and Welch, which means you must decide whether the
 group \textit{deviations} have equal variances.
-This doesn't solve the original problem, it just hides it in a different test. 
-
-Additionally, tests of assumptions,
-like other tests, are sensitive 
-to sample size \cite{Gonzalez2008}. If your sample is too small, you won't have enough power to 
-detect true differences in the variances. If your sample is very 
-large, even minute differences will be statistically significant. 
-Overall, using tests of equal variances is an ineffective decision strategy \cite{Zimmerman1996,Zimmerman2004}. 
+This doesn't solve the original problem, it just hides it in a different test.
 
     A better way to decide to use Welch's t test instead of ANOVA is is to visualize the data using boxplots and judge 
 whether the variances appear to differ.  With smaller samples, you 
 can tolerate larger apparent differences and still conclude the variances are equal. You can enhance this strategy by 
 simulating data that have the same sample sizes as the real data, changing whether the variances are equal or not, 
-and checking if the boxplots from the real data look more like the boxplots of 
+and checking if the boxplots from the real data look more like the boxplots of
 simulations with equal variances or unequal variances. 
 
     Figure 7 displays sample boxplots where two groups have equal 
