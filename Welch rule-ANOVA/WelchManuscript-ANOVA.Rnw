@@ -18,12 +18,12 @@ breaklines=true
 
 \abstract{Recently, Delacre, Lakens, and Leys (2017) recommended that psychologists should use Welch's t test instead of Student's t test as the default when comparing means between groups.
 We agree with this conclusion, but see a need to expand on the evidence to justify it, which we do through Monte Carlo simulations. 
-First, past research has focused on research designs with two groups; we show how Welch's t test can be used to test any one degree of freedom contrast in designs with more than two groups.
-Second, the justification for using Welch's t test rests heavily on emphasizing control of false positives and minimizing concerns with loss of power; we show that this is unnecessary, because Welch's t test is more powerful than Student's in common situations with no serious downsides.
+First, past research has focused on research designs with two groups; we show how Welch's t test can be used in designs with more than two groups to test any one degree of freedom contrast.
+Second, the justification for using Welch's t test emphasizes control of false positives, and minimizes the concerns researchers have with loss of power; we show that this is unnecessary, because Welch's t test is more powerful than Student's in common situations with no serious downsides.
 Third, no attention has been paid to estimates of effect size; we show that 
-Welch's t test does a better job estimating effect sizes regardless of the false positive rates or power of the two tests. 
+Welch's t test is more reliable at estimating effect sizes regardless of the false positive rates or power of the two tests. 
 }
-\keywords{Welch t test, contrasts, hypothesis testing, simulation}
+\keywords{Welch t test, contrasts, hypothesis testing, effect size}
 
 \authornote{Joshua D. Wondra, Facebook.
 
@@ -274,13 +274,17 @@ because it does a better job controlling false positives when group variances ar
 and it doesn't lose much power when variances are equal.
 We agree with the conclusion to use Welch's t test by default, but see a need to expand on the evidence to justify it.
 
-First, prior research has focused on research designs with only two groups. Although this is the prototypical case where psychologists would think to use a t test, they are also used in designs with more than two groups. Less commonly, in factorial designs with two levels per factor, t tests can be used instead of ANOVA to test the main effects and interactions. More commonly, in oneway or factorial designs with any number of levels per factor, t tests are used for contrasts between specific pairs of groups, or specific combinations of groups, to test the specific hypotheses that psychologists typically care about more than the omnibus ANOVA. We illustrate both with a 2~$\times$~2 factorial design.
+First, prior research has focused on research designs with only two groups. This is a fair starting point, because it's the prototypical case where t tests are used. 
+However, in designs with more than two groups, t tests are used frequently. 
+Most commonly, t tests are used to test differences between specific pairs of groups, or specific combinations of groups--this is commonly referred to as "planned contrasts". 
+These contrasts are important because they directly test the hypotheses that psychologists care about most, more so than the omnibus ANOVAs that are commonly used as a first step in the analysis (more on this later).
+Aside from contrasts, in factorial designs with two levels per factor, t tests can be used instead of ANOVA to test the main effects and interactions.  We illustrate both contrasts and main effects/interactions in a 2~$\times$~2 factorial design.
 
-Second, the main justification for using Welch's t test has been that it does a better job controlling false positives, and that the potential loss of power is minimal. However, researchers typically hope to see significant effects, and so a loss of power, however small, may discourage them from choosing Welch's t test. A stronger justification would more thoroughly address this concern with the loss of power. We show that Welch's t test can be much more powerful than Student's t test without serious downsides, and that when Student's t test is significantly more powerful it comes with big risks. 
+Second, the main justification for using Welch's t test has been that it does a better job controlling false positives, and that it has only a little less power to detect true effects. But because researchers typically hope to see significant effects, the loss of power may loom larger than the gain of lower false positive rates, and discourage researchers from using Welch's t test. A stronger justification would more thoroughly address concerns with power. We show that Welch's t test can be much more powerful than Student's t test without serious downsides, and that when Student's t test is more powerful it comes with risks. 
 
-Third, prior research has focused on null hypothesis reject rates, and little attention has been paid to estimates of effect size. This is a different and important topic to consider, because while one test may be more powerful than the other, it may also do a worse job at estimating the true effect size. Effect size estimation is related to false positive rates, but deserves discussion on its own. We show that Welch's t test does a better job estimating the correct effect size, regardless of false positive rates or power.
+Third, prior research has focused on null hypothesis reject rates, and little attention has been paid to estimates of effect size. This is a different and important topic to consider, because even when one test is more powerful than the other, it can get the effect size wrong. Effect size estimation is related to false positive rates, but deserves discussion on its own. We show that Welch's t test is more reliable at estimating the correct effect size, regardless of false positive rates or power.
 
-Through Monte Carlo simulations of a 2~$\times$~2 factorial design, we show that Welch's t test expands to cases with more than two groups, does a better job controlling false posities than a typical analysis of variance (ANOVA)/Student's t test, can be more powerful with little downside, and can more accurately estimates effect sizes, so that Welch's t test should be used by default to test any one degree of freedom contrast in a variety of research designs.
+Through Monte Carlo simulations of a 2~$\times$~2 factorial design, we show that Welch's t test expands to cases with more than two groups, does a better job controlling false posities than a typical analysis of variance (ANOVA) or Student's t test, is more powerful in some common situations with little downside, and more reliably estimates effect sizes, so that Welch's t test should be used by default to test any one degree of freedom contrast in a variety of research designs.
 
 \subsection{Student's and Welch's t tests with Two Groups}
 
@@ -669,7 +673,10 @@ Additionally, there are clear downsides to ANOVA.  When the variances and sample
 
 But we still have another topic to cover, which is contrasts that test the simple effects of each factor. These are often run as follow-up tests to a significant interaction, though we support running them first if they are specific tests of the key hypotheses. 
 
+[NOTE: Expand on this point here] One point to note is that there was little difference in the two tests when sample sizes were equal. Researchers who do experiments might be saying, "So what, I almost always have equal sample sizes?" But as we'll see with simple effects, having equal sample sizes doesn't save Student's t test in the situations that matter most. 
+
 \section{Simple Effects}
+[NOTE: Maybe call this contrasts instead of simple effects to be a bit broader]
 In addition to looking at main effects and interactions, we can consider the simple effects of A at each level of B, and the simple effects of B at each level of A. 
 The contrast weights are:
 
