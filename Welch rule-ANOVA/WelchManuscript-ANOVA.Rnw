@@ -276,7 +276,7 @@ We agree with the conclusion to use Welch's t test by default, but see a need to
 
 First, prior research has focused on research designs with only two groups. This is a fair starting point, because it's the prototypical case where t tests are used. 
 However, in designs with more than two groups, t tests are used frequently. 
-Most commonly, t tests are used to test differences between specific pairs of groups, or specific combinations of groups--this is commonly referred to as "planned contrasts". 
+Most commonly, t tests are used to test differences between specific pairs of groups, or specific combinations of groups--this is commonly referred to as ``planned contrasts". 
 These contrasts are important because they directly test the hypotheses that psychologists care about most, more so than the omnibus ANOVAs that are commonly used as a first step in the analysis (more on this later).
 Aside from contrasts, in factorial designs with two levels per factor, t tests can be used instead of ANOVA to test the main effects and interactions.  We illustrate both contrasts and main effects/interactions in a 2~$\times$~2 factorial design.
 
@@ -386,7 +386,7 @@ This same pooled variance is used for every estimated group variance, and these 
 
 The degrees of freedom are $df = \sum (n_i - 1)$, and the t value is equal to the square root of the F value if ANOVA had been used instead. Due to this equivalence and the emphasis on cases where researchers would typically run ANOVA, when use the term ANOVA through the rest of the paper, it refers to both ANOVA and Student's t test.  
 
-However, the benefit of using a t test is that you don't \textit{have} to use Student's t test---you can use Welch's t test instead. When using Welch's t test, instead of finding a common pooled variance, the estimated variance for each group is that group's sample variance because we do not assume variances are equal. 
+The benefit of using a t test is that you don't \textit{have} to use Student's t test---you can use Welch's t test instead. When using Welch's t test, instead of finding a common pooled variance, the estimated variance for each group is just the sample variance for each group because we do not assume variances are equal. 
 
 \begin{equation}
     s_{\hat{I}_{Welch}} = \sqrt{\sum a_i^2\frac{s_{i}^2}{n_{i}}}
@@ -400,12 +400,21 @@ The degrees of freedom also generalize to use information from all the groups.
 
 Just as Welch's t test controls false positives better than Student's t test without serious downsides when there are two groups, it also controls false positives better than ANOVA when there are more than two groups, is sometimes more powerful to detect true effects, and does a better job estimating the true effect size.
 
-We'll illustrate with three examples. First, we'll consider the case where there are no effects. Second, we'll consider the case of a crossover interaction with no main effects. And third, we'll consider the case with two main effects and an interaction. In each case, we ran 10,000 simulations of four independent groups with normally distributed data. We compared how well ANOVA vs. Welch's t test balances concerns with 
-false positives, power, and effect size estimation under 
-different variance ratios and sample size ratios (FOOTNOTE: We also looked at different effect sizes and sample sizes, but they had no impact on the relative effects of ANOVA and Welch's t test, so we do not show them here).
-We examined cases where the variances and sample sizes were equal or where the variance or sample size of just one group differed from the others.
+We'll illustrate with three examples:
+\begin{itemize}
+\item no main effects, no interaction
+\item no main effects, crossover interaction
+\item two main effects, interaction
+\end{itemize}
 
-\section{False Positive Rates}
+For each example, we ran 10,000 simulations of four independent groups with normally distributed data.
+We looked at cases where the variances and sample sizes were equal or where the variance and/or sample size of just one group differed from the other three groups.
+We compared how well ANOVA vs. Welch's t test balances concerns with 
+false positives, power, and effect size estimation under 
+different variance ratios and sample size ratios.\footnote{We also looked at different effect sizes and sample sizes, but they had no impact on the relative effects of ANOVA and Welch's t test, so we do not show them here}
+
+
+\section{False Positives}
 
 For false positive rates, we looked at the main effects when there were no effects or only a crossover interaction, and at the interaction effect when there were no effects. 
 
@@ -469,7 +478,7 @@ variance, the false positive rate
 rose as high as 13\%, more than double the expected rate. 
 In contrast, for Welch's t test, the observed false positive rate
 was close to the expected rate across all conditions. Overall, Welch's 
-t test consistently behaved as expected when it came to false positives, whether there were no effects or a significant interaction but no main effects. 
+t test consistently behaved as expected when it came to false positives, whether there were no effects or an interaction with no main effects. 
 ANOVA did not.
 
 \subsection{Joint False Positive Rate}

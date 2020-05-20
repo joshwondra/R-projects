@@ -92,6 +92,7 @@ format_plot <- function(plot, ylims, ybreaks, ylabs){
       values = c('solid', 'twodash', 'dotted')
     ) +
     guides(linetype = FALSE, shape = FALSE) +
+    facet_grid(cols = vars(contrast_names), rows = vars(test)) +
     labs(y = NULL, x = NULL) +
     plot_theme()
 }

@@ -232,7 +232,7 @@ no_effects <- tibble(
       var_ratio == 5 ~ c(10, 2, 2, 2)
     ))
   ) %>% 
-  unnest() %>% 
+  unnest(cols = c(ns, means, vars)) %>% 
   
   # group by the conditions and then nest the ns, means and vars
   # this makes it convenient to run the simulations
@@ -272,11 +272,21 @@ no_effects <- tibble(
                                   )) %>% 
                         t() %>% 
                         as.tibble() %>% 
-                        unnest()
+                        unnest(
+                          cols = c(
+                            contrast_names, 
+                            p_student, 
+                            p_welch,
+                            coverage_student, 
+                            coverage_welch,
+                            joint_rejects_student,
+                            joint_rejects_welch
+                            )
+                          )
     )) %>% 
   
   select(-data) %>% # remove the data so we can unnest
-  unnest() %>% 
+  unnest(cols = c(sim_results)) %>% 
   
   group_by(sample_ratio, min_sample, effect, var_ratio) %>% # group by conditions and summarize the results
   group_by(sample_ratio, min_sample, effect, var_ratio, contrast_names) %>% 
@@ -288,6 +298,7 @@ no_effects <- tibble(
     coverage_student = mean(coverage_student),
     coverage_welch = mean(coverage_welch)
   )
+
 
 # save simulations
 save(no_effects, file = '~/R-projects/Welch rule-ANOVA/no_effects_v2.R')
@@ -496,7 +507,7 @@ crossover_sims <- tibble(
       var_ratio == 5 ~ c(10, 2, 2, 2)
     ))
   ) %>% 
-  unnest() %>% 
+  unnest(cols = c(ns, means, vars)) %>%
   
   # group by the conditions and then nest the ns, means and vars
   # this makes it convenient to run the simulations
@@ -528,11 +539,21 @@ crossover_sims <- tibble(
         )) %>%
         t() %>% 
         as.tibble() %>% 
-        unnest()
+        unnest(
+          cols = c(
+            contrast_names, 
+            p_student, 
+            p_welch,
+            coverage_student, 
+            coverage_welch,
+            joint_rejects_student,
+            joint_rejects_welch
+          )
+        )
       )) %>% 
   
   select(-data) %>% # remove the data so we can unnest
-  unnest() %>% 
+  unnest(cols = c(sim_results)) %>% 
   
   group_by(sample_ratio, min_sample, effect, var_ratio, contrast_names) %>% # group by conditions and summarize the results
   summarize(
@@ -748,7 +769,7 @@ me_int_sims <- tibble(
       var_ratio == 5 ~ c(10, 2, 2, 2)
     ))
   ) %>% 
-  unnest() %>% 
+  unnest(cols = c(ns, means, vars)) %>%
   
   # group by the conditions and then nest the ns, means and vars
   # this makes it convenient to run the simulations
@@ -780,11 +801,21 @@ me_int_sims <- tibble(
                                   )) %>%
                         t() %>% 
                         as.tibble() %>% 
-                        unnest()
+                        unnest(
+                          cols = c(
+                            contrast_names, 
+                            p_student, 
+                            p_welch,
+                            coverage_student, 
+                            coverage_welch,
+                            joint_rejects_student,
+                            joint_rejects_welch
+                          )
+                        )
     )) %>% 
   
   select(-data) %>% # remove the data so we can unnest
-  unnest() %>% 
+  unnest(cols = c(sim_results)) %>% 
   
   group_by(sample_ratio, min_sample, effect, var_ratio, contrast_names) %>% # group by conditions and summarize the results
   summarize(
@@ -922,7 +953,7 @@ me_int_sims_test <- tibble(
       var_ratio == 5 ~ c(2, .4, .4, .4)
     ))
   ) %>% 
-  unnest() %>% 
+  unnest(cols = c(ns, means, vars)) %>%
   
   # group by the conditions and then nest the ns, means and vars
   # this makes it convenient to run the simulations
@@ -954,11 +985,21 @@ me_int_sims_test <- tibble(
                                   )) %>%
                         t() %>% 
                         as.tibble() %>% 
-                        unnest()
+                        unnest(
+                          cols = c(
+                            contrast_names, 
+                            p_student, 
+                            p_welch,
+                            coverage_student, 
+                            coverage_welch,
+                            joint_rejects_student,
+                            joint_rejects_welch
+                          )
+                        )
     )) %>% 
   
   select(-data) %>% # remove the data so we can unnest
-  unnest() %>% 
+  unnest(cols = c(sim_results)) %>% 
   group_by(sample_ratio, min_sample, effect, var_ratio, contrast_names) %>% 
   summarize(
     joint_rejects_student = mean(joint_rejects_student >= 1),
