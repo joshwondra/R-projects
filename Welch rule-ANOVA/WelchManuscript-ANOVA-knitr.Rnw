@@ -38,15 +38,21 @@ Contact: jdwondra@umich.edu}
 
 
 \begin{document}
-\SweaveOpts{concordance=TRUE}
+
+<<include=FALSE>>=
+library(knitr)
+opts_chunk$set(concordance = TRUE)
+@
+
 \maketitle
-<<setup, echo=FALSE>>=
+<<setup, include=FALSE>>=
 knitr::opts_chunk$set(dev = 'pdf')
 
 # Load packages ----
 library(formattable)
 library(tidyverse)
 library(cowplot)
+library(gridGraphics)
 
 # Import custom functions ----
 source('Welch functions.R')
@@ -133,8 +139,8 @@ true_effect_data <- data.frame(
   mutate(
     factorB_label_position = case_when(
       factorA == 'A2' ~ as.numeric(NA),
-      factorB == 'B1' ~ y + .1,
-      factorB == 'B2' ~ y - .1
+      factorB == 'B1' ~ y + .2,
+      factorB == 'B2' ~ y - .2
       )
   )
 
@@ -427,31 +433,25 @@ and although there is a Welch version of ANOVA that tests for differences betwee
 
 Just as Welch's t test controls false positives better than Student's t test without serious downsides when there are two groups, it also controls false positives better than ANOVA when there are more than two groups, is sometimes more powerful to detect true effects, and does a better job estimating the true effect size.
 
-We'll illustrate with three examples:
-\begin{itemize}
-\item no main effects, no interaction
-\item no main effects, crossover interaction
-\item two main effects, interaction
-\end{itemize}
-
+We'll illustrate with three examples: no effects, a crossover interaction with no main effects, and two main effects with an interaction (see Figure 1). 
 For each example, we ran 10,000 simulations of four independent groups with normally distributed data.
-We looked at cases where the variances and sample sizes were equal or where the variance and/or sample size of just one group differed from the other three groups.
-We compared how well ANOVA vs. Welch's t test balances concerns with 
+We looked at cases where the variances and sample sizes were equal or where the variance and/or sample size of just one group ($A_1 B_1$) differed from the other three groups.
+We compared how well ANOVA and Welch's t test balance concerns with 
 false positives, power, and effect size estimation under 
-different variance ratios and sample size ratios.\footnote{We also looked at different effect sizes and sample sizes, but they had no meaningful impact on the relative benefits of ANOVA vs. Welch's t test, so we do not show them here.} We tested the main effects, the interaction, and the simple effects of each factor at each level of the other factor.  
+different variance ratios and sample size ratios.\footnote{We also looked at different effect sizes and sample sizes, but they had no meaningful impact on the relative benefits of ANOVA vs. Welch's t test, so we do not show them here.} We tested the main effects, the interaction effect, and focused contrasts for the simple effects of A at each level of B, and for the simple effects of B at each level of A.  
 
 \begin{figure}[!ht]  
-<<three_examples, echo = FALSE, fig = TRUE, width = 5, height = 10>>=
+<<three_examples, echo = FALSE, fig.width=12, fig.height=4>>=
 
 plot_grid(
     no_effects_true_effect_plot, 
     crossover_true_effect_plot, 
     me_int_true_effect_plot,
-    ncol = 1
+    ncol = 3
   )
 @
 
-\textit{Figure 1.} Examples used to test ANOVA vs. Welch's t test.
+\caption{Examples used to test ANOVA vs. Welch's t test.}
 \end{figure}
 
 
@@ -459,10 +459,22 @@ plot_grid(
 
 \subsection{Main Effects and Interaction}
 
-For false positive rates, we looked at the main effects when there were no effects or only a crossover interaction, and at the interaction effect when there were no effects. 
+To understand how well ANOVA and Welch's t test control false positives, we looked at tests of the main effects and interaction when there were no effects, and at tests of the main effects when there was only a crossover interaction. 
+For each comparison, the expected false positive rate is $\alpha = 5\%$. For ANOVA, the observed false positive
+rate was close to the expected rate when either 
+the population variances or sample sizes were equal, but it varied widely 
+when both the variances and sample sizes were unequal (see Figure 2). 
+When the one smaller group had the smaller variance, the false positive rate dropped as low as
+about 2\%, but when it had the larger 
+variance, the false positive rate 
+rose as high as 13\%, more than double the expected rate. 
+In contrast, for Welch's t test, the observed false positive rate
+was close to the expected rate across all conditions. Overall, Welch's 
+t test consistently behaved as expected when it came to false positives. 
+ANOVA did not.
 
 \begin{figure}[!ht]  
-<<false_positives, echo = FALSE, fig = TRUE, width = 14, height = 7>>=
+<<false_positives, echo = FALSE, warning = FALSE, fig.width=14, fig.height=10>>=
 
 no_effects_false_positives <- plot_grid(
   
@@ -496,7 +508,7 @@ crossover_false_positives <- plot_grid(
 data_plots <- plot_grid(
     no_effects_true_effect_plot, no_effects_false_positives,
     crossover_true_effect_plot, crossover_false_positives,
-    ncol = 2, rel_widths = c(.25, .75)
+    ncol = 2, rel_widths = c(.33, .66)
   )
 
 # add legend
@@ -508,25 +520,13 @@ plot_grid(
   add_x_lab(plot_x_lab)
 @
 
-\textit{Figure 1.} False positives for the simulations when there were no effects or a crossover interaction with no main effects.
+\caption{False positives for the main effects and interaction.}
 \end{figure}
 
-For each comparison, the expected false positive rate is $\alpha = 5\%$. For ANOVA, the observed false positive
-rate was close to the expected rate when either 
-the population variances or sample sizes were equal, but it varied widely 
-when both the variances and sample sizes were unequal (see Figure 1). 
-When the one smaller group had the smaller variance, the false positive rate dropped as low as
-about 2\%, but when it had the larger 
-variance, the false positive rate 
-rose as high as 13\%, more than double the expected rate. 
-In contrast, for Welch's t test, the observed false positive rate
-was close to the expected rate across all conditions. Overall, Welch's 
-t test consistently behaved as expected when it came to false positives, whether there were no effects or an interaction with no main effects. 
-ANOVA did not.
 
-\subsection{Joint False Positive Rate}
+\subsection{Joint False Positives for Main Effects and Interaction}
 
-In addition to looking at each test separately, we can look at the joint false positive rate
+In addition to looking at each test separately, we can look at the joint false positive rate for the main effects and interaction
 ---the probability that at least one of the tests gives a false positive.
 We focus on the case where there are no true effects, so the joint false positive rate is the probability that the test of at least one main effect or the interaction gives a false positive. 
 The expected joint false positive rate in a 2~$\times$~2 ANOVA when the three comparisons are independent is $\alpha = 14\%$, 
@@ -534,28 +534,28 @@ though in practice the rate is typically slightly below 14\% \cite{Cramer2016}.
 
 
 \begin{figure}[!ht]  
-
-<<no_effects_joint_false_positives, echo = FALSE, collapse = TRUE, fig = TRUE, width = 8, height = 4>>=
+\centering
+<<no_effects_joint_false_positives, echo = FALSE, collapse = TRUE, fig.width=8, fig.height=8, out.width = '50%'>>=
 data_plots <- plot_grid(
     joint_reject_student, joint_reject_welch,
     ncol = 1
-  )
+  ) %>% 
+add_x_lab(plot_x_lab)
 
 plot_grid(
   data_plots, plot_legend,
   ncol = 2,
   rel_widths = c(2, 2)
-) %>% 
-add_x_lab(plot_x_lab)
+) 
 @
 
-\textit{Figure 2.} Rates of at least one false positive (at least one main effect or the interaction) for the simulations when there were no effects.
+\caption{Rates of at least one false positive (at least one main effect or the interaction) for the simulations when there were no effects.}
 \end{figure}
 
-As with the separate tests of the main effects and interaction, for ANOVA, the observed false positive
+For ANOVA, the observed joint false positive
 rate was close to the expected rate when either 
 the population variances or sample sizes were equal, but it varied widely 
-when both the variances and sample sizes were unequal (see Figure 2). 
+when both the variances and sample sizes were unequal (see Figure 3). 
 When the one smaller group had the smaller variance, the false positive rate dropped as low as 
 about 7\%, but when it had the larger 
 variance, the false positive rate 
@@ -565,12 +565,124 @@ rate remained closer to the expected rate. Welch's
 t test behaved closer to expectations when it came to false positives than 
 ANOVA.
 
+\subsection{Focused Contrasts for the Simple Effects}
+
+
+In addition to looking at main effects and interactions, we can look at the false positive rates for the simple effects of A at each level of B, and the simple effects of B at each level of A. 
+To understand the false positive rates, we looked at all of the simple effects when there were no effects, and at the simple effect of B at $A_2$ when there was a main effect and interaction (because the main effect of B was completely driven by the simple effect of B at $A_1$).
+
+
+As with the main effects and interactions, both ANOVA and Welch's t test were near the expected 5\% false positive rate when both the variances and sample sizes were equal. 
+But unlike the main effects and interactions, the false positive rate for ANOVA varied whenever the variance of one group was different from the other groups, even when the sample sizes were equal (see Figure 4).
+
+\begin{figure}[!ht]
+<<se_false_positives, echo = FALSE, warning = FALSE, fig.width=16, fig.height=10>>=
+
+no_effects_false_positives_simple_effects <- plot_grid(
+  
+  # first row
+  rn_no_effects_B1cont_anova %>% first_row(),
+  rn_no_effects_A1cont_anova %>% first_row(), 
+  rn_no_effects_B2cont_anova %>% first_row(),
+  rn_no_effects_A2cont_anova,
+
+  # second row
+  rn_no_effects_B1cont_welch %>% low_row(),
+  rn_no_effects_A1cont_welch %>% low_row(), 
+  rn_no_effects_B2cont_welch %>% low_row(),
+  rn_no_effects_A2cont_welch %>% low_row_end(), 
+  
+  ncol = 4
+)
+
+me_int_false_positives_simple_effects <- plot_grid(
+  
+  # first row
+  blank_plot, 
+  blank_plot, 
+  blank_plot, 
+  rn_me_int_A2cont_anova,
+
+  # second row
+  blank_plot, 
+  blank_plot, 
+  blank_plot, 
+  rn_me_int_A2cont_welch %>% low_row_end(), 
+  
+  ncol = 4
+)
+
+
+data_plots <- plot_grid(
+    no_effects_true_effect_plot, no_effects_false_positives_simple_effects,
+    me_int_true_effect_plot, me_int_false_positives_simple_effects,
+    ncol = 2, rel_widths = c(.25, .75)
+  )
+
+plot_grid(
+  data_plots, plot_legend,
+  ncol = 2,
+  rel_widths = c(10, 3)
+) %>%
+add_x_lab(plot_x_lab)
+
+@
+\caption{False positives for the simple effects.}
+\end{figure}
+
+In our current simulations, only group $A_1 B_1$ has a variance or sample size that's different from the other groups under some conditions. 
+This group is included in the contrasts testing the simple effect of A at B1 and the simple effect of B at A1, and it is excluded from the contrasts testing the simple effect of A at B2 and the simple effect of B at A2. 
+When group $A_1 B_1$ is excluded from the contrast, then even when it has a variance or sample size that's different from the other groups, the groups that are being directly compared always have equal variances and sample sizes. 
+
+When group $A_1 B_1$ was included in the contrasts, if its variance was smaller than the other groups, ANOVA was too conservative, and if its variance was larger than the other groups, ANOVA was too liberal. 
+But when group $A_1 B_1$ was excluded from the contrasts, the pattern was opposite (though the size of the effect was smaller)--if its variance was smaller, ANOVA was too liberal, and if its variance was larger, ANOVA was too conservative. 
+Why, for the simple effects, did ANOVA depart from the expected 5\% rate when the sample sizes were equal? 
+And why was the pattern opposite when the group with the different variance was included or excluded from the contrast? 
+
+With four groups that have equal sample sizes, the pooled variance becomes
+
+\begin{equation}
+\begin{split}
+    s_p^2 & = \frac{\sum (n - 1)s_{i}^2}{\sum (n - 1)} \\
+    & = \frac{(n - 1)(s_{A_1 B_1}^2 + s_{A_1 B_2}^2 + s_{A_2 B_1}^2 + s_{A_2 B_2}^2)}{4(n - 1)} \\
+    & = \frac{1}{4}(s_{A_1 B_1}^2 + s_{A_1 B_2}^2 + s_{A_2 B_1}^2 + s_{A_2 B_2}^2)
+\end{split}
+\end{equation}
+
+When we plug the above into Equation 11, we find that the standard error is the same for any two-group contrast, whether the group with unequal variances is included or excluded.
+
+\begin{equation}
+\begin{split}
+s_{Student_{A_1-A_2|B_1}} & = \sqrt{(1^2\frac{s_p^2}{n} + 0^2\frac{s_p^2}{n} + -1^2\frac{s_p^2}{n} + 0^2\frac{s_p^2}{n})} \\
+& = s_{Student_{A_1-A_2|B_2}} \\
+& = \sqrt{(0^2\frac{s_p^2}{n} + 1^2\frac{s_p^2}{n} + 0^2\frac{s_p^2}{n} + -1^2\frac{s_p^2}{n})} \\
+& = \sqrt{2\frac{s_p^2}{n}} \\
+& = \sqrt{2\frac{(s_{A_1 B_1}^2 + s_{A_1 B_2}^2 + s_{A_2 B_1}^2 + s_{A_2 B_2}^2)}{4n}}\\
+& = \sqrt{\frac{1}{2n}(s_{A_1 B_1}^2 + s_{A_1 B_2}^2 + s_{A_2 B_1}^2 + s_{A_2 B_2}^2)}
+\end{split}
+\end{equation}
+
+So when ANOVA is used and the sample sizes are equal, then even if a group is excluded from the contrast, its variance is weighted just as much as the other groups to estimate the standard error. However, when Welch's t test is used and the sample sizes are equal, then only the groups that are \textit{included} in the contrast are used to estimate the standard error.
+
+\begin{equation}
+\begin{split}
+s_{Welch_{A_1-A_2|B_1}} & = \sqrt{(1^2\frac{s_{A_1 B_1}^2}{n} + 0^2\frac{s_{A_1 B_2}^2}{n} + -1^2\frac{s_{A_2 B_1}^2}{n} + 0^2\frac{s_{A_2 B_2}^2}{n})} \\
+& = \sqrt{\frac{1}{n}(s_{A_1 B_1}^2 + s_{A_2 B_1}^2)} \\
+& \neq s_{Welch_{A_1-A_2|B_2}} \\
+& = \sqrt{(0^2\frac{s_{A_1 B_1}^2}{n} + 1^2\frac{s_{A_1 B_2}^2}{n} + 0^2\frac{s_{A_2 B_1}^2}{n} + -1^2\frac{s_{A_2 B_2}^2}{n})} \\
+& = \sqrt{\frac{1}{n}(s_{A_1 B_2}^2 + s_{A_2 B_2}^2)}
+\end{split}
+\end{equation}
+
+Comparing equations 15 and 16, we can see that even though the sample sizes are equal, ANOVA is giving too much weight to the variances from groups that are excluded from the contrasts, and not enough weight to the variances from the groups that are included in the contrasts.\footnote{Note that if all variances are equal, Equations 15 and 16 are equal.}
+So when the groups that are excluded from the contrast have the smaller variance, the standard error from ANOVA is too small, which will inflate the false positive rate, and when they have the larger variance, the standard error from Student's t test is too large, which will decrease the false positive rate.
+
 
 \subsection{Power}
 To compare the power of ANOVA vs. Welch's t test to detect true effects, we looked at the main effects when there were main effects and an interaction, and at the interaction effect when there was an interaction with or without true main effects. 
 
 \begin{figure}[!ht]
-<<power_plots, echo = FALSE, collapse = TRUE, fig = TRUE, width = 12, height = 8>>=
+<<power_plots, echo = FALSE, collapse = TRUE, fig.width=12, fig.height=8>>=
 
 crossover_power <- plot_grid(
   
@@ -653,7 +765,7 @@ contained the true effect 95\% of the time regardless of the variance and sample
 size ratios. 
 
 \begin{figure}[!ht]
-<<coverage_probability, echo = FALSE, collapse = TRUE, fig = TRUE, width = 12, height = 8>>=
+<<coverage_probability, echo = FALSE, collapse = TRUE, fig.width=12, fig.height=8>>=
 
 no_effects_coverage <- plot_grid(
 
@@ -729,129 +841,7 @@ But we still have another topic to cover, which is contrasts that test the simpl
 
 \section{Simple Effects}
 [NOTE: Maybe call this contrasts instead of simple effects to be a bit broader]
-In addition to looking at main effects and interactions, we can consider the simple effects of A at each level of B, and the simple effects of B at each level of A. 
-The contrast weights are:
-
-\begin{table}[!ht]
-\begin{tabular}{l c c c c}
-\hline
- & \multicolumn{4}{c}{Condition} \\
- & $A_1 B_1$ & $A_1 B_2$ & $A_2 B_1$ & $A_2 B_2$ \\
-\hline
-Simple Effect of A at B1 & 1 & 0 & -1 & 0 \\
-Simple Effect of B at A1 & 1 & -1 & 0 & 0 \\
-Simple Effect of A at B2 & 0 & 1 & 0 & -1 \\
-Simple Effect of B at A2 & 0 & 0 & 1 & -1 \\
-\hline
-\end{tabular}
-\end{table}
-
-In our current simulations, only group $A_1 B_1$ has a variance or sample size that's different from the other groups under some conditions. 
-This group is included in the contrasts testing the simple effect of A at B1 and the simple effect of B at A1, and it is excluded from the contrasts testing the simple effect of A at B2 and the simple effect of B at A2. 
-When group $A_1 B_1$ is excluded from the contrast, then even when it has a variance or sample size that's different from the other groups, the groups that are being directly compared always have equal variances and sample sizes. 
-
-The t tests for the simple effects are constructed using the same formulas as those that we use for main effects and interactions, and the only difference is the contrast weights.
-
-\subsection{False Positives}
-
-\begin{figure}[!ht]
-<<se_false_positives, echo = FALSE, collapse = TRUE, fig = TRUE, width = 12, height = 8>>=
-
-no_effects_false_positives_simple_effects <- plot_grid(
-  
-  # first row
-  rn_no_effects_B1cont_anova %>% first_row(),
-  rn_no_effects_A1cont_anova %>% first_row(), 
-  rn_no_effects_B2cont_anova %>% first_row(),
-  rn_no_effects_A2cont_anova,
-
-  # second row
-  rn_no_effects_B1cont_welch %>% low_row(),
-  rn_no_effects_A1cont_welch %>% low_row(), 
-  rn_no_effects_B2cont_welch %>% low_row(),
-  rn_no_effects_A2cont_welch %>% low_row_end(), 
-  
-  ncol = 4
-)
-
-me_int_false_positives_simple_effects <- plot_grid(
-  
-  # first row
-  blank_plot, 
-  blank_plot, 
-  blank_plot, 
-  rn_me_int_A2cont_anova,
-
-  # second row
-  blank_plot, 
-  blank_plot, 
-  blank_plot, 
-  rn_me_int_A2cont_welch %>% low_row_end(), 
-  
-  ncol = 4
-)
-
-
-data_plots <- plot_grid(
-    no_effects_true_effect_plot, no_effects_false_positives_simple_effects,
-    me_int_true_effect_plot, me_int_false_positives_simple_effects,
-    ncol = 2, rel_widths = c(.25, .75)
-  )
-
-plot_grid(
-  data_plots, plot_legend,
-  ncol = 2,
-  rel_widths = c(10, 3)
-) %>%
-add_x_lab(plot_x_lab)
-@
-
-\textit{Figure 5.} False positives for the simple effects.
-\end{figure}
-
-As with the main effects and interactions, both ANOVA and Welch's t test were near the expected 5\% false positive rate when both the variances and sample sizes were equal. 
-But unlike the main effects and interactions, the false positive rate for ANOVA varied whenever the variance of one group was different from the other groups, even when the sample sizes were equal.
-
-The only group that had a variance that was different from the other groups under some conditions was group $A_1 B_1$. 
-When this group was included in the contrasts, ANOVA was too conservative when its variance was smaller than the other groups, and was too liberal when its variance was larger. 
-But when the group was excluded from the contrasts, the pattern was opposite (though the size of the effect was smaller)--ANOVA was too liberal when its variance was smaller, and was too conservative when its variance was larger. 
-Why, for the simple effects, did ANOVA depart from the expected 5\% rate when the sample sizes were equal? 
-And why was the pattern opposite when the group with the different variance was included or excluded from the contrast? 
-
-With four groups that have equal sample sizes, the pooled variance becomes
-
-\begin{equation}
-    s_p^2 = \frac{\sum (n - 1)s_{i}^2}{\sum (n - 1)} = \frac{(n - 1)(s_{A_1 B_1}^2 + s_{A_1 B_2}^2 + s_{A_2 B_1}^2 + s_{A_2 B_2}^2)}{4(n - 1)} = \frac{1}{4}(s_{A_1 B_1}^2 + s_{A_1 B_2}^2 + s_{A_2 B_1}^2 + s_{A_2 B_2}^2)
-\end{equation}
-
-When we plug the above into Equation 11, we find that the standard error is the same for any two-group contrast, whether the group with unequal variances is included or excluded.
-
-\begin{equation}
-\begin{split}
-s_{Student_{A_1-A_2|B_1}} & = \sqrt{(1^2\frac{s_p^2}{n} + 0^2\frac{s_p^2}{n} + -1^2\frac{s_p^2}{n} + 0^2\frac{s_p^2}{n})} \\
-& = s_{Student_{A_1-A_2|B_2}} \\
-& = \sqrt{(0^2\frac{s_p^2}{n} + 1^2\frac{s_p^2}{n} + 0^2\frac{s_p^2}{n} + -1^2\frac{s_p^2}{n})} \\
-& = \sqrt{2\frac{s_p^2}{n}} \\
-& = \sqrt{2\frac{(s_{A_1 B_1}^2 + s_{A_1 B_2}^2 + s_{A_2 B_1}^2 + s_{A_2 B_2}^2)}{4n}}\\
-& = \sqrt{\frac{1}{2n}(s_{A_1 B_1}^2 + s_{A_1 B_2}^2 + s_{A_2 B_1}^2 + s_{A_2 B_2}^2)}
-\end{split}
-\end{equation}
-
-So when ANOVA is used, when the sample sizes are equal, then even if a group is excluded from the contrast, its variance is weighted just as much as the other groups to estimate the standard error. However, when Welch's t test is used, and when the sample sizes are equal, then only the groups that are \textit{included} in the contrast are used to estimate the standard error.
-
-\begin{equation}
-\begin{split}
-s_{Welch_{A_1-A_2|B_1}} & = \sqrt{(1^2\frac{s_{A_1 B_1}^2}{n} + 0^2\frac{s_{A_1 B_2}^2}{n} + -1^2\frac{s_{A_2 B_1}^2}{n} + 0^2\frac{s_{A_2 B_2}^2}{n})} \\
-& = \sqrt{\frac{1}{n}(s_{A_1 B_1}^2 + s_{A_2 B_1}^2)} \\
-& \neq s_{Welch_{A_1-A_2|B_2}} \\
-& = \sqrt{(0^2\frac{s_{A_1 B_1}^2}{n} + 1^2\frac{s_{A_1 B_2}^2}{n} + 0^2\frac{s_{A_2 B_1}^2}{n} + -1^2\frac{s_{A_2 B_2}^2}{n})} \\
-& = \sqrt{\frac{1}{n}(s_{A_1 B_2}^2 + s_{A_2 B_2}^2)}
-\end{split}
-\end{equation}
-
-Note that if all variances are equal, Equations 15 and 16 are equal.
-Comparing equations 15 and 16, we can see that even though the sample sizes are equal, Student's t test is giving too much weight to the variances from groups that are excluded from the contrasts, and not enough weight to the variances from the groups that are included in the contrasts.
-So when the groups that are excluded from the contrast have the smaller variance, the standard error from Student's t test is too small, which will inflate the false positive rate, and when they have the larger variance, the standard error from Student's t test is too large, which will decrease the false positive rate. 
+ 
 
 \subsection{Power}
 
@@ -859,7 +849,7 @@ The power of ANOVA and Welch's t test to detect the simple effects is parallel t
 Just as with main effects and interactions, Student's t test is more powerful under the same conditions that it inflates the false positive rate, but Welch's t test is more powerful under other conditions while keeping the expected 5\% false positive rate.
 
 \begin{figure}[!ht]
-<<se_power_plots, echo = FALSE, collapse = TRUE, fig = TRUE, width = 12, height = 8>>=
+<<se_power_plots, echo = FALSE, collapse = TRUE, fig.width=12, fig.height=8>>=
 
 crossover_pow_simple_effects <- plot_grid(
 
@@ -937,7 +927,7 @@ contains the true effect 95\% of the time regardless of the variance and sample
 size ratios. 
 
 \begin{figure}[!ht]
-<<se_coverage_probability, echo = FALSE, collapse = TRUE, fig = TRUE, width = 12, height = 8>>=
+<<se_coverage_probability, echo = FALSE, collapse = TRUE, fig.width=12, fig.height=8>>=
 
 no_effects_cov_simple_effects <- plot_grid(
 
@@ -1066,7 +1056,7 @@ Our simulations suggest there's no harm in doing so.
 
    
 \begin{figure}[!ht]
-<<boxplots, echo = FALSE, fig = TRUE, height = 8>>=
+<<boxplots, echo = FALSE, fig.height=8>>=
 
 # Boxplots (equal variances) ----
 

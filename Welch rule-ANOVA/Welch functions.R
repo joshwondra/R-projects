@@ -42,7 +42,7 @@ true_effect_plot <- function(data, which_effect) {
       size = 14*(5/14) # 5/14 is a rough conversion to make geom_text() size similar to element_text() size
     ) +
     coord_cartesian(ylim = c(5, 8)) +
-    labs(title = which_effect, x = 'Factor A', y = NULL) +
+    labs(title = which_effect, x = NULL, y = NULL) +
     plot_theme() +
     theme(
       panel.grid.major.y = element_blank()
@@ -74,6 +74,12 @@ blank_plot_cov <- function(cov_data) {
   )
 }
 
+# need to adjust simple effect labels
+se_labels <- function(string) {
+  string = str_replace(string, 'Simple Effect of ', 'Simple Effect of\n')
+  return(string)
+}
+
 # specify what's common to all the plots
 format_plot <- function(plot, ylims, ybreaks, ylabs){
   plot +
@@ -92,7 +98,7 @@ format_plot <- function(plot, ylims, ybreaks, ylabs){
       values = c('solid', 'twodash', 'dotted')
     ) +
     guides(linetype = FALSE, shape = FALSE) +
-    facet_grid(cols = vars(contrast_names), rows = vars(test)) +
+    facet_grid(cols = vars(contrast_names), rows = vars(test), labeller = labeller(contrast_names = se_labels)) +
     labs(y = NULL, x = NULL) +
     plot_theme()
 }
@@ -106,7 +112,7 @@ reject_null_plot <- function(data, sim, which_contrast, which_test) {
     sim == 'Crossover interaction' & str_detect(which_contrast, 'Main') |
     sim == 'Main effects & interaction' & which_contrast == 'Simple Effect of B at A2'
   ) {
-    ylims = c(0, .2)
+    ylims = c(0, .25)
     ybreaks = seq(0, 1, .05)
   } else if (
     sim == 'Crossover interaction' & str_detect(which_contrast, 'Int') |
@@ -287,7 +293,7 @@ add_x_lab <- function(plot, x_lab) {
   add_sub(
     plot,
     x_lab, 
-    vpadding=grid::unit(0,"lines"),
+    vpadding=grid::unit(1,"lines"),
     y=.1, 
     x=0.5, 
     vjust=0
